@@ -7,10 +7,11 @@ import {
     StyleSheet,
 } from "react-native";
 import React from "react";
-import Btn_GoogleLogin from "../components/Btn_GoogleLogin";
+import GoogleLogin from "../components/buttons/GoogleLogin";
 
-const LoginScreen = () => {
+const Login= () => {
     const image = require("../assets/images/backgrounds/Login.png");
+    // put Google login's function here
     const loginWithGoogle = () => {
         console.log("Button pressed");
     };
@@ -29,14 +30,14 @@ const LoginScreen = () => {
                 </View>
                 <Text style={styles.text}>Login{"\n"}Your Account</Text>
                 <View style={{ margin: 20 }}>
-                    <Btn_GoogleLogin onPress={loginWithGoogle} />
+                    <GoogleLogin onPress={loginWithGoogle} />
                 </View>
             </ImageBackground>
         </SafeAreaView>
     );
 };
 
-export default LoginScreen;
+export default Login;
 
 const styles = StyleSheet.create({
     container: {

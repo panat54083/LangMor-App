@@ -1,7 +1,7 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
 
-const Btn_GoogleLogin = ({ onPress }) => {
+const GoogleLogin = ({ onPress }) => {
     return (
         <TouchableOpacity
             onPress={onPress}
@@ -27,20 +27,17 @@ const Btn_GoogleLogin = ({ onPress }) => {
                 }}
             >
                 <Image
-                    source={require("../assets/icons/google.png")}
+                    source={require("../../assets/icons/google.png")}
                     style={{ width: 30, height: 30, marginRight: 10 }}
                 />
                 <View
                     style={{
                         alignItems: "center",
-                        // backgroundColor:"red",
-                        // marginLeft: "30%",
                         flex: 1,
                     }}
                 >
                     <Text
                         style={{
-                            // alignItems: "center",
                             fontFamily: "Kanit-Medium",
                             fontSize: 16,
                             color: "#1A0700",
@@ -54,4 +51,4 @@ const Btn_GoogleLogin = ({ onPress }) => {
     );
 };
 
-export default Btn_GoogleLogin;
+export default GoogleLogin;
