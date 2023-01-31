@@ -4,6 +4,9 @@ import Large from "../components/buttons/Large";
 
 const Home = () => {
     const surname = "Panat";
+    const handleSetRestaurant = () =>{
+        console.log("Pressed..")
+    }
     return (
         <SafeAreaView style={styles.container}>
             <View style={{ margin: 20 }}>
