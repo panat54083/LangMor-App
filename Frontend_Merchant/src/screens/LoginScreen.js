@@ -6,11 +6,11 @@ const LoginScreen = () => {
         <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
             <View style={{ alignItems: "center" }}>
                 <Image
-                    source={require("../assets/Icon_LangMor.png")}
+                    source={require("../assets/images/Icon_LangMor.png")}
                     style={{ width: 275, height: 250 }}
                 />
             </View>
-            {/* <Text style={{fontFamily: ""}}> Login Your Account</Text> */}
+            <Text style={{margin:20, fontSize: 30, fontFamily: "Kanit-Bold"}}>Login Your Account</Text>
         </SafeAreaView>
     );
 };
