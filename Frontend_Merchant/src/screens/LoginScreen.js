@@ -1,16 +1,45 @@
-import { View, Text, Image, SafeAreaView } from "react-native";
+import { View, Text, Image, SafeAreaView, ImageBackground } from "react-native";
 import React from "react";
+import Btn_GoogleLogin from "../components/Btn_GoogleLogin";
 
 const LoginScreen = () => {
+    const image = require("../assets/images/backgrounds/Login.png");
+    // const image = { uri: "https://reactjs.org/logo-og.png" };
+    const loginWithGoogle = () => {
+        console.log("Button pressed");
+    };
     return (
-        <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
-            <View style={{ alignItems: "center" }}>
-                <Image
-                    source={require("../assets/images/Icon_LangMor.png")}
-                    style={{ width: 275, height: 250 }}
-                />
-            </View>
-            <Text style={{margin:20, fontSize: 30, fontFamily: "Kanit-Bold"}}>Login Your Account</Text>
+        <SafeAreaView
+            style={{
+                flex: 1,
+                // justifyContent: "center",
+                // margin: 20,
+                backgroundColor: "#F5F5F5",
+            }}
+        >
+            <ImageBackground
+                source={image}
+                resizeMode="cover"
+                style={{ width: "100%", height: "100%" }}
+            >
+                <View style={{ alignItems: "center" }}>
+                    <Image
+                        source={require("../assets/icons/LangMor.png")}
+                        style={{ width: 270, height: 251.3 }}
+                    />
+                </View>
+                <Text
+                    style={{
+                        marginTop: 20,
+                        marginBottom: 20,
+                        fontSize: 30,
+                        fontFamily: "Kanit-Bold",
+                    }}
+                >
+                    Login{"\n"}Your Account
+                </Text>
+                <Btn_GoogleLogin onPress={loginWithGoogle} />
+            </ImageBackground>
         </SafeAreaView>
     );
 };
