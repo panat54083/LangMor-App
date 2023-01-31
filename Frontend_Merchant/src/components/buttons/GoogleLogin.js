@@ -33,14 +33,11 @@ const GoogleLogin = ({ onPress }) => {
                 <View
                     style={{
                         alignItems: "center",
-                        // backgroundColor:"red",
-                        // marginLeft: "30%",
                         flex: 1,
                     }}
                 >
                     <Text
                         style={{
-                            // alignItems: "center",
                             fontFamily: "Kanit-Medium",
                             fontSize: 16,
                             color: "#1A0700",
