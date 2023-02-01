@@ -3,10 +3,9 @@ const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true}))
+
 //Setup routes
-
-
-
+app.use("/user", require('./routes/user'))
 
 
 //Setup Error handlers

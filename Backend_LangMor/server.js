@@ -16,6 +16,8 @@ mongoose.connection.once("open", () => {
 });
 
 //Setup Models
+require("./models/User")
+
 
 //Setup Server
 const PORT = 8000;
