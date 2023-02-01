@@ -5,28 +5,62 @@ import {
     SafeAreaView,
     Image,
     Button,
+    Pressable,
 } from "react-native";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Large from "../components/buttons/Large";
 import UserContext from "../hooks/context/UserContext";
+import Logout from "../components/buttons/Logout";
 
 const Home = () => {
     const { state, onAction } = useContext(UserContext);
-    const handleLogout = () => {
-        onAction.signOut();
-    };
+    const [visible, setVisible] = useState(false)
+
+    const handelModel= () => setVisible(!visible)
+    const handleProfile = () =>{
+        handelModel()
+    }
+    const handleLogOut = () =>{
+        handelModel()
+        onAction.signOut()
+    }
 
     return (
         <SafeAreaView style={styles.container}>
             {state.userData ? (
                 <View>
-                    <View style={{ margin: 20 }}>
-                        <Text style={[styles.textHeader, { color: "#FF4200" }]}>
-                            สวัสดี
-                        </Text>
-                        <Text style={styles.textHeader}>
-                            คุณ {state.userData.given_name}
-                        </Text>
+                    <View
+                        style={{
+                            margin: 20,
+                            flexDirection: "row",
+                        }}
+                    >
+                        <View style={{ flex: 2 ,}}>
+                            <Text
+                                style={[
+                                    styles.textHeader,
+                                    { color: "#FF4200" },
+                                ]}
+                            >
+                                สวัสดี
+                            </Text>
+                            <Text style={styles.textHeader}>
+                                คุณ {state.userData.given_name}
+                            </Text>
+                        </View>
+                        <Pressable
+                            onPress={handleProfile}
+                            style={{
+                                flex: 1,
+                                justifyContent: "center",
+                                alignItems:"flex-end",
+                            }}
+                        >
+                            <Image
+                                source={{ uri: state.userData.picture }}
+                                style={[styles.profile, {}]}
+                            />
+                        </Pressable>
                     </View>
                     <View style={{ margin: 20 }}>
                         <Large
@@ -38,11 +72,18 @@ const Home = () => {
                             image={require("../assets/icons/waiter.png")}
                         />
                     </View>
-                    <Button title="Log out" onPress={handleLogout} />
                 </View>
             ) : (
                 <View></View>
-            )}
+            )}{
+                visible ? (
+                    <Logout onPress={handleLogOut}/>
+                ) : (
+                    <View>
+
+                    </View>
+                )
+            }
         </SafeAreaView>
     );
 };
@@ -57,5 +98,13 @@ const styles = StyleSheet.create({
     textHeader: {
         fontFamily: "Kanit-Bold",
         fontSize: 38,
+    },
+    profile: {
+        width: 80,
+        height: 80,
+        overlayColor: '#F5F5F5',
+        borderRadius: 40,
+        borderWidth: 2,
+        borderColor: "gray",
     },
 });
