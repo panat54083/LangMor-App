@@ -31,10 +31,25 @@ const LoginScreen = () => {
         expoClientId: EXPO_CLIENT_ID,
     });
 
-    useEffect(()=>{
-        console.log("Check Token here!!")
-    },[])
-
+    // Check Token if it exists or not
+    useEffect(() => {
+        const checkToken = async () => {
+            try {
+                const token = await AsyncStorage.getItem("Token"); // get token from local storage
+                // check if there is token
+                if (token) {
+                    fetchUserInfo(token)
+                    console.log("🔑: There is the token..");
+                } else {
+                    console.log("🚫: There is no the token..");
+                }
+            } catch (err) {
+                console.log("CheckToken : " + err);
+            }
+        };
+        checkToken(); // Call the function
+    }, []);
+    // Check Google response
     useEffect(() => {
         if (response?.type === "success") {
             setAccessToken(response.authentication.accessToken);
@@ -49,14 +64,14 @@ const LoginScreen = () => {
             });
         }
     }, [response, accessToken]);
-
+    //handle with google login
     const loginWithGoogle = () => {
         promptAsync({
             useProxy: false,
             showInRecents: true,
         });
     };
-    // send Google user's data to Backend server
+    //send Google user's data to Backend server
     const fetchLogin = (userData) => {
         axios
             .post(`http://${IP_ADDRESS}/user/login`, userData)
@@ -77,7 +92,24 @@ const LoginScreen = () => {
                 console.log("Fetch Login: ", err.response.data);
             });
     };
-
+    //get user information by token 
+    const fetchUserInfo = (token) => {
+        axios
+            .get(`http://${IP_ADDRESS}/user/info`, {
+                headers: {
+                    Authorization: token,
+                },
+            })
+            .then((res) => {
+                onAction.signIn({
+                    user: res.data.userData,
+                    token: token
+                })
+            })
+            .catch((err) => {
+                console.log("fetch UserInfo: ", err);
+            });
+    };
     return (
         <SafeAreaView style={styles.container}>
             <ImageBackground
