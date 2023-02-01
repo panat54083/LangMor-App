@@ -18,20 +18,36 @@ exports.login = async (req, res) => {
             verified_email: userData.verified_email,
         });
         await user.save();
-        const token = await jwt.sign({id: user.id}, process.env.SECRET)
+        //create token
+        const token = await jwt.sign({ id: user.id }, process.env.SECRET);
 
         res.json({
             message: `User [${userData.name}] registered successfully.✅`,
             token: token,
             userData: user,
         });
-    } else{
-        const token = await jwt.sign({id: userExists.id}, process.env.SECRET)
+    } else {
+        const token = await jwt.sign({ id: userExists.id }, process.env.SECRET);
 
         res.json({
             message: "User existed.",
             token: token,
             userData: userExists,
-        })
+        });
+    }
+};
+
+exports.userInfo = async (req, res) => {
+    try {
+        const token = req.headers.authorization;
+        const decoded = jwt.verify(token, process.env.SECRET);
+        const user = await User.findById(decoded.id);
+
+        res.json({
+            userData: user
+        });
+    } catch (err) {
+
+        res.status(401).json({ message: "Unauthorized" });
     }
 };

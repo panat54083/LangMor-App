@@ -16,7 +16,6 @@ export default function App() {
     const reducer = (prevState, action) => {
         switch (action.type) {
             case "SIGN_IN":
-                // console.log(action.user);
                 console.log(`🟢: ${action.user.given_name} Sign In`);
                 return {
                     isSignin: true,
@@ -27,6 +26,7 @@ export default function App() {
             case "SIGN_OUT":
                 console.log(`🔴: ${prevState.userData.given_name} Sign Out`);
                 return {
+                    // ...prevState,
                     isSignin: false,
                     userData: null,
                     token: null,

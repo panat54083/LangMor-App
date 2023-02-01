@@ -6,7 +6,7 @@ import {
     ImageBackground,
     StyleSheet,
 } from "react-native";
-import React, { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import GoogleLogin from "../components/buttons/GoogleLogin";
 import * as Google from "expo-auth-session/providers/google";
 import {
@@ -18,9 +18,9 @@ import {
 import * as WebBrowser from "expo-web-browser";
 import UserContext from "../hooks/context/UserContext";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 WebBrowser.maybeCompleteAuthSession();
-
 const LoginScreen = () => {
     const image = require("../assets/images/backgrounds/Login.png");
     const [accessToken, setAccessToken] = useState();
@@ -31,7 +31,11 @@ const LoginScreen = () => {
         expoClientId: EXPO_CLIENT_ID,
     });
 
-    React.useEffect(() => {
+    useEffect(()=>{
+        console.log("Check Token here!!")
+    },[])
+
+    useEffect(() => {
         if (response?.type === "success") {
             setAccessToken(response.authentication.accessToken);
         }
@@ -56,9 +60,14 @@ const LoginScreen = () => {
     const fetchLogin = (userData) => {
         axios
             .post(`http://${IP_ADDRESS}/user/login`, userData)
-            .then((res) => {
+            .then(async (res) => {
                 // console.log("Fetch Login: ", res.data.message);
                 // console.log("Token: ", res.data.token);
+                try {
+                    await AsyncStorage.setItem("Token", res.data.token);
+                } catch (e) {
+                    console.log("AsyncStorage Error: ", e);
+                }
                 onAction.signIn({
                     user: res.data.userData,
                     token: res.data.token,
