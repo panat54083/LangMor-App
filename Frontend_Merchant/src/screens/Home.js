@@ -11,6 +11,7 @@ import { useContext, useState } from "react";
 import Large from "../components/buttons/Large";
 import UserContext from "../hooks/context/UserContext";
 import Logout from "../components/buttons/Logout";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Home = () => {
     const { state, onAction } = useContext(UserContext);
@@ -20,9 +21,10 @@ const Home = () => {
     const handleProfile = () =>{
         handelModel()
     }
-    const handleLogOut = () =>{
+    const handleLogOut = async () =>{
         handelModel()
         onAction.signOut()
+        await AsyncStorage.removeItem("Token")
     }
 
     return (
