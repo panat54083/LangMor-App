@@ -1,28 +1,48 @@
-import { StyleSheet, Text, View, SafeAreaView, Image } from "react-native";
-import React from "react";
+import {
+    StyleSheet,
+    Text,
+    View,
+    SafeAreaView,
+    Image,
+    Button,
+} from "react-native";
+import { useContext } from "react";
 import Large from "../components/buttons/Large";
+import UserContext from "../hooks/context/UserContext";
 
 const Home = () => {
-    const surname = "Panat";
-    const handleSetRestaurant = () =>{
-        console.log("Pressed..")
-    }
+    const { state, onAction } = useContext(UserContext);
+    const handleLogout = () => {
+        onAction.signOut();
+    };
+
     return (
         <SafeAreaView style={styles.container}>
-            <View style={{ margin: 20 }}>
-                <Text style={[styles.textHeader, {color: "#FF4200"}]}>สวัสดี</Text>
-                <Text style={styles.textHeader}>คุณ {surname}</Text>
-            </View>
-            <View style={{ margin: 20 }}>
-                <Large
-                    name={"ตั้งร้านค้า"}
-                    image={require("../assets/icons/restaurant.png")}
-                />
-                <Large
-                    name={"เลือกเป็นสมาชิกร้าน"}
-                    image={require("../assets/icons/waiter.png")}
-                />
-            </View>
+            {state.userData ? (
+                <View>
+                    <View style={{ margin: 20 }}>
+                        <Text style={[styles.textHeader, { color: "#FF4200" }]}>
+                            สวัสดี
+                        </Text>
+                        <Text style={styles.textHeader}>
+                            คุณ {state.userData.given_name}
+                        </Text>
+                    </View>
+                    <View style={{ margin: 20 }}>
+                        <Large
+                            name={"ตั้งร้านค้า"}
+                            image={require("../assets/icons/restaurant.png")}
+                        />
+                        <Large
+                            name={"เลือกเป็นสมาชิกร้าน"}
+                            image={require("../assets/icons/waiter.png")}
+                        />
+                    </View>
+                    <Button title="Log out" onPress={handleLogout} />
+                </View>
+            ) : (
+                <View></View>
+            )}
         </SafeAreaView>
     );
 };
