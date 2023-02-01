@@ -16,14 +16,40 @@ mongoose.connection.once("open", () => {
 });
 
 //Setup Models
-require("./models/User")
-
+require("./models/User");
 
 //Setup Server
 const PORT = 8000;
 const app = require("./app");
 app.use(require("cors")()); // Don't know why I use this
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
+});
+
+// Setup Socket
+const io = require("socket.io")(server, {
+    cors: {
+        origin: true,
+    },
+});
+
+io.use(async (socket, next) => {
+    try {
+        const token = socket.handshake.query.token;
+        const payload = await jwt.verify(token, process.env.SECRET);
+        socket.userId = payload.id;
+        next();
+    } catch (err) {
+        console.error(err);
+    }
+});
+
+io.on("connection", (socket) => {
+    console.log(`🟢: ${socket.userId} connected! ${socket.id}`);
+    
+    socket.on("disconnect", () => {
+        socket.disconnect();
+        console.log(`🔴: ${socket.userId} disconnected! ${socket.id}`);
+    });
 });
