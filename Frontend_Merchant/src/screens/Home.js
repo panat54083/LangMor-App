@@ -10,12 +10,14 @@ import {
 import { useContext, useState } from "react";
 import Large from "../components/buttons/Large";
 import UserContext from "../hooks/context/UserContext";
+import SocketContext from "../hooks/context/SocketContext";
 import Logout from "../components/buttons/Logout";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Home = () => {
     const { state, onAction } = useContext(UserContext);
     const [visible, setVisible] = useState(false)
+    const {socket} = useContext(SocketContext)
 
     const handelModel= () => setVisible(!visible)
     const handleProfile = () =>{
@@ -24,6 +26,7 @@ const Home = () => {
     const handleLogOut = async () =>{
         handelModel()
         onAction.signOut()
+        socket.disconnect()
         await AsyncStorage.removeItem("Token")
     }
 

@@ -37,7 +37,7 @@ const io = require("socket.io")(server, {
 io.use(async (socket, next) => {
     try {
         const token = socket.handshake.query.token;
-        const payload = await jwt.verify(token, process.env.SECRET);
+        const payload = require("jsonwebtoken").verify(token, process.env.SECRET);
         socket.userId = payload.id;
         next();
     } catch (err) {

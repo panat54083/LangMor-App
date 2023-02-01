@@ -17,14 +17,17 @@ import {
 } from "@env";
 import * as WebBrowser from "expo-web-browser";
 import UserContext from "../hooks/context/UserContext";
+import SocketContext from "../hooks/context/SocketContext";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { io } from "socket.io-client";
 
 WebBrowser.maybeCompleteAuthSession();
 const LoginScreen = () => {
     const image = require("../assets/images/backgrounds/Login.png");
     const [accessToken, setAccessToken] = useState();
     const { onAction } = useContext(UserContext);
+    const { setSocket } = useContext(SocketContext);
     const [request, response, promptAsync] = Google.useAuthRequest({
         androidClientId: ANDROID_CLIENT_ID,
         iosClientId: IOS_CLIENT_ID,
@@ -38,8 +41,9 @@ const LoginScreen = () => {
                 const token = await AsyncStorage.getItem("Token"); // get token from local storage
                 // check if there is token
                 if (token) {
-                    fetchUserInfo(token)
+                    fetchUserInfo(token);
                     console.log("🔑: There is the token..");
+                    await setupSocket(token);
                 } else {
                     console.log("🚫: There is no the token..");
                 }
@@ -87,12 +91,13 @@ const LoginScreen = () => {
                     user: res.data.userData,
                     token: res.data.token,
                 });
+                await setupSocket(res.data.token);
             })
             .catch((err) => {
                 console.log("Fetch Login: ", err.response.data);
             });
     };
-    //get user information by token 
+    //get user information by token
     const fetchUserInfo = (token) => {
         axios
             .get(`http://${IP_ADDRESS}/user/info`, {
@@ -103,12 +108,31 @@ const LoginScreen = () => {
             .then((res) => {
                 onAction.signIn({
                     user: res.data.userData,
-                    token: token
-                })
+                    token: token,
+                });
             })
             .catch((err) => {
                 console.log("fetch UserInfo: ", err);
             });
+    };
+    //Setup Socket
+    const setupSocket = async (token) => {
+        const newSocket = io(`http://${IP_ADDRESS}`, {
+            query: {
+                token: token,
+            },
+        });
+        //deal with connect event
+        newSocket.on("connect", () => {
+            console.log("🌞: Socket Connect!", newSocket.id);
+            setSocket(newSocket);
+        });
+        // disconnect event
+        newSocket.on("disconnect", () => {
+            setSocket(null);
+            // setTimeout(setupSocket, 3000)
+            console.log("🌚: Socket Disconnect!");
+        });
     };
     return (
         <SafeAreaView style={styles.container}>

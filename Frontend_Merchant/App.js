@@ -3,8 +3,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import MyStack from "./src/config/routes";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect, useMemo, useReducer } from "react";
+import { useEffect, useMemo, useReducer, useState } from "react";
 import UserContext from "./src/hooks/context/UserContext";
+import SocketContext from "./src/hooks/context/SocketContext";
 
 export default function App() {
     const [fontsLoaded] = useFonts({
@@ -12,7 +13,7 @@ export default function App() {
         "Kanit-Medium": require("./src/assets/fonts/Kanit-Medium.ttf"),
         "Kanit-SemiBold": require("./src/assets/fonts/Kanit-SemiBold.ttf"),
     });
-
+    const [socket, setSocket] = useState(null);
     const reducer = (prevState, action) => {
         switch (action.type) {
             case "SIGN_IN":
@@ -65,10 +66,12 @@ export default function App() {
     }
 
     return (
-        <UserContext.Provider value={{ onAction, state }}>
-            <NavigationContainer>
-                <MyStack />
-            </NavigationContainer>
-        </UserContext.Provider>
+        <SocketContext.Provider value={{ socket, setSocket }}>
+            <UserContext.Provider value={{ onAction, state }}>
+                <NavigationContainer>
+                    <MyStack />
+                </NavigationContainer>
+            </UserContext.Provider>
+        </SocketContext.Provider>
     );
 }
