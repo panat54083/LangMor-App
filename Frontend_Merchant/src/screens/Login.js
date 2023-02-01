@@ -9,9 +9,15 @@ import {
 import React, { useContext, useState } from "react";
 import GoogleLogin from "../components/buttons/GoogleLogin";
 import * as Google from "expo-auth-session/providers/google";
-import { ANDROID_CLIENT_ID, IOS_CLIENT_ID, EXPO_CLIENT_ID } from "@env";
+import {
+    ANDROID_CLIENT_ID,
+    IOS_CLIENT_ID,
+    EXPO_CLIENT_ID,
+    IP_ADDRESS,
+} from "@env";
 import * as WebBrowser from "expo-web-browser";
 import UserContext from "../hooks/context/UserContext";
+import axios from "axios";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -33,7 +39,8 @@ const LoginScreen = () => {
             fetch("https://www.googleapis.com/userinfo/v2/me", {
                 headers: { Authorization: `Bearer ${accessToken}` },
             }).then((googleUserData) => {
-                googleUserData.json().then((data) => {
+                googleUserData.json().then(async (data) => {
+                    fetchLogin(data);
                     onAction.signIn({ user: data });
                 });
             });
@@ -46,6 +53,18 @@ const LoginScreen = () => {
             showInRecents: true,
         });
     };
+    // send Google user's data to Backend server 
+    const fetchLogin = ( userData ) => {
+        axios
+            .post(`http://${IP_ADDRESS}/user/login`, userData)
+            .then((res) => {
+                console.log("Fetch Login: ", res.data.message);
+            })
+            .catch((err) => {
+                console.log('Fetch Login: ', err.response.data);
+            });
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <ImageBackground

@@ -1,16 +1,29 @@
-const mongoose = require("mongoose")
-const User = mongoose.model("User")
-const jwt = require("jsonwebtoken")
+const mongoose = require("mongoose");
+const User = mongoose.model("User");
+const jwt = require("jsonwebtoken");
 
-exports.login = async (req, res) =>{
-    const  userData = req.body;
+exports.login = async (req, res) => {
+    const userData = req.body;
     console.log(userData)
-    // console.log(typeof(userData))
-    // const objUserData= JSON.parse(userData)
-    // console.log(typeof(objUserData))
-    // const stringUserData= JSON.stringify(objUserData)
-    // console.log(typeof(stringUserData))
-    res.json({
-        message: "User logged in successfully.",
-    })
-}
+    const userExists = await User.findOne({
+        email: userData.email,
+    });
+    if (!userExists) {
+        const user = new User({
+            email: userData.email,
+            name: userData.name,
+            given_name: userData.given_name,
+            family_name: userData.family_name,
+            picture: userData.picture,
+            verified_email: userData.verified_email,
+        });
+        await user.save();
+        res.json({
+            message: "User logged in successfully.",
+        });
+    } else{
+        res.json({
+            message: "User existed."
+        })
+    }
+};
