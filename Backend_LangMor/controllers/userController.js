@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 
 exports.login = async (req, res) => {
     const userData = req.body;
-    console.log(userData)
+    // console.log(userData)
     const userExists = await User.findOne({
         email: userData.email,
     });
@@ -18,12 +18,18 @@ exports.login = async (req, res) => {
             verified_email: userData.verified_email,
         });
         await user.save();
+        const token = await jwt.sign({id: user.id}, process.env.SECRET)
+
         res.json({
-            message: "User logged in successfully.",
+            message: `User [${userData.name}] registered successfully.✅`,
+            token
         });
     } else{
+        const token = await jwt.sign({id: userExists.id}, process.env.SECRET)
+
         res.json({
-            message: "User existed."
+            message: "User existed.",
+            token
         })
     }
 };

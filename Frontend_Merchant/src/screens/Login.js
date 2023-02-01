@@ -59,6 +59,7 @@ const LoginScreen = () => {
             .post(`http://${IP_ADDRESS}/user/login`, userData)
             .then((res) => {
                 console.log("Fetch Login: ", res.data.message);
+                console.log("Token: ", res.data.token)
             })
             .catch((err) => {
                 console.log('Fetch Login: ', err.response.data);
