@@ -6,13 +6,45 @@ import {
     ImageBackground,
     StyleSheet,
 } from "react-native";
-import React from "react";
+import React, { useContext, useState } from "react";
 import GoogleLogin from "../components/buttons/GoogleLogin";
+import * as Google from "expo-auth-session/providers/google";
+import { ANDROID_CLIENT_ID, IOS_CLIENT_ID, EXPO_CLIENT_ID } from "@env";
+import * as WebBrowser from "expo-web-browser";
+import UserContext from "../hooks/context/UserContext";
+
+WebBrowser.maybeCompleteAuthSession();
 
 const LoginScreen = () => {
     const image = require("../assets/images/backgrounds/Login.png");
+    const [accessToken, setAccessToken] = useState();
+    const { onAction } = useContext(UserContext);
+    const [request, response, promptAsync] = Google.useAuthRequest({
+        androidClientId: ANDROID_CLIENT_ID,
+        iosClientId: IOS_CLIENT_ID,
+        expoClientId: EXPO_CLIENT_ID,
+    });
+
+    React.useEffect(() => {
+        if (response?.type === "success") {
+            setAccessToken(response.authentication.accessToken);
+        }
+        if (accessToken) {
+            fetch("https://www.googleapis.com/userinfo/v2/me", {
+                headers: { Authorization: `Bearer ${accessToken}` },
+            }).then((googleUserData) => {
+                googleUserData.json().then((data) => {
+                    onAction.signIn({ user: data });
+                });
+            });
+        }
+    }, [response, accessToken]);
+
     const loginWithGoogle = () => {
-        console.log("Button pressed");
+        promptAsync({
+            useProxy: false,
+            showInRecents: true,
+        });
     };
     return (
         <SafeAreaView style={styles.container}>
