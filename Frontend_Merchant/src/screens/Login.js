@@ -39,9 +39,8 @@ const LoginScreen = () => {
             fetch("https://www.googleapis.com/userinfo/v2/me", {
                 headers: { Authorization: `Bearer ${accessToken}` },
             }).then((googleUserData) => {
-                googleUserData.json().then(async (data) => {
+                googleUserData.json().then((data) => {
                     fetchLogin(data);
-                    onAction.signIn({ user: data });
                 });
             });
         }
@@ -53,16 +52,20 @@ const LoginScreen = () => {
             showInRecents: true,
         });
     };
-    // send Google user's data to Backend server 
-    const fetchLogin = ( userData ) => {
+    // send Google user's data to Backend server
+    const fetchLogin = (userData) => {
         axios
             .post(`http://${IP_ADDRESS}/user/login`, userData)
             .then((res) => {
-                console.log("Fetch Login: ", res.data.message);
-                console.log("Token: ", res.data.token)
+                // console.log("Fetch Login: ", res.data.message);
+                // console.log("Token: ", res.data.token);
+                onAction.signIn({
+                    user: res.data.userData,
+                    token: res.data.token,
+                });
             })
             .catch((err) => {
-                console.log('Fetch Login: ', err.response.data);
+                console.log("Fetch Login: ", err.response.data);
             });
     };
 

@@ -22,14 +22,16 @@ exports.login = async (req, res) => {
 
         res.json({
             message: `User [${userData.name}] registered successfully.✅`,
-            token
+            token: token,
+            userData: user,
         });
     } else{
         const token = await jwt.sign({id: userExists.id}, process.env.SECRET)
 
         res.json({
             message: "User existed.",
-            token
+            token: token,
+            userData: userExists,
         })
     }
 };

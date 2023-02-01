@@ -17,28 +17,32 @@ export default function App() {
         switch (action.type) {
             case "SIGN_IN":
                 // console.log(action.user);
-                console.log(`🟡: ${action.user.given_name} Sign In`);
+                console.log(`🟢: ${action.user.given_name} Sign In`);
                 return {
                     isSignin: true,
                     userData: action.user,
+                    token: action.token,
                 };
+
             case "SIGN_OUT":
                 console.log(`🔴: ${prevState.userData.given_name} Sign Out`);
                 return {
                     isSignin: false,
                     userData: null,
+                    token: null,
                 };
         }
     };
     const [state, dispatch] = useReducer(reducer, {
         isSignin: false,
         userData: null,
+        token: null,
     });
 
     const onAction = useMemo(
         () => ({
-            signIn: async ({ user }) => {
-                return dispatch({ type: "SIGN_IN", user: user });
+            signIn: async ({ user, token }) => {
+                return dispatch({ type: "SIGN_IN", user: user, token: token });
             },
             signOut: () => {
                 return dispatch({ type: "SIGN_OUT" });
