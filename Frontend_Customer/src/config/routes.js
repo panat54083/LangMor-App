@@ -1,6 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import { useContext } from "react";
-import UserContext from "../../hooks/context/UserContext";
+import UserContext from "../hooks/context/UserContext";
 import GoogleLogin from "../screens/GoogleLogin";
 import Home from "../screens/Home";
 const Stack = createStackNavigator();

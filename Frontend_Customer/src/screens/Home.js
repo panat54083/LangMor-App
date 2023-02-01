@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Image, Button } from "react-native";
 import React, { useContext } from "react";
-import UserContext from "../../hooks/context/UserContext";
+import UserContext from "../hooks/context/UserContext";
 
 const Home = () => {
     const { state, onAction } = useContext(UserContext);

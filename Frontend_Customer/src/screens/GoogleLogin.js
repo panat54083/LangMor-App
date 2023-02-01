@@ -10,7 +10,7 @@ WebBrowser.maybeCompleteAuthSession();
 const GoogleLogin = () => {
     const [accessToken, setAccessToken] = useState();
     const { onAction } = useContext(UserContext);
-
+    // console.log(ANDROID_CLIENT_ID,IOS_CLIENT_ID,EXPO_CLIENT_ID);
     const [request, response, promptAsync] = Google.useAuthRequest({
         androidClientId: ANDROID_CLIENT_ID,
         iosClientId: IOS_CLIENT_ID,

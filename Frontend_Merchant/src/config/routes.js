@@ -2,21 +2,27 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Login from "../screens/Login";
 import Home from "../screens/Home";
 
+import HomeTestLogin from "../screens/HomeTestLogin";
+import { useContext } from "react";
+import UserContext from "../hooks/context/UserContext";
 const Stack = createStackNavigator();
 
 function MyStack({}) {
+    const { state } = useContext(UserContext);
     return (
-        <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen
-                name="Login"
-                component={Login}
-                options={{ headerShown: false }}
-            />
-            <Stack.Screen
-                name="Home"
-                component={Home}
-                options={{ headerShown: false }}
-            />
+        <Stack.Navigator>
+            {state.userData ? (
+                <Stack.Screen
+                    name="HomeTestLogin"
+                    component={HomeTestLogin}
+                />
+            ) : (
+                <Stack.Screen
+                    name="Login"
+                    component={Login}
+                    options={{ headerShown: false }}
+                />
+            )}
         </Stack.Navigator>
     );
 }
