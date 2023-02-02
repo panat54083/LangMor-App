@@ -30,7 +30,7 @@ const Home = ({navigation}) => {
         handelModel();
         onAction.signOut();
         socket.disconnect();
-        await AsyncStorage.removeItem("Token");
+        await AsyncStorage.removeItem("M_Token");
     };
 
     return (

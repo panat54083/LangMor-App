@@ -6,7 +6,8 @@ app.use(express.urlencoded({ extended: true}))
 
 //Setup routes
 app.use("/user", require('./routes/user'))
-
+app.use("/customer", require('./routes/customer'))
+app.use("/merchant", require('./routes/merchant'))
 
 //Setup Error handlers
 const errorHandlers = require("./handler/errorHandler");
