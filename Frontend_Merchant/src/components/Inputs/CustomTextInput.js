@@ -2,11 +2,36 @@ import { StyleSheet, View, TextInput } from "react-native";
 import React from "react";
 import { Feather } from "@expo/vector-icons";
 
-const CustomTextInput = ({ placeholder }) => {
+const CustomTextInput = ({
+    placeholder,
+    value,
+    onChangeText,
+    keyboardType = "default",
+}) => {
+    /*
+    keyboardType:   default
+                    number-pad
+                    decimal-pad
+                    numeric
+                    email-address
+                    phone-pad
+                    url 
+    */
     return (
         <View style={styles.container}>
-            <TextInput placeholder={placeholder} style={styles.input} />
-            <Feather name="edit" size={24} color="#C9C5C4" />
+            <TextInput
+                placeholder={placeholder}
+                style={styles.input}
+                keyboardType={keyboardType}
+                onChangeText={onChangeText}
+            />
+            {value ? (
+                <Feather name="edit" size={24} color="#C9C5C4" />
+            ):
+            (
+                <Feather name="edit" size={24} color="red" />
+            )
+            }
         </View>
     );
 };

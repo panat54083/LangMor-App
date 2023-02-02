@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Pressable } from "react-native";
+import {  Text,  Pressable } from "react-native";
 
 const Logout = ({ onPress }) => {
     return (
