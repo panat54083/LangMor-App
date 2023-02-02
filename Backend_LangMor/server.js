@@ -16,7 +16,8 @@ mongoose.connection.once("open", () => {
 });
 
 //Setup Models
-require("./models/User");
+require("./models/Customer");
+require("./models/Merchant");
 
 //Setup Server
 const PORT = 8000;
@@ -46,10 +47,10 @@ io.use(async (socket, next) => {
 });
 
 io.on("connection", (socket) => {
-    console.log(`🟢: ${socket.userId} connected! ${socket.id}`);
+    console.log(`🟢: Socket connected! [${socket.id}]`);
     
     socket.on("disconnect", () => {
         socket.disconnect();
-        console.log(`🔴: ${socket.userId} disconnected! ${socket.id}`);
+        console.log(`🔴: Socket disconnected! [${socket.id}]`);
     });
 });

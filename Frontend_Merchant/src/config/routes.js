@@ -1,6 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import Login from "../screens/Login";
 import Home from "../screens/Home";
+import SetRestaurant from "../screens/SetRestaurant";
 
 import { useContext } from "react";
 import UserContext from "../hooks/context/UserContext";
@@ -11,11 +12,17 @@ function MyStack({}) {
     return (
         <Stack.Navigator>
             {state.userData ? (
-                <Stack.Screen
-                    name="Home"
-                    component={Home}
-                    options={{ headerShown: false}}
-                />
+                <>
+                    <Stack.Screen
+                        name="Home"
+                        component={Home}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="SetRestaurant"
+                        component={SetRestaurant}
+                    />
+                </>
             ) : (
                 <Stack.Screen
                     name="Login"

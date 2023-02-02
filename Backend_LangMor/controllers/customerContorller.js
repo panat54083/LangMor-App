@@ -1,15 +1,15 @@
 const mongoose = require("mongoose");
-const User = mongoose.model("User");
+const Customer = mongoose.model("Customer");
 const jwt = require("jsonwebtoken");
 
 exports.login = async (req, res) => {
     const userData = req.body;
     // console.log(userData)
-    const userExists = await User.findOne({
+    const userExists = await Customer.findOne({
         email: userData.email,
     });
     if (!userExists) {
-        const user = new User({
+        const user = new Customer({
             email: userData.email,
             name: userData.name,
             given_name: userData.given_name,
@@ -19,7 +19,7 @@ exports.login = async (req, res) => {
         });
         await user.save();
         //create token
-        const token = await jwt.sign({ id: user.id }, process.env.SECRET);
+        const token = jwt.sign({ id: user.id }, process.env.SECRET);
 
         res.json({
             message: `User [${userData.name}] registered successfully.✅`,
@@ -27,7 +27,7 @@ exports.login = async (req, res) => {
             userData: user,
         });
     } else {
-        const token = await jwt.sign({ id: userExists.id }, process.env.SECRET);
+        const token = jwt.sign({ id: userExists.id }, process.env.SECRET);
 
         res.json({
             message: "User existed.",
@@ -41,7 +41,7 @@ exports.userInfo = async (req, res) => {
     try {
         const token = req.headers.authorization;
         const decoded = jwt.verify(token, process.env.SECRET);
-        const user = await User.findById(decoded.id);
+        const user = await Customer.findById(decoded.id);
 
         res.json({
             userData: user

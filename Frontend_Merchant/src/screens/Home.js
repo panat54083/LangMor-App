@@ -14,21 +14,24 @@ import SocketContext from "../hooks/context/SocketContext";
 import Logout from "../components/buttons/Logout";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Home = () => {
+const Home = ({navigation}) => {
     const { state, onAction } = useContext(UserContext);
-    const [visible, setVisible] = useState(false)
-    const {socket} = useContext(SocketContext)
+    const [visible, setVisible] = useState(false);
+    const { socket } = useContext(SocketContext);
 
-    const handelModel= () => setVisible(!visible)
-    const handleProfile = () =>{
-        handelModel()
-    }
-    const handleLogOut = async () =>{
-        handelModel()
-        onAction.signOut()
-        socket.disconnect()
-        await AsyncStorage.removeItem("Token")
-    }
+    const handleSetRestaurant = () => {
+        navigation.navigate("SetRestaurant")
+    };
+    const handelModel = () => setVisible(!visible);
+    const handleProfile = () => {
+        handelModel();
+    };
+    const handleLogOut = async () => {
+        handelModel();
+        onAction.signOut();
+        socket.disconnect();
+        await AsyncStorage.removeItem("M_Token");
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -40,7 +43,7 @@ const Home = () => {
                             flexDirection: "row",
                         }}
                     >
-                        <View style={{ flex: 2 ,}}>
+                        <View style={{ flex: 2 }}>
                             <Text
                                 style={[
                                     styles.textHeader,
@@ -58,7 +61,7 @@ const Home = () => {
                             style={{
                                 flex: 1,
                                 justifyContent: "center",
-                                alignItems:"flex-end",
+                                alignItems: "flex-end",
                             }}
                         >
                             <Image
@@ -71,24 +74,19 @@ const Home = () => {
                         <Large
                             name={"ตั้งร้านค้า"}
                             image={require("../assets/icons/restaurant.png")}
+                            onPress={handleSetRestaurant}
                         />
                         <Large
                             name={"เลือกเป็นสมาชิกร้าน"}
                             image={require("../assets/icons/waiter.png")}
+                            // onPress={}
                         />
                     </View>
                 </View>
             ) : (
                 <View></View>
-            )}{
-                visible ? (
-                    <Logout onPress={handleLogOut}/>
-                ) : (
-                    <View>
-
-                    </View>
-                )
-            }
+            )}
+            {visible ? <Logout onPress={handleLogOut} /> : <View></View>}
         </SafeAreaView>
     );
 };
@@ -107,7 +105,7 @@ const styles = StyleSheet.create({
     profile: {
         width: 80,
         height: 80,
-        overlayColor: '#F5F5F5',
+        overlayColor: "#F5F5F5",
         borderRadius: 40,
         borderWidth: 2,
         borderColor: "gray",

@@ -23,7 +23,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { io } from "socket.io-client";
 
 WebBrowser.maybeCompleteAuthSession();
-const LoginScreen = () => {
+const Login= () => {
     const image = require("../assets/images/backgrounds/Login.png");
     const [accessToken, setAccessToken] = useState();
     const { onAction } = useContext(UserContext);
@@ -33,12 +33,11 @@ const LoginScreen = () => {
         iosClientId: IOS_CLIENT_ID,
         expoClientId: EXPO_CLIENT_ID,
     });
-
     // Check Token if it exists or not
     useEffect(() => {
         const checkToken = async () => {
             try {
-                const token = await AsyncStorage.getItem("Token"); // get token from local storage
+                const token = await AsyncStorage.getItem("M_Token"); // get token from local storage
                 // check if there is token
                 if (token) {
                     fetchUserInfo(token);
@@ -78,12 +77,12 @@ const LoginScreen = () => {
     //send Google user's data to Backend server
     const fetchLogin = (userData) => {
         axios
-            .post(`http://${IP_ADDRESS}/user/login`, userData)
+            .post(`http://${IP_ADDRESS}/merchant/login`, userData)
             .then(async (res) => {
                 // console.log("Fetch Login: ", res.data.message);
                 // console.log("Token: ", res.data.token);
                 try {
-                    await AsyncStorage.setItem("Token", res.data.token);
+                    await AsyncStorage.setItem("M_Token", res.data.token);
                 } catch (e) {
                     console.log("AsyncStorage Error: ", e);
                 }
@@ -100,7 +99,7 @@ const LoginScreen = () => {
     //get user information by token
     const fetchUserInfo = (token) => {
         axios
-            .get(`http://${IP_ADDRESS}/user/info`, {
+            .get(`http://${IP_ADDRESS}/merchant/info`, {
                 headers: {
                     Authorization: token,
                 },
@@ -124,14 +123,13 @@ const LoginScreen = () => {
         });
         //deal with connect event
         newSocket.on("connect", () => {
-            console.log("🌞: Socket Connect!", newSocket.id);
+            console.log(`   ▶ Socket Connect [${newSocket.id}]`);
             setSocket(newSocket);
         });
         // disconnect event
         newSocket.on("disconnect", () => {
+            console.log("   ▶ Socket Disconnect!");
             setSocket(null);
-            // setTimeout(setupSocket, 3000)
-            console.log("🌚: Socket Disconnect!");
         });
     };
     return (
@@ -156,7 +154,7 @@ const LoginScreen = () => {
     );
 };
 
-export default LoginScreen;
+export default Login;
 
 const styles = StyleSheet.create({
     container: {
