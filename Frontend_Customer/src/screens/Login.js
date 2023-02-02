@@ -38,7 +38,7 @@ const Login = () => {
     useEffect(() => {
         const checkToken = async () => {
             try {
-                const token = await AsyncStorage.getItem("Token"); // get token from local storage
+                const token = await AsyncStorage.getItem("C_Token"); // get token from local storage
                 // check if there is token
                 if (token) {
                     fetchUserInfo(token);
@@ -78,12 +78,12 @@ const Login = () => {
     //send Google user's data to Backend server
     const fetchLogin = (userData) => {
         axios
-            .post(`http://${IP_ADDRESS}/user/login`, userData)
+            .post(`http://${IP_ADDRESS}/customer/login`, userData)
             .then(async (res) => {
                 // console.log("Fetch Login: ", res.data.message);
                 // console.log("Token: ", res.data.token);
                 try {
-                    await AsyncStorage.setItem("Token", res.data.token);
+                    await AsyncStorage.setItem("C_Token", res.data.token);
                 } catch (e) {
                     console.log("AsyncStorage Error: ", e);
                 }
@@ -97,10 +97,10 @@ const Login = () => {
                 console.log("Fetch Login: ", err.response.data);
             });
     };
-    //get user information by token
+    //get customer information by token
     const fetchUserInfo = (token) => {
         axios
-            .get(`http://${IP_ADDRESS}/user/info`, {
+            .get(`http://${IP_ADDRESS}/customer/info`, {
                 headers: {
                     Authorization: token,
                 },

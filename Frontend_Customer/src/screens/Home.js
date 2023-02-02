@@ -30,18 +30,18 @@ const Home = () => {
         handelModel()
         onAction.signOut()
         socket.disconnect()
-        await AsyncStorage.removeItem("Token")
+        await AsyncStorage.removeItem("C_Token")
     }
     // hamburger.png
     return (
         <SafeAreaView style={styles.container}>
             {state.userData ? (
                 <View>
-                    <BtnToFeature
+                    {/* <BtnToFeature
                         name="สั่งอาหาร"
                         imgSrc= {require("../assets/icons/hamburger.png")}
                     />
-                    <AddressBox/>
+                    <AddressBox/> */}
                     <View
                         style={{
                             margin: 20,
