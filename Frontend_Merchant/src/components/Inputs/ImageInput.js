@@ -10,7 +10,7 @@ const ImageInput = ({ lable, onPress }) => {
                 height: 210,
                 width: 280,
                 borderRadius: 20,
-                borderWidth: 2,
+                borderWidth: 1,
                 borderColor: "#C9C5C4",
                 justifyContent: "center",
                 alignItems: "center",

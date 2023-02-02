@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import { useEffect } from "react";
 import ImageInput from "../components/Inputs/ImageInput";
 import CustomTextInput from "../components/Inputs/CustomTextInput";
+import SelectMap from "../components/buttons/SelectMap";
 const SetRestaurant = ({ navigation }) => {
 
     useEffect(() => {
@@ -10,6 +11,9 @@ const SetRestaurant = ({ navigation }) => {
         });
     }, []);
     const handleImageInput = () => {
+        console.log("Press");
+    };
+    const handleSelectMap= () => {
         console.log("Press");
     };
     return (
@@ -22,6 +26,7 @@ const SetRestaurant = ({ navigation }) => {
             </View>
             <CustomTextInput placeholder={"ชื่อร้านอาหาร"} />
             <CustomTextInput placeholder={"เบอร์โทรศัพท์ร้าน/เจ้าของ"} />
+            <SelectMap onPress={handleSelectMap}/>
         </SafeAreaView>
     );
 };

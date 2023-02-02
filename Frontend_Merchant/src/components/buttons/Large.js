@@ -44,6 +44,7 @@ const Large = ({ name, image, onPress}) => {
                     style={{
                         fontFamily: "Kanit-Bold",
                         fontSize: 38,
+                        color: "#1A0700",
                     }}
                 >
                     {name}
