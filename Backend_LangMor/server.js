@@ -16,7 +16,6 @@ mongoose.connection.once("open", () => {
 });
 
 //Setup Models
-require("./models/User");
 require("./models/Customer");
 require("./models/Merchant");
 
