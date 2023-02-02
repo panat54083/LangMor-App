@@ -12,11 +12,17 @@ function MyStack({}) {
     return (
         <Stack.Navigator>
             {state.userData ? (
-                <Stack.Screen
-                    name="Home"
-                    component={Home}
-                    options={{ headerShown: false }}
-                />
+                <>
+                    <Stack.Screen
+                        name="Home"
+                        component={Home}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="SetRestaurant"
+                        component={SetRestaurant}
+                    />
+                </>
             ) : (
                 <Stack.Screen
                     name="Login"
@@ -24,7 +30,6 @@ function MyStack({}) {
                     options={{ headerShown: false }}
                 />
             )}
-            <Stack.Screen name="SetRestaurant" component={SetRestaurant} />
         </Stack.Navigator>
     );
 }

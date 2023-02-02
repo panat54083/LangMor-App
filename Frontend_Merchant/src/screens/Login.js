@@ -23,7 +23,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { io } from "socket.io-client";
 
 WebBrowser.maybeCompleteAuthSession();
-const LoginScreen = () => {
+const Login= () => {
     const image = require("../assets/images/backgrounds/Login.png");
     const [accessToken, setAccessToken] = useState();
     const { onAction } = useContext(UserContext);
@@ -155,7 +155,7 @@ const LoginScreen = () => {
     );
 };
 
-export default LoginScreen;
+export default Login;
 
 const styles = StyleSheet.create({
     container: {

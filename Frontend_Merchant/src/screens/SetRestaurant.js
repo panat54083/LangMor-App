@@ -1,15 +1,24 @@
 import { StyleSheet, Text, View, SafeAreaView } from "react-native";
-import React from "react";
+import { useEffect } from "react";
 import ImageInput from "../components/Inputs/ImageInput";
-import Large from "../components/buttons/Large";
-const SetRestaurant = () => {
+
+const SetRestaurant = ({ navigation }) => {
+
+    useEffect(() => {
+        navigation.setOptions({
+            // headerShown: false,
+        });
+    }, []);
     const handleImageInput = () => {
-        console.log("Press")
-    }
+        console.log("Press");
+    };
     return (
         <SafeAreaView style={styles.container}>
-            <View style={{margin:20}}>
-                <ImageInput lable={"เพิ่มรูปหน้าร้าน"} onPress={handleImageInput}/>
+            <View style={{ margin: 20 }}>
+                <ImageInput
+                    lable={"เพิ่มรูปหน้าร้าน"}
+                    onPress={handleImageInput}
+                />
             </View>
         </SafeAreaView>
     );
@@ -18,10 +27,9 @@ const SetRestaurant = () => {
 export default SetRestaurant;
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         backgroundColor: "#F5F5F5",
-        flex:1,
-        alignItems: 'center',
-
-    }
+        flex: 1,
+        alignItems: "center",
+    },
 });

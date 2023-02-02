@@ -13,10 +13,8 @@ import UserContext from "../hooks/context/UserContext";
 import SocketContext from "../hooks/context/SocketContext";
 import Logout from "../components/buttons/Logout";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/core";
 
-const Home = () => {
-    const navigation = useNavigation()
+const Home = ({navigation}) => {
     const { state, onAction } = useContext(UserContext);
     const [visible, setVisible] = useState(false);
     const { socket } = useContext(SocketContext);
