@@ -124,14 +124,13 @@ const LoginScreen = () => {
         });
         //deal with connect event
         newSocket.on("connect", () => {
-            console.log("🌞: Socket Connect!", newSocket.id);
+            console.log(`   ▶ Socket Connect [${newSocket.id}]`);
             setSocket(newSocket);
         });
         // disconnect event
         newSocket.on("disconnect", () => {
+            console.log("   ▶ Socket Disconnect!");
             setSocket(null);
-            // setTimeout(setupSocket, 3000)
-            console.log("🌚: Socket Disconnect!");
         });
     };
     return (

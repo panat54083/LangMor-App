@@ -8,9 +8,10 @@ import {
 } from "react-native";
 import React from "react";
 
-const Large = ({ name, image }) => {
+const Large = ({ name, image, onPress}) => {
     return (
         <TouchableOpacity
+            onPress={onPress}
             style={{
                 backgroundColor: "white",
                 paddingLeft: 16,
