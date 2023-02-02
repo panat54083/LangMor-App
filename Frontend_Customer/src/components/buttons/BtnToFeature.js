@@ -3,11 +3,11 @@ import React from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const BtnToFeature = (props) => {
-    const { name, imgSrc} = props;
+    const { name, imgSrc, navigateToFeature} = props;
     
     
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={navigateToFeature}>
             <View style={styles.container}>
                 <View style={{ justifyContent: "center" }}>
                     <Text style={styles.text}>{name}</Text>

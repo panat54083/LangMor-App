@@ -53,11 +53,28 @@ const Home = ({ navigation }) => {
                         <AddressBox />
                         <Fav />
                     </View>
-                    {/* <Text>Hello {user.email}</Text> */}
                     <View style={{ alignItems: "center" }}>
-                        <BtnToFeature name="สั่งอาหาร" imgSrc={require("../assets/icons/hamburger.png")} />
-                        <BtnToFeature name="ของมือสอง" imgSrc={require("../assets/icons/second-hand.png")} />
-                        <BtnToFeature name="ของหาย" imgSrc={require("../assets/icons/lost-items.png")} />
+                        <BtnToFeature
+                            name="สั่งอาหาร"
+                            imgSrc={require("../assets/icons/hamburger.png")}
+                            navigateToFeature={() => {
+                                navigation.navigate("MarketList");
+                            }}
+                        />
+                        <BtnToFeature
+                            name="ของมือสอง"
+                            imgSrc={require("../assets/icons/second-hand.png")}
+                            navigateToFeature={() => {
+                                navigation.navigate("LostItemList");
+                            }}
+                        />
+                        <BtnToFeature
+                            name="ของหาย"
+                            imgSrc={require("../assets/icons/lost-items.png")}
+                            navigateToFeature={() => {
+                                navigation.navigate("SecondHandList");
+                            }}
+                        />
                     </View>
                 </View>
             ) : null}
