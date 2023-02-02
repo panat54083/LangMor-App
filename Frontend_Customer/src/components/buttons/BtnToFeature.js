@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFFFFF",
     },
     text: {
+        fontFamily:"Kanit-Bold",
         fontSize: 38,
-        fontWeight: "bold",
     },
 });

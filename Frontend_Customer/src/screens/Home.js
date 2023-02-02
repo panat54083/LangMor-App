@@ -8,7 +8,6 @@ import {
     Pressable,
 } from "react-native";
 import { useContext, useEffect, useState } from "react";
-import Large from "../components/buttons/Large";
 import UserContext from "../hooks/context/UserContext";
 import SocketContext from "../hooks/context/SocketContext";
 import Logout from "../components/buttons/Logout";
@@ -16,108 +15,73 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Fav from "../components/buttons/Fav";
 import AddressBox from "../components/buttons/AddressBox";
 import BtnToFeature from "../components/buttons/BtnToFeature";
+import HomePageHeader from "../components/HomePageHeader";
 
-const Home = () => {
+const Home = ({ navigation }) => {
     const { state, onAction } = useContext(UserContext);
-    const [visible, setVisible] = useState(false)
-    const {socket} = useContext(SocketContext)
+    const [visible, setVisible] = useState(false);
+    const { socket } = useContext(SocketContext);
+    useEffect(() => {
+        navigation.setOptions({
+            title: `สวัสดีคุณ ${
+                state.isSignin ? state.userData.name : "Loading"
+            }`,
+            headerRight: () => (
+                <Pressable onPress={handleProfile}>
+                    <HomePageHeader />
+                </Pressable>
+            ),
+            headerStyle: { backgroundColor: "#f5f5f5" },
+        });
+    }, [visible]);
+    const handelModel = () => setVisible(!visible);
+    const handleProfile = () => {
+        handelModel();
+    };
+    const handleLogOut = async () => {
+        handelModel();
+        onAction.signOut();
+        socket.disconnect();
+        await AsyncStorage.removeItem("C_Token");
+    };
 
-    const handelModel= () => setVisible(!visible)
-    const handleProfile = () =>{
-        handelModel()
-    }
-    const handleLogOut = async () =>{
-        handelModel()
-        onAction.signOut()
-        socket.disconnect()
-        await AsyncStorage.removeItem("C_Token")
-    }
-    // hamburger.png
     return (
-        <SafeAreaView style={styles.container}>
-            {state.userData ? (
+        <View style={styles.mainContainer}>
+            {state.isSignin ? (
                 <View>
-                    {/* <BtnToFeature
-                        name="สั่งอาหาร"
-                        imgSrc= {require("../assets/icons/hamburger.png")}
-                    />
-                    <AddressBox/> */}
-                    <View
-                        style={{
-                            margin: 20,
-                            flexDirection: "row",
-                        }}
-                    >
-                        <View style={{ flex: 2 ,}}>
-                            <Text
-                                style={[
-                                    styles.textHeader,
-                                    { color: "#FF4200" },
-                                ]}
-                            >
-                                สวัสดี
-                            </Text>
-                            <Text style={styles.textHeader}>
-                                คุณ {state.userData.given_name}
-                            </Text>
-                        </View>
-                        <Pressable
-                            onPress={handleProfile}
-                            style={{
-                                flex: 1,
-                                justifyContent: "center",
-                                alignItems:"flex-end",
-                            }}
-                        >
-                            <Image
-                                source={{ uri: state.userData.picture }}
-                                style={[styles.profile, {}]}
-                            />
-                        </Pressable>
+                    <View style={styles.itemheader}>
+                        <AddressBox />
+                        <Fav />
                     </View>
-                    <View style={{ margin: 20 }}>
-                        <Large
-                            name={"ตั้งร้านค้า"}
-                            image={require("../assets/icons/restaurant.png")}
-                        />
-                        <Large
-                            name={"เลือกเป็นสมาชิกร้าน"}
-                            image={require("../assets/icons/waiter.png")}
-                        />
+                    {/* <Text>Hello {user.email}</Text> */}
+                    <View style={{ alignItems: "center" }}>
+                        <BtnToFeature name="สั่งอาหาร" imgSrc={require("../assets/icons/hamburger.png")} />
+                        <BtnToFeature name="ของมือสอง" imgSrc={require("../assets/icons/second-hand.png")} />
+                        <BtnToFeature name="ของหาย" imgSrc={require("../assets/icons/lost-items.png")} />
                     </View>
                 </View>
-            ) : (
-                <View></View>
-            )}{
-                visible ? (
-                    <Logout onPress={handleLogOut}/>
-                ) : (
-                    <View>
-
-                    </View>
-                )
-            }
-        </SafeAreaView>
+            ) : null}
+            {visible ? <Logout onPress={handleLogOut} /> : null}
+        </View>
     );
 };
 
 export default Home;
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: "#F5F5F5",
+    btn: {
+        margin: 15,
+    },
+    mainContainer: {
         flex: 1,
+        backgroundColor: "#f5f5f5",
     },
-    textHeader: {
-        fontFamily: "Kanit-Bold",
-        fontSize: 38,
-    },
-    profile: {
-        width: 80,
-        height: 80,
-        overlayColor: '#F5F5F5',
-        borderRadius: 40,
-        borderWidth: 2,
-        borderColor: "gray",
+    itemheader: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        // backgroundColor:'blue',
+        paddingRight: 40,
+        marginTop: 14,
+        marginBottom: 24,
     },
 });
