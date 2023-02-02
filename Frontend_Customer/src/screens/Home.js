@@ -7,7 +7,7 @@ import {
     Button,
     Pressable,
 } from "react-native";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Large from "../components/buttons/Large";
 import UserContext from "../hooks/context/UserContext";
 import SocketContext from "../hooks/context/SocketContext";
@@ -15,6 +15,7 @@ import Logout from "../components/buttons/Logout";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Fav from "../components/buttons/Fav";
 import AddressBox from "../components/buttons/AddressBox";
+import BtnToFeature from "../components/buttons/BtnToFeature";
 
 const Home = () => {
     const { state, onAction } = useContext(UserContext);
@@ -31,11 +32,15 @@ const Home = () => {
         socket.disconnect()
         await AsyncStorage.removeItem("Token")
     }
-
+    // hamburger.png
     return (
         <SafeAreaView style={styles.container}>
             {state.userData ? (
                 <View>
+                    <BtnToFeature
+                        name="สั่งอาหาร"
+                        imgSrc= {require("../assets/icons/hamburger.png")}
+                    />
                     <AddressBox/>
                     <View
                         style={{
