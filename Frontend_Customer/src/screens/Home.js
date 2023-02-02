@@ -13,6 +13,7 @@ import UserContext from "../hooks/context/UserContext";
 import SocketContext from "../hooks/context/SocketContext";
 import Logout from "../components/buttons/Logout";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Fav from "../components/buttons/Fav";
 
 const Home = () => {
     const { state, onAction } = useContext(UserContext);
@@ -34,6 +35,7 @@ const Home = () => {
         <SafeAreaView style={styles.container}>
             {state.userData ? (
                 <View>
+                    <Fav/>
                     <View
                         style={{
                             margin: 20,
