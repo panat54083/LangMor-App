@@ -1,11 +1,19 @@
-import { StatusBar } from "expo-status-bar";
-import { useMemo, useReducer } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import UserContext from "./hooks/context/UserContext";
+import "react-native-gesture-handler";
+import { useEffect, useMemo, useReducer, useState } from "react";
+import UserContext from "./src/hooks/context/UserContext";
+import SocketContext from "./src/hooks/context/SocketContext";
 import { NavigationContainer } from "@react-navigation/native";
 import MyStack from "./src/config/routes";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
 
 export default function App() {
+    const [fontsLoaded] = useFonts({
+        "Kanit-Bold": require("./src/assets/fonts/Kanit-Bold.ttf"),
+        "Kanit-Medium": require("./src/assets/fonts/Kanit-Medium.ttf"),
+        "Kanit-SemiBold": require("./src/assets/fonts/Kanit-SemiBold.ttf"),
+    });
+    const [socket, setSocket] = useState(null);
     const reducer = (prevState, action) => {
         switch (action.type) {
             case "SIGN_IN":
@@ -38,20 +46,25 @@ export default function App() {
         }),
         []
     );
+    useEffect(() => {
+        async function prepare() {
+            await SplashScreen.preventAutoHideAsync();
+        }
+        prepare();
+    }, []);
+
+    if (!fontsLoaded) {
+        return undefined;
+    } else {
+        SplashScreen.hideAsync();
+    }
     return (
-        <UserContext.Provider value={{ onAction, state }}>
-            <NavigationContainer>
-                <MyStack />
-            </NavigationContainer>
-        </UserContext.Provider>
+        <SocketContext.Provider value={{ socket, setSocket }}>
+            <UserContext.Provider value={{ onAction, state }}>
+                <NavigationContainer>
+                    <MyStack />
+                </NavigationContainer>
+            </UserContext.Provider>
+        </SocketContext.Provider>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-});
