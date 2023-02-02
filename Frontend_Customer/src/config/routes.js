@@ -1,7 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import { useContext } from "react";
 import UserContext from "../hooks/context/UserContext";
-import GoogleLogin from "../screens/GoogleLogin";
+import Login from "../screens/Login";
 import Home from "../screens/Home";
 const Stack = createStackNavigator();
 
@@ -13,7 +13,7 @@ const MyStack = ({}) => {
             {state.userData ? (
                 <Stack.Screen name="Home" component={Home} />
             ) : (
-                <Stack.Screen name="GoogleLogin" component={GoogleLogin} />
+                <Stack.Screen name="Login" component={Login} />
             )}
         </Stack.Navigator>
     );
