@@ -10,7 +10,7 @@ const Searchbar = () => {
             <Ionicons name="search" size={20} style={styles.icon}/>
             <TextInput
                 style={styles.input}
-                placeholder="Search"
+                placeholder="Search..."
                 onChangeText={(text) => setText(text)}
                 value={text}
             />
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         padding: 15,
         margin: 10,
-        width:275,
+        width:'80%',
         height:55
     },
     icon: {
