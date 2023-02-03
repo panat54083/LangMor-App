@@ -7,6 +7,8 @@ const CustomTextInput = ({
     value,
     onChangeText,
     keyboardType = "default",
+    multiline = false,
+    numberOfLines= 1
 }) => {
     /*
     keyboardType:   default
@@ -24,6 +26,8 @@ const CustomTextInput = ({
                 style={styles.input}
                 keyboardType={keyboardType}
                 onChangeText={onChangeText}
+                multiline={multiline}
+                numberOfLines={numberOfLines}
             />
             {value ? (
                 <Feather name="edit" size={24} color="#C9C5C4" />
