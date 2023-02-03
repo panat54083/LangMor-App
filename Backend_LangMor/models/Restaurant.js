@@ -1,0 +1,33 @@
+const mongoose = require("mongoose");
+
+const restaurantSchema = new mongoose.Schema(
+    {
+        name: {
+            type: String,
+            require: true,
+        },
+        owner: {
+            type: mongoose.Schema.Types.ObjectId,
+            require: true,
+        },
+        worker: {
+            type: [],
+        },
+        picture: {
+            type: mongoose.Schema.Types.Mixed,
+            require: true,
+        },
+        address: {
+            type: String,
+        },
+        closed: {
+            type: Boolean,
+            default: true,
+        },
+    },
+    {
+        timestamps: true,
+    }
+);
+
+module.exports = mongoose.model("Restaurant", restaurantSchema);
