@@ -10,6 +10,7 @@ const SetRestaurant = ({ navigation }) => {
     const [restaurantImage, setRestaurantImage] = useState([]);
     const [restaurantName, setRestaurantName] = useState("");
     const [phone, setPhone] = useState("");
+    const [banner, setBanner] = useState([])
 
     useEffect(() => {
         navigation.setOptions({});
@@ -24,13 +25,14 @@ const SetRestaurant = ({ navigation }) => {
         console.log("Press Save");
         console.log(`Restaurant Name: ${restaurantName}`);
         console.log(`Phone: ${phone}`);
+        console.log(`Banner: ${banner}`)
     };
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.picture}>
                 <ImageInput
                     lable={"เพิ่มรูปหน้าร้าน"}
-                    onPress={handleImageInput}
+                    setImage={setBanner}
                 />
             </View>
             <View style={styles.detail}>
@@ -45,7 +47,6 @@ const SetRestaurant = ({ navigation }) => {
                     value={phone}
                     keyboardType="numeric"
                 />
-                <SelectMap onPress={handleSelectMap} />
             </View>
             <View style={styles.final}>
                 <AcceptButton label={"บันทึกข้อมูล"} onPress={handleSave} />
