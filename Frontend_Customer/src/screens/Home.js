@@ -21,19 +21,6 @@ const Home = ({ navigation }) => {
     const { state, onAction } = useContext(UserContext);
     const [visible, setVisible] = useState(false);
     const { socket } = useContext(SocketContext);
-    useEffect(() => {
-        navigation.setOptions({
-            title: `สวัสดีคุณ ${
-                state.isSignin ? state.userData.name : "Loading"
-            }`,
-            headerRight: () => (
-                <Pressable onPress={handleProfile}>
-                    <HomePageHeader />
-                </Pressable>
-            ),
-            headerStyle: { backgroundColor: "#f5f5f5" },
-        });
-    }, [visible]);
     const handelModel = () => setVisible(!visible);
     const handleProfile = () => {
         handelModel();

@@ -6,7 +6,8 @@ import Home from "../screens/Home";
 import MarketList from "../screens/MarketList";
 import LostItemList from "../screens/LostItemList";
 import SecondHandList from "../screens/SecondHandList";
-
+import TapStackRoutes from "./TapStackRoutes";
+import HomePageHeader from "../components/HomePageHeader";
 const Stack = createStackNavigator();
 
 const MyStack = ({}) => {
@@ -15,10 +16,25 @@ const MyStack = ({}) => {
         <Stack.Navigator>
             {state.userData ? (
                 <>
-                <Stack.Screen name="Home" component={Home} />
-                <Stack.Screen name="MarketList" component={MarketList} />
-                <Stack.Screen name="LostItemList" component={LostItemList} />
-                <Stack.Screen name="SecondHandList" component={SecondHandList} />
+                    <Stack.Screen
+                        name="TapStackRoutes"
+                        component={TapStackRoutes}
+                        options={{
+                            title: `สวัสดีคุณ ${
+                                state.isSignin ? state.userData.name : "Loading"
+                            }`,
+                            headerRight: () => <HomePageHeader />,
+                        }}
+                    />
+                    <Stack.Screen name="MarketList" component={MarketList} />
+                    <Stack.Screen
+                        name="LostItemList"
+                        component={LostItemList}
+                    />
+                    <Stack.Screen
+                        name="SecondHandList"
+                        component={SecondHandList}
+                    />
                 </>
             ) : (
                 <Stack.Screen name="Login" component={Login} />
