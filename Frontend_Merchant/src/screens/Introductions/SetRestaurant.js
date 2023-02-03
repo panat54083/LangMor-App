@@ -1,19 +1,18 @@
 import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import { useEffect, useState } from "react";
 // Components
-import ImageInput from "../components/Inputs/ImageInput";
-import CustomTextInput from "../components/Inputs/CustomTextInput";
-import SelectMap from "../components/buttons/SelectMap";
-import AcceptButton from "../components/buttons/AcceptButton";
+import ImageInput from "../../components/Inputs/ImageInput";
+import CustomTextInput from "../../components/Inputs/CustomTextInput";
+import SelectMap from "../../components/buttons/SelectMap";
+import AcceptButton from "../../components/buttons/AcceptButton";
 
 const SetRestaurant = ({ navigation }) => {
-    const [restaurantImage, setRestaurantImage] = useState([])
+    const [restaurantImage, setRestaurantImage] = useState([]);
     const [restaurantName, setRestaurantName] = useState("");
     const [phone, setPhone] = useState("");
 
     useEffect(() => {
-        navigation.setOptions({
-        });
+        navigation.setOptions({});
     }, []);
     const handleImageInput = () => {
         console.log("Press Image");
@@ -62,12 +61,14 @@ const styles = StyleSheet.create({
         backgroundColor: "#F5F5F5",
         alignItems: "center",
         flexDirection: "column",
+        flex:1,
     },
     picture: {
         margin: 20,
     },
     detail: {},
     final: {
-        marginTop: "20%",
+        position: "absolute",
+        bottom: 24,
     },
 });
