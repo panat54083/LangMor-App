@@ -7,19 +7,23 @@ import {
     ScrollView,
     Pressable,
 } from "react-native";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import axios from "axios";
 // Components
 import ImageInput from "../../components/Inputs/ImageInput";
 import CustomTextInput from "../../components/Inputs/CustomTextInput";
 import AcceptButton from "../../components/buttons/AcceptButton";
 import BackScreen from "../../components/buttons/BackScreen";
+// Config
+import { IP_ADDRESS } from "@env";
+import UserContext from "../../hooks/context/UserContext";
 
 const SetRestaurant = ({ navigation }) => {
     const [restaurantName, setRestaurantName] = useState("");
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState("");
     const [banner, setBanner] = useState(null);
-
+    const { state } = useContext(UserContext);
     useEffect(() => {
         navigation.setOptions({
             title: "ตั้งร้านค้า",
@@ -32,17 +36,29 @@ const SetRestaurant = ({ navigation }) => {
                 fontFamily: "Kanit-Bold",
                 fontSize: 24,
             },
-            headerLeft: () => (
-                <BackScreen navigation={navigation}/>
-            ),
+            headerLeft: () => <BackScreen navigation={navigation} />,
         });
     }, []);
 
     const handleSave = () => {
         console.log(`Restaurant Name: ${restaurantName}`);
+        console.log(`Owner_ID: ${state.userData._id}`);
         console.log(`Phone: ${phone}`);
         console.log(`Address: ${address}`);
         console.log(`Banner: ${banner}`);
+        fetchRegister()
+    };
+
+    const fetchRegister = () => {
+        axios.post(`http://${IP_ADDRESS}/restaurant/register`, {
+            name: restaurantName,
+            owner: state.userData._id,
+            phone: phone,
+            picture: banner,
+            address: address,
+        }).then((res) => {
+            console.log(res.data.message)
+        })
     };
     return (
         <KeyboardAvoidingView>
