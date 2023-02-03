@@ -3,35 +3,28 @@ import { useEffect, useState } from "react";
 // Components
 import ImageInput from "../../components/Inputs/ImageInput";
 import CustomTextInput from "../../components/Inputs/CustomTextInput";
-import SelectMap from "../../components/buttons/SelectMap";
 import AcceptButton from "../../components/buttons/AcceptButton";
 
 const SetRestaurant = ({ navigation }) => {
-    const [restaurantImage, setRestaurantImage] = useState([]);
     const [restaurantName, setRestaurantName] = useState("");
     const [phone, setPhone] = useState("");
-    const [banner, setBanner] = useState([])
+    const [banner, setBanner] = useState(null);
 
     useEffect(() => {
         navigation.setOptions({});
     }, []);
-    const handleImageInput = () => {
-        console.log("Press Image");
-    };
-    const handleSelectMap = () => {
-        console.log("Press Map");
-    };
+
     const handleSave = () => {
-        console.log("Press Save");
         console.log(`Restaurant Name: ${restaurantName}`);
         console.log(`Phone: ${phone}`);
-        console.log(`Banner: ${banner}`)
+        console.log(`Banner: ${banner}`);
     };
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.picture}>
                 <ImageInput
                     lable={"เพิ่มรูปหน้าร้าน"}
+                    image={banner}
                     setImage={setBanner}
                 />
             </View>
@@ -62,7 +55,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#F5F5F5",
         alignItems: "center",
         flexDirection: "column",
-        flex:1,
+        flex: 1,
     },
     picture: {
         margin: 20,

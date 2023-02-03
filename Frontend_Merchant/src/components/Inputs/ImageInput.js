@@ -4,12 +4,13 @@ import {
     Text,
     Pressable,
     TouchableOpacity,
+    Image,
 } from "react-native";
 import React, { useState } from "react";
-import { FontAwesome5, Feather, AntDesign } from "@expo/vector-icons";
+import { FontAwesome5, Feather, AntDesign, Entypo } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 
-const ImageInput = ({ lable, setImage }) => {
+const ImageInput = ({ lable, image, setImage }) => {
     const [visible, setVisible] = useState(false);
     const handleImageInput = () => {
         console.log("Select Options.");
@@ -48,29 +49,59 @@ const ImageInput = ({ lable, setImage }) => {
             quality: 0.5,
         });
 
-
         if (!result.canceled) {
             setImage(result.assets[0]);
         }
     };
 
     function handleSelectPicture() {
-        pickImage()
-        setVisible(!visible)
+        pickImage();
+        setVisible(!visible);
     }
     function handleOpenCamera() {
-        openCamera()
+        openCamera();
+        setVisible(!visible);
+    }
+    function handleClosedImage(){
+        setImage(null)
     }
 
     return (
         <View>
             {!visible ? (
-                <Pressable onPress={handleImageInput} style={styles.container}>
-                    <View style={{ marginBottom: 20 }}>
-                        <FontAwesome5 name="plus" size={80} color="#FF7A00" />
-                    </View>
-                    <Text style={styles.text}>{lable}</Text>
-                </Pressable>
+                <View>
+                    {image == null ? (
+                        <Pressable
+                            onPress={handleImageInput}
+                            style={styles.container}
+                        >
+                            <View style={{ marginBottom: 20 }}>
+                                <FontAwesome5
+                                    name="plus"
+                                    size={80}
+                                    color="#FF7A00"
+                                />
+                            </View>
+                            <Text style={styles.text}>{lable}</Text>
+                        </Pressable>
+                    ) : (
+                        <View>
+                            <Image
+                                source={{
+                                    uri: `data:${image.type}/jpg;base64,${image.base64}`,
+                                }}
+                                style={styles.container}
+                            />
+                            <Pressable onPress = {handleClosedImage} style={styles.cross}>
+                                <Entypo
+                                    name="circle-with-cross"
+                                    size={24}
+                                    color="#FF0101"
+                                />
+                            </Pressable>
+                        </View>
+                    )}
+                </View>
             ) : (
                 <View style={styles.container}>
                     <TouchableOpacity
@@ -109,6 +140,13 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
+    },
+    cross: {
+        position: "absolute",
+        backgroundColor: "white",
+        borderRadius: 40,
+        alignSelf: "flex-end",
+        margin: -8,
     },
     options: {
         // backgroundColor: "red",
