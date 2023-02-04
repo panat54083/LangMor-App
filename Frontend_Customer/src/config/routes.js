@@ -28,7 +28,7 @@ const MyStack = ({}) => {
                         }}
                     />
                     <Stack.Screen name="MarketList" component={MarketList} />
-                    <Stack.Screen name="FoodList" component={FoodList} />
+                    <Stack.Screen name="FoodList" component={FoodList} options={{headerShown:false}}/>
                     <Stack.Screen
                         name="LostItemList"
                         component={LostItemList}

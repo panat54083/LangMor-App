@@ -1,14 +1,17 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import Back from "../../components/buttons/Back";
+const FoodList = ({ route, navigation }) => {
+    const { restaurant } = route.params;
 
-const FoodList = () => {
-  return (
-    <View>
-      <Text>FoodList</Text>
-    </View>
-  )
-}
+    return (
+        <View>
+            <Back />
+            <Text>{restaurant.restaurantName}</Text>
+        </View>
+    );
+};
 
-export default FoodList
+export default FoodList;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
