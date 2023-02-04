@@ -1,3 +1,7 @@
+// Packages
+import { useContext, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+// Components
 import {
     StyleSheet,
     Text,
@@ -7,12 +11,11 @@ import {
     Button,
     Pressable,
 } from "react-native";
-import { useContext, useState } from "react";
 import Large from "../components/buttons/Large";
+import Logout from "../components/buttons/Logout";
+// Configs
 import UserContext from "../hooks/context/UserContext";
 import SocketContext from "../hooks/context/SocketContext";
-import Logout from "../components/buttons/Logout";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Home = ({navigation}) => {
     const { state, onAction } = useContext(UserContext);

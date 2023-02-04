@@ -19,7 +19,7 @@ const Congrat = () => {
                 },
             })
             .then((res) => {
-                onAction.updateData({
+                onAction.updateUserData({
                     user: res.data.userData,
                 });
             })

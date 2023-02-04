@@ -1,3 +1,7 @@
+// Packages
+import { useEffect, useState, useContext } from "react";
+import axios from "axios";
+// Components
 import {
     StyleSheet,
     Text,
@@ -7,9 +11,6 @@ import {
     ScrollView,
     Pressable,
 } from "react-native";
-import { useEffect, useState, useContext } from "react";
-import axios from "axios";
-// Components
 import ImageInput from "../../components/Inputs/ImageInput";
 import CustomTextInput from "../../components/Inputs/CustomTextInput";
 import AcceptButton from "../../components/buttons/AcceptButton";

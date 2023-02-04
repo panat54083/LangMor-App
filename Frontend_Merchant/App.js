@@ -19,6 +19,7 @@ export default function App() {
             case "SIGN_IN":
                 console.log(`🟢: ${action.user.given_name} Sign In`);
                 return {
+                    ...prevState,
                     isSignin: true,
                     userData: action.user,
                     token: action.token,
@@ -27,25 +28,30 @@ export default function App() {
             case "SIGN_OUT":
                 console.log(`🔴: ${prevState.userData.given_name} Sign Out`);
                 return {
-                    // ...prevState,
                     isSignin: false,
                     userData: null,
+                    restaurantData: null,
                     token: null,
                 };
-            case "UPDATE_DATA":
+            case "UPDATE_USER_DATA":
                 console.log(`🟡: Data's ${action.user.given_name} is Updated`);
                 return {
-                    // ...prevState,
-                    // userData: action.user,
-                    isSignin: true,
+                    ...prevState,
                     userData: action.user,
-                    token: action.token,
+                };
+
+            case "UPDATE_RESTAURANT_DATA":
+                console.log(`🟠: Data's ${action.restaurant.name} is Updated`);
+                return {
+                    ...prevState,
+                    restaurantData: action.restaurant,
                 };
         }
     };
     const [state, dispatch] = useReducer(reducer, {
         isSignin: false,
         userData: null,
+        restaurantData: null,
         token: null,
     });
 
@@ -57,10 +63,16 @@ export default function App() {
             signOut: () => {
                 return dispatch({ type: "SIGN_OUT" });
             },
-            updateData: ({ user }) => {
+            updateUserData: ({ user }) => {
                 return dispatch({
-                    type: "UPDATE_DATA",
+                    type: "UPDATE_USER_DATA",
                     user: user,
+                });
+            },
+            updateRestaurantData: ({ restaurant }) => {
+                return dispatch({
+                    type: "UPDATE_RESTAURANT_DATA",
+                    restaurant: restaurant,
                 });
             },
         }),

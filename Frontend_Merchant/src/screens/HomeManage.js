@@ -1,10 +1,15 @@
-import { StyleSheet, Text, View } from "react-native";
+// Packages
 import React, { useContext, useEffect } from "react";
 import axios from "axios";
-import { IP_ADDRESS } from "@env";
+// Components
+import { StyleSheet, Text, View } from "react-native";
 import UserContext from "../hooks/context/UserContext";
+// Configs
+import { IP_ADDRESS } from "@env";
+
 const HomeManage = () => {
-    const { state } = useContext(UserContext);
+    const { state, onAction } = useContext(UserContext);
+
     useEffect(() => {
         fetchRestaurantInfo();
     }, []);
@@ -15,6 +20,9 @@ const HomeManage = () => {
             )
             .then((res) => {
                 console.log(res.data.restaurantData)
+                onAction.updateRestaurantData({
+                    restaurant: res.data.restaurantData,
+                })
             })
             .catch((err) => {
                 console.log(err);

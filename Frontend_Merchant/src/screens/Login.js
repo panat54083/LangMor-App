@@ -1,3 +1,11 @@
+// Packages
+import * as Google from "expo-auth-session/providers/google";
+import * as WebBrowser from "expo-web-browser";
+import { useContext, useState, useEffect } from "react";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { io } from "socket.io-client";
+// Components
 import {
     View,
     Text,
@@ -6,21 +14,16 @@ import {
     ImageBackground,
     StyleSheet,
 } from "react-native";
-import { useContext, useState, useEffect } from "react";
 import GoogleLogin from "../components/buttons/GoogleLogin";
-import * as Google from "expo-auth-session/providers/google";
+// Configs
 import {
     ANDROID_CLIENT_ID,
     IOS_CLIENT_ID,
     EXPO_CLIENT_ID,
     IP_ADDRESS,
 } from "@env";
-import * as WebBrowser from "expo-web-browser";
 import UserContext from "../hooks/context/UserContext";
 import SocketContext from "../hooks/context/SocketContext";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { io } from "socket.io-client";
 
 WebBrowser.maybeCompleteAuthSession();
 
