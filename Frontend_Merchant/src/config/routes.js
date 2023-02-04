@@ -16,15 +16,21 @@ function MyStack({}) {
         <Stack.Navigator>
             {state.userData ? (
                 <>
-                    <Stack.Screen
-                        name="Home"
-                        component={Home}
-                        options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                        name="SetRestaurant"
-                        component={SetRestaurant}
-                    />
+                    {state.userData.have_restaurant ? (
+                        <></>
+                    ) : (
+                        <>
+                            <Stack.Screen
+                                name="Home"
+                                component={Home}
+                                options={{ headerShown: false }}
+                            />
+                            <Stack.Screen
+                                name="SetRestaurant"
+                                component={SetRestaurant}
+                            />
+                        </>
+                    )}
                 </>
             ) : (
                 <Stack.Screen

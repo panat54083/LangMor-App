@@ -21,6 +21,10 @@ const merchantSchema = new mongoose.Schema(
         picture: {
             type: String,
         },
+        have_restaurant: {
+            type: Boolean,
+            default: false,
+        },
         verified_email: {
             type: Boolean,
             required: "Family name is required!",

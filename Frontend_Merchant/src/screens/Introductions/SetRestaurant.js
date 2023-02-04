@@ -44,11 +44,11 @@ const SetRestaurant = ({ navigation }) => {
     }, []);
 
     const handleSave = () => {
-        console.log(`Restaurant Name: ${restaurantName}`);
-        console.log(`Owner_ID: ${state.userData._id}`);
-        console.log(`Phone: ${phone}`);
-        console.log(`Address: ${address}`);
-        console.log(`Banner: ${banner}`);
+        // console.log(`Restaurant Name: ${restaurantName}`);
+        // console.log(`Owner_ID: ${state.userData._id}`);
+        // console.log(`Phone: ${phone}`);
+        // console.log(`Address: ${address}`);
+        // console.log(`Banner: ${banner}`);
         fetchRegister();
     };
 

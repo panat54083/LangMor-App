@@ -27,7 +27,7 @@ const restaurantSchema = new mongoose.Schema(
         },
         closed: {
             type: Boolean,
-            default: false,
+            default: true,
         },
     },
     {
