@@ -1,10 +1,13 @@
+// Packages
 import { createStackNavigator } from "@react-navigation/stack";
-import Login from "../screens/Login";
-import Home from "../screens/Home";
-import SetRestaurant from "../screens/SetRestaurant";
-
+// Hooks
 import { useContext } from "react";
 import UserContext from "../hooks/context/UserContext";
+// Screens
+import Login from "../screens/Login";
+import Home from "../screens/Home";
+import SetRestaurant from "../screens/Introductions/SetRestaurant";
+// Configs
 const Stack = createStackNavigator();
 
 function MyStack({}) {
