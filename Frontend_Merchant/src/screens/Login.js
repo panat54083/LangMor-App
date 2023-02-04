@@ -23,6 +23,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { io } from "socket.io-client";
 
 WebBrowser.maybeCompleteAuthSession();
+
 const Login = () => {
     const image = require("../assets/images/backgrounds/Login.png");
     const [accessToken, setAccessToken] = useState();
@@ -55,7 +56,6 @@ const Login = () => {
     //setup Socket if There is userData
     useEffect(() => {
         if (state.userData) {
-            // console.log(state.userData)
             setupSocket(state.token);
         }
     }, [state.userData]);

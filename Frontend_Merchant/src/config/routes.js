@@ -8,7 +8,7 @@ import Login from "../screens/Login";
 import Home from "../screens/Home";
 import SetRestaurant from "../screens/Introductions/SetRestaurant";
 import HomeManage from "../screens/HomeManage";
-
+import Congrat from "../screens/Introductions/Congrat";
 // Configs
 const Stack = createStackNavigator();
 
@@ -36,6 +36,11 @@ function MyStack({}) {
                             <Stack.Screen
                                 name="SetRestaurant"
                                 component={SetRestaurant}
+                            />
+                            <Stack.Screen
+                                name="Congrat"
+                                component={Congrat}
+                                options={{ headerShown: false }}
                             />
                         </>
                     )}

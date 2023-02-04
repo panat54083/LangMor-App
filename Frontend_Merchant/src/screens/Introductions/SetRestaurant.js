@@ -49,7 +49,8 @@ const SetRestaurant = ({ navigation }) => {
         // console.log(`Phone: ${phone}`);
         // console.log(`Address: ${address}`);
         // console.log(`Banner: ${banner}`);
-        fetchRegister();
+        // fetchRegister();
+        navigation.navigate("Congrat")
     };
 
     const fetchRegister = () => {
@@ -63,6 +64,9 @@ const SetRestaurant = ({ navigation }) => {
             })
             .then((res) => {
                 console.log(res.data.message);
+                // state.userData.have_restaurant = true
+                // navigation.navigate("HomeManage")
+
             })
             .catch((err) => {
                 console.log("Register Error: ", err);

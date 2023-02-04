@@ -19,7 +19,7 @@ exports.register = async (req, res) => {
 
         const merchant = await Merchant.findById(restaurant.owner)
         merchant.have_restaurant = true
-        await merchant.save();
+        // await merchant.save();
 
         res.json({
             message: "Restaurant registerd successfully. ✅",
