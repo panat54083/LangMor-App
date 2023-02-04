@@ -18,7 +18,7 @@ exports.register = async (req, res) => {
         await restaurant.save();
 
         const merchant = await Merchant.findById(restaurant.owner)
-        merchant.have_restaurant = true
+        merchant.restaurant = restaurant._id 
         await merchant.save();
 
         res.json({
@@ -30,3 +30,15 @@ exports.register = async (req, res) => {
         });
     }
 };
+
+exports.restaurantInfo = async (req, res) => {
+        const {restaurant} = req.query
+        // console.log(restaurant)
+        const restaurantData = await Restaurant.findById(restaurant) 
+        console.log(restaurantData)
+        res.json({
+            message: "Get Restaurant Information!",
+            restaurantData: restaurantData,
+        })
+}
+

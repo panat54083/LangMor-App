@@ -21,9 +21,9 @@ const merchantSchema = new mongoose.Schema(
         picture: {
             type: String,
         },
-        have_restaurant: {
-            type: Boolean,
-            default: false,
+        restaurant: {
+            type:   mongoose.Schema.Types.ObjectId, 
+            default: null,
         },
         verified_email: {
             type: Boolean,

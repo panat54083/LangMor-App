@@ -23,7 +23,7 @@ function MyStack({}) {
         >
             {state.userData ? (
                 <>
-                    {state.userData.have_restaurant ? (
+                    {state.userData.restaurant ? (
                         <>
                             <Stack.Screen
                                 name="HomeManage"
