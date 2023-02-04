@@ -2,12 +2,10 @@ import { StyleSheet, Pressable} from "react-native";
 import React from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const BackScreen = ({navigation}) => {
+const BackScreen = ({onPress}) => {
     return (
         <Pressable
-            onPress={() => {
-                navigation.goBack();
-            }}
+            onPress={onPress}
             style={{
                 // backgroundColor: "red",
                 paddingVertical: 10,

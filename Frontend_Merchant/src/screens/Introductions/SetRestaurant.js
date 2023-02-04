@@ -36,29 +36,33 @@ const SetRestaurant = ({ navigation }) => {
                 fontFamily: "Kanit-Bold",
                 fontSize: 24,
             },
-            headerLeft: () => <BackScreen navigation={navigation} />,
+            headerLeft: () => <BackScreen onPress={navigation.goBack()} />,
         });
     }, []);
-
     const handleSave = () => {
         console.log(`Restaurant Name: ${restaurantName}`);
         console.log(`Owner_ID: ${state.userData._id}`);
         console.log(`Phone: ${phone}`);
         console.log(`Address: ${address}`);
         console.log(`Banner: ${banner}`);
-        fetchRegister()
+        fetchRegister();
     };
 
     const fetchRegister = () => {
-        axios.post(`http://${IP_ADDRESS}/restaurant/register`, {
-            name: restaurantName,
-            owner: state.userData._id,
-            phone: phone,
-            picture: banner,
-            address: address,
-        }).then((res) => {
-            console.log(res.data.message)
-        })
+        axios
+            .post(`http://${IP_ADDRESS}/restaurant/register`, {
+                name: restaurantName,
+                owner: state.userData._id,
+                phone: phone,
+                picture: banner,
+                address: address,
+            })
+            .then((res) => {
+                console.log(res.data.message);
+            })
+            .catch((err) => {
+                console.log("Register Error: ", err);
+            });
     };
     return (
         <KeyboardAvoidingView>

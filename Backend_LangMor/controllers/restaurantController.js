@@ -6,6 +6,6 @@ exports.register = async (req, res) =>{
     console.log(restaurantData)
 
     res.json({
-        message: "Restaurant registerd successfully!!"
+        message: "Restaurant registerd successfully!! ✅"
     })
 }
