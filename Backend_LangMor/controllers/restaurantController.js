@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Restaurant = mongoose.model("Restaurant");
+const Merchant = mongoose.model("Merchant");
 
 exports.register = async (req, res) => {
     const restaurantData = req.body;
@@ -15,6 +16,11 @@ exports.register = async (req, res) => {
             address: restaurantData.address,
         });
         await restaurant.save();
+
+        const merchant = await Merchant.findById(restaurant.owner)
+        merchant.have_restaurant = true
+        await merchant.save();
+
         res.json({
             message: "Restaurant registerd successfully. ✅",
         });

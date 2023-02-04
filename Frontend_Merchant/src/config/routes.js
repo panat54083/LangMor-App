@@ -7,6 +7,8 @@ import UserContext from "../hooks/context/UserContext";
 import Login from "../screens/Login";
 import Home from "../screens/Home";
 import SetRestaurant from "../screens/Introductions/SetRestaurant";
+import HomeManage from "../screens/HomeManage";
+
 // Configs
 const Stack = createStackNavigator();
 
@@ -17,7 +19,13 @@ function MyStack({}) {
             {state.userData ? (
                 <>
                     {state.userData.have_restaurant ? (
-                        <></>
+                        <>
+                            <Stack.Screen
+                                name="HomeManage"
+                                component={HomeManage}
+                                options={{ headerShown: false }}
+                            />
+                        </>
                     ) : (
                         <>
                             <Stack.Screen

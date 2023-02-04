@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import React from "react";
 
-const Large = ({ name, image, onPress}) => {
+const Large = ({ name, image, onPress }) => {
     return (
         <TouchableOpacity
             onPress={onPress}
@@ -54,13 +54,10 @@ const Large = ({ name, image, onPress}) => {
                 style={{
                     flex: 1,
                     // backgroundColor: "blue",
-                    justifyContent:"flex-end"
+                    justifyContent: "flex-end",
                 }}
             >
-                <Image
-                    source={image}
-                    style={{ width: 100, height: 100,  }}
-                />
+                <Image source={image} style={{ width: 100, height: 100 }} />
             </View>
         </TouchableOpacity>
     );
