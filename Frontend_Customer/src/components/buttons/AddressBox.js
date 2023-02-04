@@ -4,7 +4,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 const AddressBox = () => {
     return (
-        <View style={{ width: 245, height: 45 }}>
+        <View style={{ width: "66%", height: 45 }}>
             <TouchableOpacity>
                 <View style={styles.container}>
                     <Ionicons name="location-sharp" size={24} color="#FF0101" />
@@ -20,7 +20,6 @@ export default AddressBox;
 
 const styles = StyleSheet.create({
     container: {
-        width: 245,
         height: 45,
         borderWidth: 1,
         borderRadius: 5,

@@ -10,7 +10,7 @@ import Searchbar from "../components/searchs/Searchbar";
 import Fav from "../components/buttons/Fav";
 import AddressBox from "../components/buttons/AddressBox";
 import CardMarket from "../components/cards/CardMarket";
-
+import CardRestaurantTag from "../components/cards/CardRestaurantTag";
 const MarketList = ({ navigation }) => {
     //ของจริงใช้ fetch ข้อมูลจาก backend
     useEffect(() => {
@@ -34,22 +34,25 @@ const MarketList = ({ navigation }) => {
             description: "ร้านป้านิดสุดอร่อย",
             tags: ["ตามสั่ง"],
             address: "address01",
+            rating: 4,
             owner: "testuser01@gmail.com",
         },
         {
             id: 2,
-            restaurantName: "ร้านป้านิด",
+            restaurantName: "ร้านป้าหน่อย",
             description: "ร้านป้านิดสุดอร่อย",
             tags: ["ตามสั่ง"],
             address: "address01",
+            rating: 4,
             owner: "testuser01@gmail.com",
         },
         {
             id: 3,
-            restaurantName: "ร้านป้านิด",
+            restaurantName: "ร้านป้าไหน",
             description: "ร้านป้านิดสุดอร่อย",
             tags: ["ตามสั่ง"],
             address: "address01",
+            rating: 4,
             owner: "testuser01@gmail.com",
         },
         {
@@ -58,6 +61,7 @@ const MarketList = ({ navigation }) => {
             description: "ร้านป้านิดสุดอร่อย",
             tags: ["ตามสั่ง"],
             address: "address01",
+            rating: 4,
             owner: "testuser01@gmail.com",
         },
         {
@@ -66,18 +70,27 @@ const MarketList = ({ navigation }) => {
             description: "ร้านป้านิดสุดอร่อย",
             tags: ["ตามสั่ง"],
             address: "address01",
+            rating: 4,
             owner: "testuser01@gmail.com",
         },
         {
             id: 6,
             restaurantName: "ร้านป้านิด",
             description: "ร้านป้านิดสุดอร่อย",
-            tags: ["ตามสั่ง"],
+            tags: ["ตามสั่ง", "ของหวาน"],
             address: "address01",
+            rating: 4,
             owner: "testuser01@gmail.com",
         },
     ];
-    let allTags = ["ทั้งหมด", "ก๋วยเตี๋ยว", "เกาเหลา", "ตามสั่ง", "ของหวาน"];
+    let allTags = [
+        { tag: "ของคาว", source: require("../assets/icons/fast-food.png") },
+        {
+            tag: "้เครื่องดื่ม",
+            source: require("../assets/icons/drink.png"),
+        },
+        { tag: "ของหวาน", source: require("../assets/icons/dessert.png") },
+    ];
 
     return (
         <View style={{ flex: 1 }}>
@@ -87,30 +100,35 @@ const MarketList = ({ navigation }) => {
             <View style={{ width: "100%", alignItems: "center" }}>
                 <Searchbar />
             </View>
+
             <View>
                 <Text style={styles.TagsText}>หมวดหมู่</Text>
-                <FlatList
-                    data={allTags}
-                    renderItem={({ item }) => (
-                        <TouchableOpacity style={{}} onPress={() => {}}>
-                            <View
-                                style={{
-                                    padding: 10,
-                                    borderColor: "darkblue",
-                                    borderWidth: 1,
-                                    margin: 5,
-                                    marginBottom: 10,
-                                    borderRadius: 20,
-                                }}
-                            >
-                                <Text>{item}</Text>
-                            </View>
-                        </TouchableOpacity>
-                    )}
-                    horizontal={true}
-                />
+                <View style={{ }}>
+                    <FlatList
+                        data={allTags}
+                        renderItem={({ item }) => (
+                            <TouchableOpacity style={{}} onPress={() => {}}>
+                                <CardRestaurantTag
+                                    tagName={item.tag}
+                                    imgSrc={item.source}
+                                />
+                            </TouchableOpacity>
+                        )}
+                        horizontal={true}
+                    />
+                </View>
             </View>
-            <CardMarket restaurant={exampleData[0]}/>
+            <View style={styles.tick}></View>
+            <View style={{ flex: 1 }}>
+                {exampleData ? (
+                    <FlatList
+                        data={exampleData}
+                        renderItem={({ item }) => (
+                            <CardMarket restaurant={item} />
+                        )}
+                    />
+                ) : null}
+            </View>
         </View>
     );
 };
@@ -138,5 +156,15 @@ const styles = StyleSheet.create({
         fontFamily: "Kanit-Bold",
         marginLeft: "7%",
         margin: 8,
+        marginBottom: 16,
     },
+    cardMarket: {
+        padding: 10,
+        borderColor: "darkblue",
+        borderWidth: 1,
+        margin: 5,
+        marginBottom: 10,
+        borderRadius: 20,
+    },
+    tick: { height: 4, backgroundColor: "#DFDFDF", marginBottom: 16 },
 });

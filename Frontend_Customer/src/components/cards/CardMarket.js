@@ -16,12 +16,12 @@ const CardMarket = (props) => {
                                 }}
                             />
                         </View>
-                        <View style={{ width: 175, height: 88 }}>
+                        <View style={{ width: "65%", height: 88 }}>
                             <Text style={styles.restName}>
-                                {restaurant.restaurantName}{" "}
+                                {restaurant.restaurantName}
                             </Text>
                             <View>
-                                <Text>เรทติ้ง x ดาว </Text>
+                                <Text>เรทติ้ง {restaurant.rating} ดาว </Text>
                                 <Text>ขาย {restaurant.tags.join()} </Text>
                             </View>
                         </View>
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         margin: 16,
     },
     container: {
-        width: 350,
+        width: "92%",
         height: 127,
         alignItems: "center",
         justifyContent: "flex-start",
