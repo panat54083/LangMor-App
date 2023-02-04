@@ -18,6 +18,7 @@ mongoose.connection.once("open", () => {
 //Setup Models
 require("./models/Customer");
 require("./models/Merchant");
+require("./models/Restaurant")
 
 //Setup Server
 const PORT = 8000;
