@@ -15,7 +15,12 @@ const Stack = createStackNavigator();
 function MyStack({}) {
     const { state } = useContext(UserContext);
     return (
-        <Stack.Navigator>
+        <Stack.Navigator
+            screenOptions={{
+                // headerStyle: { elevation: 0 },
+                cardStyle: { backgroundColor: "#F5F5F5" },
+            }}
+        >
             {state.userData ? (
                 <>
                     {state.userData.have_restaurant ? (
