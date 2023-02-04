@@ -1,7 +1,37 @@
+// Packages
+import React, {useState, useEffect, useContext} from "react";
+import axios from "axios";
+// Components
 import { StyleSheet, Text, View, Image } from "react-native";
-import React from "react";
 import AcceptButton from "../../components/buttons/AcceptButton";
+// Configs
+import UserContext from "../../hooks/context/UserContext";
+import {IP_ADDRESS} from "@env"
+
 const Congrat = () => {
+    const {state, onAction} = useContext(UserContext)
+        //get user information by token
+    const fetchUserInfo = (token) => {
+        axios
+            .get(`http://${IP_ADDRESS}/merchant/info`, {
+                headers: {
+                    Authorization: token,
+                },
+            })
+            .then((res) => {
+                onAction.signIn({
+                    user: res.data.userData,
+                    token: token,
+                });
+            })
+            .catch((err) => {
+                console.log("fetch UserInfo: ", err);
+            });
+    };
+    const handleSubmit = () => {
+        fetchUserInfo(state.token)
+        console.log("😃: Pressed!! ")
+    }
     return (
         <View style={styles.container}>
             <Image
@@ -18,7 +48,7 @@ const Congrat = () => {
             </Text>
             </View>
             <View style={styles.submit}>
-                <AcceptButton label={"ไปยังหน้าถัดไป"}/>
+                <AcceptButton label={"จัดการร้าน"} onPress={handleSubmit}/>
             </View>
         </View>
     );
@@ -48,6 +78,7 @@ const styles = StyleSheet.create({
     },
     submit:{
         justifyContent:"center",
+        
         
     }
 });
