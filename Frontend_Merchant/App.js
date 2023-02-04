@@ -32,6 +32,15 @@ export default function App() {
                     userData: null,
                     token: null,
                 };
+            case "UPDATE_DATA":
+                console.log(`🟡: Data's ${action.user.given_name} is Updated`);
+                return {
+                    // ...prevState,
+                    // userData: action.user,
+                    isSignin: true,
+                    userData: action.user,
+                    token: action.token,
+                };
         }
     };
     const [state, dispatch] = useReducer(reducer, {
@@ -47,6 +56,12 @@ export default function App() {
             },
             signOut: () => {
                 return dispatch({ type: "SIGN_OUT" });
+            },
+            updateData: ({ user }) => {
+                return dispatch({
+                    type: "UPDATE_DATA",
+                    user: user,
+                });
             },
         }),
         []

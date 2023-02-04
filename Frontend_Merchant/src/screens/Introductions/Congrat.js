@@ -10,7 +10,7 @@ import {IP_ADDRESS} from "@env"
 
 const Congrat = () => {
     const {state, onAction} = useContext(UserContext)
-        //get user information by token
+    //get user information by token
     const fetchUserInfo = (token) => {
         axios
             .get(`http://${IP_ADDRESS}/merchant/info`, {
@@ -19,9 +19,8 @@ const Congrat = () => {
                 },
             })
             .then((res) => {
-                onAction.signIn({
+                onAction.updateData({
                     user: res.data.userData,
-                    token: token,
                 });
             })
             .catch((err) => {
@@ -30,7 +29,6 @@ const Congrat = () => {
     };
     const handleSubmit = () => {
         fetchUserInfo(state.token)
-        console.log("😃: Pressed!! ")
     }
     return (
         <View style={styles.container}>
