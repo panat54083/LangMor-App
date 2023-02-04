@@ -23,10 +23,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { io } from "socket.io-client";
 
 WebBrowser.maybeCompleteAuthSession();
-const Login= () => {
+const Login = () => {
     const image = require("../assets/images/backgrounds/Login.png");
     const [accessToken, setAccessToken] = useState();
-    const { onAction } = useContext(UserContext);
+    const { state, onAction } = useContext(UserContext);
     const { setSocket } = useContext(SocketContext);
     const [request, response, promptAsync] = Google.useAuthRequest({
         androidClientId: ANDROID_CLIENT_ID,
@@ -40,9 +40,9 @@ const Login= () => {
                 const token = await AsyncStorage.getItem("M_Token"); // get token from local storage
                 // check if there is token
                 if (token) {
-                    fetchUserInfo(token);
                     console.log("🔑: There is the token..");
-                    await setupSocket(token);
+                    fetchUserInfo(token);
+                    // await setupSocket(token);
                 } else {
                     console.log("🚫: There is no the token..");
                 }
@@ -52,6 +52,13 @@ const Login= () => {
         };
         checkToken(); // Call the function
     }, []);
+    //setup Socket if There is userData
+    useEffect(() => {
+        if (state.userData) {
+            // console.log(state.userData)
+            setupSocket(state.token);
+        }
+    }, [state.userData]);
     // Check Google response
     useEffect(() => {
         if (response?.type === "success") {
@@ -90,7 +97,7 @@ const Login= () => {
                     user: res.data.userData,
                     token: res.data.token,
                 });
-                await setupSocket(res.data.token);
+                // await setupSocket(res.data.token);
             })
             .catch((err) => {
                 console.log("Fetch Login: ", err.response.data);
