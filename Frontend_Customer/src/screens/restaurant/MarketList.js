@@ -6,13 +6,13 @@ import {
     TouchableOpacity,
 } from "react-native";
 import React, { useEffect } from "react";
-import Searchbar from "../components/searchs/Searchbar";
-import Fav from "../components/buttons/Fav";
-import AddressBox from "../components/buttons/AddressBox";
-import CardMarket from "../components/cards/CardMarket";
-import CardRestaurantTag from "../components/cards/CardRestaurantTag";
+import Searchbar from "../../components/searchs/Searchbar";
+import Fav from "../../components/buttons/Fav";
+import AddressBox from "../../components/buttons/AddressBox";
+import CardMarket from "../../components/cards/CardMarket";
+import CardRestaurantTag from "../../components/cards/CardRestaurantTag";
 const MarketList = ({ navigation }) => {
-    //ของจริงใช้ fetch ข้อมูลจาก backend
+    
     useEffect(() => {
         navigation.setOptions({
             title: "สั่งอาหาร",
@@ -26,7 +26,10 @@ const MarketList = ({ navigation }) => {
             ),
         });
     }, []);
-
+    const onPressCardMarket = (restaurant) => {
+        navigation.navigate("FoodList", { restaurant: restaurant });
+    };
+    //ของจริงใช้ fetch ข้อมูลจาก backend
     const exampleData = [
         {
             id: 1,
@@ -84,12 +87,12 @@ const MarketList = ({ navigation }) => {
         },
     ];
     let allTags = [
-        { tag: "ของคาว", source: require("../assets/icons/fast-food.png") },
+        { tag: "ของคาว", source: require("../../assets/icons/fast-food.png") },
         {
             tag: "้เครื่องดื่ม",
-            source: require("../assets/icons/drink.png"),
+            source: require("../../assets/icons/drink.png"),
         },
-        { tag: "ของหวาน", source: require("../assets/icons/dessert.png") },
+        { tag: "ของหวาน", source: require("../../assets/icons/dessert.png") },
     ];
 
     return (
@@ -103,7 +106,7 @@ const MarketList = ({ navigation }) => {
 
             <View>
                 <Text style={styles.TagsText}>หมวดหมู่</Text>
-                <View style={{ }}>
+                <View style={{}}>
                     <FlatList
                         data={allTags}
                         renderItem={({ item }) => (
@@ -124,7 +127,7 @@ const MarketList = ({ navigation }) => {
                     <FlatList
                         data={exampleData}
                         renderItem={({ item }) => (
-                            <CardMarket restaurant={item} />
+                            <CardMarket restaurant={item} onPressCard={onPressCardMarket}/>
                         )}
                     />
                 ) : null}

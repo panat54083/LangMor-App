@@ -2,11 +2,11 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React from "react";
 
 const CardMarket = (props) => {
-    const { restaurant } = props;
+    const { restaurant , onPressCard} = props;
     return (
         <View style={{ alignItems: "center" }}>
             <View style={[styles.card, styles.elevation]}>
-                <TouchableOpacity onPress={()=>{console.log("Hello");}}>
+                <TouchableOpacity onPress={()=>{onPressCard(restaurant)}}>
                     <View style={styles.container}>
                         <View>
                             <Image
