@@ -17,13 +17,13 @@ import Logout from "../components/buttons/Logout";
 import UserContext from "../hooks/context/UserContext";
 import SocketContext from "../hooks/context/SocketContext";
 
-const Home = ({navigation}) => {
+const Home = ({ navigation }) => {
     const { state, onAction } = useContext(UserContext);
     const [visible, setVisible] = useState(false);
     const { socket } = useContext(SocketContext);
 
     const handleSetRestaurant = () => {
-        navigation.navigate("SetRestaurant")
+        navigation.navigate("SetRestaurant");
     };
     const handelModel = () => setVisible(!visible);
     const handleProfile = () => {

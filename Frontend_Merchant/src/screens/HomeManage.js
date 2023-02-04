@@ -19,10 +19,10 @@ const HomeManage = () => {
                 `http://${IP_ADDRESS}/restaurant/info?restaurant=${state.userData.restaurant}`
             )
             .then((res) => {
-                console.log(res.data.restaurantData)
+                console.log(res.data.restaurantData);
                 onAction.updateRestaurantData({
                     restaurant: res.data.restaurantData,
-                })
+                });
             })
             .catch((err) => {
                 console.log(err);

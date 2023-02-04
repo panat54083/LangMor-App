@@ -1,15 +1,15 @@
 // Packages
-import React, {useState, useEffect, useContext} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 // Components
 import { StyleSheet, Text, View, Image } from "react-native";
 import AcceptButton from "../../components/buttons/AcceptButton";
 // Configs
 import UserContext from "../../hooks/context/UserContext";
-import {IP_ADDRESS} from "@env"
+import { IP_ADDRESS } from "@env";
 
 const Congrat = () => {
-    const {state, onAction} = useContext(UserContext)
+    const { state, onAction } = useContext(UserContext);
     //get user information by token
     const fetchUserInfo = (token) => {
         axios
@@ -28,8 +28,8 @@ const Congrat = () => {
             });
     };
     const handleSubmit = () => {
-        fetchUserInfo(state.token)
-    }
+        fetchUserInfo(state.token);
+    };
     return (
         <View style={styles.container}>
             <Image
@@ -37,16 +37,20 @@ const Congrat = () => {
                 style={styles.image}
             />
             <View style={styles.text_container}>
-
-            <Text style={[styles.text, {color: "#FF4200", marginBottom:20}]}>
-                ยินดีด้วย
-            </Text>
-            <Text style={styles.text}>
-                คุณได้เปิดร้านกับ {"\n"}Lang Mor App แล้ว
-            </Text>
+                <Text
+                    style={[
+                        styles.text,
+                        { color: "#FF4200", marginBottom: 20 },
+                    ]}
+                >
+                    ยินดีด้วย
+                </Text>
+                <Text style={styles.text}>
+                    คุณได้เปิดร้านกับ {"\n"}Lang Mor App แล้ว
+                </Text>
             </View>
             <View style={styles.submit}>
-                <AcceptButton label={"จัดการร้าน"} onPress={handleSubmit}/>
+                <AcceptButton label={"จัดการร้าน"} onPress={handleSubmit} />
             </View>
         </View>
     );
@@ -57,7 +61,7 @@ export default Congrat;
 const styles = StyleSheet.create({
     container: {
         flexDirection: "column",
-        flex:1,
+        flex: 1,
         alignItems: "center",
     },
     image: {
@@ -65,18 +69,15 @@ const styles = StyleSheet.create({
         height: 300,
         marginTop: "15%",
     },
-    text_container:{
+    text_container: {
         marginBottom: 50,
     },
-    text:{
+    text: {
         fontFamily: "Kanit-Bold",
         fontSize: 30,
-        textAlign:"left"
-        
+        textAlign: "left",
     },
-    submit:{
-        justifyContent:"center",
-        
-        
-    }
+    submit: {
+        justifyContent: "center",
+    },
 });

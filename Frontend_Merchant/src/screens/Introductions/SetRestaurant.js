@@ -51,7 +51,7 @@ const SetRestaurant = ({ navigation }) => {
         // console.log(`Address: ${address}`);
         // console.log(`Banner: ${banner}`);
         fetchRegister();
-        navigation.navigate("Congrat")
+        navigation.navigate("Congrat");
     };
 
     const fetchRegister = () => {
