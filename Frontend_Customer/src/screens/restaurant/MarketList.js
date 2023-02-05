@@ -104,8 +104,8 @@ const MarketList = ({ route, navigation }) => {
             <View style={{ marginTop: 18, marginLeft: "7%" }}>
                 <AddressBox />
             </View>
-            <View style={{ width: "100%", alignItems: "center" }}>
-                <Searchbar />
+            <View style={{ width: "100%", alignItems: "center" , marginVertical:10}}>
+                <Searchbar height='55'/>
             </View>
 
             <View>

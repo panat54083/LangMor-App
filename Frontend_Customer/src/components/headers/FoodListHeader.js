@@ -2,6 +2,7 @@ import { ImageBackground, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import Back from "../buttons/Back";
 import Fav from "../buttons/Fav";
+
 const FoodListHeader = (props) => {
     const { imgSrc } = props;
     const imgLink =

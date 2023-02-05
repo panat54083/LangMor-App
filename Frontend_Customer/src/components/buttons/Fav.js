@@ -1,13 +1,22 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const Fav = () => {
+    const [fav, setFav] = useState(false);
+    const handlerOnPressFav = () => {
+        console.log(fav);
+        setFav((prevState) => !prevState);
+    };
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handlerOnPressFav}>
             <View style={styles.container}>
-                <Ionicons name="heart-outline" size={27} color="#FF7A00" />
+                <Ionicons
+                    name={fav ? "heart" : "heart-outline"}
+                    size={27}
+                    color="#FF7A00"
+                />
             </View>
         </TouchableOpacity>
     );

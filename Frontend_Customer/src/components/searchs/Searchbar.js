@@ -2,11 +2,12 @@ import { StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-const Searchbar = () => {
+const Searchbar = (props) => {
+    const {height} = props
     const [text, setText] = useState("");
 
     return (
-        <View style={styles.inputContainer}>
+        <View style={[styles.inputContainer, {height:Number(height)}]}>
             <Ionicons name="search" size={20} style={styles.icon}/>
             <TextInput
                 style={styles.input}
@@ -26,10 +27,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "white",
         borderRadius: 25,
-        padding: 15,
-        margin: 10,
-        width:'80%',
-        height:55
+        paddingLeft:15,
+        width:'90%',
     },
     icon: {
         width: 20,
