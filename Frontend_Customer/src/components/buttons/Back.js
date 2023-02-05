@@ -4,11 +4,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const Back = (props) => {
-    const { onPressBack } = props;
+    const { handlerOnPressBack } = props;
     return (
-        <TouchableOpacity
-            style={styles.container}
-        >
+        <TouchableOpacity style={styles.container} onPress={handlerOnPressBack}>
             <Ionicons name="chevron-back" size={30} color="#FF7A00" />
         </TouchableOpacity>
     );

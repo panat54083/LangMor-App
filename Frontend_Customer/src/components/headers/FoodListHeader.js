@@ -4,7 +4,7 @@ import Back from "../buttons/Back";
 import Fav from "../buttons/Fav";
 
 const FoodListHeader = (props) => {
-    const { imgSrc } = props;
+    const { imgSrc ,handlerOnPressBack } = props;
     const imgLink =
         "https://bk.asia-city.com/sites/default/files/u142691/burger_fb.jpg";
     return (
@@ -15,7 +15,7 @@ const FoodListHeader = (props) => {
                 style={{ flex: 1, flexDirection: "row" }}
             >
                 <View style={{ marginTop: 6, marginLeft: "2.2%" }}>
-                    <Back />
+                    <Back handlerOnPressBack={handlerOnPressBack}/>
                 </View>
                 <View
                     style={{
