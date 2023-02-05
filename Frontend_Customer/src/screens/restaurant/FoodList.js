@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
     },
     searchbar: {
-        backgroundColor: "#D9D9D9",
+        backgroundColor: "#F5F5F5",
         height: 55,
         alignItems: "center",
         justifyContent: "center",

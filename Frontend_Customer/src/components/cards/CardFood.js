@@ -19,8 +19,16 @@ const CardFood = (props) => {
                         <View style={{ width: "65%", height: 88 }}>
                             <Text style={styles.foodName}>{food.name}</Text>
                             <View>
-                                <Text style={{marginBottom:19}}>{food.detail}</Text>
-                                <Text>ราคา <Text>{food.price}</Text> บาท</Text>
+                                <Text style={styles.foodDetail}>
+                                    {food.detail}
+                                </Text>
+                                <View style={styles.priceContainer}>
+                                    <Text style={styles.props}>ราคา </Text>
+                                    <Text style={styles.price}>
+                                        {food.price}
+                                    </Text>
+                                    <Text style={styles.props}> บาท</Text>
+                                </View>
                             </View>
                         </View>
                     </View>
@@ -59,7 +67,25 @@ const styles = StyleSheet.create({
         shadowRadius: 10,
     },
     foodName: {
-        fontSize: 22,
-        fontWeight: "bold",
+        fontSize: 18,
+        fontFamily: "Kanit-Bold",
+    },
+    price: {
+        fontSize: 18,
+        fontFamily: "Kanit-Bold",
+        color: "#FF4200",
+    },
+    pricedetails: {
+        fontSize: 13,
+        fontFamily: "Kanit-Medium",
+    },
+    priceContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    foodDetail: {
+        marginBottom: 19,
+        fontSize: 10,
+        fontFamily: "Kanit-Medium",
     },
 });
