@@ -2,7 +2,15 @@
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import axios from "axios";
 // Components
-import { StyleSheet, Button, Text, View } from "react-native";
+import {
+    StyleSheet,
+    Button,
+    Text,
+    View,
+    ImageBackground,
+    ScrollView,
+    SafeAreaView,
+} from "react-native";
 import UserContext from "../hooks/context/UserContext";
 import Large from "../components/buttons/Large";
 import Small from "../components/buttons/Small";
@@ -33,18 +41,30 @@ const HomeManage = () => {
             });
     };
     const handleButton = () => {
-        console.log(state.restaurantData);
+        console.log(state.restaurantData.picture);
     };
     return (
         <>
             {state.restaurantData ? (
-                <View>
-                    <Text>{state.restaurantData.name} </Text>
+                <SafeAreaView>
+                    <ImageBackground
+                        source={{
+                            uri: `data:${state.restaurantData.picture.type}/jpg;base64,${state.restaurantData.picture.base64}`,
+                        }}
+                        resizeMode="cover"
+                        style={styles.image_background}
+                    >
+                        <Text style={[styles.header_text, styles.text]}>
+                            {state.restaurantData.name}
+                        </Text>
+                    </ImageBackground>
+
                     <View style={styles.large_button}>
                         <Large
                             label="ออเดอร์วันนี้"
                             image={require("../assets/icons/order.png")}
                             numberOfLines={1}
+                            onPress={handleButton}
                         />
                     </View>
                     <View style={styles.small_button}>
@@ -69,7 +89,7 @@ const HomeManage = () => {
                             image={require("../assets/icons/gear.png")}
                         />
                     </View>
-                </View>
+                </SafeAreaView>
             ) : (
                 <View>
                     <Text> Loading Screen</Text>
@@ -83,15 +103,27 @@ export default HomeManage;
 
 const styles = StyleSheet.create({
     container: {
-        flex:1,
+        flex: 1,
+    },
+    image_background: {
+        // flex:1
+    },
+    header_text: {
+        paddingTop: 50,
+        paddingBottom: 60,
+    },
+    text: {
+        fontFamily: "Kanit-Bold",
+        fontSize: 28,
+        color: "#FF4200",
     },
     large_button: {
         marginHorizontal: "5%",
     },
     small_button: {
-        justifyContent:"space-between",
+        justifyContent: "space-between",
         marginHorizontal: "5%",
         flexWrap: "wrap",
-        flexDirection:"row",
+        flexDirection: "row",
     },
 });
