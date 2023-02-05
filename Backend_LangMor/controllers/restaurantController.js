@@ -32,10 +32,8 @@ exports.register = async (req, res) => {
 };
 
 exports.restaurantInfo = async (req, res) => {
-        const {restaurant} = req.query
-        // console.log(restaurant)
-        const restaurantData = await Restaurant.findById(restaurant) 
-        console.log(restaurantData)
+        const {restaurant_id } = req.query
+        const restaurantData = await Restaurant.findById(restaurant_id) 
         res.json({
             message: "Get Restaurant Information!",
             restaurantData: restaurantData,

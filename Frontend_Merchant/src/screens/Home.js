@@ -75,12 +75,12 @@ const Home = ({ navigation }) => {
                     </View>
                     <View style={{ margin: 20 }}>
                         <Large
-                            name={"ตั้งร้านค้า"}
+                            label={"ตั้งร้านค้า"}
                             image={require("../assets/icons/restaurant.png")}
                             onPress={handleSetRestaurant}
                         />
                         <Large
-                            name={"เลือกเป็นสมาชิกร้าน"}
+                            label={"เลือกเป็นสมาชิกร้าน"}
                             image={require("../assets/icons/waiter.png")}
                             // onPress={}
                         />

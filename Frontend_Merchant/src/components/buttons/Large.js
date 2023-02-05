@@ -8,14 +8,20 @@ import {
 } from "react-native";
 import React from "react";
 
-const Large = ({ name, image, onPress }) => {
+const Large = ({ label, image, onPress, numberOfLines=2}) => {
     return (
         <TouchableOpacity
             onPress={onPress}
             style={[styles.container, styles.shadow]}
         >
             <View style={styles.container_text}>
-                <Text style={styles.text}>{name}</Text>
+                <Text
+                    style={styles.text}
+                    adjustsFontSizeToFit={true}
+                    numberOfLines={numberOfLines}
+                >
+                    {label}
+                </Text>
             </View>
             <View style={styles.container_image}>
                 <Image source={image} style={styles.image} />
@@ -49,8 +55,10 @@ const styles = StyleSheet.create({
         elevation: 4,
     },
     image: {
-        width: 100,
-        height: 100,
+        width: 115,
+        flex: 1,
+        resizeMode:"contain",
+        marginTop: 36, 
     },
     text: {
         fontFamily: "Kanit-Bold",
@@ -59,7 +67,7 @@ const styles = StyleSheet.create({
     },
     container_text: {
         alignItems: "flex-start",
-        flex: 3,
+        flex: 2,
         justifyContent: "center",
     },
     container_image: {
