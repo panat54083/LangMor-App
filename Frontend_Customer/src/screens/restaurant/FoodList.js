@@ -1,13 +1,13 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import Back from "../../components/buttons/Back";
+import FoodListHeader from "../../components/headers/FoodListHeader";
 const FoodList = ({ route, navigation }) => {
     const { restaurant } = route.params;
 
     return (
         <View>
-            <Back />
-            <Text>{restaurant.restaurantName}</Text>
+            <FoodListHeader/>
         </View>
     );
 };

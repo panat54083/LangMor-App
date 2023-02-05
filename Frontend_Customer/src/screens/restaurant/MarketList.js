@@ -11,8 +11,12 @@ import Fav from "../../components/buttons/Fav";
 import AddressBox from "../../components/buttons/AddressBox";
 import CardMarket from "../../components/cards/CardMarket";
 import CardRestaurantTag from "../../components/cards/CardRestaurantTag";
-const MarketList = ({ navigation }) => {
-    
+const MarketList = ({ route, navigation }) => {
+    const {
+        basket,
+    } = () => {
+        route.params ? route.params : null;
+    };
     useEffect(() => {
         navigation.setOptions({
             title: "สั่งอาหาร",
@@ -127,7 +131,10 @@ const MarketList = ({ navigation }) => {
                     <FlatList
                         data={exampleData}
                         renderItem={({ item }) => (
-                            <CardMarket restaurant={item} onPressCard={onPressCardMarket}/>
+                            <CardMarket
+                                restaurant={item}
+                                onPressCard={onPressCardMarket}
+                            />
                         )}
                     />
                 ) : null}
