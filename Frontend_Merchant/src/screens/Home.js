@@ -25,6 +25,9 @@ const Home = ({ navigation }) => {
     const handleSetRestaurant = () => {
         navigation.navigate("SetRestaurant");
     };
+    const handleSelectRestaurant = () => {
+        navigation.navigate("SelectRestaurant")
+    }
     const handelModel = () => setVisible(!visible);
     const handleProfile = () => {
         handelModel();
@@ -82,7 +85,7 @@ const Home = ({ navigation }) => {
                         <Large
                             label={"เลือกเป็นสมาชิกร้าน"}
                             image={require("../assets/icons/waiter.png")}
-                            // onPress={}
+                            onPress={handleSelectRestaurant}
                         />
                     </View>
                 </View>

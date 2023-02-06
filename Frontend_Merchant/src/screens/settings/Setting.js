@@ -1,5 +1,5 @@
 //Packages
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 //Components
 import { StyleSheet, Text, View } from "react-native";
@@ -7,19 +7,35 @@ import Logout from "../../components/buttons/Logout";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
 import SocketContext from "../../hooks/context/SocketContext";
+import BackScreen from "../../components/buttons/BackScreen";
 
-const Setting = () => {
+const Setting = ({ navigation }) => {
     const { onAction } = useContext(UserContext);
-    const { socket } = useContext(SocketContext); 
-
+    const { socket } = useContext(SocketContext);
+    useEffect(() => {
+        navigation.setOptions({
+            title: "การตั้งค่า",
+            headerStyle: {
+                backgroundColor: "#FF7A00",
+            },
+            headerTitleAlign: "center",
+            headerTintColor: "#ffffff",
+            headerTitleStyle: {
+                fontFamily: "Kanit-Bold",
+                fontSize: 24,
+            },
+            headerLeft: () => (
+                <BackScreen onPress={() => navigation.goBack()} />
+            ),
+        });
+    }, []);
     const handleLogOut = async () => {
         onAction.signOut();
         socket.disconnect();
         await AsyncStorage.removeItem("M_Token");
     };
     return (
-        <View>
-            <Text>Setting</Text>
+        <View style={{ flex: 1, justifyContent: "center" }}>
             <Logout onPress={handleLogOut} />
         </View>
     );
@@ -27,4 +43,16 @@ const Setting = () => {
 
 export default Setting;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    shadow: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+
+        elevation: 3,
+    },
+});
