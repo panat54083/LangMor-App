@@ -9,6 +9,7 @@ import Home from "../screens/Home";
 import SetRestaurant from "../screens/Introductions/SetRestaurant";
 import HomeManage from "../screens/HomeManage";
 import Congrat from "../screens/Introductions/Congrat";
+import Setting from "../screens/settings/Setting";
 // Configs
 const Stack = createStackNavigator();
 
@@ -30,6 +31,9 @@ function MyStack({}) {
                                 component={HomeManage}
                                 options={{ headerShown: false }}
                             />
+                            <Stack.Screen
+                                name="Setting"
+                                component={Setting} />
                         </>
                     ) : (
                         <>

@@ -17,7 +17,7 @@ import Small from "../components/buttons/Small";
 // Configs
 import { IP_ADDRESS } from "@env";
 
-const HomeManage = () => {
+const HomeManage = ({navigation}) => {
     const { state, onAction } = useContext(UserContext);
     //initial Screen
     useLayoutEffect(() => {
@@ -40,8 +40,8 @@ const HomeManage = () => {
                 console.log(err);
             });
     };
-    const handleButton = () => {
-        // console.log(state.restaurantData.picture);
+    const handleSetting= () => {
+        navigation.navigate("Setting")
     };
     return (
         <>
@@ -72,7 +72,6 @@ const HomeManage = () => {
                                     label="ออเดอร์วันนี้"
                                     image={require("../assets/icons/order.png")}
                                     numberOfLines={1}
-                                    onPress={handleButton}
                                 />
                             </View>
                             <View style={styles.small_button}>
@@ -95,6 +94,7 @@ const HomeManage = () => {
                                 <Small
                                     label="การตั้งค่า"
                                     image={require("../assets/icons/gear.png")}
+                                    onPress={handleSetting}
                                 />
                             </View>
                         </ScrollView>
