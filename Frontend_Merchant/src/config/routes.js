@@ -46,12 +46,11 @@ function MyStack({}) {
                                 name="OrderManage"
                                 component={OrderManage}
                             />
-                            <Stack.Screen 
-                                name="AddMenu"
-                                component={AddMenu}/>
-                            <Stack.Screen 
+                            <Stack.Screen name="AddMenu" component={AddMenu} />
+                            <Stack.Screen
                                 name="AddOptions"
-                                component={AddOptions}/>
+                                component={AddOptions}
+                            />
                         </>
                     ) : (
                         <>

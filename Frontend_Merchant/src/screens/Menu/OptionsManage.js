@@ -4,11 +4,11 @@ import React, { useEffect } from "react";
 import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import AddButton from "../../components/buttons/AddButton";
 
-const OptionsManage = ({navigation}) => {
+const OptionsManage = ({ navigation }) => {
     const handleAddOptions = () => {
-        console.log("Add Options")
-        navigation.navigate("AddOptions")
-    }
+        console.log("Add Options");
+        navigation.navigate("AddOptions");
+    };
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.add_button}>
@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#F5f5f5",
     },
     add_button: {
-        marginHorizontal:20
-    }
+        marginHorizontal: 20,
+    },
 });
-

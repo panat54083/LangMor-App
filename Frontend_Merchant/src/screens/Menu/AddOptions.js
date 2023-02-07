@@ -2,10 +2,10 @@
 import { StyleSheet, Text, View } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 //Packages
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 
-const AddOptions = ({navigation}) => {
-        useEffect(() => {
+const AddOptions = ({ navigation }) => {
+    useEffect(() => {
         navigation.setOptions({
             title: "สร้างตัวเลือกใหม่",
             headerTitleStyle: {
@@ -20,13 +20,13 @@ const AddOptions = ({navigation}) => {
             ),
         });
     }, []);
-  return (
-    <View>
-      <Text>AddOptions</Text>
-    </View>
-  )
-}
+    return (
+        <View>
+            <Text>AddOptions</Text>
+        </View>
+    );
+};
 
-export default AddOptions
+export default AddOptions;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

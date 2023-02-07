@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingVertical: 6,
         paddingHorizontal: 100,
+        alignItems:"center"
     },
     text: {
         fontFamily: "Kanit-SemiBold",

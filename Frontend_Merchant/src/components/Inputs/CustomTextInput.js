@@ -28,6 +28,7 @@ const CustomTextInput = ({
                 onChangeText={onChangeText}
                 multiline={multiline}
                 numberOfLines={numberOfLines}
+                textAlignVertical={'top'}
             />
             {value ? (
                 <Feather name="edit" size={24} color="#C9C5C4" />
@@ -56,5 +57,6 @@ const styles = StyleSheet.create({
         width: 250,
         fontFamily: "Kanit-Medium",
         fontSize: 16,
+
     },
 });

@@ -6,9 +6,9 @@ import AddButton from "../../components/buttons/AddButton";
 
 const MenuManage = ({ navigation }) => {
     const handleAddMenu = () => {
-        console.log("Add Menu")
-        navigation.navigate("AddMenu")
-    }
+        console.log("Add Menu");
+        navigation.navigate("AddMenu");
+    };
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.add_button}>
@@ -26,6 +26,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#F5f5f5",
     },
     add_button: {
-        marginHorizontal:20
-    }
+        marginHorizontal: 20,
+    },
 });
