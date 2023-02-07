@@ -1,19 +1,19 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../screens/Home";
 import Profile from "../screens/Profile";
 import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
 const TapStackRoutes = () => {
-    const TabStack = createBottomTabNavigator();
+    const TabStack = createMaterialBottomTabNavigator();
     return (
         <TabStack.Navigator
             screenOptions={{
                 headerShown: false,
-                tabBarActiveTintColor: "tomato",
-                tabBarInactiveTintColor: "gray",
+                
             }}
+            barStyle={{height:70}}
         >
             <TabStack.Screen
                 name="Home"
