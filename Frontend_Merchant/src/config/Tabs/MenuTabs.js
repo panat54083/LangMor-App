@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 //Components
-import { StyleSheet, Animated, View, TouchableOpacity } from "react-native";
+import { StyleSheet } from "react-native";
 //Screens
 import MenuManage from "../../screens/Menu/MenuManage";
 import OptionsManage from "../../screens/Menu/OptionsManage";

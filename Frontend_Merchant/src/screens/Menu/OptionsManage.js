@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from "react-native";
 
 const OptionsManage = ({navigation}) => {
     return (
-        <View>
+        <View style={styles.container}>
             <Text>OptionsManage</Text>
         </View>
     );
@@ -13,4 +13,9 @@ const OptionsManage = ({navigation}) => {
 
 export default OptionsManage;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    container: {
+        flex:1,
+        backgroundColor: "#F5f5f5", 
+    }
+});
