@@ -17,8 +17,8 @@ exports.register = async (req, res) => {
         });
         await restaurant.save();
 
-        const merchant = await Merchant.findById(restaurant.owner)
-        merchant.restaurant = restaurant._id 
+        const merchant = await Merchant.findById(restaurant.owner);
+        merchant.restaurant = restaurant._id;
         await merchant.save();
 
         res.json({
@@ -32,11 +32,21 @@ exports.register = async (req, res) => {
 };
 
 exports.restaurantInfo = async (req, res) => {
-        const {restaurant_id } = req.query
-        const restaurantData = await Restaurant.findById(restaurant_id) 
-        res.json({
-            message: "Get Restaurant Information!",
-            restaurantData: restaurantData,
-        })
-}
+    const { restaurant_id } = req.query;
+    const restaurantData = await Restaurant.findById(restaurant_id);
+    res.json({
+        message: "Get Restaurant Information!",
+        restaurantData: restaurantData,
+    });
+};
 
+exports.restaurantClosed = async (req, res) => {
+    const { restaurant_id } = req.body;
+    const restaurant = await Restaurant.findById(restaurant_id)
+    restaurant.closed = !restaurant.closed
+    await restaurant.save() 
+
+    res.json({
+        message: `${restaurant.name} is ${restaurant.closed ? "Closed.😦" : "Opened.😃"}`
+    })
+}

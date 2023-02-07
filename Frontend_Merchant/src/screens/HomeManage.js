@@ -17,7 +17,7 @@ import Small from "../components/buttons/Small";
 // Configs
 import { IP_ADDRESS } from "@env";
 
-const HomeManage = ({navigation}) => {
+const HomeManage = ({ navigation }) => {
     const { state, onAction } = useContext(UserContext);
     //initial Screen
     useLayoutEffect(() => {
@@ -34,14 +34,30 @@ const HomeManage = ({navigation}) => {
                 onAction.updateRestaurantData({
                     restaurant: res.data.restaurantData,
                 });
-                // setRestaurantData(res.data.restaurantData)
             })
             .catch((err) => {
                 console.log(err);
             });
     };
-    const handleSetting= () => {
-        navigation.navigate("Setting")
+    const fetchRestaurantOpenClose = () => {
+
+        axios
+            .post(`http://${IP_ADDRESS}/restaurant/closed`, {
+                restaurant_id: state.restaurantData._id,
+            })
+            .then((res) => {
+                console.log(res.data.message);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+    const handleSetting = () => {
+        navigation.navigate("Setting");
+    };
+    const handleOpenClose = () => {
+        fetchRestaurantOpenClose()
+        fetchRestaurantInfo()
     };
     return (
         <>
@@ -55,12 +71,7 @@ const HomeManage = ({navigation}) => {
                         style={styles.image_background}
                     >
                         <View style={styles.overlay}>
-                            <Text
-                                style={[
-                                    styles.header_text,
-                                    styles.text,
-                                ]}
-                            >
+                            <Text style={[styles.header_text, styles.text]}>
                                 {state.restaurantData.name}
                             </Text>
                         </View>
@@ -79,10 +90,21 @@ const HomeManage = ({navigation}) => {
                                     label="เมนู/สินค้า"
                                     image={require("../assets/icons/menu.png")}
                                 />
-                                <Small
-                                    label="เวลา เปิด-ปิด"
-                                    image={require("../assets/icons/calendar.png")}
-                                />
+                                <>
+                                    {state.restaurantData.closed ? (
+                                        <Small
+                                            label="ร้านเปิดอยู่"
+                                            image={require("../assets/icons/open.png")}
+                                            onPress={handleOpenClose}
+                                        />
+                                    ) : (
+                                        <Small
+                                            label="ร้านปิดแล้ว"
+                                            image={require("../assets/icons/closed.png")}
+                                            onPress={handleOpenClose}
+                                        />
+                                    )}
+                                </>
                                 <Small
                                     label="แก้ไขข้อมูลร้าน"
                                     image={require("../assets/icons/restaurant.png")}
@@ -136,7 +158,7 @@ const styles = StyleSheet.create({
     },
     large_button: {
         // backgroundColor:"red",
-        marginTop:"5%",
+        marginTop: "5%",
         marginHorizontal: "5%",
         height: "25%",
     },
