@@ -7,7 +7,7 @@ import BackScreen from "../../components/buttons/BackScreen";
 const OrderManage = ({navigation}) => {
     useEffect(() => {
         navigation.setOptions({
-            title: "จัดการเมนูร้านค้า",
+            title: "ออเดอร์วันนี้",
             headerTitleStyle: {
                 fontFamily: "Kanit-Bold",
                 fontSize: 22,
