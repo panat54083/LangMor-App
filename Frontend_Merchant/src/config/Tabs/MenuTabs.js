@@ -2,11 +2,12 @@
 import React, { useEffect } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 //Components
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Animated, View, TouchableOpacity } from "react-native";
 //Screens
 import MenuManage from "../../screens/Menu/MenuManage";
 import OptionsManage from "../../screens/Menu/OptionsManage";
 import BackScreen from "../../components/buttons/BackScreen";
+import MyTabBar from "../../components/Navigaitons/MyTabBar";
 //Configs
 const Tab = createMaterialTopTabNavigator();
 
@@ -28,23 +29,7 @@ const MenuTabs = ({ navigation }) => {
     }, []);
 
     return (
-        <Tab.Navigator
-            Style={{}}
-            screenOptions={{
-                tabBarActiveTintColor: "#ff4200",
-                tabBarInactiveTintColor: "#000",
-                tabBarLabelStyle: { fontSize: 16, fontFamily: "Kanit-Medium" },
-                tabBarStyle: {
-                    backgroundColor: "#FFE8E0",
-                    // backgroundColor: "#FFf",
-                },
-                tabBarIndicatorStyle: {
-                    borderBottomColor: "#FF4200",
-                    borderBottomWidth: 4,
-                    // color: "black"
-                },
-            }}
-        >
+        <Tab.Navigator tabBar={(props) => <MyTabBar {...props} />}>
             <Tab.Screen
                 name="MenuManage"
                 component={MenuManage}

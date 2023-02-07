@@ -16,6 +16,6 @@ export default MenuManage;
 const styles = StyleSheet.create({
     container:{
         flex:1,
-        // backgroundColor:"red"
+        backgroundColor:"#F5f5f5"
     }
 });
