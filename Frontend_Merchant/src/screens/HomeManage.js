@@ -39,6 +39,7 @@ const HomeManage = ({ navigation }) => {
                 console.log(err);
             });
     };
+    //Turn the restaurant off or open
     const fetchRestaurantOpenClose = () => {
 
         axios
@@ -59,6 +60,12 @@ const HomeManage = ({ navigation }) => {
         fetchRestaurantOpenClose()
         fetchRestaurantInfo()
     };
+    const handleMenu = () => {
+        navigation.navigate("MenuManage")
+    }
+    const handleOrder = () => {
+        navigation.navigate("OrderManage")
+    }
     return (
         <>
             {state.restaurantData ? (
@@ -83,12 +90,14 @@ const HomeManage = ({ navigation }) => {
                                     label="ออเดอร์วันนี้"
                                     image={require("../assets/icons/order.png")}
                                     numberOfLines={1}
+                                    onPress={handleOrder}
                                 />
                             </View>
                             <View style={styles.small_button}>
                                 <Small
                                     label="เมนู/สินค้า"
                                     image={require("../assets/icons/menu.png")}
+                                    onPress={handleMenu}
                                 />
                                 <>
                                     {state.restaurantData.closed ? (
