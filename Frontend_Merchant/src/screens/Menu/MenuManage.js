@@ -2,27 +2,10 @@
 import React, { useEffect } from "react";
 //Components
 import { StyleSheet, Text, View } from "react-native";
-import BackScreen from "../../components/buttons/BackScreen";
 
 const MenuManage = ({ navigation }) => {
-    useEffect(() => {
-        navigation.setOptions({
-            title: "จัดการเมนูร้านค้า",
-            headerTitleStyle: {
-                fontFamily: "Kanit-Bold",
-                fontSize: 22,
-            },
-            headerLeft: () => (
-                <BackScreen
-                    onPress={() => navigation.goBack()}
-                    color="#FF7A00"
-                />
-            ),
-        });
-    }, []);
-
     return (
-        <View>
+        <View style = {styles.container}>
             <Text>MenuManage</Text>
         </View>
     );
@@ -30,4 +13,9 @@ const MenuManage = ({ navigation }) => {
 
 export default MenuManage;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    container:{
+        flex:1,
+        // backgroundColor:"red"
+    }
+});

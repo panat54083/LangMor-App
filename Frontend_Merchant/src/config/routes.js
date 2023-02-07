@@ -12,6 +12,7 @@ import Congrat from "../screens/Introductions/Congrat";
 import Setting from "../screens/settings/Setting";
 import SelectRestaurant from "../screens/Introductions/SelectRestaurant";
 import OrderManage from "../screens/Orders/OrderManage";
+import OptionsManage from "../screens/Menu/OptionsManage";
 // Taps
 import MenuTabs from "./Tabs/MenuTabs";
 // Configs

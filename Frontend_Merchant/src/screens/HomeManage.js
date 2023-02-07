@@ -61,7 +61,7 @@ const HomeManage = ({ navigation }) => {
         fetchRestaurantInfo()
     };
     const handleMenu = () => {
-        navigation.navigate("MenuTabs")
+        navigation.navigate("MenuTabs" )
     }
     const handleOrder = () => {
         navigation.navigate("OrderManage")

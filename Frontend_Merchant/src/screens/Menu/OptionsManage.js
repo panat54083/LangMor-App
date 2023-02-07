@@ -1,7 +1,9 @@
+//packages
+import React ,{useEffect} from "react";
+//components
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
 
-const OptionsManage = () => {
+const OptionsManage = ({navigation}) => {
     return (
         <View>
             <Text>OptionsManage</Text>
