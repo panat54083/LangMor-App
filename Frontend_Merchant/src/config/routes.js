@@ -12,7 +12,8 @@ import Congrat from "../screens/Introductions/Congrat";
 import Setting from "../screens/settings/Setting";
 import SelectRestaurant from "../screens/Introductions/SelectRestaurant";
 import OrderManage from "../screens/Orders/OrderManage";
-import OptionsManage from "../screens/Menu/OptionsManage";
+import AddMenu from "../screens/Menu/AddMenu";
+import AddOptions from "../screens/Menu/AddOptions";
 // Taps
 import MenuTabs from "./Tabs/MenuTabs";
 // Configs
@@ -45,6 +46,12 @@ function MyStack({}) {
                                 name="OrderManage"
                                 component={OrderManage}
                             />
+                            <Stack.Screen 
+                                name="AddMenu"
+                                component={AddMenu}/>
+                            <Stack.Screen 
+                                name="AddOptions"
+                                component={AddOptions}/>
                         </>
                     ) : (
                         <>

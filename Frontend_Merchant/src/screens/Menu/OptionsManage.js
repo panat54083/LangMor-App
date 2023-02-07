@@ -1,13 +1,20 @@
-//packages
-import React ,{useEffect} from "react";
-//components
-import { StyleSheet, Text, View } from "react-native";
+//Packages
+import React, { useEffect } from "react";
+//Components
+import { StyleSheet, Text, View, SafeAreaView } from "react-native";
+import AddButton from "../../components/buttons/AddButton";
 
 const OptionsManage = ({navigation}) => {
+    const handleAddOptions = () => {
+        console.log("Add Options")
+        navigation.navigate("AddOptions")
+    }
     return (
-        <View style={styles.container}>
-            <Text>OptionsManage</Text>
-        </View>
+        <SafeAreaView style={styles.container}>
+            <View style={styles.add_button}>
+                <AddButton onPress={handleAddOptions} />
+            </View>
+        </SafeAreaView>
     );
 };
 
@@ -15,7 +22,11 @@ export default OptionsManage;
 
 const styles = StyleSheet.create({
     container: {
-        flex:1,
-        backgroundColor: "#F5f5f5", 
+        flex: 1,
+        backgroundColor: "#F5f5f5",
+    },
+    add_button: {
+        marginHorizontal:20
     }
 });
+

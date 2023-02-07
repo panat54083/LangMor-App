@@ -1,7 +1,9 @@
 //Components
+import { useEffect, useRef } from "react";
 import { StyleSheet, Animated, View, TouchableOpacity } from "react-native";
 
 function MyTabBar({ state, descriptors, navigation, position }) {
+    const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
     return (
         <View style={{ flexDirection: "row", margin: 12 }}>
             {state.routes.map((route, index) => {
@@ -43,7 +45,7 @@ function MyTabBar({ state, descriptors, navigation, position }) {
                 const fontColor = isFocused ? "white" : "#FF4200";
 
                 return (
-                    <TouchableOpacity
+                    <AnimatedTouchable
                         key={route.name}
                         accessibilityRole="button"
                         accessibilityState={isFocused ? { selected: true } : {}}
@@ -61,16 +63,20 @@ function MyTabBar({ state, descriptors, navigation, position }) {
                             borderBottomColor: "#FF4200",
                         }}
                     >
-                        <Animated.Text
-                            style={{
-                                color: fontColor,
-                                fontFamily: "Kanit-Medium",
-                                fontSize: 16,
-                            }}
-                        >
-                            {label}
-                        </Animated.Text>
-                    </TouchableOpacity>
+                        <Animated.View style={{ 
+                            // opacity,
+                            }}>
+                            <Animated.Text
+                                style={{
+                                    color: fontColor,
+                                    fontFamily: "Kanit-Medium",
+                                    fontSize: 16,
+                                }}
+                            >
+                                {label}
+                            </Animated.Text>
+                        </Animated.View>
+                    </AnimatedTouchable>
                 );
             })}
         </View>

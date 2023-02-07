@@ -1,3 +1,4 @@
+//Components
 import {
     StyleSheet,
     Text,
@@ -6,6 +7,7 @@ import {
     Image,
     Pressable,
 } from "react-native";
+//Packages
 import React from "react";
 
 const Large = ({ label, image, onPress, numberOfLines=2}) => {
