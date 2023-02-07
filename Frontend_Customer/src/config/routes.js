@@ -34,7 +34,11 @@ const MyStack = ({}) => {
                         component={FoodList}
                         options={{ headerShown: false }}
                     />
-                    <Stack.Screen name="FoodDetail" component={FoodDetail} />
+                    <Stack.Screen
+                        name="FoodDetail"
+                        component={FoodDetail}
+                        options={{ headerShown: false }}
+                    />
                     <Stack.Screen
                         name="LostItemList"
                         component={LostItemList}
