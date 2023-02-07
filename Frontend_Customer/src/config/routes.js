@@ -8,6 +8,7 @@ import LostItemList from "../screens/LostItemList";
 import SecondHandList from "../screens/SecondHandList";
 import TapStackRoutes from "./TapStackRoutes";
 import HomePageHeader from "../components/HomePageHeader";
+import FoodDetail from "../screens/restaurant/FoodDetail";
 
 const Stack = createStackNavigator();
 
@@ -28,7 +29,12 @@ const MyStack = ({}) => {
                         }}
                     />
                     <Stack.Screen name="MarketList" component={MarketList} />
-                    <Stack.Screen name="FoodList" component={FoodList} options={{headerShown:false}}/>
+                    <Stack.Screen
+                        name="FoodList"
+                        component={FoodList}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen name="FoodDetail" component={FoodDetail} />
                     <Stack.Screen
                         name="LostItemList"
                         component={LostItemList}
@@ -39,7 +45,9 @@ const MyStack = ({}) => {
                     />
                 </>
             ) : (
-                <Stack.Screen name="Login" component={Login} />
+                <>
+                    <Stack.Screen name="Login" component={Login} />
+                </>
             )}
         </Stack.Navigator>
     );

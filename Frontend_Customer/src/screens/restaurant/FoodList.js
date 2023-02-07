@@ -70,11 +70,14 @@ const FoodList = ({ route, navigation }) => {
     ];
 
     const handlerOnPressBack = () => {
-        navigation.goBack()
-    }
+        navigation.goBack();
+    };
+    const handlerOnPressCard = (food) => {
+        navigation.navigate("FoodDetail", { food: food });
+    };
     return (
         <View style={{ flex: 1 }}>
-            <FoodListHeader handlerOnPressBack={handlerOnPressBack}/>
+            <FoodListHeader handlerOnPressBack={handlerOnPressBack} />
             <View style={{ marginTop: -50 }}>
                 <CardRestaurantName restaurant={restaurant} />
             </View>
@@ -93,7 +96,10 @@ const FoodList = ({ route, navigation }) => {
                     renderItem={({ item, index }) => (
                         <View style={styles.item}>
                             {/* <Text style={styles.title}>{item.name}</Text> */}
-                            <CardFood food={item} />
+                            <CardFood
+                                food={item}
+                                handlerOnPressCard={handlerOnPressCard}
+                            />
                         </View>
                     )}
                 />

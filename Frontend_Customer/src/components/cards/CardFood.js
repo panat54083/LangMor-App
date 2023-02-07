@@ -2,11 +2,14 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React from "react";
 
 const CardFood = (props) => {
-    const { food } = props;
+    const { food, handlerOnPressCard } = props;
+    const headerOnPress = () => {
+        handlerOnPressCard(food)
+    };
     return (
         <View style={{ alignItems: "center" }}>
             <View style={styles.card}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={headerOnPress}>
                     <View style={styles.container}>
                         <View>
                             <Image
