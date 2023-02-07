@@ -1,5 +1,6 @@
-import { StyleSheet, Text, View, Pressable } from "react-native";
 import React from "react";
+//conponent
+import { StyleSheet, Text, View, Pressable } from "react-native";
 
 const AcceptButton = ({ label, onPress }) => {
     return (

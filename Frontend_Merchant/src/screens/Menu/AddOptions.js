@@ -2,7 +2,10 @@
 import { StyleSheet, Text, View } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 //Packages
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import CustomTextInput from "../../components/Inputs/CustomTextInput";
+import AcceptButton from "../../components/buttons/AcceptButton";
+import AddOptionsCheck from "../../components/Checkboxes/AddOptionsCheck";
 
 const AddOptions = ({ navigation }) => {
     useEffect(() => {
@@ -20,13 +23,31 @@ const AddOptions = ({ navigation }) => {
             ),
         });
     }, []);
+
+    const [name, setName] = useState("");
+
+    const handleSave = () => {
+        console.log({name: name})
+        console.log("Save")
+    }
     return (
-        <View>
-            <Text>AddOptions</Text>
+        <View style={styles.container}>
+            <CustomTextInput
+                placeholder={"ชื่อตัวลือก"}
+                value={name}
+                onChangeText={setName}
+            />
+            <AddOptionsCheck/>
+            <AcceptButton label={"บันทึก"} onPress={handleSave}/>
         </View>
     );
 };
 
 export default AddOptions;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    container:{
+        marginTop:20,
+        marginHorizontal:20,
+    }
+});

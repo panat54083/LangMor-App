@@ -31,8 +31,14 @@ const AddMenu = ({ navigation }) => {
     const [description, setDescription] = useState("");
 
     const handleSave = () => {
-        console.log("Save")
-    }
+        console.log({
+            image: image,
+            name: name,
+            price: price,
+            description: description,
+        });
+        console.log("Save");
+    };
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -63,7 +69,7 @@ const AddMenu = ({ navigation }) => {
                         numberOfLines={4}
                     />
                 </View>
-                <AcceptButton label={"บันทึก"} onPress={handleSave}/>
+                <AcceptButton label={"บันทึก"} onPress={handleSave} />
             </ScrollView>
         </View>
     );
