@@ -74,7 +74,9 @@ const FoodDetail = ({ route, navigation }) => {
                 imgSrc={food.imgLink}
                 handlerOnPressBack={handlerOnPressBack}
             />
-            <RadioSetBtn/>
+            <View>
+                
+            </View>
         </View>
     );
 };

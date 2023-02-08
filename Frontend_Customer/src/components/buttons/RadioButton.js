@@ -3,16 +3,23 @@ import React from "react";
 
 const RadioButton = (props) => {
     return (
-        <TouchableOpacity
-            style={styles.radioButtonContainer}
-            onPress={props.onPress}
-        >
-            <View style={styles.radioButtonCircle}>
-                {props.selected ? (
-                    <View style={styles.selectedRadioButton} />
-                ) : null}
+        <TouchableOpacity onPress={props.onPress}>
+            <View style={styles.radioButtonContainer}>
+                <View style={styles.radioButtonCircle}>
+                    {props.selected ? (
+                        <View style={styles.selectedRadioButton} />
+                    ) : null}
+                </View>
+                <Text style={styles.radioButtonLabel}>{props.label}</Text>
+                <Text
+                    style={[
+                        styles.radioButtonLabel,
+                        { marginLeft: "auto", marginRight: "12.33%" },
+                    ]}
+                >
+                    {props.increasePrice}
+                </Text>
             </View>
-            <Text style={styles.radioButtonLabel}>{props.label}</Text>
         </TouchableOpacity>
     );
 };
@@ -23,7 +30,10 @@ const styles = StyleSheet.create({
     radioButtonContainer: {
         flexDirection: "row",
         alignItems: "center",
-        margin: 10,
+        backgroundColor: "#FFE8E0",
+        height: 40,
+        marginBottom: 6,
+        borderRadius: 20,
     },
     radioButtonCircle: {
         height: 20,
@@ -33,6 +43,9 @@ const styles = StyleSheet.create({
         borderColor: "#ACACAC",
         alignItems: "center",
         justifyContent: "center",
+        marginLeft: "3.33%",
+        marginRight: "4%",
+        backgroundColor: "white",
     },
     selectedRadioButton: {
         height: 10,

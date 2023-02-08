@@ -20,24 +20,19 @@ const RadioSetBtn = (props) => {
     };
     return (
         <View>
-            <RadioButton
-                label="Option 1"
-                value="option1"
-                selected={selectedValue === "option1"}
-                onPress={() => handleOnPress("option1")}
-            />
-            <RadioButton
-                label="Option 2"
-                value="option2"
-                selected={selectedValue === "option2"}
-                onPress={() => handleOnPress("option2")}
-            />
-            <RadioButton
-                label="Option 3"
-                value="option3"
-                selected={selectedValue === "option3"}
-                onPress={() => handleOnPress("option3")}
-            />
+            {option.option.map((opt) => {
+                return (
+                    <View key={opt.optName}>
+                        <RadioButton
+                            label={opt.optName}
+                            increasePrice={opt.increasePrice}
+                            value={opt.optName}
+                            selected={selectedValue === opt.optName}
+                            onPress={() => handleOnPress(opt.optName)}
+                        />
+                    </View>
+                );
+            })}
         </View>
     );
 };
