@@ -1,7 +1,7 @@
 import React from "react";
 //conponents
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import CheckboxButton from "./CheckboxButton";
+import CheckboxButton from "../Checkboxes/CheckboxButton";
 import Number from "../Inputs/Number";
 const AddOptionsCheck = ({ number, setNumber }) => {
     const [checked1, setChecked1] = React.useState(false);
@@ -9,20 +9,20 @@ const AddOptionsCheck = ({ number, setNumber }) => {
 
     return (
         <View style={styles.container}>
-                    <CheckboxButton
-                        label = "ลูกค้าจำเป็นต้องเลือก"
-                        checked={checked1}
-                        onPress={() => {
-                            setChecked1(!checked1);
-                        }}
-                    />
-                    <CheckboxButton
-                        label={"ลูกค้าสามารถเลือกได้มากกว่า 1 ช้อยส์"}
-                        checked={checked2}
-                        onPress={() => {
-                            setChecked2(!checked2);
-                        }}
-                    />
+            <CheckboxButton
+                label="ลูกค้าจำเป็นต้องเลือก"
+                checked={checked1}
+                onPress={() => {
+                    setChecked1(!checked1);
+                }}
+            />
+            <CheckboxButton
+                label={"ลูกค้าสามารถเลือกได้มากกว่า 1 ช้อยส์"}
+                checked={checked2}
+                onPress={() => {
+                    setChecked2(!checked2);
+                }}
+            />
             <View>
                 <>
                     {checked2 ? (
