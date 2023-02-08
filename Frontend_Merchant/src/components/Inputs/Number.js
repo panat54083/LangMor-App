@@ -54,13 +54,13 @@ const styles = StyleSheet.create({
     },
     minus: {
         borderWidth: 2,
-        borderTopLeftRadius: 25,
-        borderBottomLeftRadius: 25,
+        borderTopLeftRadius: 15,
+        borderBottomLeftRadius: 15,
     },
     plus: {
         borderWidth: 2,
-        borderTopRightRadius: 25,
-        borderBottomRightRadius: 25,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
     },
     text: {
         fontFamily: "Kanit-Medium",

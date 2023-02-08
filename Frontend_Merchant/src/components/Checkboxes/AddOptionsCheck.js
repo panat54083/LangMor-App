@@ -1,7 +1,7 @@
 import React from "react";
 //conponents
-import { StyleSheet, Text, View } from "react-native";
-import { Checkbox } from "react-native-paper";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import CheckboxButton from "./CheckboxButton";
 import Number from "../Inputs/Number";
 const AddOptionsCheck = ({ number, setNumber }) => {
     const [checked1, setChecked1] = React.useState(false);
@@ -9,38 +9,28 @@ const AddOptionsCheck = ({ number, setNumber }) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.row}>
-                <Checkbox
-                    color="#FF7A00"
-                    status={checked1 ? "checked" : "unchecked"}
-                    onPress={() => {
-                        setChecked1(!checked1);
-                    }}
-                />
-                <Text style={styles.text}>ลูกค้าจำเป็นต้องเลือก</Text>
-            </View>
-            <View style={styles.row}>
-                <Checkbox
-                    color="#FF7A00"
-                    status={checked2 ? "checked" : "unchecked"}
-                    onPress={() => {
-                        setChecked2(!checked2);
-                    }}
-                />
-                <Text style={styles.text}>
-                    ลูกค้าสามารถเลือกได้มากกว่า 1 ช้อยส์
-                </Text>
-            </View>
+                    <CheckboxButton
+                        label = "ลูกค้าจำเป็นต้องเลือก"
+                        checked={checked1}
+                        onPress={() => {
+                            setChecked1(!checked1);
+                        }}
+                    />
+                    <CheckboxButton
+                        label={"ลูกค้าสามารถเลือกได้มากกว่า 1 ช้อยส์"}
+                        checked={checked2}
+                        onPress={() => {
+                            setChecked2(!checked2);
+                        }}
+                    />
             <View>
                 <>
                     {checked2 ? (
                         <View style={[styles.row]}>
-                            <View style={{ flex: 1, alignItems:"center" }}>
-                                <Text style={styles.text}>
-                                    เลือกได้สูงสุด
-                                </Text>
+                            <View style={{ flex: 1, alignItems: "center" }}>
+                                <Text style={styles.text}>เลือกได้สูงสุด</Text>
                             </View>
-                            <View style={{ flex: 2 ,alignItems:"center"}}>
+                            <View style={{ flex: 2, alignItems: "center" }}>
                                 <Number number={number} setNumber={setNumber} />
                             </View>
                         </View>
@@ -56,7 +46,7 @@ const AddOptionsCheck = ({ number, setNumber }) => {
 export default AddOptionsCheck;
 
 const styles = StyleSheet.create({
-    container: { backgroundColor: "white" },
+    container: { backgroundColor: "white", borderRadius: 15 },
     row: {
         flexDirection: "row",
         alignItems: "center",
@@ -66,5 +56,7 @@ const styles = StyleSheet.create({
         fontFamily: "Kanit-SemiBold",
         fontSize: 14,
         color: "#9D9693",
+        // flex: 1,
+        // backgroundColor: "red",
     },
 });
