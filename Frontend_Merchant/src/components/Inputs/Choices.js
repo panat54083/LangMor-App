@@ -1,9 +1,11 @@
 //Packages
-import React from "react";
+import React, { useState } from "react";
+import { Picker } from "@react-native-picker/picker";
 //Components
 import { StyleSheet, Text, View, TextInput } from "react-native";
 
 const Choices = ({ value, onChangeText, placeholder = null }) => {
+    const [selectedLanguage, setSelectedLanguage] = useState();
     return (
         <View style={[styles.container, styles.shadow]}>
             <View style={styles.first}>
@@ -14,7 +16,17 @@ const Choices = ({ value, onChangeText, placeholder = null }) => {
                     placeholder={placeholder}
                 />
             </View>
-            <View style={styles.second}></View>
+            <View style={styles.second}>
+                <Picker
+                    selectedValue={selectedLanguage}
+                    onValueChange={(itemValue, itemIndex) =>
+                        setSelectedLanguage(itemValue)
+                    }
+                >
+                    <Picker.Item label="Java" value="java" />
+                    <Picker.Item label="JavaScript" value="js" />
+                </Picker>
+            </View>
             <View style={styles.thrid}>
                 <TextInput
                     style={styles.input}
@@ -36,7 +48,7 @@ const styles = StyleSheet.create({
         marginBottom: 4,
         flexDirection: "row",
         backgroundColor: "white",
-        borderRadius:15,
+        borderRadius: 15,
     },
     input: {
         fontFamily: "Kanit-Medium",
