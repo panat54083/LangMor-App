@@ -21,8 +21,8 @@ const Number = ({ number, setNumber, minNumber = 0, maxNumber = 99 }) => {
             >
                 <Text style={styles.text}>-</Text>
             </TouchableOpacity>
-            <View style={styles.button}>
-                <Text>{number}</Text>
+            <View style={[styles.button, {width:70}]}>
+                <Text style={styles.text}>{number}</Text>
             </View>
             <TouchableOpacity
                 onPress={plus}
@@ -65,6 +65,6 @@ const styles = StyleSheet.create({
     text: {
         fontFamily: "Kanit-Medium",
         fontSize: 20,
-        color: "black",
+        color: "#FF4200",
     },
 });

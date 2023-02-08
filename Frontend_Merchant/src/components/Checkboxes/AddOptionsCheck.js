@@ -3,7 +3,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Checkbox } from "react-native-paper";
 import Number from "../Inputs/Number";
-const AddOptionsCheck = ({number, setNumber}) => {
+const AddOptionsCheck = ({ number, setNumber }) => {
     const [checked1, setChecked1] = React.useState(false);
     const [checked2, setChecked2] = React.useState(false);
 
@@ -34,9 +34,15 @@ const AddOptionsCheck = ({number, setNumber}) => {
             <View>
                 <>
                     {checked2 ? (
-                        <View style={styles.row}>
-                            <Text style={styles.text}> เลือกได้สูงสุด </Text>
-                            <Number number={number} setNumber={setNumber}/>
+                        <View style={[styles.row]}>
+                            <View style={{ flex: 1, alignItems:"center" }}>
+                                <Text style={styles.text}>
+                                    เลือกได้สูงสุด
+                                </Text>
+                            </View>
+                            <View style={{ flex: 2 ,alignItems:"center"}}>
+                                <Number number={number} setNumber={setNumber} />
+                            </View>
                         </View>
                     ) : (
                         ""
