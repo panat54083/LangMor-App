@@ -1,22 +1,48 @@
 import React from "react";
 //conponents
 import { StyleSheet, Text, View } from "react-native";
-import { Checkbox, Button } from "react-native-paper";
-import Icon from 'react-native-vector-icons/Ionicons';
-const AddOptionsCheck = () => {
-    const [checked, setChecked] = React.useState(false);
+import { Checkbox } from "react-native-paper";
+import Number from "../Inputs/Number";
+const AddOptionsCheck = ({number, setNumber}) => {
+    const [checked1, setChecked1] = React.useState(false);
+    const [checked2, setChecked2] = React.useState(false);
 
     return (
-        <View>
-            <Icon name="ios-person" size={30} color="#4F8EF7" />
-            <Button icon="camera">Press me</Button>
-            <Checkbox
-                lable
-                status={checked ? "checked" : "unchecked"}
-                onPress={() => {
-                    setChecked(!checked);
-                }}
-            />
+        <View style={styles.container}>
+            <View style={styles.row}>
+                <Checkbox
+                    color="#FF7A00"
+                    status={checked1 ? "checked" : "unchecked"}
+                    onPress={() => {
+                        setChecked1(!checked1);
+                    }}
+                />
+                <Text style={styles.text}>ลูกค้าจำเป็นต้องเลือก</Text>
+            </View>
+            <View style={styles.row}>
+                <Checkbox
+                    color="#FF7A00"
+                    status={checked2 ? "checked" : "unchecked"}
+                    onPress={() => {
+                        setChecked2(!checked2);
+                    }}
+                />
+                <Text style={styles.text}>
+                    ลูกค้าสามารถเลือกได้มากกว่า 1 ช้อยส์
+                </Text>
+            </View>
+            <View>
+                <>
+                    {checked2 ? (
+                        <View style={styles.row}>
+                            <Text style={styles.text}> เลือกได้สูงสุด </Text>
+                            <Number number={number} setNumber={setNumber}/>
+                        </View>
+                    ) : (
+                        ""
+                    )}
+                </>
+            </View>
         </View>
     );
 };
@@ -24,5 +50,15 @@ const AddOptionsCheck = () => {
 export default AddOptionsCheck;
 
 const styles = StyleSheet.create({
-    container: {},
+    container: { backgroundColor: "white" },
+    row: {
+        flexDirection: "row",
+        alignItems: "center",
+        borderRadius: 15,
+    },
+    text: {
+        fontFamily: "Kanit-SemiBold",
+        fontSize: 14,
+        color: "#9D9693",
+    },
 });

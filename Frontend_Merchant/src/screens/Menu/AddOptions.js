@@ -8,6 +8,7 @@ import AcceptButton from "../../components/buttons/AcceptButton";
 import AddOptionsCheck from "../../components/Checkboxes/AddOptionsCheck";
 
 const AddOptions = ({ navigation }) => {
+
     useEffect(() => {
         navigation.setOptions({
             title: "สร้างตัวเลือกใหม่",
@@ -25,9 +26,10 @@ const AddOptions = ({ navigation }) => {
     }, []);
 
     const [name, setName] = useState("");
+    const [number, setNumber ] = useState(0)
 
     const handleSave = () => {
-        console.log({name: name})
+        console.log({name: name, number: number})
         console.log("Save")
     }
     return (
@@ -37,7 +39,10 @@ const AddOptions = ({ navigation }) => {
                 value={name}
                 onChangeText={setName}
             />
-            <AddOptionsCheck/>
+            <View style={{marginBottom : 10}}>
+
+            <AddOptionsCheck number={number} setNumber={setNumber}/>
+            </View>
             <AcceptButton label={"บันทึก"} onPress={handleSave}/>
         </View>
     );
@@ -50,4 +55,5 @@ const styles = StyleSheet.create({
         marginTop:20,
         marginHorizontal:20,
     }
+    
 });
