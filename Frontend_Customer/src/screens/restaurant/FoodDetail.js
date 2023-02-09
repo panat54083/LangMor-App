@@ -74,8 +74,13 @@ const FoodDetail = ({ route, navigation }) => {
                 imgSrc={food.imgLink}
                 handlerOnPressBack={handlerOnPressBack}
             />
-            <View>
-                
+            <View style={{ backgroundColor: "#FFFFFF" }}>
+                <View style={{ marginLeft: "5.33%", marginTop: 14 }}>
+                    <Text style={styles.foodNameText}>{food.name}</Text>
+                    <View style={{ marginBottom: 11, marginTop: 10 }}>
+                        <Text style={styles.detailText}>{food.detail}</Text>
+                    </View>
+                </View>
             </View>
         </View>
     );
@@ -83,4 +88,14 @@ const FoodDetail = ({ route, navigation }) => {
 
 export default FoodDetail;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    detailText: {
+        fontSize: 14,
+        fontFamily: "Kanit-Bold",
+        color: "#9D9693",
+    },
+    foodNameText: {
+        fontSize: 22,
+        fontFamily: "Kanit-Bold",
+    },
+});
