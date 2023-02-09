@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 //conponents
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import CheckboxButton from "../Checkboxes/CheckboxButton";
 import Number from "../Inputs/Number";
-const AddOptionsCheck = ({ number, setNumber }) => {
-    const [checked1, setChecked1] = React.useState(false);
-    const [checked2, setChecked2] = React.useState(false);
+const AddOptionsCheck = ({ getRequired, getMaximum }) => {
+    const [checked1, setChecked1] = useState(false);
+    const [maximum, setMaximum] = useState(1);
 
+    useEffect(() => {
+        getMaximum(maximum);
+        getRequired(checked1);
+    }, [maximum, checked1]);
     return (
         <View style={styles.container}>
             <CheckboxButton
@@ -16,28 +20,35 @@ const AddOptionsCheck = ({ number, setNumber }) => {
                     setChecked1(!checked1);
                 }}
             />
-            <CheckboxButton
-                label={"ลูกค้าสามารถเลือกได้มากกว่า 1 ช้อยส์"}
-                checked={checked2}
-                onPress={() => {
-                    setChecked2(!checked2);
+            <View style={[styles.row, {marginTop: 4}]}>
+                <View style={{ flex: 1, alignItems: "center" }}>
+                    <Text style={styles.text}>เลือกได้สูงสุด</Text>
+                </View>
+                <View style={{ flex: 2, alignItems: "center" }}>
+                    <Number getNumber={setMaximum} />
+                </View>
+            </View>
+            <View
+                style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    margin: 4,
                 }}
-            />
-            <View>
-                <>
-                    {checked2 ? (
-                        <View style={[styles.row]}>
-                            <View style={{ flex: 1, alignItems: "center" }}>
-                                <Text style={styles.text}>เลือกได้สูงสุด</Text>
-                            </View>
-                            <View style={{ flex: 2, alignItems: "center" }}>
-                                <Number number={number} setNumber={setNumber} />
-                            </View>
-                        </View>
-                    ) : (
-                        ""
-                    )}
-                </>
+            >
+                {maximum === 0 ? (
+                    <Text
+                        style={[
+                            styles.text,
+                            {
+                                color: "#FF4200",
+                            },
+                        ]}
+                    >
+                        ลูกค้าสามารถเลือกได้ทั้งหมด
+                    </Text>
+                ) : (
+                    ""
+                )}
             </View>
         </View>
     );
@@ -46,7 +57,7 @@ const AddOptionsCheck = ({ number, setNumber }) => {
 export default AddOptionsCheck;
 
 const styles = StyleSheet.create({
-    container: { backgroundColor: "white", borderRadius: 15 },
+    container: { backgroundColor: "white", borderRadius: 15, padding:4},
     row: {
         flexDirection: "row",
         alignItems: "center",

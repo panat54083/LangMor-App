@@ -26,10 +26,24 @@ const AddOptions = ({ navigation }) => {
     }, []);
 
     const [name, setName] = useState("");
-    const [number, setNumber] = useState(0);
+    const [required, setRequired] = useState(false);
+    const [maximum, setMaximum] = useState(0);
+    const [data, setData] = useState({
+        name: null,
+        required: null,
+        maximum: null,
+    });
 
+    useEffect(() => {
+        setData({
+            ...data,
+            name: name,
+            maximum: maximum,
+            required: required,
+        });
+    }, [name, maximum, required]);
     const handleSave = () => {
-        console.log({ name: name, number: number });
+        console.log(data);
         console.log("Save");
     };
     return (
@@ -43,8 +57,8 @@ const AddOptions = ({ navigation }) => {
                     />
                     <View style={{ marginBottom: 4 }}>
                         <AddOptionsCheck
-                            number={number}
-                            setNumber={setNumber}
+                            getRequired={setRequired}
+                            getMaximum={setMaximum}
                         />
                     </View>
                 </View>

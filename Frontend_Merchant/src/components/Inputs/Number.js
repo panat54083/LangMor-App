@@ -1,18 +1,22 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const Number = ({ number, setNumber, minNumber = 0, maxNumber = 99 }) => {
+const Number = ({ getNumber, minNumber = 0, maxNumber = 99 }) => {
+    const [digit , setDigit] = useState(1)
     const minus = () => {
-        if (number > minNumber) {
-            setNumber(number - 1);
+        if (digit> minNumber) {
+            setDigit(digit - 1);
         }
     };
 
     const plus = () => {
-        if (number <= maxNumber) {
-            setNumber(number + 1);
+        if (digit <= maxNumber) {
+            setDigit(digit + 1);
         }
     };
+    useEffect(()=>{
+        getNumber(digit)
+    },[digit])
     return (
         <View style={styles.container}>
             <TouchableOpacity
@@ -22,7 +26,7 @@ const Number = ({ number, setNumber, minNumber = 0, maxNumber = 99 }) => {
                 <Text style={styles.text}>-</Text>
             </TouchableOpacity>
             <View style={[styles.button, {width:70}]}>
-                <Text style={styles.text}>{number}</Text>
+                <Text style={styles.text}>{digit}</Text>
             </View>
             <TouchableOpacity
                 onPress={plus}

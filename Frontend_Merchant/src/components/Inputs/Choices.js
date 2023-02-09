@@ -1,31 +1,27 @@
 //Packages
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Picker } from "@react-native-picker/picker";
 //Components
-import { StyleSheet, Text, View, TextInput } from "react-native";
+import { StyleSheet, Text, View, TextInput, Modal } from "react-native";
+import Dropdown from "./Dropdown";
 
-const Choices = ({ value, onChangeText, placeholder = null }) => {
-    const [selectedLanguage, setSelectedLanguage] = useState();
+const Choices = ({ value, onChangeText, }) => {
+    const [priceOption, setPriceOption] = useState("increase")
+
     return (
-        <View style={[styles.container, styles.shadow]}>
+        <View style={[styles.container, 
+        // styles.shadow
+        ]}>
             <View style={styles.first}>
                 <TextInput
                     style={styles.input}
                     onChangeText={onChangeText}
                     value={value}
-                    placeholder={placeholder}
+                    placeholder="ชื่อตัวเลือก"
                 />
             </View>
             <View style={styles.second}>
-                <Picker
-                    selectedValue={selectedLanguage}
-                    onValueChange={(itemValue, itemIndex) =>
-                        setSelectedLanguage(itemValue)
-                    }
-                >
-                    <Picker.Item label="Java" value="java" />
-                    <Picker.Item label="JavaScript" value="js" />
-                </Picker>
+                <Dropdown setSelectValue={setPriceOption}/>
             </View>
             <View style={styles.thrid}>
                 <TextInput
@@ -44,7 +40,7 @@ export default Choices;
 
 const styles = StyleSheet.create({
     container: {
-        // borderRadius: 15,
+        flex:1,
         marginBottom: 4,
         flexDirection: "row",
         backgroundColor: "white",
@@ -58,9 +54,10 @@ const styles = StyleSheet.create({
     },
     first: {
         flex: 2,
+        // backgroundColor: "red",
     },
     second: {
-        backgroundColor: "blue",
+        // backgroundColor: "blue",
         flex: 1,
     },
     thrid: {
