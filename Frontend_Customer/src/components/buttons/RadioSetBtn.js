@@ -3,16 +3,7 @@ import { useState } from "react";
 import RadioButton from "./RadioButton";
 
 const RadioSetBtn = (props) => {
-    const option = {
-        name: "ความหวาน",
-        option: [
-            { optName: "หวานน้อย", increasePrice: 0 },
-            { optName: "หวานมาก", increasePrice: 10 },
-            { optName: "หวานปกติ", increasePrice: 0 },
-        ],
-        requireFill: true,
-        IsRadio: true,
-    };
+    const {option} = props
     const [selectedValue, setSelectedValue] = useState(null);
 
     const handleOnPress = (value) => {
