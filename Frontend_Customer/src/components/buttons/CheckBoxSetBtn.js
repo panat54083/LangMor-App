@@ -3,26 +3,38 @@ import React, { useEffect, useState } from "react";
 import Checkbox from "./CheckBox";
 
 const CheckBoxSetBtn = (props) => {
-    const { option } = props;
-
+    const { option, handlerOnCheckBoxChangeVal } = props;
     const [checkedValues, setCheckedValues] = useState([]);
+    const [checkedValuesPrice, setCheckedValuesPrice] = useState([]);
 
     const handleOnPress = (value) => {
-        const currentIndex = checkedValues.indexOf(value);
+        // value
+        const currentValueIndex = checkedValues.indexOf(value.optName);
         const newCheckedValues = [...checkedValues];
-
-        if (currentIndex === -1) {
-            newCheckedValues.push(value);
+        if (currentValueIndex === -1) {
+            newCheckedValues.push(value.optName);
         } else {
-            newCheckedValues.splice(currentIndex, 1);
+            newCheckedValues.splice(currentValueIndex, 1);
         }
-
         setCheckedValues(newCheckedValues);
+
+        // value price
+        const currentPriceIndex = checkedValuesPrice.indexOf(
+            value.increasePrice
+        );
+        const newCheckedValuesPrice = [...checkedValuesPrice];
+        if (currentPriceIndex === -1) {
+            newCheckedValuesPrice.push(value.increasePrice);
+        } else {
+            newCheckedValuesPrice.splice(currentPriceIndex, 1);
+        }
+        setCheckedValuesPrice(newCheckedValuesPrice);
     };
-    // check log
+
     useEffect(() => {
-        console.log(checkedValues);
-    }, [checkedValues]);
+        const data = {name:option.name, value:checkedValues, price:checkedValuesPrice}
+        handlerOnCheckBoxChangeVal(data)
+    }, [checkedValues, checkedValuesPrice]);
     return (
         <View>
             {option.option.map((opt) => {
@@ -33,7 +45,7 @@ const CheckBoxSetBtn = (props) => {
                             increasePrice={opt.increasePrice}
                             value={opt.optName}
                             checked={checkedValues.includes(opt.optName)}
-                            onPress={() => handleOnPress(opt.optName)}
+                            onPress={() => handleOnPress(opt)}
                         />
                     </View>
                 );

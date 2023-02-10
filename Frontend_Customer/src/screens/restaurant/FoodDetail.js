@@ -25,7 +25,7 @@ const FoodDetail = ({ route, navigation }) => {
                 { optName: "เผ็ดมาก", increasePrice: 10 },
                 { optName: "เผ็ดปกติ", increasePrice: 20 },
             ],
-            requireFill: false,
+            requireFill: true,
             IsRadio: true,
         },
         {
@@ -88,7 +88,26 @@ const FoodDetail = ({ route, navigation }) => {
 
         setConfirmOption((prevValue) => {
             const newArr = [...prevValue];
-            if (index !== -1) {
+            if (index !== -1 && data.value) {
+                newArr[index] = {
+                    name: newArr[index].name,
+                    needCheck: false,
+                    value: data.value,
+                    increasePrice: data.price,
+                };
+            }
+            return newArr;
+        });
+    };
+
+    const handlerOnCheckBoxChangeVal = (data) => {
+        const index = confirmOption.findIndex((option) => {
+            return option.name === data.name;
+        });
+
+        setConfirmOption((prevValue) => {
+            const newArr = [...prevValue];
+            if (index !== -1 && data.value.length !== 0) {
                 newArr[index] = {
                     name: newArr[index].name,
                     needCheck: false,
@@ -123,7 +142,6 @@ const FoodDetail = ({ route, navigation }) => {
                     </View>
                 </View>
             </View>
-            <View></View>
             <ScrollView>
                 <View style={{ paddingBottom: 65 }}>
                     {/* Check this food have option */}
@@ -148,7 +166,12 @@ const FoodDetail = ({ route, navigation }) => {
                                                   }
                                               />
                                           ) : (
-                                              <CheckBoxSetBtn option={option} />
+                                              <CheckBoxSetBtn
+                                                  option={option}
+                                                  handlerOnCheckBoxChangeVal={
+                                                      handlerOnCheckBoxChangeVal
+                                                  }
+                                              />
                                           )}
                                       </View>
                                   </View>
