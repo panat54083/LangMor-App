@@ -1,5 +1,5 @@
 import { Button, ScrollView, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import FoodDetailHeader from "../../components/headers/FoodDetailHeader";
 import RadioSetBtn from "../../components/buttons/RadioSetBtn";
 import CheckBoxSetBtn from "../../components/buttons/CheckBoxSetBtn";
@@ -63,36 +63,49 @@ const FoodDetail = ({ route, navigation }) => {
         let array = [];
         foodOption.forEach((option) => {
             if (option.requireFill) {
-                array.push({ name: option.name, needCheck: true, value: null });
+                array.push({
+                    name: option.name,
+                    needCheck: true,
+                    value: null,
+                    increasePrice: 0,
+                });
             } else {
                 array.push({
                     name: option.name,
                     needCheck: false,
                     value: null,
+                    increasePrice: 0,
                 });
             }
         });
         return array;
     });
-    // console.log(requireFillCheck);
 
-    // const handlerRequire = () => {
-    //     setRequireFillCheck((prevState) => {
-    //         let newState = [];
-    //         prevState.forEach((option) => {
-    //             if (option.name === "ความหวาน") {
-    //                 newState.push({ name: option.name, check: true });
-    //             } else {
-    //                 newState.push(option);
-    //             }
-    //         });
-    //         return newState;
-    //     });
-    // };
-    // useEffect(() => {
-    //     console.log(requireFillCheck);
-    // }, [requireFillCheck]);
+    const handlerOnRadioChangeVal = (data) => {
+        const index = confirmOption.findIndex((option) => {
+            return option.name === data.name;
+        });
 
+        setConfirmOption((prevValue) => {
+            const newArr = [...prevValue];
+            if (index !== -1) {
+                newArr[index] = {
+                    name: newArr[index].name,
+                    needCheck: false,
+                    value: data.value,
+                    increasePrice: data.price,
+                };
+            }
+            return newArr;
+        });
+    };
+
+    useEffect(() => {
+        console.log(confirmOption);
+    }, [confirmOption]);
+    const handleOnPressConfirm = () => {
+        console.log(confirmOption);
+    };
     const handlerOnPressBack = () => {
         navigation.goBack();
     };
@@ -110,6 +123,7 @@ const FoodDetail = ({ route, navigation }) => {
                     </View>
                 </View>
             </View>
+            <View></View>
             <ScrollView>
                 <View style={{ paddingBottom: 65 }}>
                     {/* Check this food have option */}
@@ -127,7 +141,12 @@ const FoodDetail = ({ route, navigation }) => {
                                       >
                                           {/* Check option is Radio or CheckBox */}
                                           {option.IsRadio ? (
-                                              <RadioSetBtn option={option} />
+                                              <RadioSetBtn
+                                                  option={option}
+                                                  handlerOnRadioChangeVal={
+                                                      handlerOnRadioChangeVal
+                                                  }
+                                              />
                                           ) : (
                                               <CheckBoxSetBtn option={option} />
                                           )}
@@ -139,7 +158,10 @@ const FoodDetail = ({ route, navigation }) => {
                 </View>
             </ScrollView>
             <View style={styles.addItemBtn}>
-                <Button title="เพิ่มลงในตะกร้า" />
+                <Button
+                    title="เพิ่มลงในตะกร้า"
+                    onPress={handleOnPressConfirm}
+                />
             </View>
         </View>
     );

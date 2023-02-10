@@ -1,13 +1,24 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RadioButton from "./RadioButton";
 
 const RadioSetBtn = (props) => {
-    const {option} = props
+    const { option, handlerOnRadioChangeVal } = props;
     const [selectedValue, setSelectedValue] = useState(null);
+    const [selectedValuePrice, setSelectedValuePrice] = useState(0);
+    
+    useEffect(() => {
+        const data = {
+            name: option.name,
+            value: selectedValue,
+            price: selectedValuePrice,
+        };
+        handlerOnRadioChangeVal(data);
+    }, [selectedValue]);
 
     const handleOnPress = (value) => {
-        setSelectedValue(value);
+        setSelectedValuePrice(value.increasePrice);
+        setSelectedValue(value.optName);
     };
     return (
         <View>
@@ -19,7 +30,7 @@ const RadioSetBtn = (props) => {
                             increasePrice={opt.increasePrice}
                             value={opt.optName}
                             selected={selectedValue === opt.optName}
-                            onPress={() => handleOnPress(opt.optName)}
+                            onPress={() => handleOnPress(opt)}
                         />
                     </View>
                 );
