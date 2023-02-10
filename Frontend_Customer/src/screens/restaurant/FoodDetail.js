@@ -2,6 +2,8 @@ import { Button, ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import FoodDetailHeader from "../../components/headers/FoodDetailHeader";
 import RadioSetBtn from "../../components/buttons/RadioSetBtn";
+import CheckBoxSetBtn from "../../components/buttons/CheckBoxSetBtn";
+
 const FoodDetail = ({ route, navigation }) => {
     const { food } = route.params;
     const [isAllInputsFilled, setIsAllInputsFilled] = useState(false);
@@ -11,7 +13,7 @@ const FoodDetail = ({ route, navigation }) => {
             option: [
                 { optName: "หวานน้อย", increasePrice: 0 },
                 { optName: "หวานมาก", increasePrice: 10 },
-                { optName: "หวานปกติ", increasePrice: 0 },
+                { optName: "หวานปกติ", increasePrice: 20 },
             ],
             requireFill: true,
             IsRadio: true,
@@ -21,7 +23,7 @@ const FoodDetail = ({ route, navigation }) => {
             option: [
                 { optName: "เผ็ดน้อย", increasePrice: 0 },
                 { optName: "เผ็ดมาก", increasePrice: 10 },
-                { optName: "เผ็ดปกติ", increasePrice: 0 },
+                { optName: "เผ็ดปกติ", increasePrice: 20 },
             ],
             requireFill: false,
             IsRadio: true,
@@ -31,7 +33,7 @@ const FoodDetail = ({ route, navigation }) => {
             option: [
                 { optName: "ร้อนน้อย", increasePrice: 0 },
                 { optName: "ร้อนมาก", increasePrice: 10 },
-                { optName: "ร้อนปกติ", increasePrice: 0 },
+                { optName: "ร้อนปกติ", increasePrice: 20 },
             ],
             requireFill: false,
             IsRadio: true,
@@ -41,7 +43,7 @@ const FoodDetail = ({ route, navigation }) => {
             option: [
                 { optName: "เปรี้ยวน้อย", increasePrice: 0 },
                 { optName: "เปรี้ยวมาก", increasePrice: 10 },
-                { optName: "เปรี้ยวปกติ", increasePrice: 0 },
+                { optName: "เปรี้ยวปกติ", increasePrice: 20 },
             ],
             requireFill: false,
             IsRadio: true,
@@ -51,19 +53,23 @@ const FoodDetail = ({ route, navigation }) => {
             option: [
                 { optName: "ขมน้อย", increasePrice: 0 },
                 { optName: "ขมมาก", increasePrice: 10 },
-                { optName: "ขมปกติ", increasePrice: 0 },
+                { optName: "ขมปกติ", increasePrice: 20 },
             ],
             requireFill: true,
-            IsRadio: true,
+            IsRadio: false,
         },
     ];
-    const [requireFillCheck, setRequireFillCheck] = useState(() => {
+    const [confirmOption, setConfirmOption] = useState(() => {
         let array = [];
         foodOption.forEach((option) => {
             if (option.requireFill) {
-                array.push({ name: option.name, check: false, value: null });
+                array.push({ name: option.name, needCheck: true, value: null });
             } else {
-                array.push({ name: option.name, check: true, value: null });
+                array.push({
+                    name: option.name,
+                    needCheck: false,
+                    value: null,
+                });
             }
         });
         return array;
@@ -104,50 +110,29 @@ const FoodDetail = ({ route, navigation }) => {
                     </View>
                 </View>
             </View>
-            {/* <RadioSetBtn option={foodOption[0]}/> */}
             <ScrollView>
                 <View style={{ paddingBottom: 65 }}>
+                    {/* Check this food have option */}
                     {foodOption.length !== 0
                         ? foodOption.map((option) => {
                               return (
-                                  <>
-                                      <View
-                                          style={{
-                                              marginTop: 8,
-                                              backgroundColor: "#FFFFFF",
-                                          }}
-                                      >
-                                          <View
-                                              style={{
-                                                  marginLeft: "6%",
-                                                  marginTop: 10,
-                                                  marginBottom: 5,
-                                              }}
-                                          >
-                                              <Text
-                                                  style={{
-                                                      fontFamily: "Kanit-Bold",
-                                                      fontSize: 14,
-                                                  }}
-                                              >
-                                                  {option.name}
-                                              </Text>
-                                          </View>
-                                          <View
-                                              style={{
-                                                  width: "80%",
-                                                  alignSelf: "center",
-                                                  paddingBottom: 12,
-                                              }}
-                                          >
-                                              {option.IsRadio ? (
-                                                  <RadioSetBtn
-                                                      option={option}
-                                                  />
-                                              ) : null}
-                                          </View>
+                                  <View style={styles.cardRadioSet}>
+                                      <View style={styles.optionNameContainer}>
+                                          <Text style={styles.optionNameText}>
+                                              {option.name}
+                                          </Text>
                                       </View>
-                                  </>
+                                      <View
+                                          style={styles.optionChoiceContainer}
+                                      >
+                                          {/* Check option is Radio or CheckBox */}
+                                          {option.IsRadio ? (
+                                              <RadioSetBtn option={option} />
+                                          ) : (
+                                              <CheckBoxSetBtn option={option} />
+                                          )}
+                                      </View>
+                                  </View>
                               );
                           })
                         : null}
@@ -179,5 +164,23 @@ const styles = StyleSheet.create({
         position: "absolute",
         alignSelf: "center",
         bottom: 0,
+    },
+    cardRadioSet: {
+        marginTop: 8,
+        backgroundColor: "#FFFFFF",
+    },
+    optionNameContainer: {
+        marginLeft: "6%",
+        marginTop: 10,
+        marginBottom: 5,
+    },
+    optionNameText: {
+        fontFamily: "Kanit-Bold",
+        fontSize: 14,
+    },
+    optionChoiceContainer: {
+        width: "80%",
+        alignSelf: "center",
+        paddingBottom: 12,
     },
 });
