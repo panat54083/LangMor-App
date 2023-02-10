@@ -51,7 +51,7 @@ const AddOptions = ({ navigation }) => {
             <SafeAreaView style={styles.container}>
                 <View style={styles.first_part}>
                     <CustomTextInput
-                        placeholder={"ชื่อตัวลือก"}
+                        placeholder={"ชื่อตัวเลือก"}
                         value={name}
                         onChangeText={setName}
                     />

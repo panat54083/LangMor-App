@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-//conponents
+//components
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import CheckboxButton from "../Checkboxes/CheckboxButton";
 import Number from "../Inputs/Number";

@@ -1,33 +1,45 @@
 //Packages
-import React, { useState, useRef } from "react";
-import { Picker } from "@react-native-picker/picker";
+import React, { useState, useRef, useEffect } from "react";
 //Components
 import { StyleSheet, Text, View, TextInput, Modal } from "react-native";
 import Dropdown from "./Dropdown";
 
-const Choices = ({ value, onChangeText, }) => {
-    const [priceOption, setPriceOption] = useState("increase")
+const Choices = ({ getChoice, }) => {
+    const [name, setName] = useState("");
+    const [price, setPrice] = useState(0);
+    const [priceOption, setPriceOption] = useState("increase");
+    useEffect(() => {
+        // console.log({ name: name, option: priceOption , price: price});
+        getChoice({
+            name: name,
+            method: priceOption,
+            price: price,
+        })
+    }, [priceOption, name, price]);
 
     return (
-        <View style={[styles.container, 
-        // styles.shadow
-        ]}>
-            <View style={styles.first}>
+        <View
+            style={[
+                styles.container,
+                styles.shadow
+            ]}
+        >
+            <View style={[styles.first ]}>
                 <TextInput
                     style={styles.input}
-                    onChangeText={onChangeText}
-                    value={value}
-                    placeholder="ชื่อตัวเลือก"
+                    onChangeText={setName}
+                    value={name}
+                    placeholder="ตัวเลือก"
                 />
             </View>
-            <View style={styles.second}>
-                <Dropdown setSelectValue={setPriceOption}/>
+            <View style={[styles.second, ]}>
+                <Dropdown getValue={setPriceOption} />
             </View>
-            <View style={styles.thrid}>
+            <View style={styles.third}>
                 <TextInput
                     style={styles.input}
-                    onChangeText={onChangeText}
-                    value={value}
+                    onChangeText={setPrice}
+                    value={price}
                     placeholder="ราคา (บาท)"
                     keyboardType="numeric"
                 />
@@ -40,7 +52,7 @@ export default Choices;
 
 const styles = StyleSheet.create({
     container: {
-        flex:1,
+        flex: 1,
         marginBottom: 4,
         flexDirection: "row",
         backgroundColor: "white",
@@ -57,10 +69,13 @@ const styles = StyleSheet.create({
         // backgroundColor: "red",
     },
     second: {
-        // backgroundColor: "blue",
+        // backgroundColor: "blue"k
+        borderLeftWidth: 0.4,
+        borderRightWidth: 0.4,
+        borderColor: "gray",
         flex: 1,
     },
-    thrid: {
+    third: {
         flex: 1,
     },
     shadow: {
@@ -72,6 +87,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.23,
         shadowRadius: 2.62,
 
-        elevation: 4,
+        elevation: 2,
     },
 });
