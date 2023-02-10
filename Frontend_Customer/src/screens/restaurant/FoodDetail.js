@@ -3,10 +3,12 @@ import React, { useEffect, useMemo, useState } from "react";
 import FoodDetailHeader from "../../components/headers/FoodDetailHeader";
 import RadioSetBtn from "../../components/buttons/RadioSetBtn";
 import CheckBoxSetBtn from "../../components/buttons/CheckBoxSetBtn";
-
+import MoreDetailCard from "../../components/cards/MoreDetailCard";
 const FoodDetail = ({ route, navigation }) => {
     const { food } = route.params;
     const [isAllInputsFilled, setIsAllInputsFilled] = useState(false);
+    const [number, setNumber] = useState(1);
+    const [moreDetail, setMoreDetail] = useState(null);
     const foodOption = [
         {
             name: "ความหวาน",
@@ -46,7 +48,7 @@ const FoodDetail = ({ route, navigation }) => {
                 { optName: "เปรี้ยวปกติ", increasePrice: 20 },
             ],
             requireFill: false,
-            IsRadio: true,
+            IsRadio: false,
         },
         {
             name: "ความขม",
@@ -143,12 +145,18 @@ const FoodDetail = ({ route, navigation }) => {
                 </View>
             </View>
             <ScrollView>
-                <View style={{ paddingBottom: 65 }}>
+                <View style={{ paddingBottom: 80, backgroundColor: "#FFFFFF" }}>
                     {/* Check this food have option */}
                     {foodOption.length !== 0
                         ? foodOption.map((option) => {
                               return (
                                   <View style={styles.cardRadioSet}>
+                                      <View
+                                          style={{
+                                              height: 7,
+                                              backgroundColor: "#DFDFDF",
+                                          }}
+                                      ></View>
                                       <View style={styles.optionNameContainer}>
                                           <Text style={styles.optionNameText}>
                                               {option.name}
@@ -178,6 +186,18 @@ const FoodDetail = ({ route, navigation }) => {
                               );
                           })
                         : null}
+                    <View
+                        style={{
+                            height: 7,
+                            backgroundColor: "#DFDFDF",
+                        }}
+                    ></View>
+                    <MoreDetailCard
+                        number={number}
+                        setNumber={setNumber}
+                        moreDetail={moreDetail}
+                        setMoreDetail={setMoreDetail}
+                    />
                 </View>
             </ScrollView>
             <View style={styles.addItemBtn}>
@@ -211,7 +231,6 @@ const styles = StyleSheet.create({
         bottom: 0,
     },
     cardRadioSet: {
-        marginTop: 8,
         backgroundColor: "#FFFFFF",
     },
     optionNameContainer: {
