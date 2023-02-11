@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 //Components
 import { StyleSheet, Text, View, Button } from "react-native";
 import Choices from "../Inputs/Choices";
-const AddOptionsChoices = () => {
+const AddOptionsChoices = ({ getOptions }) => {
     const [options, setOptions] = useState([]);
 
     useEffect(() => {
@@ -12,16 +12,16 @@ const AddOptionsChoices = () => {
             options.length < 1
         ) {
             addNewOptions();
-            console.log("🟢add Blank Element");
+            // console.log("🟢add Blank Element");
         } else if (options.filter((option) => option.name === "").length > 1) {
-            removeDuplicateOption()
-            console.log("🔴remove ");
+            removeDuplicateOption();
+            // console.log("🔴remove ");
         }
-
-        console.log(options);
+        // console.log(options);
+        sendToMain()
     }, [options]);
 
-    const removeDuplicateOption= () => {
+    const removeDuplicateOption = () => {
         let key = "name";
         let value = "";
 
@@ -37,7 +37,7 @@ const AddOptionsChoices = () => {
             return acc;
         }, []);
 
-        setOptions(filteredArr)
+        setOptions(filteredArr);
     };
 
     const addNewOptions = () => {
@@ -55,7 +55,12 @@ const AddOptionsChoices = () => {
 
         setOptions(newOptions);
     };
-
+    const sendToMain = () => {
+        const newOptions= options.filter((item, index) => {
+            return item.name !== "";
+        });
+        getOptions(newOptions)
+    };
     return (
         <View style={styles.container}>
             {options.map((option, index) => (
