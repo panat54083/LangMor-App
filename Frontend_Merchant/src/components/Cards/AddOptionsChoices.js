@@ -14,33 +14,33 @@ const AddOptionsChoices = () => {
             addNewOptions();
             console.log("🟢add Blank Element");
         } else if (options.filter((option) => option.name === "").length > 1) {
-            removeSomeOptions();
+            removeDuplicateOption()
             console.log("🔴remove ");
         }
 
         console.log(options);
     }, [options]);
 
-    // const removeOneEmptyOptions = () => {
-    //     let newOptions = options.filter((item, index) => {
-    //         if (item.name === ""){
-    //             return options.indexOf(item) === index
-    //         }
-    //         return item
-    //     }) 
+    const removeDuplicateOption= () => {
+        let key = "name";
+        let value = "";
 
-    //     setOptions(newOptions)}
-
-    const removeSomeOptions = () => {
-        const newArrayList = [];
-        options.forEach((obj) => {
-            if (!newArrayList.some((o) => o.name === obj.name)) {
-                newArrayList.push({ ...obj });
+        let filteredArr = options.reduce(function (acc, obj, index) {
+            if (
+                obj[key] === value &&
+                acc.findIndex((x) => x[key] === value) === -1
+            ) {
+                acc.push(obj);
+            } else if (obj[key] !== value) {
+                acc.push(obj);
             }
-        });
-        setOptions(newArrayList);
+            return acc;
+        }, []);
+
+        setOptions(filteredArr)
     };
-     const addNewOptions = () => {
+
+    const addNewOptions = () => {
         setOptions([...options, { name: "", method: "increase", price: 0 }]);
     };
 
@@ -72,7 +72,6 @@ const AddOptionsChoices = () => {
                     setMethod={(method) =>
                         updateOptions({ ...option, method: method }, index)
                     }
-                    // getChoice={(option) => updateOptions(option, index)}
                 />
             ))}
         </View>
