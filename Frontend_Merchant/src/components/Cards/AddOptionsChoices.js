@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 //Components
 import { StyleSheet, Text, View, Button } from "react-native";
 import Choices from "../Inputs/Choices";
-const AddOptionsChoices = ({ getChoices }) => {
-    const [choices, setChoices] = useState([]);
+const AddOptionsChoices = ({ inititalChoices, getChoices }) => {
+    const [choices, setChoices] = useState(inititalChoices);
 
     useEffect(() => {
         if (

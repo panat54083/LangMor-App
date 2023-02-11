@@ -2,7 +2,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 //Components
-import { ScrollView, StyleSheet, Text, View, SafeAreaView ,Alert} from "react-native";
+import {
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+    SafeAreaView,
+    Alert,
+} from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import CustomTextInput from "../../components/Inputs/CustomTextInput";
 import AcceptButton from "../../components/buttons/AcceptButton";
@@ -51,9 +58,7 @@ const AddOptions = ({ navigation }) => {
         });
     }, [name, maximum, required, choices]);
     const handleSave = () => {
-        // console.log(options);
         fetchSaveOptions();
-        // console.log("Save");
     };
 
     const fetchSaveOptions = () => {
@@ -69,9 +74,7 @@ const AddOptions = ({ navigation }) => {
                     err.response.data &&
                     err.response.data.message
                 )
-                    // console.log(err)
                     console.log("Error", err.response.data.message);
-                    // Alert.alert("Error", err.response.data.message);
             });
     };
     return (
@@ -91,7 +94,10 @@ const AddOptions = ({ navigation }) => {
                     </View>
                 </View>
                 <View style={styles.second_part}>
-                    <AddOptionsChoices getChoices={setChoices} />
+                    <AddOptionsChoices
+                        inititalChoices={choices}
+                        getChoices={setChoices}
+                    />
                 </View>
                 <View style={styles.submit_button}>
                     <AcceptButton label={"บันทึก"} onPress={handleSave} />

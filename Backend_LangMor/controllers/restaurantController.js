@@ -71,7 +71,7 @@ exports.restaurantOptionsSave = async (req, res) => {
         res.json({
             message: `Update Options ${optionsExist.name}`,
         });
-        
+
     } else {
         const options = new Option({
             restaurant_id: optionsData.restaurant_id,
@@ -88,3 +88,15 @@ exports.restaurantOptionsSave = async (req, res) => {
         });
     }
 };
+
+exports.restaurantOptionsInfo = async (req, res) => {
+    const { restaurant_id } = req.query;
+    const optionsData = await Option.find({restaurant_id: restaurant_id})
+
+    console.log(optionsData)
+
+    res.json({
+        message: "Get options of the restaurant!!",
+        options: optionsData
+    })
+}
