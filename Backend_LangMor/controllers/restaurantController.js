@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Restaurant = mongoose.model("Restaurant");
 const Merchant = mongoose.model("Merchant");
+const Option = mongoose.model("Option");
 
 exports.register = async (req, res) => {
     const restaurantData = req.body;
@@ -42,20 +43,39 @@ exports.restaurantInfo = async (req, res) => {
 
 exports.restaurantClosed = async (req, res) => {
     const { restaurant_id } = req.body;
-    const restaurant = await Restaurant.findById(restaurant_id)
-    restaurant.closed = !restaurant.closed
-    await restaurant.save() 
+    const restaurant = await Restaurant.findById(restaurant_id);
+    restaurant.closed = !restaurant.closed;
+    await restaurant.save();
 
     res.json({
-        message: `${restaurant.name} is ${restaurant.closed ? "Closed.😦" : "Opened.😃"}`
-    })
-}
+        message: `${restaurant.name} is ${
+            restaurant.closed ? "Closed.😦" : "Opened.😃"
+        }`,
+    });
+};
 
 exports.restaurantOptionsSave = async (req, res) => {
-    const {options} = req.body;
-    console.log(options)
+    const optionsData = req.body;
+    console.log(optionsData);
+    const optionExist = await Option.findOne({
+        restaurant_id: optionsData.restaurant_id,
+        name: optionsData.name,
+    });
+    if (optionExist) {
+        console.log("Options Exist");
+    }
+
+    const options = new Option({
+        restaurant_id: optionsData.restaurant_id,
+        name: optionsData.name,
+        required: optionsData.required,
+        maximum: optionsData.maximum,
+        choices: optionsData.choices,
+    });
+
+    await options.save()
 
     res.json({
-        message: `Got Options`
-    })
-}
+        message: `Got Options`,
+    });
+};

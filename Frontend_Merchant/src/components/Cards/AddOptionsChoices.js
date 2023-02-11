@@ -3,29 +3,29 @@ import React, { useEffect, useState } from "react";
 //Components
 import { StyleSheet, Text, View, Button } from "react-native";
 import Choices from "../Inputs/Choices";
-const AddOptionsChoices = ({ getOptions }) => {
-    const [options, setOptions] = useState([]);
+const AddOptionsChoices = ({ getChoices }) => {
+    const [choices, setChoices] = useState([]);
 
     useEffect(() => {
         if (
-            options.filter((option) => option.name === "").length < 1 ||
-            options.length < 1
+            choices.filter((choice) => choice.name === "").length < 1 ||
+            choices.length < 1
         ) {
             addNewOptions();
             // console.log("🟢add Blank Element");
-        } else if (options.filter((option) => option.name === "").length > 1) {
+        } else if (choices.filter((choice) => choice.name === "").length > 1) {
             removeDuplicateOption();
             // console.log("🔴remove ");
         }
-        // console.log(options);
+        // console.log(choices);
         sendToMain()
-    }, [options]);
+    }, [choices]);
 
     const removeDuplicateOption = () => {
         let key = "name";
         let value = "";
 
-        let filteredArr = options.reduce(function (acc, obj, index) {
+        let filteredArr = choices.reduce(function (acc, obj, index) {
             if (
                 obj[key] === value &&
                 acc.findIndex((x) => x[key] === value) === -1
@@ -37,45 +37,45 @@ const AddOptionsChoices = ({ getOptions }) => {
             return acc;
         }, []);
 
-        setOptions(filteredArr);
+        setChoices(filteredArr);
     };
 
     const addNewOptions = () => {
-        setOptions([...options, { name: "", method: "increase", price: 0 }]);
+        setChoices([...choices, { name: "", method: "increase", price: 0 }]);
     };
 
-    const updateOptions = (option, index) => {
-        const newOptions = options.map((item, i) => {
+    const updateOptions = (choice, index) => {
+        const newChoices = choices.map((item, i) => {
             if (index === i) {
-                return option;
+                return choice;
             } else {
                 return item;
             }
         });
 
-        setOptions(newOptions);
+        setChoices(newChoices);
     };
     const sendToMain = () => {
-        const newOptions= options.filter((item, index) => {
+        const newChoices= choices.filter((item, index) => {
             return item.name !== "";
         });
-        getOptions(newOptions)
+        getChoices(newChoices)
     };
     return (
         <View style={styles.container}>
-            {options.map((option, index) => (
+            {choices.map((choice, index) => (
                 <Choices
                     key={index}
-                    name={option.name}
-                    price={option.price}
+                    name={choice.name}
+                    price={choice.price}
                     setName={(name) =>
-                        updateOptions({ ...option, name: name }, index)
+                        updateOptions({ ...choice, name: name }, index)
                     }
                     setPrice={(price) =>
-                        updateOptions({ ...option, price: price }, index)
+                        updateOptions({ ...choice, price: price }, index)
                     }
                     setMethod={(method) =>
-                        updateOptions({ ...option, method: method }, index)
+                        updateOptions({ ...choice, method: method }, index)
                     }
                 />
             ))}

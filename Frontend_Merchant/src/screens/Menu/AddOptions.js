@@ -1,7 +1,8 @@
 //Packages
 import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
 //Components
-import { ScrollView, StyleSheet, Text, View, SafeAreaView } from "react-native";
+import { ScrollView, StyleSheet, Text, View, SafeAreaView ,Alert} from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import CustomTextInput from "../../components/Inputs/CustomTextInput";
 import AcceptButton from "../../components/buttons/AcceptButton";
@@ -9,6 +10,7 @@ import AddOptionsCheck from "../../components/Cards/AddOptionsCheck";
 import AddOptionsChoices from "../../components/Cards/AddOptionsChoices";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
+import { IP_ADDRESS } from "@env";
 
 const AddOptions = ({ navigation }) => {
     useEffect(() => {
@@ -31,28 +33,47 @@ const AddOptions = ({ navigation }) => {
     const [name, setName] = useState("");
     const [required, setRequired] = useState(false);
     const [maximum, setMaximum] = useState(0);
-    const [options, setOptions] = useState([]);
-    const [data, setData] = useState({
+    const [choices, setChoices] = useState([]);
+    const [options, setOptions] = useState({
         name: null,
         required: null,
         maximum: null,
     });
 
     useEffect(() => {
-        setData({
-            ...data,
+        setOptions({
+            ...options,
             restaurant_id: state.restaurantData._id,
             name: name,
             maximum: maximum,
             required: required,
-            options: options,
+            choices: choices,
         });
-    }, [name, maximum, required, options]);
+    }, [name, maximum, required, choices]);
     const handleSave = () => {
-        console.log(data);
-        console.log("Save");
+        // console.log(options);
+        fetchSaveOptions();
+        // console.log("Save");
     };
-    
+
+    const fetchSaveOptions = () => {
+        axios
+            .post(`http://${IP_ADDRESS}/restaurant/save_options`, options)
+            .then((res) => {
+                console.log(res.data.message);
+            })
+            .catch((err) => {
+                if (
+                    err &&
+                    err.response &&
+                    err.response.data &&
+                    err.response.data.message
+                )
+                    // console.log(err)
+                    console.log("Error", err.response.data.message);
+                    // Alert.alert("Error", err.response.data.message);
+            });
+    };
     return (
         <ScrollView>
             <SafeAreaView style={styles.container}>
@@ -70,7 +91,7 @@ const AddOptions = ({ navigation }) => {
                     </View>
                 </View>
                 <View style={styles.second_part}>
-                    <AddOptionsChoices getOptions={setOptions} />
+                    <AddOptionsChoices getChoices={setChoices} />
                 </View>
                 <View style={styles.submit_button}>
                     <AcceptButton label={"บันทึก"} onPress={handleSave} />

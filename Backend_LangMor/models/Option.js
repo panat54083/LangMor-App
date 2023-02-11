@@ -24,4 +24,4 @@ const optionSchema = new mongoose.Schema(
     }
 )
 
-module.exports = mongoose.deleteModel("Option", optionSchema)
+module.exports = mongoose.model("Option", optionSchema)
