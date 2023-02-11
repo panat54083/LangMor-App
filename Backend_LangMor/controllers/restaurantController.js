@@ -56,26 +56,35 @@ exports.restaurantClosed = async (req, res) => {
 
 exports.restaurantOptionsSave = async (req, res) => {
     const optionsData = req.body;
-    console.log(optionsData);
-    const optionExist = await Option.findOne({
+    // console.log(optionsData);
+    const optionsExist = await Option.findOne({
         restaurant_id: optionsData.restaurant_id,
         name: optionsData.name,
     });
-    if (optionExist) {
-        console.log("Options Exist");
+    if (optionsExist) {
+        const { name, required, maximum, choices } = optionsData;
+        optionsExist.name = name;
+        optionsExist.required = required;
+        optionsExist.maximum = maximum;
+        optionsExist.choices = choices;
+        await optionsExist.save();
+        res.json({
+            message: `Update Options ${optionsExist.name}`,
+        });
+        
+    } else {
+        const options = new Option({
+            restaurant_id: optionsData.restaurant_id,
+            name: optionsData.name,
+            required: optionsData.required,
+            maximum: optionsData.maximum,
+            choices: optionsData.choices,
+        });
+
+        await options.save();
+
+        res.json({
+            message: `Save Options ${options.name}`,
+        });
     }
-
-    const options = new Option({
-        restaurant_id: optionsData.restaurant_id,
-        name: optionsData.name,
-        required: optionsData.required,
-        maximum: optionsData.maximum,
-        choices: optionsData.choices,
-    });
-
-    await options.save()
-
-    res.json({
-        message: `Got Options`,
-    });
 };
