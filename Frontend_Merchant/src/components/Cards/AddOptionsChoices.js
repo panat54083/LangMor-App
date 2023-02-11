@@ -12,12 +12,9 @@ const AddOptionsChoices = ({ inititalChoices, getChoices }) => {
             choices.length < 1
         ) {
             addNewOptions();
-            // console.log("🟢add Blank Element");
         } else if (choices.filter((choice) => choice.name === "").length > 1) {
             removeDuplicateOption();
-            // console.log("🔴remove ");
         }
-        // console.log(choices);
         sendToMain()
     }, [choices]);
 
@@ -36,7 +33,6 @@ const AddOptionsChoices = ({ inititalChoices, getChoices }) => {
             }
             return acc;
         }, []);
-
         setChoices(filteredArr);
     };
 
@@ -52,7 +48,6 @@ const AddOptionsChoices = ({ inititalChoices, getChoices }) => {
                 return item;
             }
         });
-
         setChoices(newChoices);
     };
     const sendToMain = () => {

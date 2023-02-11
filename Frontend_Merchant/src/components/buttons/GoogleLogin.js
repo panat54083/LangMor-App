@@ -7,24 +7,11 @@ const GoogleLogin = ({ onPress }) => {
             onPress={onPress}
             style={[styles.container, styles.shadow]}
         >
-            <View
-                style={{
-                    flexDirection: "row",
-                }}
-            >
-                <Image
-                    source={require("../../assets/icons/google.png")}
-                    style={styles.image}
-                />
-                <View
-                    style={{
-                        alignItems: "center",
-                        flex: 1,
-                    }}
-                >
-                    <Text style={styles.text}>GOOGLE</Text>
-                </View>
-            </View>
+            <Image
+                source={require("../../assets/icons/google.png")}
+                style={styles.image}
+            />
+                <Text style={styles.text}>GOOGLE</Text>
         </TouchableOpacity>
     );
 };
@@ -32,11 +19,13 @@ const GoogleLogin = ({ onPress }) => {
 export default GoogleLogin;
 
 const styles = StyleSheet.create({
-    container : {
+    container: {
         backgroundColor: "#FFFFFF",
         padding: 10,
         borderRadius: 15,
         marginBottom: 30,
+        flexDirection: "row",
+        justifyContent: "center",
     },
     shadow: {
         shadowColor: "#000",
@@ -48,7 +37,13 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 5,
     },
-    image: { width: 30, height: 30, marginRight: 10 },
+    image: {
+        width: 30,
+        height: 30,
+        position: "absolute",
+        left: 10,
+        top: "30%",
+    },
     text: {
         fontFamily: "Kanit-Medium",
         fontSize: 16,

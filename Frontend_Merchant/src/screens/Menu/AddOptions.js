@@ -59,6 +59,7 @@ const AddOptions = ({ navigation }) => {
     }, [name, maximum, required, choices]);
     const handleSave = () => {
         fetchSaveOptions();
+        navigation.navigate('MenuTabs', { screen: 'OptionsManage' });
     };
 
     const fetchSaveOptions = () => {
