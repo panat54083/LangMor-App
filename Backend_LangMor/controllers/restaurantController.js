@@ -50,3 +50,12 @@ exports.restaurantClosed = async (req, res) => {
         message: `${restaurant.name} is ${restaurant.closed ? "Closed.😦" : "Opened.😃"}`
     })
 }
+
+exports.restaurantOptionsSave = async (req, res) => {
+    const {options} = req.body;
+    console.log(options)
+
+    res.json({
+        message: `Got Options`
+    })
+}
