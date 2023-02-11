@@ -2,6 +2,7 @@ import "react-native-gesture-handler";
 import { useEffect, useMemo, useReducer, useState } from "react";
 import UserContext from "./src/hooks/context/UserContext";
 import SocketContext from "./src/hooks/context/SocketContext";
+import BasketContext from "./src/hooks/context/BasketContext";
 import { NavigationContainer } from "@react-navigation/native";
 import MyStack from "./src/config/routes";
 import { useFonts } from "expo-font";
@@ -14,6 +15,7 @@ export default function App() {
         "Kanit-SemiBold": require("./src/assets/fonts/Kanit-SemiBold.ttf"),
     });
     const [socket, setSocket] = useState(null);
+    const [basketDetail, setBasketDetail] = useState({restaurant:null, foods:[]});
     const reducer = (prevState, action) => {
         switch (action.type) {
             case "SIGN_IN":
@@ -65,11 +67,13 @@ export default function App() {
     }
     return (
         <SocketContext.Provider value={{ socket, setSocket }}>
-            <UserContext.Provider value={{ onAction, state }}>
-                <NavigationContainer>
-                    <MyStack />
-                </NavigationContainer>
-            </UserContext.Provider>
+            <BasketContext.Provider value={{ basketDetail, setBasketDetail }}>
+                <UserContext.Provider value={{ onAction, state }}>
+                    <NavigationContainer>
+                        <MyStack />
+                    </NavigationContainer>
+                </UserContext.Provider>
+            </BasketContext.Provider>
         </SocketContext.Provider>
     );
 }

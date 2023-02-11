@@ -73,7 +73,10 @@ const FoodList = ({ route, navigation }) => {
         navigation.goBack();
     };
     const handlerOnPressCard = (food) => {
-        navigation.navigate("FoodDetail", { food: food });
+        navigation.navigate("FoodDetail", {
+            food: food,
+            restaurant: restaurant,
+        });
     };
     return (
         <View style={{ flex: 1 }}>

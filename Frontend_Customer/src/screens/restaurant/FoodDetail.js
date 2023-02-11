@@ -1,14 +1,26 @@
-import { Button, ScrollView, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useMemo, useState } from "react";
+import {
+    Button,
+    KeyboardAvoidingView,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+} from "react-native";
+import BasketContext from "../../hooks/context/BasketContext";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import FoodDetailHeader from "../../components/headers/FoodDetailHeader";
 import RadioSetBtn from "../../components/buttons/RadioSetBtn";
 import CheckBoxSetBtn from "../../components/buttons/CheckBoxSetBtn";
 import MoreDetailCard from "../../components/cards/MoreDetailCard";
+import SubmitBtn from "../../components/buttons/SubmitBtn";
+
 const FoodDetail = ({ route, navigation }) => {
-    const { food } = route.params;
+    const { basketDetail, setBasketDetail } = useContext(BasketContext);
+    const { food, restaurant } = route.params;
     const [isAllInputsFilled, setIsAllInputsFilled] = useState(false);
     const [number, setNumber] = useState(1);
     const [moreDetail, setMoreDetail] = useState(null);
+
     const foodOption = [
         {
             name: "ความหวาน",
@@ -121,17 +133,33 @@ const FoodDetail = ({ route, navigation }) => {
         });
     };
 
+    // useEffect(() => {
+    //     console.log(confirmOption);
+    // }, [confirmOption]);
     useEffect(() => {
-        console.log(confirmOption);
-    }, [confirmOption]);
-    const handleOnPressConfirm = () => {
-        console.log(confirmOption);
+        console.log(basketDetail);
+    }, [basketDetail]);
+    const handleOnPressSubmit = () => {
+        setBasketDetail((prevDetail) => {
+            const newDetail = prevDetail;
+            const foodData = {
+                id: prevDetail.length,
+                food: food,
+                option: confirmOption,
+                moreDetail: moreDetail,
+            };
+            newDetail.restaurant = restaurant;
+            newDetail.foods.push(foodData);
+            return newDetail;
+        });
+        navigation.goBack();
     };
+
     const handlerOnPressBack = () => {
         navigation.goBack();
     };
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <FoodDetailHeader
                 imgSrc={food.imgLink}
                 handlerOnPressBack={handlerOnPressBack}
@@ -144,8 +172,14 @@ const FoodDetail = ({ route, navigation }) => {
                     </View>
                 </View>
             </View>
+
             <ScrollView>
-                <View style={{ paddingBottom: 80, backgroundColor: "#FFFFFF" }}>
+                <View
+                    style={{
+                        paddingBottom: 80,
+                        backgroundColor: "#FFFFFF",
+                    }}
+                >
                     {/* Check this food have option */}
                     {foodOption.length !== 0
                         ? foodOption.map((option) => {
@@ -200,10 +234,11 @@ const FoodDetail = ({ route, navigation }) => {
                     />
                 </View>
             </ScrollView>
+
             <View style={styles.addItemBtn}>
-                <Button
-                    title="เพิ่มลงในตะกร้า"
-                    onPress={handleOnPressConfirm}
+                <SubmitBtn
+                    label={"เพิ่มลงตะกล้า"}
+                    onPress={handleOnPressSubmit}
                 />
             </View>
         </View>
@@ -226,7 +261,7 @@ const styles = StyleSheet.create({
         width: "89.33%",
         height: 46,
         marginBottom: 20,
-        position: "absolute",
+
         alignSelf: "center",
         bottom: 0,
     },
