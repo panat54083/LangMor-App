@@ -4,18 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { StyleSheet, Text, View, TextInput, Modal } from "react-native";
 import Dropdown from "./Dropdown";
 
-const Choices = ({ getChoice, }) => {
-    const [name, setName] = useState("");
-    const [price, setPrice] = useState(0);
-    const [priceOption, setPriceOption] = useState("increase");
-    useEffect(() => {
-        // console.log({ name: name, option: priceOption , price: price});
-        getChoice({
-            name: name,
-            method: priceOption,
-            price: price,
-        })
-    }, [priceOption, name, price]);
+const Choices = ({ name, price , setName, setPrice, setMethod}) => {
 
     return (
         <View
@@ -33,7 +22,7 @@ const Choices = ({ getChoice, }) => {
                 />
             </View>
             <View style={[styles.second, ]}>
-                <Dropdown getValue={setPriceOption} />
+                <Dropdown getValue={setMethod} />
             </View>
             <View style={styles.third}>
                 <TextInput
