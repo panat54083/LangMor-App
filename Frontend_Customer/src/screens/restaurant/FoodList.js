@@ -1,12 +1,13 @@
-import { SectionList, StyleSheet, Text, View } from "react-native";
-import React from "react";
-import Back from "../../components/buttons/Back";
+import { Button, SectionList, StyleSheet, Text, View } from "react-native";
+import React, { useContext } from "react";
 import FoodListHeader from "../../components/headers/FoodListHeader";
 import CardRestaurantName from "../../components/cards/CardRestaurantName";
 import Searchbar from "../../components/searchs/Searchbar";
 import CardFood from "../../components/cards/CardFood";
-
+import BasketContext from "../../hooks/context/BasketContext";
+import BtnToBasketDetail from "../../components/buttons/BtnToBasketDetail";
 const FoodList = ({ route, navigation }) => {
+    const { basketDetail, setBasketDetail } = useContext(BasketContext);
     const { restaurant } = route.params;
     // ของจริง fecth จาก restaurant
     const foodData = [
@@ -69,6 +70,41 @@ const FoodList = ({ route, navigation }) => {
         },
     ];
 
+    const findAmountOfOrder = () => {
+        //Find Amount Of Order In Basket
+        let amountOfOrder = 0;
+        if (basketDetail.foods.length !== 0) {
+            basketDetail.foods.forEach((food) => {
+                amountOfOrder = amountOfOrder + food.amount;
+            });
+        }
+        return amountOfOrder;
+    };
+    const amount = findAmountOfOrder();
+    const findPriceOfOrder = () => {
+        let priceOfOrder = 0;
+        if (basketDetail.foods.length !== 0) {
+            basketDetail.foods.forEach((food) => {
+                let foodPrice = food.food.price;
+                food.options.forEach((option) => {
+                    if (Array.isArray(option.increasePrice)) {
+                        const sum = option.increasePrice.reduce(
+                            (partialSum, price) => partialSum + price,
+                            0
+                        );
+                        foodPrice = foodPrice + sum;
+                    } else {
+                        foodPrice = foodPrice + option.increasePrice;
+                    }
+                });
+                for (let i = 0; i < food.amount; i++) {
+                    priceOfOrder = priceOfOrder + foodPrice;
+                }
+            });
+        }
+        return priceOfOrder;
+    };
+    const price = findPriceOfOrder();
     const handlerOnPressBack = () => {
         navigation.goBack();
     };
@@ -92,7 +128,7 @@ const FoodList = ({ route, navigation }) => {
                     sections={foodData}
                     keyExtractor={(item, index) => item + index}
                     renderSectionHeader={({ section: { title } }) => (
-                        <View style={{ marginBottom: 3, marginLeft: "2.1%" }}>
+                        <View style={styles.headerSection}>
                             <Text style={styles.header}>{title}</Text>
                         </View>
                     )}
@@ -107,6 +143,11 @@ const FoodList = ({ route, navigation }) => {
                     )}
                 />
             </View>
+            {basketDetail.foods.length !== 0 ? (
+                <View style={styles.confirmOrderBtn}>
+                    <BtnToBasketDetail amount={amount} price={price} />
+                </View>
+            ) : null}
         </View>
     );
 };
@@ -134,5 +175,21 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#ffffff",
         paddingTop: 10,
+    },
+    headerSection: { marginBottom: 3, marginLeft: "2.1%" },
+    confirmOrderBtn: {
+        position: "absolute",
+        bottom: 0,
+        alignSelf: "center",
+        marginBottom: 20,
+        width: "89.33%",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 4.65,
+        elevation: 8,
     },
 });

@@ -32,8 +32,12 @@ const CheckBoxSetBtn = (props) => {
     };
 
     useEffect(() => {
-        const data = {name:option.name, value:checkedValues, price:checkedValuesPrice}
-        handlerOnCheckBoxChangeVal(data)
+        const data = {
+            name: option.name,
+            value: checkedValues,
+            price: checkedValuesPrice,
+        };
+        handlerOnCheckBoxChangeVal(data);
     }, [checkedValues, checkedValuesPrice]);
     return (
         <View>

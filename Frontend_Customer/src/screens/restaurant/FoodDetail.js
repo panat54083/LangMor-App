@@ -1,11 +1,4 @@
-import {
-    Button,
-    KeyboardAvoidingView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View,
-} from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import BasketContext from "../../hooks/context/BasketContext";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import FoodDetailHeader from "../../components/headers/FoodDetailHeader";
@@ -20,7 +13,7 @@ const FoodDetail = ({ route, navigation }) => {
     const [isAllInputsFilled, setIsAllInputsFilled] = useState(false);
     const [number, setNumber] = useState(1);
     const [moreDetail, setMoreDetail] = useState(null);
-
+    const [price, setPrice] = useState(food.price);
     const foodOption = [
         {
             name: "ความหวาน",
@@ -109,6 +102,11 @@ const FoodDetail = ({ route, navigation }) => {
                     value: data.value,
                     increasePrice: data.price,
                 };
+                setPrice((prevPrice) => {
+                    return (
+                        prevPrice + data.price - prevValue[index].increasePrice
+                    );
+                });
             }
             return newArr;
         });
@@ -121,14 +119,40 @@ const FoodDetail = ({ route, navigation }) => {
 
         setConfirmOption((prevValue) => {
             const newArr = [...prevValue];
-            if (index !== -1 && data.value.length !== 0) {
+            if (index !== -1) {
                 newArr[index] = {
                     name: newArr[index].name,
+                    // ตรงนี้ต้อง Check ตามจำนวนที่ Required มาอีกที😒😒
                     needCheck: false,
                     value: data.value,
                     increasePrice: data.price,
                 };
+                if (prevValue[index].increasePrice.length > data.price.length) {
+                    setPrice((prevPrice) => {
+                        const sumDiffPrice = prevValue[index].increasePrice
+                            .filter((x) => !data.price.includes(x))
+                            .reduce(
+                                (partialSum, price) => partialSum + price,
+                                0
+                            );
+                        return prevPrice - sumDiffPrice;
+                    });
+                } else {
+                    setPrice((prevPrice) => {
+                        const sumDiffPrice = data.price
+                            .filter(
+                                (x) =>
+                                    !prevValue[index].increasePrice.includes(x)
+                            )
+                            .reduce(
+                                (partialSum, price) => partialSum + price,
+                                0
+                            );
+                        return prevPrice + sumDiffPrice;
+                    });
+                }
             }
+
             return newArr;
         });
     };
@@ -136,17 +160,19 @@ const FoodDetail = ({ route, navigation }) => {
     // useEffect(() => {
     //     console.log(confirmOption);
     // }, [confirmOption]);
+
     useEffect(() => {
         console.log(basketDetail);
     }, [basketDetail]);
     const handleOnPressSubmit = () => {
         setBasketDetail((prevDetail) => {
-            const newDetail = prevDetail;
+            const newDetail = { ...prevDetail };
             const foodData = {
-                id: prevDetail.length,
+                id: prevDetail.foods.length,
                 food: food,
-                option: confirmOption,
+                options: confirmOption,
                 moreDetail: moreDetail,
+                amount: number,
             };
             newDetail.restaurant = restaurant;
             newDetail.foods.push(foodData);
@@ -164,13 +190,15 @@ const FoodDetail = ({ route, navigation }) => {
                 imgSrc={food.imgLink}
                 handlerOnPressBack={handlerOnPressBack}
             />
-            <View style={{ backgroundColor: "#FFFFFF" }}>
+            <View style={{ backgroundColor: "#FFFFFF", flexDirection: "row" }}>
                 <View style={{ marginLeft: "5.33%", marginTop: 14 }}>
                     <Text style={styles.foodNameText}>{food.name}</Text>
                     <View style={{ marginBottom: 11, marginTop: 10 }}>
                         <Text style={styles.detailText}>{food.detail}</Text>
                     </View>
                 </View>
+
+                <Text style={styles.foodPrice}>{price * number} B.</Text>
             </View>
 
             <ScrollView>
@@ -184,7 +212,10 @@ const FoodDetail = ({ route, navigation }) => {
                     {foodOption.length !== 0
                         ? foodOption.map((option) => {
                               return (
-                                  <View style={styles.cardRadioSet}>
+                                  <View
+                                      style={styles.cardRadioSet}
+                                      key={option.name}
+                                  >
                                       <View
                                           style={{
                                               height: 7,
@@ -281,5 +312,13 @@ const styles = StyleSheet.create({
         width: "80%",
         alignSelf: "center",
         paddingBottom: 12,
+    },
+    foodPrice: {
+        marginLeft: "auto",
+        alignSelf: "center",
+        marginRight: "5.33%",
+        color: "#FF7A00",
+        fontSize: 20,
+        fontFamily: "Kanit-Bold",
     },
 });
