@@ -11,4 +11,6 @@ router.get("/options", catchErrors(restaurantController.restaurantOptionsInfo))
 
 router.post("/save_types", catchErrors(restaurantController.restaurantTypesSave))
 router.get("/types", catchErrors(restaurantController.restaurantTypesInfo))
+
+router.post("/save_food", catchErrors(restaurantController.restaurantFoodSave))
 module.exports = router;

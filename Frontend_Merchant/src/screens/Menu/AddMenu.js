@@ -86,6 +86,31 @@ const AddMenu = ({ navigation }) => {
                 restaurant_id: state.restaurantData._id,
             })
             .then((res) => {
+                // console.log(res.data.message);
+            })
+            .catch((err) => {
+                if (
+                    err &&
+                    err.response &&
+                    err.response.data &&
+                    err.response.data.message
+                )
+                    console.log("Error", err.response.data.message);
+            });
+    };
+
+    const fetchFoodSave = () => {
+        axios
+            .post(`http://${IP_ADDRESS}/restaurant/save_food`, {
+                restaurant_id: state.restaurantData._id,
+                picture: image,
+                name: name,
+                price: Number(price),
+                description : description,
+                options: selectOptions,
+                type: selectedType,
+            })
+            .then((res) => {
                 console.log(res.data.message);
             })
             .catch((err) => {
@@ -98,16 +123,10 @@ const AddMenu = ({ navigation }) => {
                     console.log("Error", err.response.data.message);
             });
     };
+
     const handleSave = () => {
-        console.log({
-            image: image,
-            name: name,
-            price: Number(price),
-            description: description,
-            options: selectOptions,
-            types: selectedType,
-        });
         fetchTypesSave();
+        fetchFoodSave()
         navigation.navigate("MenuTabs", { screen: "MenuManage" });
     };
 
