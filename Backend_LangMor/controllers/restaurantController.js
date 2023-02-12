@@ -143,3 +143,14 @@ exports.restaurantFoodSave = async (req, res) => {
         });
     }
 };
+
+exports.restaurantFoodsInfo= async (req, res) => {
+    const { restaurant_id } = req.query;
+    const foodsData = await Food.find({restaurant_id: restaurant_id});
+    console.log(foodsData)
+
+    res.json({
+        message: `Get All Foods`,
+        foodsData: foodsData
+    });
+};
