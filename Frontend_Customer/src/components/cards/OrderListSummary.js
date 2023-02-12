@@ -173,7 +173,11 @@ const styles = StyleSheet.create({
         fontFamily: "Kanit-Medium",
         color: "#9D9693",
     },
-    summaryContainer: { flexDirection: "row", alignItems: "center" },
+    summaryContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: 4,
+    },
     summaryAllAmountText: {
         fontSize: 18,
         fontFamily: "Kanit-Bold",

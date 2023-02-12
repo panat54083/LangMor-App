@@ -4,6 +4,8 @@ import BasketContext from "../../hooks/context/BasketContext";
 import BackScreen from "../../components/buttons/BackScreen";
 import AddressBoxDetail from "../../components/buttons/AddressBoxDetail";
 import OrderListSummary from "../../components/cards/OrderListSummary";
+import SubmitBtn from "../../components/buttons/SubmitBtn";
+
 const Cart = ({ route, navigation }) => {
     const { basketDetail, setBasketDetail } = useContext(BasketContext);
     useEffect(() => {
@@ -42,7 +44,7 @@ const Cart = ({ route, navigation }) => {
     return (
         <View style={{ backgroundColor: "#F5F5F5", flex: 1 }}>
             <ScrollView style={{ flex: 1 }}>
-                <View style={{ alignItems: "center", paddingBottom: 50 }}>
+                <View style={{ alignItems: "center", paddingBottom: "24%" }}>
                     <View
                         style={{
                             marginTop: 8,
@@ -56,6 +58,17 @@ const Cart = ({ route, navigation }) => {
                     </View>
                 </View>
             </ScrollView>
+            <View
+                style={{
+                    width: "89.33%",
+                    alignSelf: "center",
+                    marginBottom: "7%",
+                    position: "absolute",
+                    bottom: 0,
+                }}
+            >
+                <SubmitBtn label={"สั่งซื้อ"} />
+            </View>
         </View>
     );
 };

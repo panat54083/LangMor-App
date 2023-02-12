@@ -168,7 +168,7 @@ const FoodDetail = ({ route, navigation }) => {
         setBasketDetail((prevDetail) => {
             const newDetail = { ...prevDetail };
             const foodData = {
-                id: prevDetail.foods.length+1,
+                id: prevDetail.foods.length + 1,
                 food: food,
                 options: confirmOption,
                 moreDetail: moreDetail,
