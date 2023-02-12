@@ -35,8 +35,9 @@ const AddMenu = ({ navigation }) => {
                 />
             ),
         });
-
-        return fetchOptions();
+        // Fetuch Functions
+        fetchOptions();
+        fetchTypes();
     }, []);
 
     // Helping Variable
@@ -60,6 +61,18 @@ const AddMenu = ({ navigation }) => {
             )
             .then((res) => {
                 setOptions(res.data.options);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+    const fetchTypes = () => {
+        axios
+            .get(
+                `http://${IP_ADDRESS}/restaurant/types?restaurant_id=${state.restaurantData._id}`
+            )
+            .then((res) => {
+                setTypes(res.data.types);
             })
             .catch((err) => {
                 console.log(err);
@@ -95,6 +108,7 @@ const AddMenu = ({ navigation }) => {
             types: selectedType,
         });
         fetchTypesSave();
+        navigation.navigate("MenuTabs", { screen: "MenuManage" });
     };
 
     const handleSelectOptions = (option) => {

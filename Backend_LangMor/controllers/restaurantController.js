@@ -92,9 +92,6 @@ exports.restaurantOptionsSave = async (req, res) => {
 exports.restaurantOptionsInfo = async (req, res) => {
     const { restaurant_id } = req.query;
     const optionsData = await Option.find({restaurant_id: restaurant_id})
-
-    console.log(optionsData)
-
     res.json({
         message: "Get options of the restaurant!!",
         options: optionsData
@@ -109,5 +106,16 @@ exports.restaurantTypesSave = async (req, res) => {
 
     res.json({
         message: `Save Types for ${restaurant.name}` 
+    })
+}
+
+exports.restaurantTypesInfo = async (req, res) => {
+    const {restaurant_id} = req.query
+    console.log( restaurant_id)
+    const restaurant = await Restaurant.findById(restaurant_id)
+    const types = restaurant.types
+    res.json({
+        message: `Get All Types`,
+        types: types,
     })
 }
