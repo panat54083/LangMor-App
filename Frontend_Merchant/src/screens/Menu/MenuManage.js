@@ -10,6 +10,7 @@ import {
     SafeAreaView,
     Button,
     ScrollView,
+    SectionList,
 } from "react-native";
 import AddButton from "../../components/buttons/AddButton";
 import FoodCard from "../../components/Cards/FoodCard";
@@ -28,6 +29,23 @@ const MenuManage = ({ navigation }) => {
         }
     }, [isFocused]);
 
+    const formatToSectionList = (data) => {
+        const result = [];
+        const types = new Set();
+        // get types
+        data.forEach((food) => {
+            types.add(food.type);
+        });
+        // add object to specific type
+        types.forEach((type) => {
+            result.push({
+                title: type,
+                data: data.filter((food) => food.type === type),
+            });
+        });
+
+        return result;
+    };
     const handleAddMenu = () => {
         console.log("Add Menu");
         navigation.navigate("AddMenu");
@@ -35,13 +53,14 @@ const MenuManage = ({ navigation }) => {
     const handleFoods = () => {
         console.log(foodsData);
     };
+
     const fetchFoods = () => {
         axios
             .get(
                 `http://${IP_ADDRESS}/restaurant/foods?restaurant_id=${state.restaurantData._id}`
             )
             .then((res) => {
-                setFoodsData(res.data.foodsData);
+                setFoodsData(formatToSectionList(res.data.foodsData));
             })
             .catch((err) => {
                 console.log(err);
@@ -53,13 +72,25 @@ const MenuManage = ({ navigation }) => {
             <View style={styles.add_button}>
                 <AddButton onPress={handleAddMenu} />
             </View>
-            <ScrollView>
+            {/* <ScrollView>
                 <View style={styles.foodCard}>
                     {foodsData.map((food, index) => (
                         <FoodCard key={index} foodData={food} />
                     ))}
                 </View>
-            </ScrollView>
+            </ScrollView> */}
+            <SectionList
+                sections={foodsData}
+                keyExtractor={(item, index) => item + index}
+                renderItem={({ item, index }) => (
+                    <View style={styles.foodCard}>
+                        <FoodCard key={index} foodData={item} />
+                    </View>
+                )}
+                renderSectionHeader={({ section: { title } }) => (
+                    <Text style={styles.header}>{title}</Text>
+                )}
+            />
         </SafeAreaView>
     );
 };
@@ -76,5 +107,10 @@ const styles = StyleSheet.create({
     },
     foodCard: {
         marginHorizontal: 20,
+    },
+    header: {
+        fontFamily: "Kanit-Bold",
+        fontSize: 20,
+        margin: 10,
     },
 });
