@@ -10,6 +10,7 @@ import CustomTextInput from "../../components/Inputs/CustomTextInput";
 import AcceptButton from "../../components/buttons/AcceptButton";
 import CheckboxButton from "../../components/Checkboxes/CheckboxButton";
 //Config
+import MiniBtn from "../../components/buttons/MiniBtn";
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
 const AddMenu = ({ navigation }) => {
@@ -70,9 +71,12 @@ const AddMenu = ({ navigation }) => {
             setSelectOptions([...selectOptions, option]);
         }
     };
+    const handleTestButton = () => {
+        console.log("Press")
+    }
     return (
-        <View style={styles.container}>
-            <ScrollView>
+        <ScrollView style={{}}>
+            <View style={styles.container}>
                 <View style={styles.input_components}>
                     <View style={{ marginBottom: 8 }}>
                         <ImageInput
@@ -100,6 +104,13 @@ const AddMenu = ({ navigation }) => {
                         numberOfLines={4}
                     />
                 </View>
+                <Text style={styles.header}>ประเภทอาหาร</Text>
+                <View style={styles.options}>
+                    <View style={styles.add_edit_button}>
+                        <MiniBtn label={"เพิ่ม"} color="#FF7A00" onPress={handleTestButton}/>
+                        <MiniBtn label={"แก้ไข"} color="#FF0101" onPress={handleTestButton}/>
+                    </View>
+                </View>
                 <Text style={styles.header}>ตัวเลือกเสริม</Text>
                 <View style={styles.options}>
                     {options.map((option, index) => (
@@ -114,8 +125,8 @@ const AddMenu = ({ navigation }) => {
                 <View style={styles.submitButton}>
                     <AcceptButton label={"บันทึก"} onPress={handleSave} />
                 </View>
-            </ScrollView>
-        </View>
+            </View>
+        </ScrollView>
     );
 };
 
@@ -123,13 +134,13 @@ export default AddMenu;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         backgroundColor: "#F5F5F5",
-        alignItems: "center",
-        marginTop: 12,
+        marginHorizontal: 30,
     },
     input_components: {
         marginBottom: 8,
+        marginTop: 10,
+        alignItems: "center",
     },
     options: {
         backgroundColor: "white",
@@ -141,6 +152,10 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: "#1A0700",
         marginBottom: 10,
+    },
+    add_edit_button: {
+        justifyContent: "space-around",
+        flexDirection: "row",
     },
     submitButton: {
         marginTop: 20,
