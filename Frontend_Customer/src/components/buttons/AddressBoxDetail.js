@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
         color: "#9D9693",
     },
     container: {
-        width: "92.53%",
         backgroundColor: "#FFFFFF",
         borderRadius: 5,
         flexDirection: "row",

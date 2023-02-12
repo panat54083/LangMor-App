@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { useContext, useEffect } from "react";
 import BasketContext from "../../hooks/context/BasketContext";
 import BackScreen from "../../components/buttons/BackScreen";
 import AddressBoxDetail from "../../components/buttons/AddressBoxDetail";
+import OrderListSummary from "../../components/cards/OrderListSummary";
 const Cart = ({ route, navigation }) => {
     const { basketDetail, setBasketDetail } = useContext(BasketContext);
     useEffect(() => {
@@ -14,14 +15,47 @@ const Cart = ({ route, navigation }) => {
             headerTitleStyle: { fontSize: 22, fontFamily: "Kanit-Bold" },
         });
     }, []);
-
+    const findPriceOfOrder = () => {
+        let priceOfOrder = 0;
+        if (basketDetail.foods.length !== 0) {
+            basketDetail.foods.forEach((food) => {
+                let foodPrice = food.food.price;
+                food.options.forEach((option) => {
+                    if (Array.isArray(option.increasePrice)) {
+                        const sum = option.increasePrice.reduce(
+                            (partialSum, price) => partialSum + price,
+                            0
+                        );
+                        foodPrice = foodPrice + sum;
+                    } else {
+                        foodPrice = foodPrice + option.increasePrice;
+                    }
+                });
+                for (let i = 0; i < food.amount; i++) {
+                    priceOfOrder = priceOfOrder + foodPrice;
+                }
+            });
+        }
+        return priceOfOrder;
+    };
+    const price = findPriceOfOrder();
     return (
-        <View style={{ backgroundColor: "#F5F5F5" ,flex:1 }}>
-            <View style={{ alignItems: "center" }}>
-                <View style={{ marginTop: 8 }}>
-                    <AddressBoxDetail />
+        <View style={{ backgroundColor: "#F5F5F5", flex: 1 }}>
+            <ScrollView style={{ flex: 1 }}>
+                <View style={{ alignItems: "center", paddingBottom: 50 }}>
+                    <View
+                        style={{
+                            marginTop: 8,
+                            width: "92.53%",
+                        }}
+                    >
+                        <AddressBoxDetail />
+                    </View>
+                    <View style={{ marginTop: 8, width: "92.53%" }}>
+                        <OrderListSummary allprice={price} />
+                    </View>
                 </View>
-            </View>
+            </ScrollView>
         </View>
     );
 };

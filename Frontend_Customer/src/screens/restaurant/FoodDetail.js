@@ -161,18 +161,19 @@ const FoodDetail = ({ route, navigation }) => {
     //     console.log(confirmOption);
     // }, [confirmOption]);
 
-    useEffect(() => {
-        console.log(basketDetail);
-    }, [basketDetail]);
+    // useEffect(() => {
+    //     console.log(basketDetail);
+    // }, [basketDetail]);
     const handleOnPressSubmit = () => {
         setBasketDetail((prevDetail) => {
             const newDetail = { ...prevDetail };
             const foodData = {
-                id: prevDetail.foods.length,
+                id: prevDetail.foods.length+1,
                 food: food,
                 options: confirmOption,
                 moreDetail: moreDetail,
                 amount: number,
+                price: price,
             };
             newDetail.restaurant = restaurant;
             newDetail.foods.push(foodData);
