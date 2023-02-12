@@ -2,7 +2,14 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 //Components
-import { StyleSheet, Text, View } from "react-native";
+import {
+    Modal,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+    Pressable,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import BackScreen from "../../components/buttons/BackScreen";
 import ImageInput from "../../components/Inputs/ImageInput";
@@ -33,12 +40,18 @@ const AddMenu = ({ navigation }) => {
         return fetchOptions();
     }, []);
 
+    // Helping Variable
+    const [options, setOptions] = useState([]);
+    const [type, setType] = useState("");
+    const [types, setTypes] = useState([]);
+    const [modalVisible, setModalVisible] = useState(false);
+    // Used for Send to backend
     const [image, setImage] = useState(null);
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");
     const [description, setDescription] = useState("");
-    const [options, setOptions] = useState([]);
     const [selectOptions, setSelectOptions] = useState([]);
+    const [selectedType, setSelectedType] = useState([]);
 
     const fetchOptions = () => {
         axios
@@ -60,6 +73,7 @@ const AddMenu = ({ navigation }) => {
             price: price,
             description: description,
             options: selectOptions,
+            types: selectedType,
         });
         console.log("Save");
     };
@@ -71,9 +85,22 @@ const AddMenu = ({ navigation }) => {
             setSelectOptions([...selectOptions, option]);
         }
     };
+    const handleSelectedType = (type) => {
+        if (selectedType.includes(type)) {
+            setSelectedType(selectedType.filter((t) => t !== type));
+        } else {
+            setSelectedType([...selectedType, type]);
+        }
+    };
+    const handleAddTypesSave = () => {
+        if (!types.includes(type)) {
+            setTypes([...types, type]);
+        }
+        setModalVisible(false);
+    };
     const handleTestButton = () => {
-        console.log("Press")
-    }
+        console.log("Press");
+    };
     return (
         <ScrollView style={{}}>
             <View style={styles.container}>
@@ -106,9 +133,50 @@ const AddMenu = ({ navigation }) => {
                 </View>
                 <Text style={styles.header}>ประเภทอาหาร</Text>
                 <View style={styles.options}>
+                    {types.map((type, index) => (
+                        <CheckboxButton
+                            key={index}
+                            label={type}
+                            checked={selectedType.includes(type)}
+                            onPress={() => handleSelectedType(type)}
+                        />
+                    ))}
                     <View style={styles.add_edit_button}>
-                        <MiniBtn label={"เพิ่ม"} color="#FF7A00" onPress={handleTestButton}/>
-                        <MiniBtn label={"แก้ไข"} color="#FF0101" onPress={handleTestButton}/>
+                        <MiniBtn
+                            label={"เพิ่ม"}
+                            color="#FF7A00"
+                            onPress={() => setModalVisible(true)}
+                        />
+                        <Modal
+                            transparent={true}
+                            animationType="fade"
+                            visible={modalVisible}
+                            nRequestClose={() => setModalVisible(false)}
+                        >
+                            <TouchableOpacity
+                                style={styles.container_add_button}
+                                onPress={() => setModalVisible(false)}
+                            >
+                                <Pressable style={styles.addTags}>
+                                    <CustomTextInput
+                                        placeholder="หมวดหมู่อาหาร"
+                                        value={type}
+                                        onChangeText={setType}
+                                        style={styles.shadow}
+                                    />
+                                    <MiniBtn
+                                        label={"บันทึก"}
+                                        color="#63BE00"
+                                        onPress={handleAddTypesSave}
+                                    />
+                                </Pressable>
+                            </TouchableOpacity>
+                        </Modal>
+                        <MiniBtn
+                            label={"แก้ไข"}
+                            color="#FF0101"
+                            onPress={handleTestButton}
+                        />
                     </View>
                 </View>
                 <Text style={styles.header}>ตัวเลือกเสริม</Text>
@@ -157,7 +225,30 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
         flexDirection: "row",
     },
+    container_add_button: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(0, 0, 0, 0.2)",
+    },
+    addTags: {
+        backgroundColor: "#EDEDED",
+        padding: 20,
+        borderRadius: 15,
+        alignItems: "center",
+    },
     submitButton: {
         marginTop: 20,
+    },
+    shadow: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.18,
+        shadowRadius: 1.0,
+
+        elevation: 1,
     },
 });

@@ -8,7 +8,8 @@ const CustomTextInput = ({
     onChangeText,
     keyboardType = "default",
     multiline = false,
-    numberOfLines= 1
+    numberOfLines= 1,
+    style = null
 }) => {
     /*
     keyboardType:   default
@@ -20,7 +21,7 @@ const CustomTextInput = ({
                     url 
     */
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, style]}>
             <TextInput
                 placeholder={placeholder}
                 style={styles.input}

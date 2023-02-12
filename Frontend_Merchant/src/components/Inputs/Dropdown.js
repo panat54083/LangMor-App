@@ -83,8 +83,6 @@ const styles = StyleSheet.create({
     options: {
         backgroundColor: "white",
         borderRadius: 15,
-        borderTopLeftRadius: 15,
-        borderTopRightRadius: 15,
         width: WIDTH-100,
         // height: HEIGHT/2,
     },
