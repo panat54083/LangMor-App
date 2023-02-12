@@ -1,28 +1,41 @@
 //Packages
 import React, { useEffect, useState, useContext } from "react";
+import { useIsFocused } from "@react-navigation/native";
 import axios from "axios";
 //Components
-import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
+import {
+    StyleSheet,
+    Text,
+    View,
+    SafeAreaView,
+    Button,
+    ScrollView,
+} from "react-native";
 import AddButton from "../../components/buttons/AddButton";
+import FoodCard from "../../components/Cards/FoodCard";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
 
 const MenuManage = ({ navigation }) => {
     const { state } = useContext(UserContext);
+    const isFocused = useIsFocused();
     const [foodsData, setFoodsData] = useState([]);
-    useEffect(()=>{
-        fetchTypes()
-    },[])
+
+    useEffect(() => {
+        if (isFocused) {
+            fetchFoods();
+        }
+    }, [isFocused]);
 
     const handleAddMenu = () => {
         console.log("Add Menu");
         navigation.navigate("AddMenu");
     };
     const handleFoods = () => {
-        console.log(foodsData)
-    }
-    const fetchTypes = () => {
+        console.log(foodsData);
+    };
+    const fetchFoods = () => {
         axios
             .get(
                 `http://${IP_ADDRESS}/restaurant/foods?restaurant_id=${state.restaurantData._id}`
@@ -40,11 +53,13 @@ const MenuManage = ({ navigation }) => {
             <View style={styles.add_button}>
                 <AddButton onPress={handleAddMenu} />
             </View>
-            {
-                foodsData.map((food, index)=>{
-                    
-                })
-            }
+            <ScrollView>
+                <View style={styles.foodCard}>
+                    {foodsData.map((food, index) => (
+                        <FoodCard key={index} foodData={food} />
+                    ))}
+                </View>
+            </ScrollView>
         </SafeAreaView>
     );
 };
@@ -57,6 +72,9 @@ const styles = StyleSheet.create({
         backgroundColor: "#F5f5f5",
     },
     add_button: {
+        marginHorizontal: 20,
+    },
+    foodCard: {
         marginHorizontal: 20,
     },
 });
