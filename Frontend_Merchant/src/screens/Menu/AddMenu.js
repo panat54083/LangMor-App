@@ -51,7 +51,7 @@ const AddMenu = ({ navigation }) => {
     const [price, setPrice] = useState("");
     const [description, setDescription] = useState("");
     const [selectOptions, setSelectOptions] = useState([]);
-    const [selectedType, setSelectedType] = useState([]);
+    const [selectedType, setSelectedType] = useState("");
 
     const fetchOptions = () => {
         axios
@@ -86,10 +86,10 @@ const AddMenu = ({ navigation }) => {
         }
     };
     const handleSelectedType = (type) => {
-        if (selectedType.includes(type)) {
-            setSelectedType(selectedType.filter((t) => t !== type));
+        if (selectedType===type) {
+            setSelectedType("");
         } else {
-            setSelectedType([...selectedType, type]);
+            setSelectedType(type);
         }
     };
     const handleAddTypesSave = () => {
@@ -214,6 +214,7 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         padding: 5,
         borderRadius: 15,
+        marginBottom: 10,
     },
     header: {
         fontFamily: "Kanit-Bold",
@@ -238,7 +239,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     submitButton: {
-        marginTop: 20,
+    marginBottom: 10,
     },
     shadow: {
         shadowColor: "#000",
