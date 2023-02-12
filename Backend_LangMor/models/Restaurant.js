@@ -29,6 +29,10 @@ const restaurantSchema = new mongoose.Schema(
             type: Boolean,
             default: true,
         },
+        types: {
+            type: [],
+            defualt: []
+        }
     },
     {
         timestamps: true,

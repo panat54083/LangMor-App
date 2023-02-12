@@ -21,7 +21,6 @@ import MiniBtn from "../../components/buttons/MiniBtn";
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
 const AddMenu = ({ navigation }) => {
-    const { state } = useContext(UserContext);
     useEffect(() => {
         navigation.setOptions({
             title: "เพิ่มเมนูอาหาร",
@@ -41,6 +40,7 @@ const AddMenu = ({ navigation }) => {
     }, []);
 
     // Helping Variable
+    const { state } = useContext(UserContext);
     const [options, setOptions] = useState([]);
     const [type, setType] = useState("");
     const [types, setTypes] = useState([]);
@@ -66,6 +66,25 @@ const AddMenu = ({ navigation }) => {
             });
     };
 
+    const fetchTypesSave = () => {
+        axios
+            .post(`http://${IP_ADDRESS}/restaurant/save_types`, {
+                types: types,
+                restaurant_id: state.restaurantData._id,
+            })
+            .then((res) => {
+                console.log(res.data.message);
+            })
+            .catch((err) => {
+                if (
+                    err &&
+                    err.response &&
+                    err.response.data &&
+                    err.response.data.message
+                )
+                    console.log("Error", err.response.data.message);
+            });
+    };
     const handleSave = () => {
         console.log({
             image: image,
@@ -75,7 +94,7 @@ const AddMenu = ({ navigation }) => {
             options: selectOptions,
             types: selectedType,
         });
-        console.log("Save");
+        fetchTypesSave();
     };
 
     const handleSelectOptions = (option) => {
@@ -86,7 +105,7 @@ const AddMenu = ({ navigation }) => {
         }
     };
     const handleSelectedType = (type) => {
-        if (selectedType===type) {
+        if (selectedType === type) {
             setSelectedType("");
         } else {
             setSelectedType(type);
@@ -239,7 +258,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     submitButton: {
-    marginBottom: 10,
+        marginBottom: 10,
     },
     shadow: {
         shadowColor: "#000",

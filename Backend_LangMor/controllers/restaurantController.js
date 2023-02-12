@@ -100,3 +100,14 @@ exports.restaurantOptionsInfo = async (req, res) => {
         options: optionsData
     })
 }
+
+exports.restaurantTypesSave = async (req, res) => {
+    const {types, restaurant_id} = req.body
+    const restaurant = await Restaurant.findById(restaurant_id)
+    restaurant.types = types
+    await restaurant.save()
+
+    res.json({
+        message: `Save Types for ${restaurant.name}` 
+    })
+}
