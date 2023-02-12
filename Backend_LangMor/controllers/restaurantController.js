@@ -111,7 +111,7 @@ exports.restaurantTypesSave = async (req, res) => {
 
 exports.restaurantTypesInfo = async (req, res) => {
     const {restaurant_id} = req.query
-    console.log( restaurant_id)
+    // console.log( restaurant_id)
     const restaurant = await Restaurant.findById(restaurant_id)
     const types = restaurant.types
     res.json({

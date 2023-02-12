@@ -102,7 +102,7 @@ const AddMenu = ({ navigation }) => {
         console.log({
             image: image,
             name: name,
-            price: price,
+            price: Number(price),
             description: description,
             options: selectOptions,
             types: selectedType,

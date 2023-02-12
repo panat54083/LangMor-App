@@ -20,6 +20,7 @@ require("./models/Customer");
 require("./models/Merchant");
 require("./models/Restaurant")
 require("./models/Option")
+require("./models/Food")
 //Setup Server
 const PORT = 8000;
 const app = require("./app");
