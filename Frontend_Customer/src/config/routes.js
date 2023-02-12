@@ -9,7 +9,7 @@ import SecondHandList from "../screens/SecondHandList";
 import TapStackRoutes from "./TapStackRoutes";
 import HomePageHeader from "../components/HomePageHeader";
 import FoodDetail from "../screens/restaurant/FoodDetail";
-
+import Cart from "../screens/restaurant/Cart";
 const Stack = createStackNavigator();
 
 const MyStack = ({}) => {
@@ -39,6 +39,7 @@ const MyStack = ({}) => {
                         component={FoodDetail}
                         options={{ headerShown: false }}
                     />
+                    <Stack.Screen name="Cart" component={Cart} />
                     <Stack.Screen
                         name="LostItemList"
                         component={LostItemList}

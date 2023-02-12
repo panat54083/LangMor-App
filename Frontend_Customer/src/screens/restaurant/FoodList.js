@@ -114,6 +114,10 @@ const FoodList = ({ route, navigation }) => {
             restaurant: restaurant,
         });
     };
+
+    const handlerOnPressBtnToBasketDetail = () => {
+        navigation.navigate("Cart")
+    };
     return (
         <View style={{ flex: 1 }}>
             <FoodListHeader handlerOnPressBack={handlerOnPressBack} />
@@ -145,7 +149,7 @@ const FoodList = ({ route, navigation }) => {
             </View>
             {basketDetail.foods.length !== 0 ? (
                 <View style={styles.confirmOrderBtn}>
-                    <BtnToBasketDetail amount={amount} price={price} />
+                    <BtnToBasketDetail amount={amount} price={price} onPress={handlerOnPressBtnToBasketDetail}/>
                 </View>
             ) : null}
         </View>

@@ -2,9 +2,9 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 
 const BtnToBasketDetail = (props) => {
-    const { amount, price } = props;
+    const { amount, price, onPress } = props;
     return (
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={onPress}>
             <View style={{ flex: 1, alignItems: "center" }}>
                 <Text style={styles.textStyle}>{amount}</Text>
             </View>
