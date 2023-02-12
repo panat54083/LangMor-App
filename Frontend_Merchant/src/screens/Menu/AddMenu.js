@@ -1,5 +1,6 @@
 //Packages
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import axios from "axios";
 //Components
 import { StyleSheet, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -7,8 +8,12 @@ import BackScreen from "../../components/buttons/BackScreen";
 import ImageInput from "../../components/Inputs/ImageInput";
 import CustomTextInput from "../../components/Inputs/CustomTextInput";
 import AcceptButton from "../../components/buttons/AcceptButton";
-
+import CheckboxButton from "../../components/Checkboxes/CheckboxButton";
+//Config
+import UserContext from "../../hooks/context/UserContext";
+import { IP_ADDRESS } from "@env";
 const AddMenu = ({ navigation }) => {
+    const { state } = useContext(UserContext);
     useEffect(() => {
         navigation.setOptions({
             title: "เพิ่มเมนูอาหาร",
@@ -23,12 +28,29 @@ const AddMenu = ({ navigation }) => {
                 />
             ),
         });
+
+        return fetchOptions();
     }, []);
 
     const [image, setImage] = useState(null);
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");
     const [description, setDescription] = useState("");
+    const [options, setOptions] = useState([]);
+    const [selectOptions, setSelectOptions] = useState([]);
+
+    const fetchOptions = () => {
+        axios
+            .get(
+                `http://${IP_ADDRESS}/restaurant/options?restaurant_id=${state.restaurantData._id}`
+            )
+            .then((res) => {
+                setOptions(res.data.options);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
 
     const handleSave = () => {
         console.log({
@@ -36,8 +58,17 @@ const AddMenu = ({ navigation }) => {
             name: name,
             price: price,
             description: description,
+            options: selectOptions,
         });
         console.log("Save");
+    };
+
+    const handleSelectOptions = (option) => {
+        if (selectOptions.includes(option)) {
+            setSelectOptions(selectOptions.filter((o) => o !== option));
+        } else {
+            setSelectOptions([...selectOptions, option]);
+        }
     };
     return (
         <View style={styles.container}>
@@ -69,7 +100,20 @@ const AddMenu = ({ navigation }) => {
                         numberOfLines={4}
                     />
                 </View>
-                <AcceptButton label={"บันทึก"} onPress={handleSave} />
+                <Text style={styles.header}>ตัวเลือกเสริม</Text>
+                <View style={styles.options}>
+                    {options.map((option, index) => (
+                        <CheckboxButton
+                            key={index}
+                            label={option.name}
+                            checked={selectOptions.includes(option)}
+                            onPress={() => handleSelectOptions(option)}
+                        />
+                    ))}
+                </View>
+                <View style={styles.submitButton}>
+                    <AcceptButton label={"บันทึก"} onPress={handleSave} />
+                </View>
             </ScrollView>
         </View>
     );
@@ -86,5 +130,19 @@ const styles = StyleSheet.create({
     },
     input_components: {
         marginBottom: 8,
+    },
+    options: {
+        backgroundColor: "white",
+        padding: 5,
+        borderRadius: 15,
+    },
+    header: {
+        fontFamily: "Kanit-Bold",
+        fontSize: 20,
+        color: "#1A0700",
+        marginBottom: 10,
+    },
+    submitButton: {
+        marginTop: 20,
     },
 });

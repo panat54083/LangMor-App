@@ -3,7 +3,7 @@ import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
 //Components
-import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, Button, ScrollView } from "react-native";
 import AddButton from "../../components/buttons/AddButton";
 import ChoiceBtn from "../../components/buttons/ChoiceBtn";
 //Config
@@ -45,11 +45,14 @@ const OptionsManage = ({ navigation }) => {
             <View style={styles.add_button}>
                 <AddButton onPress={handleAddOptions} />
             </View>
+                <ScrollView>
             <View style={styles.Options}>
+
                 {options.map((option, index) => (
                     <ChoiceBtn key={index} option={option} />
                 ))}
             </View>
+                </ScrollView>
         </SafeAreaView>
     );
 };
