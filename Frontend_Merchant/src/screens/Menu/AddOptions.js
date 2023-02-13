@@ -1,5 +1,5 @@
 //Packages
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import axios from "axios";
 //Components
 import {
@@ -37,6 +37,7 @@ const AddOptions = ({ navigation }) => {
     }, []);
 
     const { state } = useContext(UserContext);
+    const scrollViewRef = useRef(null);
     const [name, setName] = useState("");
     const [required, setRequired] = useState(false);
     const [maximum, setMaximum] = useState(0);
@@ -46,6 +47,9 @@ const AddOptions = ({ navigation }) => {
         required: null,
         maximum: null,
     });
+    useEffect(() => {
+        scrollViewRef.current.scrollToEnd({ animated: true });
+    }, [choices]);
 
     useEffect(() => {
         setOptions({
@@ -79,8 +83,8 @@ const AddOptions = ({ navigation }) => {
             });
     };
     return (
-        <ScrollView>
-            <SafeAreaView style={styles.container}>
+        <SafeAreaView style={{ flex: 1 }}>
+            <ScrollView style={[styles.container]} ref={scrollViewRef}>
                 <View style={styles.first_part}>
                     <CustomTextInput
                         placeholder={"ชื่อตัวเลือก"}
@@ -100,11 +104,11 @@ const AddOptions = ({ navigation }) => {
                         getChoices={setChoices}
                     />
                 </View>
-                <View style={styles.submit_button}>
+            </ScrollView>
+                <View style={styles.third_part}>
                     <AcceptButton label={"บันทึก"} onPress={handleSave} />
                 </View>
-            </SafeAreaView>
-        </ScrollView>
+        </SafeAreaView>
     );
 };
 
@@ -112,9 +116,20 @@ export default AddOptions;
 
 const styles = StyleSheet.create({
     container: {
-        padding: 20,
+        flex: 1,
+        flexDirection: "column",
+        paddingHorizontal: 20,
     },
-    first_part: {},
-    second_part: {},
-    submit_button: {},
+    first_part: {
+        flex: 1,
+    },
+    second_part: {
+        flex: 1,
+        backgroundColor: "white",
+        borderRadius: 15,
+    },
+    third_part: {
+        marginHorizontal: 20,
+        marginBottom: 10,
+    },
 });

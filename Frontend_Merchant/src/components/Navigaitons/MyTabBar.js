@@ -10,7 +10,6 @@ function MyTabBar({ state, descriptors, navigation, position }) {
             style={{
                 flexDirection: "row",
                 margin: 12,
-                borderRadius: 15,
             }}
         >
             {state.routes.map((route, index, { length }) => {
