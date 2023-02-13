@@ -1,8 +1,8 @@
 //Packages
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 //Components
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 import Logout from "../../components/buttons/Logout";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
@@ -12,6 +12,7 @@ import BackScreen from "../../components/buttons/BackScreen";
 const Setting = ({ navigation }) => {
     const { onAction } = useContext(UserContext);
     const { socket } = useContext(SocketContext);
+    const [isLoaded, setIsLoaded] = useState(true)
     useEffect(() => {
         navigation.setOptions({
             title: "การตั้งค่า",
@@ -28,6 +29,7 @@ const Setting = ({ navigation }) => {
                 <BackScreen onPress={() => navigation.goBack()} />
             ),
         });
+        setIsLoaded(false)
     }, []);
     const handleLogOut = async () => {
         onAction.signOut();
@@ -36,7 +38,12 @@ const Setting = ({ navigation }) => {
     };
     return (
         <View style={{ flex: 1, justifyContent: "center" }}>
-            <Logout onPress={handleLogOut} />
+            { isLoaded ? (
+                <View><ActivityIndicator size={"large"} color="#FF4200"/></View>
+            ) : (
+                <Logout onPress={handleLogOut} />
+
+            )}
         </View>
     );
 };
