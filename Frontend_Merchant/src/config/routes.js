@@ -11,11 +11,11 @@ import HomeManage from "../screens/HomeManage";
 import Congrat from "../screens/Introductions/Congrat";
 import Setting from "../screens/settings/Setting";
 import SelectRestaurant from "../screens/Introductions/SelectRestaurant";
-import OrderManage from "../screens/Orders/OrderManage";
 import AddMenu from "../screens/Menu/AddMenu";
 import AddOptions from "../screens/Menu/AddOptions";
 // Taps
 import MenuTabs from "./Tabs/MenuTabs";
+import OrderTabs from "./Tabs/OrderTabs";
 // Configs
 const Stack = createStackNavigator();
 
@@ -43,8 +43,8 @@ function MyStack({}) {
                                 component={MenuTabs}
                             />
                             <Stack.Screen
-                                name="OrderManage"
-                                component={OrderManage}
+                                name="OrderTabs"
+                                component={OrderTabs}
                             />
                             <Stack.Screen name="AddMenu" component={AddMenu} />
                             <Stack.Screen

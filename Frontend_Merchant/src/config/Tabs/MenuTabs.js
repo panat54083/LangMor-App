@@ -3,11 +3,11 @@ import React, { useEffect } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 //Components
 import { StyleSheet } from "react-native";
+import MyTabBar from "../../components/Navigaitons/MyTabBar";
+import BackScreen from "../../components/buttons/BackScreen";
 //Screens
 import MenuManage from "../../screens/Menu/MenuManage";
 import OptionsManage from "../../screens/Menu/OptionsManage";
-import BackScreen from "../../components/buttons/BackScreen";
-import MyTabBar from "../../components/Navigaitons/MyTabBar";
 //Configs
 const Tab = createMaterialTopTabNavigator();
 

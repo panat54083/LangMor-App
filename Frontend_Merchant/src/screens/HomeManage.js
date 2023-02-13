@@ -63,7 +63,7 @@ const HomeManage = ({ navigation }) => {
         navigation.navigate("MenuTabs");
     };
     const handleOrder = () => {
-        navigation.navigate("OrderManage");
+        navigation.navigate("OrderTabs");
     };
     return (
         <>
