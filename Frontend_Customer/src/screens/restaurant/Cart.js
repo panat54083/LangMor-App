@@ -7,7 +7,7 @@ import OrderListSummary from "../../components/cards/OrderListSummary";
 import SubmitBtn from "../../components/buttons/SubmitBtn";
 
 const Cart = ({ route, navigation }) => {
-    const { basketDetail, setBasketDetail } = useContext(BasketContext);
+    const { basketDetail } = useContext(BasketContext);
     useEffect(() => {
         navigation.setOptions({
             title: basketDetail.restaurant.restaurantName,
@@ -67,7 +67,12 @@ const Cart = ({ route, navigation }) => {
                     bottom: 0,
                 }}
             >
-                <SubmitBtn label={"สั่งซื้อ"} />
+                <SubmitBtn
+                    label={"สั่งซื้อ"}
+                    onPress={() => {
+                        navigation.navigate("Chat", { allprice: price });
+                    }}
+                />
             </View>
         </View>
     );

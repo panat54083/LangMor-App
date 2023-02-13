@@ -10,6 +10,8 @@ import TapStackRoutes from "./TapStackRoutes";
 import HomePageHeader from "../components/HomePageHeader";
 import FoodDetail from "../screens/restaurant/FoodDetail";
 import Cart from "../screens/restaurant/Cart";
+import Chat from "../screens/Chat/Chat";
+
 const Stack = createStackNavigator();
 
 const MyStack = ({}) => {
@@ -40,6 +42,7 @@ const MyStack = ({}) => {
                         options={{ headerShown: false }}
                     />
                     <Stack.Screen name="Cart" component={Cart} />
+                    <Stack.Screen name="Chat" component={Chat} />
                     <Stack.Screen
                         name="LostItemList"
                         component={LostItemList}
