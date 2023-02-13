@@ -34,7 +34,7 @@ const CheckboxButton = ({ label, checked, onPress }) => {
     };
 
     return (
-        <TouchableOpacity onPress={onPress} style={[styles.container,]}>
+        <TouchableOpacity onPress={onPress} style={[styles.container]}>
             <View style={styles.check_container}>
                 <View style={[styles.unChecked, checked && styles.checked]}>
                     {checked && (

@@ -41,7 +41,6 @@ const HomeManage = ({ navigation }) => {
     };
     //Turn the restaurant off or open
     const fetchRestaurantOpenClose = () => {
-
         axios
             .post(`http://${IP_ADDRESS}/restaurant/closed`, {
                 restaurant_id: state.restaurantData._id,
@@ -52,20 +51,20 @@ const HomeManage = ({ navigation }) => {
             .catch((err) => {
                 console.log(err);
             });
-    }
+    };
     const handleSetting = () => {
         navigation.navigate("Setting");
     };
     const handleOpenClose = () => {
-        fetchRestaurantOpenClose()
-        fetchRestaurantInfo()
+        fetchRestaurantOpenClose();
+        fetchRestaurantInfo();
     };
     const handleMenu = () => {
-        navigation.navigate("MenuTabs" )
-    }
+        navigation.navigate("MenuTabs");
+    };
     const handleOrder = () => {
-        navigation.navigate("OrderManage")
-    }
+        navigation.navigate("OrderManage");
+    };
     return (
         <>
             {state.restaurantData ? (

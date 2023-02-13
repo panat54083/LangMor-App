@@ -50,8 +50,8 @@ const MenuManage = ({ navigation }) => {
         console.log("Add Menu");
         navigation.navigate("AddMenu");
     };
-    const handleFoods = () => {
-        console.log(foodsData);
+    const handleCardFood= (food) => {
+        console.log(food);
     };
 
     const fetchFoods = () => {
@@ -72,19 +72,12 @@ const MenuManage = ({ navigation }) => {
             <View style={styles.add_button}>
                 <AddButton onPress={handleAddMenu} />
             </View>
-            {/* <ScrollView>
-                <View style={styles.foodCard}>
-                    {foodsData.map((food, index) => (
-                        <FoodCard key={index} foodData={food} />
-                    ))}
-                </View>
-            </ScrollView> */}
             <SectionList
                 sections={foodsData}
                 keyExtractor={(item, index) => item + index}
                 renderItem={({ item, index }) => (
                     <View style={styles.foodCard}>
-                        <FoodCard key={index} foodData={item} />
+                        <FoodCard key={index} foodData={item} onPress={()=>{handleCardFood(item)}} />
                     </View>
                 )}
                 renderSectionHeader={({ section: { title } }) => (

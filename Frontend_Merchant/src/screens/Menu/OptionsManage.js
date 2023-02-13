@@ -3,7 +3,14 @@ import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
 //Components
-import { StyleSheet, Text, View, SafeAreaView, Button, ScrollView } from "react-native";
+import {
+    StyleSheet,
+    Text,
+    View,
+    SafeAreaView,
+    Button,
+    ScrollView,
+} from "react-native";
 import AddButton from "../../components/buttons/AddButton";
 import ChoiceBtn from "../../components/buttons/ChoiceBtn";
 //Config
@@ -13,19 +20,19 @@ import { IP_ADDRESS } from "@env";
 const OptionsManage = ({ navigation }) => {
     const { state } = useContext(UserContext);
     const [options, setOptions] = useState([]);
-    const isFocused = useIsFocused()
+    const isFocused = useIsFocused();
     useEffect(() => {
         if (isFocused) {
-            fetchOptions()
+            fetchOptions();
         }
-    }, [isFocused])
+    }, [isFocused]);
 
     const handleAddOptions = () => {
         console.log("Add Options");
         navigation.navigate("AddOptions");
     };
-    const handleFetchOptions = () => {
-        console.log("Press")
+    const handleEditOption = (option) => {
+        console.log(option);
     };
     const fetchOptions = () => {
         axios
@@ -45,14 +52,17 @@ const OptionsManage = ({ navigation }) => {
             <View style={styles.add_button}>
                 <AddButton onPress={handleAddOptions} />
             </View>
-                <ScrollView>
-            <View style={styles.Options}>
-
-                {options.map((option, index) => (
-                    <ChoiceBtn key={index} option={option} />
-                ))}
-            </View>
-                </ScrollView>
+            <ScrollView>
+                <View style={styles.Options}>
+                    {options.map((option, index) => (
+                        <ChoiceBtn
+                            key={index}
+                            label={option.name}
+                            onPress={() => handleEditOption(option)}
+                        />
+                    ))}
+                </View>
+            </ScrollView>
         </SafeAreaView>
     );
 };

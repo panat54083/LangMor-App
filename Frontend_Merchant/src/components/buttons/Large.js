@@ -10,7 +10,7 @@ import {
 //Packages
 import React from "react";
 
-const Large = ({ label, image, onPress, numberOfLines=2}) => {
+const Large = ({ label, image, onPress, numberOfLines = 2 }) => {
     return (
         <TouchableOpacity
             onPress={onPress}
@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
     image: {
         width: 115,
         flex: 1,
-        resizeMode:"contain",
-        marginTop: 36, 
+        resizeMode: "contain",
+        marginTop: 36,
     },
     text: {
         fontFamily: "Kanit-Bold",

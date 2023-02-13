@@ -11,7 +11,7 @@ import {
 
 const WIDTH = Dimensions.get("window").width;
 const HEIGHT = Dimensions.get("window").height;
-const Dropdown = ({getValue}) => {
+const Dropdown = ({ getValue }) => {
     const options = [
         { key: 0, label: "เพิ่ม", value: "increase" },
         { key: 1, label: "ลด", value: "decrease" },
@@ -20,9 +20,9 @@ const Dropdown = ({getValue}) => {
     const [value, setValue] = useState(options[0].value);
     const [label, setLabel] = useState(options[0].label);
 
-    const handleOptionPress = ( label, value ) => {
+    const handleOptionPress = (label, value) => {
         setLabel(label);
-        getValue(value)
+        getValue(value);
         setModalVisible(false);
     };
 
@@ -77,19 +77,18 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: 'rgba(0, 0, 0, 0.2)'
-        
+        backgroundColor: "rgba(0, 0, 0, 0.2)",
     },
     options: {
         backgroundColor: "white",
         borderRadius: 15,
-        width: WIDTH-100,
+        width: WIDTH - 100,
         // height: HEIGHT/2,
     },
     option: {
         // position:"absolute",
         justifyContent: "center",
-        alignItems:"center",
+        alignItems: "center",
         paddingHorizontal: 20,
     },
     text: {

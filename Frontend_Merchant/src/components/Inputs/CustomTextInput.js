@@ -8,8 +8,8 @@ const CustomTextInput = ({
     onChangeText,
     keyboardType = "default",
     multiline = false,
-    numberOfLines= 1,
-    style = null
+    numberOfLines = 1,
+    style = null,
 }) => {
     /*
     keyboardType:   default
@@ -29,15 +29,13 @@ const CustomTextInput = ({
                 onChangeText={onChangeText}
                 multiline={multiline}
                 numberOfLines={numberOfLines}
-                textAlignVertical={'top'}
+                textAlignVertical={"top"}
             />
             {value ? (
                 <Feather name="edit" size={24} color="#C9C5C4" />
-            ):
-            (
+            ) : (
                 <Feather name="edit" size={24} color="red" />
-            )
-            }
+            )}
         </View>
     );
 };
@@ -58,6 +56,5 @@ const styles = StyleSheet.create({
         width: 250,
         fontFamily: "Kanit-Medium",
         fontSize: 16,
-
     },
 });

@@ -4,7 +4,7 @@ import React from "react";
 const MiniBtn = ({ label, color, onPress }) => {
     return (
         <TouchableOpacity
-            style={[styles.container, { backgroundColor: color  }]}
+            style={[styles.container, { backgroundColor: color }]}
             onPress={onPress}
         >
             <Text style={styles.text}>{label}</Text>
@@ -18,11 +18,10 @@ const styles = StyleSheet.create({
     container: {
         paddingHorizontal: 20,
         borderRadius: 20,
-
     },
-    text:{
+    text: {
         fontFamily: "Kanit-Bold",
         fontSize: 14,
-        color : "white",
-    }
+        color: "white",
+    },
 });

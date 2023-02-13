@@ -26,8 +26,8 @@ const Home = ({ navigation }) => {
         navigation.navigate("SetRestaurant");
     };
     const handleSelectRestaurant = () => {
-        navigation.navigate("SelectRestaurant")
-    }
+        navigation.navigate("SelectRestaurant");
+    };
     const handelModel = () => setVisible(!visible);
     const handleProfile = () => {
         handelModel();

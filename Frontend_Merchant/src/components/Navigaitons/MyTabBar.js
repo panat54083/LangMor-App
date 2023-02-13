@@ -3,10 +3,17 @@ import { useEffect, useRef } from "react";
 import { StyleSheet, Animated, View, TouchableOpacity } from "react-native";
 
 function MyTabBar({ state, descriptors, navigation, position }) {
-    const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
+    const AnimatedTouchable =
+        Animated.createAnimatedComponent(TouchableOpacity);
     return (
-        <View style={{ flexDirection: "row", margin: 12 }}>
-            {state.routes.map((route, index) => {
+        <View
+            style={{
+                flexDirection: "row",
+                margin: 12,
+                borderRadius: 15,
+            }}
+        >
+            {state.routes.map((route, index, { length }) => {
                 const { options } = descriptors[route.key];
                 const label =
                     options.tabBarLabel !== undefined
@@ -43,6 +50,8 @@ function MyTabBar({ state, descriptors, navigation, position }) {
                 });
                 const bgColor = isFocused ? "#FF4200" : "#FFE8E0";
                 const fontColor = isFocused ? "white" : "#FF4200";
+                const bdLeftRadius = index === 0 ? 10 : 0;
+                const bdRightRadius = index === length - 1 ? 15 : 0;
 
                 return (
                     <AnimatedTouchable
@@ -59,13 +68,19 @@ function MyTabBar({ state, descriptors, navigation, position }) {
                             justifyContent: "center",
                             backgroundColor: bgColor,
                             padding: 10,
-                            borderBottomWidth: 2,
-                            borderBottomColor: "#FF4200",
+                            borderTopLeftRadius: bdLeftRadius,
+                            borderTopRightRadius: bdRightRadius,
+                            borderBottomLeftRadius: bdLeftRadius,
+                            borderBottomRightRadius: bdRightRadius,
                         }}
                     >
-                        <Animated.View style={{ 
-                            // opacity,
-                            }}>
+                        <Animated.View
+                            style={
+                                {
+                                    // opacity,
+                                }
+                            }
+                        >
                             <Animated.Text
                                 style={{
                                     color: fontColor,

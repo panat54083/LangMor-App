@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 
-const OrderManage = ({navigation}) => {
+const OrderManage = ({ navigation }) => {
     useEffect(() => {
         navigation.setOptions({
             title: "ออเดอร์วันนี้",

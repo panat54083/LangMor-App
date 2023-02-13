@@ -11,7 +11,7 @@ const GoogleLogin = ({ onPress }) => {
                 source={require("../../assets/icons/google.png")}
                 style={styles.image}
             />
-                <Text style={styles.text}>GOOGLE</Text>
+            <Text style={styles.text}>GOOGLE</Text>
         </TouchableOpacity>
     );
 };

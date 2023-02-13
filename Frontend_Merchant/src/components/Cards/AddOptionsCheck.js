@@ -20,7 +20,7 @@ const AddOptionsCheck = ({ getRequired, getMaximum }) => {
                     setChecked1(!checked1);
                 }}
             />
-            <View style={[styles.row, {marginTop: 4}]}>
+            <View style={[styles.row, { marginTop: 4 }]}>
                 <View style={{ flex: 1, alignItems: "center" }}>
                     <Text style={styles.text}>เลือกได้สูงสุด</Text>
                 </View>
@@ -57,7 +57,7 @@ const AddOptionsCheck = ({ getRequired, getMaximum }) => {
 export default AddOptionsCheck;
 
 const styles = StyleSheet.create({
-    container: { backgroundColor: "white", borderRadius: 15, padding:4},
+    container: { backgroundColor: "white", borderRadius: 15, padding: 4 },
     row: {
         flexDirection: "row",
         alignItems: "center",

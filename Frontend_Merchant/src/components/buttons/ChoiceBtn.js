@@ -3,18 +3,19 @@ import React, { useEffect } from "react";
 import { Feather } from "@expo/vector-icons";
 //Components
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-const ChoiceBtn = ({ option }) => {
-    const handlePress = () => {
-        //TODO: make it to be can eidit the option
-        console.log(option);
-    };
+const ChoiceBtn = ({ label, onPress }) => {
     return (
         <TouchableOpacity
             style={[styles.container, styles.shadow]}
-            onPress={handlePress}
+            onPress={onPress}
         >
-                <Text style={styles.text}> {option.name} </Text>
-            <Feather name="edit-3" size={24} color="#FF4200" style={styles.icon}/>
+            <Text style={styles.text}> {label} </Text>
+            <Feather
+                name="edit-3"
+                size={24}
+                color="#FF4200"
+                style={styles.icon}
+            />
         </TouchableOpacity>
     );
 };
@@ -27,8 +28,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         backgroundColor: "white",
         marginBottom: 6,
-        padding: 10,
-        justifyContent:"center",
+        padding: 5,
+        justifyContent: "center",
         borderRadius: 5,
     },
     text: {
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
     icon: {
         position: "absolute",
         right: 10,
-        top: "50%"
+        top: "30%",
     },
     shadow: {
         shadowColor: "#000",

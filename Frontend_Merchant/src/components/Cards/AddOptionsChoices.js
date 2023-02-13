@@ -15,7 +15,7 @@ const AddOptionsChoices = ({ inititalChoices, getChoices }) => {
         } else if (choices.filter((choice) => choice.name === "").length > 1) {
             removeDuplicateOption();
         }
-        sendToMain()
+        sendToMain();
     }, [choices]);
 
     const removeDuplicateOption = () => {
@@ -51,28 +51,29 @@ const AddOptionsChoices = ({ inititalChoices, getChoices }) => {
         setChoices(newChoices);
     };
     const sendToMain = () => {
-        const newChoices= choices.filter((item, index) => {
+        const newChoices = choices.filter((item, index) => {
             return item.name !== "";
         });
-        getChoices(newChoices)
+        getChoices(newChoices);
     };
     return (
         <View style={styles.container}>
             {choices.map((choice, index) => (
-                <Choices
-                    key={index}
-                    name={choice.name}
-                    price={choice.price}
-                    setName={(name) =>
-                        updateOptions({ ...choice, name: name }, index)
-                    }
-                    setPrice={(price) =>
-                        updateOptions({ ...choice, price: price }, index)
-                    }
-                    setMethod={(method) =>
-                        updateOptions({ ...choice, method: method }, index)
-                    }
-                />
+                <View key={index}>
+                    <Choices
+                        name={choice.name}
+                        price={choice.price}
+                        setName={(name) =>
+                            updateOptions({ ...choice, name: name }, index)
+                        }
+                        setPrice={(price) =>
+                            updateOptions({ ...choice, price: price }, index)
+                        }
+                        setMethod={(method) =>
+                            updateOptions({ ...choice, method: method }, index)
+                        }
+                    />
+                </View>
             ))}
         </View>
     );

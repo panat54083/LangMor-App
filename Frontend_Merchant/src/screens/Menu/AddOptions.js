@@ -59,7 +59,7 @@ const AddOptions = ({ navigation }) => {
     }, [name, maximum, required, choices]);
     const handleSave = () => {
         fetchSaveOptions();
-        navigation.navigate('MenuTabs', { screen: 'OptionsManage' });
+        navigation.navigate("MenuTabs", { screen: "OptionsManage" });
     };
 
     const fetchSaveOptions = () => {
@@ -114,12 +114,7 @@ const styles = StyleSheet.create({
     container: {
         padding: 20,
     },
-    first_part: {
-        // backgroundColor: "blue",
-    },
+    first_part: {},
     second_part: {},
-    submit_button: {
-        // position: "absolute",
-        // bottom: 0,
-    },
+    submit_button: {},
 });

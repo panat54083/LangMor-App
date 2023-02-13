@@ -3,9 +3,9 @@ import React from "react";
 // Components
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 
-const FoodCard = ({ foodData }) => {
+const FoodCard = ({ foodData, onPress }) => {
     return (
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity onPress={onPress} style={styles.container}>
             {foodData.picture ? (
                 <View style={styles.image_container}>
                     <Image
@@ -39,19 +39,18 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: "#DFDFDF"
-
+        borderColor: "#DFDFDF",
     },
     image_container: {
         height: 80,
         width: 80,
-        backgroundColor:"#FFE8E0",
+        backgroundColor: "#FFE8E0",
         margin: 15,
         borderRadius: 15,
-        justifyContent:"center",
-        alignItems: "center"
+        justifyContent: "center",
+        alignItems: "center",
     },
-    image:{
+    image: {
         height: "90%",
         width: "90%",
     },

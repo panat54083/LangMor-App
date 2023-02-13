@@ -106,7 +106,7 @@ const AddMenu = ({ navigation }) => {
                 picture: image,
                 name: name,
                 price: Number(price),
-                description : description,
+                description: description,
                 options: selectOptions,
                 type: selectedType,
             })
@@ -126,7 +126,7 @@ const AddMenu = ({ navigation }) => {
 
     const handleSave = () => {
         fetchTypesSave();
-        fetchFoodSave()
+        fetchFoodSave();
         navigation.navigate("MenuTabs", { screen: "MenuManage" });
     };
 
@@ -277,6 +277,7 @@ const styles = StyleSheet.create({
     add_edit_button: {
         justifyContent: "space-around",
         flexDirection: "row",
+        marginVertical: 10,
     },
     container_add_button: {
         flex: 1,
