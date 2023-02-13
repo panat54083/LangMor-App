@@ -1,3 +1,7 @@
+// Packages
+import { useContext, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+// Components
 import {
     StyleSheet,
     Text,
@@ -7,20 +11,22 @@ import {
     Button,
     Pressable,
 } from "react-native";
-import { useContext, useState } from "react";
 import Large from "../components/buttons/Large";
+import Logout from "../components/buttons/Logout";
+// Configs
 import UserContext from "../hooks/context/UserContext";
 import SocketContext from "../hooks/context/SocketContext";
-import Logout from "../components/buttons/Logout";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Home = ({navigation}) => {
+const Home = ({ navigation }) => {
     const { state, onAction } = useContext(UserContext);
     const [visible, setVisible] = useState(false);
     const { socket } = useContext(SocketContext);
 
     const handleSetRestaurant = () => {
-        navigation.navigate("SetRestaurant")
+        navigation.navigate("SetRestaurant");
+    };
+    const handleSelectRestaurant = () => {
+        navigation.navigate("SelectRestaurant");
     };
     const handelModel = () => setVisible(!visible);
     const handleProfile = () => {
@@ -72,14 +78,14 @@ const Home = ({navigation}) => {
                     </View>
                     <View style={{ margin: 20 }}>
                         <Large
-                            name={"ตั้งร้านค้า"}
+                            label={"ตั้งร้านค้า"}
                             image={require("../assets/icons/restaurant.png")}
                             onPress={handleSetRestaurant}
                         />
                         <Large
-                            name={"เลือกเป็นสมาชิกร้าน"}
+                            label={"เลือกเป็นสมาชิกร้าน"}
                             image={require("../assets/icons/waiter.png")}
-                            // onPress={}
+                            onPress={handleSelectRestaurant}
                         />
                     </View>
                 </View>

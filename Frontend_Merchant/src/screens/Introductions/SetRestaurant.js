@@ -1,3 +1,7 @@
+// Packages
+import { useEffect, useState, useContext } from "react";
+import axios from "axios";
+// Components
 import {
     StyleSheet,
     Text,
@@ -7,9 +11,6 @@ import {
     ScrollView,
     Pressable,
 } from "react-native";
-import { useEffect, useState, useContext } from "react";
-import axios from "axios";
-// Components
 import ImageInput from "../../components/Inputs/ImageInput";
 import CustomTextInput from "../../components/Inputs/CustomTextInput";
 import AcceptButton from "../../components/buttons/AcceptButton";
@@ -24,6 +25,7 @@ const SetRestaurant = ({ navigation }) => {
     const [address, setAddress] = useState("");
     const [banner, setBanner] = useState(null);
     const { state } = useContext(UserContext);
+
     useEffect(() => {
         navigation.setOptions({
             title: "ตั้งร้านค้า",
@@ -36,16 +38,20 @@ const SetRestaurant = ({ navigation }) => {
                 fontFamily: "Kanit-Bold",
                 fontSize: 24,
             },
-            headerLeft: () => <BackScreen onPress={navigation.goBack()} />,
+            headerLeft: () => (
+                <BackScreen onPress={() => navigation.goBack()} />
+            ),
         });
     }, []);
+
     const handleSave = () => {
-        console.log(`Restaurant Name: ${restaurantName}`);
-        console.log(`Owner_ID: ${state.userData._id}`);
-        console.log(`Phone: ${phone}`);
-        console.log(`Address: ${address}`);
-        console.log(`Banner: ${banner}`);
+        // console.log(`Restaurant Name: ${restaurantName}`);
+        // console.log(`Owner_ID: ${state.userData._id}`);
+        // console.log(`Phone: ${phone}`);
+        // console.log(`Address: ${address}`);
+        // console.log(`Banner: ${banner}`);
         fetchRegister();
+        navigation.navigate("Congrat");
     };
 
     const fetchRegister = () => {

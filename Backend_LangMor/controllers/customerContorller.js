@@ -44,10 +44,9 @@ exports.userInfo = async (req, res) => {
         const user = await Customer.findById(decoded.id);
 
         res.json({
-            userData: user
+            userData: user,
         });
     } catch (err) {
-
         res.status(401).json({ message: "Unauthorized" });
     }
 };

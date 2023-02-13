@@ -1,11 +1,21 @@
-import { StyleSheet, Text, View, Pressable } from "react-native";
 import React from "react";
+//conponent
+import {
+    StyleSheet,
+    Text,
+    View,
+    Pressable,
+    TouchableOpacity,
+} from "react-native";
 
 const AcceptButton = ({ label, onPress }) => {
     return (
-        <Pressable onPress={onPress} style={[styles.button, styles.shadow]}>
+        <TouchableOpacity
+            onPress={onPress}
+            style={[styles.button, styles.shadow]}
+        >
             <Text style={styles.text}>{label}</Text>
-        </Pressable>
+        </TouchableOpacity>
     );
 };
 
@@ -17,6 +27,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingVertical: 6,
         paddingHorizontal: 100,
+        alignItems: "center",
     },
     text: {
         fontFamily: "Kanit-SemiBold",

@@ -1,8 +1,13 @@
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import React from "react";
-import { MaterialCommunityIcons, FontAwesome5, AntDesign, MaterialIcons } from "@expo/vector-icons";
+import {
+    MaterialCommunityIcons,
+    FontAwesome5,
+    AntDesign,
+    MaterialIcons,
+} from "@expo/vector-icons";
 
-const SelectMap = ({onPress}) => {
+const SelectMap = ({ onPress }) => {
     return (
         <Pressable onPress={onPress} style={styles.container}>
             <MaterialCommunityIcons
@@ -11,7 +16,7 @@ const SelectMap = ({onPress}) => {
                 color="#FF4200"
             />
             <Text style={styles.text}>เลือกตำแหน่งร้าน</Text>
-        <MaterialIcons name="arrow-forward-ios" size={16} color="#FF4200" />
+            <MaterialIcons name="arrow-forward-ios" size={16} color="#FF4200" />
         </Pressable>
     );
 };
@@ -23,15 +28,15 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent:"center",
+        justifyContent: "center",
         width: 280,
         height: 40,
-        borderRadius:4,
-        margin:4,
+        borderRadius: 4,
+        margin: 4,
     },
-    text:{
+    text: {
         fontFamily: "Kanit-SemiBold",
         fontSize: 16,
-        paddingHorizontal:50,
-    }
+        paddingHorizontal: 50,
+    },
 });

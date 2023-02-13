@@ -8,7 +8,8 @@ const CustomTextInput = ({
     onChangeText,
     keyboardType = "default",
     multiline = false,
-    numberOfLines= 1
+    numberOfLines = 1,
+    style = null,
 }) => {
     /*
     keyboardType:   default
@@ -20,7 +21,7 @@ const CustomTextInput = ({
                     url 
     */
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, style]}>
             <TextInput
                 placeholder={placeholder}
                 style={styles.input}
@@ -28,14 +29,13 @@ const CustomTextInput = ({
                 onChangeText={onChangeText}
                 multiline={multiline}
                 numberOfLines={numberOfLines}
+                textAlignVertical={"top"}
             />
             {value ? (
                 <Feather name="edit" size={24} color="#C9C5C4" />
-            ):
-            (
+            ) : (
                 <Feather name="edit" size={24} color="red" />
-            )
-            }
+            )}
         </View>
     );
 };

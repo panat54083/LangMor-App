@@ -12,11 +12,11 @@ const restaurantSchema = new mongoose.Schema(
         },
         phone: {
             type: String,
-            require: true
+            require: true,
         },
         worker: {
             type: [],
-            default: null
+            default: null,
         },
         picture: {
             type: mongoose.Schema.Types.Mixed,
@@ -27,7 +27,11 @@ const restaurantSchema = new mongoose.Schema(
         },
         closed: {
             type: Boolean,
-            default: false,
+            default: true,
+        },
+        types: {
+            type: [],
+            defualt: [],
         },
     },
     {

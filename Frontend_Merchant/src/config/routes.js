@@ -7,24 +7,73 @@ import UserContext from "../hooks/context/UserContext";
 import Login from "../screens/Login";
 import Home from "../screens/Home";
 import SetRestaurant from "../screens/Introductions/SetRestaurant";
+import HomeManage from "../screens/HomeManage";
+import Congrat from "../screens/Introductions/Congrat";
+import Setting from "../screens/settings/Setting";
+import SelectRestaurant from "../screens/Introductions/SelectRestaurant";
+import OrderManage from "../screens/Orders/OrderManage";
+import AddMenu from "../screens/Menu/AddMenu";
+import AddOptions from "../screens/Menu/AddOptions";
+// Taps
+import MenuTabs from "./Tabs/MenuTabs";
 // Configs
 const Stack = createStackNavigator();
 
 function MyStack({}) {
     const { state } = useContext(UserContext);
     return (
-        <Stack.Navigator>
+        <Stack.Navigator
+            screenOptions={{
+                // headerStyle: { elevation: 0 },
+                cardStyle: { backgroundColor: "#F5F5F5" },
+            }}
+        >
             {state.userData ? (
                 <>
-                    <Stack.Screen
-                        name="Home"
-                        component={Home}
-                        options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                        name="SetRestaurant"
-                        component={SetRestaurant}
-                    />
+                    {state.userData.restaurant ? (
+                        <>
+                            <Stack.Screen
+                                name="HomeManage"
+                                component={HomeManage}
+                                options={{ headerShown: false }}
+                            />
+                            <Stack.Screen name="Setting" component={Setting} />
+                            <Stack.Screen
+                                name="MenuTabs"
+                                component={MenuTabs}
+                            />
+                            <Stack.Screen
+                                name="OrderManage"
+                                component={OrderManage}
+                            />
+                            <Stack.Screen name="AddMenu" component={AddMenu} />
+                            <Stack.Screen
+                                name="AddOptions"
+                                component={AddOptions}
+                            />
+                        </>
+                    ) : (
+                        <>
+                            <Stack.Screen
+                                name="Home"
+                                component={Home}
+                                options={{ headerShown: false }}
+                            />
+                            <Stack.Screen
+                                name="SetRestaurant"
+                                component={SetRestaurant}
+                            />
+                            <Stack.Screen
+                                name="SelectRestaurant"
+                                component={SelectRestaurant}
+                            />
+                            <Stack.Screen
+                                name="Congrat"
+                                component={Congrat}
+                                options={{ headerShown: false }}
+                            />
+                        </>
+                    )}
                 </>
             ) : (
                 <Stack.Screen

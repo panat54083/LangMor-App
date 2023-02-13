@@ -62,8 +62,8 @@ const ImageInput = ({ lable, image, setImage }) => {
         openCamera();
         setVisible(!visible);
     }
-    function handleClosedImage(){
-        setImage(null)
+    function handleClosedImage() {
+        setImage(null);
     }
 
     return (
@@ -92,7 +92,10 @@ const ImageInput = ({ lable, image, setImage }) => {
                                 }}
                                 style={styles.container}
                             />
-                            <Pressable onPress = {handleClosedImage} style={styles.cross}>
+                            <Pressable
+                                onPress={handleClosedImage}
+                                style={styles.cross}
+                            >
                                 <Entypo
                                     name="circle-with-cross"
                                     size={24}

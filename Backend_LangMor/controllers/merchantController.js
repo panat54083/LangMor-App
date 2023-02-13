@@ -43,11 +43,12 @@ exports.userInfo = async (req, res) => {
         const decoded = jwt.verify(token, process.env.SECRET);
         const user = await Merchant.findById(decoded.id);
 
-        res.json({
-            userData: user
-        });
+        if (user) {
+            res.json({
+                userData: user,
+            });
+        }
     } catch (err) {
-
         res.status(401).json({ message: "Unauthorized" });
     }
 };
