@@ -3,7 +3,7 @@ import React,{useEffect} from 'react'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 //components
 import { StyleSheet, Text, View } from 'react-native'
-import MyTabBar from '../../components/Navigaitons/MyTabBar';
+import MyTabBar2 from '../../components/Navigaitons/MyTabBar2';
 import BackScreen from '../../components/buttons/BackScreen';
 //Screen
 import NewOrder from '../../screens/Orders/NewOrder';
@@ -30,7 +30,7 @@ const OrderTabs = ({navigation}) => {
         });
     }, []);
   return (
-    <Tab.Navigator tabBar={(props)=> <MyTabBar {...props}/>}>
+    <Tab.Navigator tabBar={(props)=> <MyTabBar2 {...props}/>}>
         <Tab.Screen
         name='NewOrder'
         component={NewOrder}
