@@ -65,6 +65,9 @@ const HomeManage = ({ navigation }) => {
     const handleOrder = () => {
         navigation.navigate("OrderTabs");
     };
+    const handleDebugger = () => {
+        console.log(state.restaurantData)
+    };
     return (
         <>
             {state.restaurantData ? (
@@ -125,6 +128,11 @@ const HomeManage = ({ navigation }) => {
                                     label="การตั้งค่า"
                                     image={require("../assets/icons/gear.png")}
                                     onPress={handleSetting}
+                                />
+                                <Small
+                                    label="Debugger"
+                                    image={require("../assets/icons/bug.png")}
+                                    onPress={handleDebugger}
                                 />
                             </View>
                         </ScrollView>

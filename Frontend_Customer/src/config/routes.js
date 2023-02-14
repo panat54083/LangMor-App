@@ -17,7 +17,11 @@ const Stack = createStackNavigator();
 const MyStack = ({}) => {
     const { state } = useContext(UserContext);
     return (
-        <Stack.Navigator>
+        <Stack.Navigator
+            screenOptions={{
+                cardStyle: { backgroundColor: "#F5F5F5"}
+            }}
+        >
             {state.userData ? (
                 <>
                     <Stack.Screen

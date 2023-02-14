@@ -63,6 +63,7 @@ const Login = () => {
                 headers: { Authorization: `Bearer ${accessToken}` },
             }).then((googleUserData) => {
                 googleUserData.json().then((data) => {
+                    console.log(data)
                     fetchLogin(data);
                 });
             });
