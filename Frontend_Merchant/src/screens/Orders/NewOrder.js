@@ -1,14 +1,18 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+//Packages
+import React from "react";
+//Components
+import { StyleSheet, Text, View } from "react-native";
+import OrderCard from "../../components/Cards/OrderCard";
 
 const NewOrder = () => {
-  return (
-    <View>
-      <Text>NewOrder</Text>
-    </View>
-  )
-}
+    return (
+        <View>
+            <Text>NewOrder</Text>
+            <OrderCard />
+        </View>
+    );
+};
 
-export default NewOrder
+export default NewOrder;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

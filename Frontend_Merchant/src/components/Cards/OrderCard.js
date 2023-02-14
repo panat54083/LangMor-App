@@ -10,9 +10,9 @@ const OrderCard = () => {
             <View style={[styles.id]}>
                 <View style={styles.box_id}>
                     <Text style={[styles.font_id]}>
-                        ID {"\n"}
-                        <Text style={{ color: "white" }}>0001</Text>
+                        ID 
                     </Text>
+                        <Text style={[styles.font_id,{ color: "white" }]}>0001</Text>
                 </View>
             </View>
             <View style={[styles.name, { justifyContent: "space-around" }]}>
@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         width: "100%",
         justifyContent: "center",
+        alignItems: "center"
     },
     font_id: {
         fontFamily: "Kanit-Bold",
