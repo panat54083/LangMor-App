@@ -6,6 +6,7 @@ import {
     Image,
     Button,
     Pressable,
+    ScrollView,
 } from "react-native";
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../hooks/context/UserContext";
@@ -15,7 +16,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Fav from "../components/buttons/Fav";
 import AddressBox from "../components/buttons/AddressBox";
 import BtnToFeature from "../components/buttons/BtnToFeature";
-import HomePageHeader from "../components/HomePageHeader";
 
 const Home = ({ navigation }) => {
     const { state, onAction } = useContext(UserContext);
@@ -36,33 +36,35 @@ const Home = ({ navigation }) => {
         <View style={styles.mainContainer}>
             {state.isSignin ? (
                 <View>
-                    <View style={styles.itemheader}>
-                        <AddressBox />
-                        <Fav />
-                    </View>
-                    <View style={{ alignItems: "center" }}>
-                        <BtnToFeature
-                            name="สั่งอาหาร"
-                            imgSrc={require("../assets/icons/hamburger.png")}
-                            navigateToFeature={() => {
-                                navigation.navigate("MarketList");
-                            }}
-                        />
-                        <BtnToFeature
-                            name="ของมือสอง"
-                            imgSrc={require("../assets/icons/second-hand.png")}
-                            navigateToFeature={() => {
-                                navigation.navigate("LostItemList");
-                            }}
-                        />
-                        <BtnToFeature
-                            name="ของหาย"
-                            imgSrc={require("../assets/icons/lost-items.png")}
-                            navigateToFeature={() => {
-                                navigation.navigate("SecondHandList");
-                            }}
-                        />
-                    </View>
+                    <ScrollView>
+                        <View style={styles.itemheader}>
+                            <AddressBox />
+                            <Fav />
+                        </View>
+                        <View style={{ alignItems: "center" }}>
+                            <BtnToFeature
+                                name="สั่งอาหาร"
+                                imgSrc={require("../assets/icons/hamburger.png")}
+                                navigateToFeature={() => {
+                                    navigation.navigate("MarketList");
+                                }}
+                            />
+                            <BtnToFeature
+                                name="ของมือสอง"
+                                imgSrc={require("../assets/icons/second-hand.png")}
+                                navigateToFeature={() => {
+                                    navigation.navigate("LostItemList");
+                                }}
+                            />
+                            <BtnToFeature
+                                name="ของหาย"
+                                imgSrc={require("../assets/icons/lost-items.png")}
+                                navigateToFeature={() => {
+                                    navigation.navigate("SecondHandList");
+                                }}
+                            />
+                        </View>
+                    </ScrollView>
                 </View>
             ) : null}
             {visible ? <Logout onPress={handleLogOut} /> : null}
@@ -84,7 +86,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-around",
         // backgroundColor:'blue',
-        width:"100%",
+        width: "100%",
         paddingRight: 40,
         marginTop: 14,
         marginBottom: 24,
