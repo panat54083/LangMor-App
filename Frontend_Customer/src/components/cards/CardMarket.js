@@ -2,27 +2,32 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React from "react";
 
 const CardMarket = (props) => {
-    const { restaurant , onPressCard} = props;
+    const { restaurant, onPressCard } = props;
     return (
         <View style={{ alignItems: "center" }}>
             <View style={[styles.card, styles.elevation]}>
-                <TouchableOpacity onPress={()=>{onPressCard(restaurant)}}>
+                <TouchableOpacity
+                    onPress={() => {
+                        onPressCard(restaurant);
+                    }}
+                >
                     <View style={styles.container}>
                         <View>
                             <Image
                                 style={styles.logo}
                                 source={{
-                                    uri: "https://a.cdn-hotels.com/gdcs/production0/d1513/35c1c89e-408c-4449-9abe-f109068f40c0.jpg?impolicy=fcrop&w=800&h=533&q=medium",
+                                    uri: `data:${restaurant.picture.type}/jpg;base64,${restaurant.picture.base64}`,
                                 }}
                             />
                         </View>
                         <View style={{ width: "65%", height: 88 }}>
                             <Text style={styles.restName}>
-                                {restaurant.restaurantName}
+                                {restaurant.name}
                             </Text>
                             <View>
-                                <Text>เรทติ้ง {restaurant.rating} ดาว </Text>
-                                <Text>ขาย {restaurant.tags.join()} </Text>
+                                {restaurant.types ? (
+                                    <Text>ขาย {restaurant.types.join()} </Text>
+                                ) : null}
                             </View>
                         </View>
                     </View>

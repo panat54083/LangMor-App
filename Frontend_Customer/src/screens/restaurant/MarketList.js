@@ -5,19 +5,19 @@ import {
     FlatList,
     TouchableOpacity,
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Searchbar from "../../components/searchs/Searchbar";
 import Fav from "../../components/buttons/Fav";
 import AddressBox from "../../components/buttons/AddressBox";
 import CardMarket from "../../components/cards/CardMarket";
 import CardRestaurantTag from "../../components/cards/CardRestaurantTag";
-const MarketList = ({ route, navigation }) => {
-    const {
-        basket,
-    } = () => {
-        route.params ? route.params : null;
-    };
+import { IP_ADDRESS } from "@env";
+
+const MarketList = ({ navigation }) => {
+    const [restaurants, setRestaurants] = useState();
     useEffect(() => {
+        // setHeader
         navigation.setOptions({
             title: "สั่งอาหาร",
             headerTitleAlign: "center",
@@ -29,10 +29,24 @@ const MarketList = ({ route, navigation }) => {
                 </View>
             ),
         });
+        fetchRestaurants();
     }, []);
     const onPressCardMarket = (restaurant) => {
         navigation.navigate("FoodList", { restaurant: restaurant });
     };
+
+    const fetchRestaurants = () => {
+        axios
+            .get(`http://${IP_ADDRESS}/restaurant/all_restaurant`)
+            .then((res) => {
+                // console.log(res.data.restaurantData);
+                setRestaurants(res.data.restaurantData);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     //ของจริงใช้ fetch ข้อมูลจาก backend
     const exampleData = [
         {
@@ -104,8 +118,14 @@ const MarketList = ({ route, navigation }) => {
             <View style={{ marginTop: 18, marginLeft: "7%" }}>
                 <AddressBox />
             </View>
-            <View style={{ width: "100%", alignItems: "center" , marginVertical:10}}>
-                <Searchbar height='55'/>
+            <View
+                style={{
+                    width: "100%",
+                    alignItems: "center",
+                    marginVertical: 10,
+                }}
+            >
+                <Searchbar height="55" />
             </View>
 
             <View>
@@ -127,17 +147,24 @@ const MarketList = ({ route, navigation }) => {
             </View>
             <View style={styles.tick}></View>
             <View style={{ flex: 1 }}>
-                {exampleData ? (
-                    <FlatList
-                        data={exampleData}
-                        renderItem={({ item }) => (
-                            <CardMarket
-                                restaurant={item}
-                                onPressCard={onPressCardMarket}
-                            />
-                        )}
-                    />
-                ) : null}
+                {restaurants ? (
+                    <View>
+                        <FlatList
+                            style={{ paddingTop: 10 }}
+                            data={restaurants}
+                            renderItem={({ item }) => (
+                                <CardMarket
+                                    restaurant={item}
+                                    onPressCard={onPressCardMarket}
+                                />
+                            )}
+                        />
+                    </View>
+                ) : (
+                    <View>
+                        <Text>Now Loadding</Text>
+                    </View>
+                )}
             </View>
         </View>
     );
@@ -176,5 +203,5 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         borderRadius: 20,
     },
-    tick: { height: 4, backgroundColor: "#DFDFDF", marginBottom: 16 },
+    tick: { height: 4, backgroundColor: "#DFDFDF" },
 });

@@ -10,7 +10,7 @@ const CardRestaurantName = (props) => {
             <View style={styles.restName}>
                 <View style={{ flex: 1 }}>
                     <Text style={styles.textHeader}>
-                        {restaurant.restaurantName}
+                        {restaurant.name}
                     </Text>
                 </View>
                 <View style={{ flex: 1, alignItems: "flex-end" }}>
@@ -27,7 +27,7 @@ const CardRestaurantName = (props) => {
 
             <View style={styles.rating}>
                 <Text style={{ fontFamily: "Kanit" }}>
-                    Rating : {restaurant.rating ? restaurant.rating : "ไม่มี"}{" "}
+                    Rating : {restaurant.rating ? restaurant.rating : "ไม่มี"}{" รอเเก้ไขเป็นรายละเอียดร้านค้า"}
                 </Text>
                 <Ionicons name="star" size={18} color="#FF7A00" />
             </View>
@@ -40,7 +40,8 @@ export default CardRestaurantName;
 const styles = StyleSheet.create({
     container: {
         width: "100%",
-        height: 100,
+        paddingVertical:12,
+        // height: 100,
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
         backgroundColor: "#FFFFFF",
