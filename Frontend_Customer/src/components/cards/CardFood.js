@@ -4,7 +4,7 @@ import React from "react";
 const CardFood = (props) => {
     const { food, handlerOnPressCard } = props;
     const headerOnPress = () => {
-        handlerOnPressCard(food)
+        handlerOnPressCard(food);
     };
     return (
         <View style={{ alignItems: "center" }}>
@@ -15,16 +15,18 @@ const CardFood = (props) => {
                             <Image
                                 style={styles.logo}
                                 source={{
-                                    uri: food.imgLink,
+                                    uri: `data:${food.picture.type}/jpg;base64,${food.picture.base64}`,
                                 }}
                             />
                         </View>
                         <View style={{ width: "65%", height: 88 }}>
                             <Text style={styles.foodName}>{food.name}</Text>
                             <View>
-                                <Text style={styles.foodDetail}>
-                                    {food.detail}
-                                </Text>
+                                {food.description ? (
+                                    <Text style={styles.foodDetail}>
+                                        {food.description}
+                                    </Text>
+                                ) : null}
                                 <View style={styles.priceContainer}>
                                     <Text style={styles.props}>ราคา </Text>
                                     <Text style={styles.price}>

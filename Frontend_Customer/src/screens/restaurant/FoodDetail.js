@@ -14,6 +14,7 @@ const FoodDetail = ({ route, navigation }) => {
     const [number, setNumber] = useState(1);
     const [moreDetail, setMoreDetail] = useState(null);
     const [price, setPrice] = useState(food.price);
+    console.log(food.options);
     const foodOption = [
         {
             name: "ความหวาน",

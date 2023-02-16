@@ -7,12 +7,13 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { IP_ADDRESS } from "@env";
 import Searchbar from "../../components/searchs/Searchbar";
 import Fav from "../../components/buttons/Fav";
 import AddressBox from "../../components/buttons/AddressBox";
 import CardMarket from "../../components/cards/CardMarket";
 import CardRestaurantTag from "../../components/cards/CardRestaurantTag";
-import { IP_ADDRESS } from "@env";
+
 
 const MarketList = ({ navigation }) => {
     const [restaurants, setRestaurants] = useState();
