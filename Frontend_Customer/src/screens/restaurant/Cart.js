@@ -1,5 +1,5 @@
 //Packages
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 //Components
 import { ScrollView, StyleSheet, Text, View } from "react-native";
@@ -15,15 +15,23 @@ import { IP_ADDRESS } from "@env";
 const Cart = ({ route, navigation }) => {
     const { basketDetail } = useContext(BasketContext);
     const { state } = useContext(UserContext);
+    const [chatroomData, setChatroomData] = useState(null);
+
     useEffect(() => {
         navigation.setOptions({
-            title: basketDetail.restaurant.restaurantName,
+            title: basketDetail.restaurant.name,
             headerLeft: () => (
                 <BackScreen onPress={() => navigation.goBack()} />
             ),
             headerTitleStyle: { fontSize: 22, fontFamily: "Kanit-Bold" },
         });
     }, []);
+    useEffect(() => {
+        if (chatroomData) {
+            navigation.navigate("Chat", { chatroomData: chatroomData });
+        }
+    }, [chatroomData]);
+
     const findPriceOfOrder = () => {
         let priceOfOrder = 0;
         if (basketDetail.foods.length !== 0) {
@@ -47,7 +55,6 @@ const Cart = ({ route, navigation }) => {
         }
         return priceOfOrder;
     };
-    const price = findPriceOfOrder();
 
     const createChatroom = async () => {
         axios
@@ -56,7 +63,7 @@ const Cart = ({ route, navigation }) => {
                 restaurantId: basketDetail.restaurant._id,
             })
             .then((res) => {
-                console.log(res.data);
+                setChatroomData(res.data.chatroomData);
             })
             .catch((err) => {
                 console.log(err);
@@ -64,9 +71,9 @@ const Cart = ({ route, navigation }) => {
     };
     const handleSubmit = () => {
         // console.log(basketDetail.foods)
-        // console.log(basketDetail.restaurant._id)
+        // console.log(basketDetail.restaurant)
         // console.log(state.userData._id)
-        createChatroom()
+        createChatroom();
         navigation.navigate("Chat");
     };
     return (
@@ -82,7 +89,7 @@ const Cart = ({ route, navigation }) => {
                         <AddressBoxDetail />
                     </View>
                     <View style={{ marginTop: 8, width: "92.53%" }}>
-                        <OrderListSummary allprice={price} />
+                        <OrderListSummary allprice={findPriceOfOrder()} />
                     </View>
                 </View>
             </ScrollView>
