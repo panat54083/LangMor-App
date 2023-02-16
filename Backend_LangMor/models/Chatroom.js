@@ -7,10 +7,10 @@ const chatroomSchema = new mongoose.Schema(
             required: true,
             ref: "Customer",
         },
-        merchantId: {
+        restaurnatId: {
             type: mongoose.Schema.Types.ObjectId,
             required: true,
-            ref: "Merchant",
+            ref: "Restaurant",
         },
         closed: {
             type: Boolean,
