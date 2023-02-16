@@ -161,7 +161,7 @@ const AddMenu = ({ navigation }) => {
                         <ImageInput
                             lable="เพิ่มรูปเมนู"
                             image={image}
-                            setImage={setImage}
+                            setImage={(image)=> setImage(image)}
                         />
                     </View>
                     <CustomTextInput

@@ -8,58 +8,20 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { FontAwesome5, Feather, AntDesign, Entypo } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
-
+import * as LIP from "../../lib/lm-image-picker";
 const ImageInput = ({ lable, image, setImage }) => {
     const [visible, setVisible] = useState(false);
     const handleImageInput = () => {
         console.log("Select Options.");
         setVisible(!visible);
     };
-    const pickImage = async () => {
-        const permissionResult =
-            await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (permissionResult.granted === false) {
-            alert("You've refused to allow this appp to access your photos!");
-            return;
-        }
 
-        const result = await ImagePicker.launchImageLibraryAsync({
-            base64: true,
-            quality: 1,
-        });
-
-        if (!result.canceled) {
-            setImage(result.assets[0]);
-        }
-    };
-
-    const openCamera = async () => {
-        // Ask the user for the permission to access the camera
-        const permissionResult =
-            await ImagePicker.requestCameraPermissionsAsync();
-
-        if (permissionResult.granted === false) {
-            alert("You've refused to allow this appp to access your camera!");
-            return;
-        }
-
-        const result = await ImagePicker.launchCameraAsync({
-            base64: true,
-            quality: 0.5,
-        });
-
-        if (!result.canceled) {
-            setImage(result.assets[0]);
-        }
-    };
-
-    function handleSelectPicture() {
-        pickImage();
+    async function handleSelectPicture() {
+        setImage(await LIP.pickImage());
         setVisible(!visible);
     }
-    function handleOpenCamera() {
-        openCamera();
+    async function handleOpenCamera() {
+        setImage(await LIP.openCamera());
         setVisible(!visible);
     }
     function handleClosedImage() {
