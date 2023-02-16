@@ -14,14 +14,14 @@ const FoodDetail = ({ route, navigation }) => {
     const [number, setNumber] = useState(1);
     const [moreDetail, setMoreDetail] = useState(null);
     const [price, setPrice] = useState(food.price);
-    console.log(food.options);
+    // console.log(food.options);
     const foodOption = [
         {
             name: "ความหวาน",
             option: [
-                { optName: "หวานน้อย", increasePrice: 0 },
-                { optName: "หวานมาก", increasePrice: 10 },
-                { optName: "หวานปกติ", increasePrice: 20 },
+                { optName: "หวานน้อย", price: 0 },
+                { optName: "หวานมาก", price: 10 },
+                { optName: "หวานปกติ", price: 20 },
             ],
             requireFill: true,
             IsRadio: true,
@@ -29,9 +29,9 @@ const FoodDetail = ({ route, navigation }) => {
         {
             name: "ความเผ็ด",
             option: [
-                { optName: "เผ็ดน้อย", increasePrice: 0 },
-                { optName: "เผ็ดมาก", increasePrice: 10 },
-                { optName: "เผ็ดปกติ", increasePrice: 20 },
+                { optName: "เผ็ดน้อย", price: 0 },
+                { optName: "เผ็ดมาก", price: 10 },
+                { optName: "เผ็ดปกติ", price: 20 },
             ],
             requireFill: true,
             IsRadio: true,
@@ -39,9 +39,9 @@ const FoodDetail = ({ route, navigation }) => {
         {
             name: "ความร้อน",
             option: [
-                { optName: "ร้อนน้อย", increasePrice: 0 },
-                { optName: "ร้อนมาก", increasePrice: 10 },
-                { optName: "ร้อนปกติ", increasePrice: 20 },
+                { optName: "ร้อนน้อย", price: 0 },
+                { optName: "ร้อนมาก", price: 10 },
+                { optName: "ร้อนปกติ", price: 20 },
             ],
             requireFill: false,
             IsRadio: true,
@@ -49,9 +49,9 @@ const FoodDetail = ({ route, navigation }) => {
         {
             name: "ความเปรี้ยว",
             option: [
-                { optName: "เปรี้ยวน้อย", increasePrice: 0 },
-                { optName: "เปรี้ยวมาก", increasePrice: 10 },
-                { optName: "เปรี้ยวปกติ", increasePrice: 20 },
+                { optName: "เปรี้ยวน้อย", price: 0 },
+                { optName: "เปรี้ยวมาก", price: 10 },
+                { optName: "เปรี้ยวปกติ", price: 20 },
             ],
             requireFill: false,
             IsRadio: false,
@@ -59,9 +59,9 @@ const FoodDetail = ({ route, navigation }) => {
         {
             name: "ความขม",
             option: [
-                { optName: "ขมน้อย", increasePrice: 0 },
-                { optName: "ขมมาก", increasePrice: 10 },
-                { optName: "ขมปกติ", increasePrice: 20 },
+                { optName: "ขมน้อย", price: 0 },
+                { optName: "ขมมาก", price: 10 },
+                { optName: "ขมปกติ", price: 20 },
             ],
             requireFill: true,
             IsRadio: false,
@@ -69,20 +69,20 @@ const FoodDetail = ({ route, navigation }) => {
     ];
     const [confirmOption, setConfirmOption] = useState(() => {
         let array = [];
-        foodOption.forEach((option) => {
-            if (option.requireFill) {
+        food.options.forEach((option) => {
+            if (option.required) {
                 array.push({
                     name: option.name,
-                    needCheck: true,
+                    required: true,
                     value: null,
-                    increasePrice: 0,
+                    price: 0,
                 });
             } else {
                 array.push({
                     name: option.name,
-                    needCheck: false,
+                    required: false,
                     value: null,
-                    increasePrice: 0,
+                    price: 0,
                 });
             }
         });
@@ -99,14 +99,12 @@ const FoodDetail = ({ route, navigation }) => {
             if (index !== -1 && data.value) {
                 newArr[index] = {
                     name: newArr[index].name,
-                    needCheck: false,
+                    required: false,
                     value: data.value,
-                    increasePrice: data.price,
+                    price: data.price,
                 };
                 setPrice((prevPrice) => {
-                    return (
-                        prevPrice + data.price - prevValue[index].increasePrice
-                    );
+                    return prevPrice + data.price - prevValue[index].price;
                 });
             }
             return newArr;
@@ -124,32 +122,32 @@ const FoodDetail = ({ route, navigation }) => {
                 newArr[index] = {
                     name: newArr[index].name,
                     // ตรงนี้ต้อง Check ตามจำนวนที่ Required มาอีกที😒😒
-                    needCheck: false,
+                    required: false,
                     value: data.value,
-                    increasePrice: data.price,
+                    price: data.price,
                 };
-                if (prevValue[index].increasePrice.length > data.price.length) {
+                if (prevValue[index].price.length > data.price.length) {
                     setPrice((prevPrice) => {
-                        const sumDiffPrice = prevValue[index].increasePrice
-                            .filter((x) => !data.price.includes(x))
-                            .reduce(
-                                (partialSum, price) => partialSum + price,
-                                0
+                        const diffValue = prevValue[index].value.filter(
+                            (x) => !data.value.includes(x)
+                        )[0];
+                        const indexOfPrice =
+                            prevValue[index].value.indexOf(diffValue);
+                        if (indexOfPrice !== -1) {
+                            return (
+                                prevPrice - prevValue[index].price[indexOfPrice]
                             );
-                        return prevPrice - sumDiffPrice;
+                        }
                     });
-                } else {
+                } else if (prevValue[index].price.length < data.price.length) {
                     setPrice((prevPrice) => {
-                        const sumDiffPrice = data.price
-                            .filter(
-                                (x) =>
-                                    !prevValue[index].increasePrice.includes(x)
-                            )
-                            .reduce(
-                                (partialSum, price) => partialSum + price,
-                                0
-                            );
-                        return prevPrice + sumDiffPrice;
+                        const diffValue = data.value.filter(
+                            (x) => !prevValue[index].value.includes(x)
+                        )[0];
+                        const indexOfPrice = data.value.indexOf(diffValue);
+                        if (indexOfPrice !== -1) {
+                            return prevPrice + data.price[indexOfPrice];
+                        }
                     });
                 }
             }
@@ -158,9 +156,9 @@ const FoodDetail = ({ route, navigation }) => {
         });
     };
 
-    // useEffect(() => {
-    //     console.log(confirmOption);
-    // }, [confirmOption]);
+    useEffect(() => {
+        console.log(confirmOption);
+    }, [confirmOption]);
 
     // useEffect(() => {
     //     console.log(basketDetail);
@@ -211,8 +209,8 @@ const FoodDetail = ({ route, navigation }) => {
                     }}
                 >
                     {/* Check this food have option */}
-                    {foodOption.length !== 0
-                        ? foodOption.map((option) => {
+                    {food.options.length !== 0
+                        ? food.options.map((option) => {
                               return (
                                   <View
                                       style={styles.cardRadioSet}
@@ -233,7 +231,8 @@ const FoodDetail = ({ route, navigation }) => {
                                           style={styles.optionChoiceContainer}
                                       >
                                           {/* Check option is Radio or CheckBox */}
-                                          {option.IsRadio ? (
+                                          {option.required &&
+                                          option.maximum === 1 ? (
                                               <RadioSetBtn
                                                   option={option}
                                                   handlerOnRadioChangeVal={

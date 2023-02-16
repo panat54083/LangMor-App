@@ -7,26 +7,25 @@ const CheckBoxSetBtn = (props) => {
     const [checkedValues, setCheckedValues] = useState([]);
     const [checkedValuesPrice, setCheckedValuesPrice] = useState([]);
 
-    const handleOnPress = (value) => {
+    const handleOnPress = (choice) => {
         // value
-        const currentValueIndex = checkedValues.indexOf(value.optName);
+        const currentValueIndex = checkedValues.indexOf(choice.name);
         const newCheckedValues = [...checkedValues];
         if (currentValueIndex === -1) {
-            newCheckedValues.push(value.optName);
+            newCheckedValues.push(choice.name);
         } else {
             newCheckedValues.splice(currentValueIndex, 1);
         }
         setCheckedValues(newCheckedValues);
 
-        // value price
-        const currentPriceIndex = checkedValuesPrice.indexOf(
-            value.increasePrice
-        );
+        //price
         const newCheckedValuesPrice = [...checkedValuesPrice];
-        if (currentPriceIndex === -1) {
-            newCheckedValuesPrice.push(value.increasePrice);
+        if (currentValueIndex === -1) {
+            newCheckedValuesPrice.push(
+                choice.method === "increase" ? choice.price : choice.price * -1
+            );
         } else {
-            newCheckedValuesPrice.splice(currentPriceIndex, 1);
+            newCheckedValuesPrice.splice(currentValueIndex, 1);
         }
         setCheckedValuesPrice(newCheckedValuesPrice);
     };
@@ -41,15 +40,19 @@ const CheckBoxSetBtn = (props) => {
     }, [checkedValues, checkedValuesPrice]);
     return (
         <View>
-            {option.option.map((opt) => {
+            {option.choices.map((choice) => {
                 return (
-                    <View key={opt.optName}>
+                    <View key={choice.name}>
                         <Checkbox
-                            label={opt.optName}
-                            increasePrice={opt.increasePrice}
-                            value={opt.optName}
-                            checked={checkedValues.includes(opt.optName)}
-                            onPress={() => handleOnPress(opt)}
+                            label={choice.name}
+                            price={
+                                choice.method === "increase"
+                                    ? choice.price
+                                    : choice.price * -1
+                            }
+                            value={choice.name}
+                            checked={checkedValues.includes(choice.name)}
+                            onPress={() => handleOnPress(choice)}
                         />
                     </View>
                 );
