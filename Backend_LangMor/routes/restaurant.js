@@ -5,6 +5,10 @@ const restaurantController = require("../controllers/restaurantController");
 router.post("/register", catchErrors(restaurantController.register));
 router.get("/info", catchErrors(restaurantController.restaurantInfo));
 router.post("/closed", catchErrors(restaurantController.restaurantClosed));
+router.get(
+    "/all_restaurant",
+    catchErrors(restaurantController.getAllRestaurant)
+);
 
 router.post(
     "/save_options",

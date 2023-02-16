@@ -42,6 +42,14 @@ exports.restaurantInfo = async (req, res) => {
     });
 };
 
+exports.getAllRestaurant = async (req, res) => {
+    const restaurantDatas = await Restaurant.find({})
+    res.json({
+        message: "Get All Restaurant",
+        restaurantData: restaurantDatas,
+    });
+};
+
 exports.restaurantClosed = async (req, res) => {
     const { restaurant_id } = req.body;
     const restaurant = await Restaurant.findById(restaurant_id);
@@ -144,11 +152,11 @@ exports.restaurantFoodSave = async (req, res) => {
     }
 };
 
-exports.restaurantFoodsInfo= async (req, res) => {
+exports.restaurantFoodsInfo = async (req, res) => {
     const { restaurant_id } = req.query;
-    const foodsData = await Food.find({restaurant_id: restaurant_id});
+    const foodsData = await Food.find({ restaurant_id: restaurant_id });
     res.json({
         message: `Get All Foods`,
-        foodsData: foodsData
+        foodsData: foodsData,
     });
 };
