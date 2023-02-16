@@ -18,11 +18,11 @@ mongoose.connection.once("open", () => {
 //Setup Models
 require("./models/Customer");
 require("./models/Merchant");
-require("./models/Restaurant")
-require("./models/Option")
-require("./models/Food")
-require("./models/Chatroom")
-require("./models/Message")
+require("./models/Restaurant");
+require("./models/Option");
+require("./models/Food");
+require("./models/Chatroom");
+require("./models/Message");
 
 //Setup Server
 const PORT = 8000;
@@ -43,7 +43,10 @@ const io = require("socket.io")(server, {
 io.use(async (socket, next) => {
     try {
         const token = socket.handshake.query.token;
-        const payload = require("jsonwebtoken").verify(token, process.env.SECRET);
+        const payload = require("jsonwebtoken").verify(
+            token,
+            process.env.SECRET
+        );
         socket.userId = payload.id;
         next();
     } catch (err) {
@@ -53,19 +56,25 @@ io.use(async (socket, next) => {
 
 io.on("connection", (socket) => {
     console.log(`🟢: Socket connected! [${socket.id}]`);
-    
+
     socket.on("disconnect", () => {
         socket.disconnect();
         console.log(`🔴: Socket disconnected! [${socket.id}]`);
     });
 
-    socket.on("joinRoom", ({chatroom}) => {
-        socket.join(chatroom)
-        console.log(`${socket.userId} joined ${chatroom} ID`)
-    })
+    socket.on("joinRoom", ({ chatroom }) => {
+        socket.join(chatroom);
+        console.log(`${socket.userId} joined ${chatroom} ID`);
+    });
 
-    socket.on("leaveRoom", ({chatroom}) => {
-        socket.leave(chatroom)
-        console.log(`${socket.userId} left ${chatroom} ID`)
-    })
+    socket.on("leaveRoom", ({ chatroom }) => {
+        socket.leave(chatroom);
+        console.log(`${socket.userId} left ${chatroom} ID`);
+    });
+
+    socket.on("chatroomMessage", async ({ chatroomId, message }) => {
+        if (message.trim().length > 0) {
+            console.log(message);
+        }
+    });
 });

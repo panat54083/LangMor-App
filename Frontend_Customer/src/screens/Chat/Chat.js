@@ -1,5 +1,5 @@
 //packages
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 //components
 import {
@@ -25,6 +25,8 @@ const Chat = ({ navigation, route }) => {
     const { socket } = useContext(SocketContext);
     const { chatroomData } = route.params;
     const [listMessages, setListMessages] = useState([]);
+    const [message, setMessage] = useState("");
+    const inputRef = useRef(null);
     useEffect(() => {
         navigation.setOptions({
             title: "หน้าแชท",
@@ -73,6 +75,25 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
+    const sendMessage = (message) => {
+        if (socket) {
+            socket.emit("chatroomMessage", {
+                chatroomId: chatroomData._id,
+                message: message,
+            });
+        }
+        setMessage("");
+    };
+    const handleSendMessage = () => {
+        sendMessage(message);
+        inputRef.current.clear();
+    };
+    const handleImagePick = () => {
+        console.log("Image picker")
+    }
+    const handleCamera = () => {
+        console.log("camera")
+    }
     const handleGetInfo = () => {
         // connsole.log(basketDetail.foods[0].options);
         console.log(chatroomData);
@@ -97,7 +118,13 @@ const Chat = ({ navigation, route }) => {
                     ""
                 )}
             </View>
-            <ChatInput />
+            <ChatInput
+                forwardedRef={inputRef}
+                onChangeText={(value) => setMessage(value)}
+                sendOnPress={handleSendMessage}
+                pictureOnPress={handleImagePick}
+                cameraOnPress={handleCamera}
+            />
         </View>
     );
 };

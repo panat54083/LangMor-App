@@ -11,22 +11,24 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 
-const ChatInput = () => {
+const ChatInput = ({forwardedRef, onChangeText, sendOnPress, cameraOnPress, pictureOnPress}) => {
     return (
         <View style={styles.main_container}>
-            <TouchableOpacity style={styles.image_input}>
+            <TouchableOpacity style={styles.image_input} onPress={pictureOnPress}>
                 <FontAwesome name="file-picture-o" size={20} color="#FF4200" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.image_input}>
+            <TouchableOpacity style={styles.image_input} onPress={cameraOnPress}>
                 <FontAwesome name="camera" size={20} color="#FF4200" />
             </TouchableOpacity>
             <View style={styles.input_container}>
                 <TextInput
                     style={[styles.font, styles.input_style]}
                     placeholder="พิมพ์ที่นี่..."
+                    ref={forwardedRef}
+                    onChangeText={onChangeText}
                 />
             </View>
-            <TouchableOpacity style={styles.send_container}>
+            <TouchableOpacity style={styles.send_container} onPress={sendOnPress}>
                 <Ionicons name="send" size={30} color="#FF4200" />
             </TouchableOpacity>
         </View>
