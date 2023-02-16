@@ -66,25 +66,33 @@ const HomeManage = ({ navigation }) => {
         navigation.navigate("OrderTabs");
     };
     const handleDebugger = () => {
-        console.log(state.restaurantData)
+        console.log(state.restaurantData);
     };
     return (
         <>
             {state.restaurantData ? (
                 <SafeAreaView style={styles.container}>
-                    <ImageBackground
-                        source={{
-                            uri: `data:${state.restaurantData.picture.type}/jpg;base64,${state.restaurantData.picture.base64}`,
-                        }}
-                        resizeMode="cover"
-                        style={styles.image_background}
-                    >
-                        <View style={styles.overlay}>
-                            <Text style={[styles.header_text, styles.text]}>
-                                {state.restaurantData.name}
-                            </Text>
-                        </View>
-                    </ImageBackground>
+                    {!state.restaurantData.picture.type ? (
+                        <ImageBackground
+                            source={{
+                                uri: `data:${state.restaurantData.picture.type}/jpg;base64,${state.restaurantData.picture.base64}`,
+                            }}
+                            resizeMode="cover"
+                            style={styles.image_background}
+                        >
+                            <View style={styles.overlay}>
+                                <Text style={[styles.header_text, styles.text]}>
+                                    {state.restaurantData.name}
+                                </Text>
+                            </View>
+                        </ImageBackground>
+                    ) : (
+                            <View style={styles.overlay}>
+                                <Text style={[styles.header_text, styles.text, {color: "white" }]}>
+                                    {state.restaurantData.name}
+                                </Text>
+                            </View>
+                    )}
                     <View style={styles.scrollView}>
                         <ScrollView>
                             <View style={styles.large_button}>
