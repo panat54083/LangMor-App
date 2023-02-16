@@ -28,14 +28,14 @@ const Cart = ({ route, navigation }) => {
             basketDetail.foods.forEach((food) => {
                 let foodPrice = food.food.price;
                 food.options.forEach((option) => {
-                    if (Array.isArray(option.increasePrice)) {
-                        const sum = option.increasePrice.reduce(
+                    if (Array.isArray(option.price)) {
+                        const sum = option.price.reduce(
                             (partialSum, price) => partialSum + price,
                             0
                         );
                         foodPrice = foodPrice + sum;
                     } else {
-                        foodPrice = foodPrice + option.increasePrice;
+                        foodPrice = foodPrice + option.price;
                     }
                 });
                 for (let i = 0; i < food.amount; i++) {

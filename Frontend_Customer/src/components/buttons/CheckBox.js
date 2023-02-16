@@ -17,7 +17,7 @@ const Checkbox = (props) => {
                     { marginLeft: "auto", marginRight: "12.33%" },
                 ]}
             >
-                {props.increasePrice}
+                {props.price}
             </Text>
         </TouchableOpacity>
     );

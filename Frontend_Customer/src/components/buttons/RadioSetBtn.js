@@ -6,7 +6,7 @@ const RadioSetBtn = (props) => {
     const { option, handlerOnRadioChangeVal } = props;
     const [selectedValue, setSelectedValue] = useState(null);
     const [selectedValuePrice, setSelectedValuePrice] = useState(0);
-    
+
     useEffect(() => {
         const data = {
             name: option.name,
@@ -16,21 +16,25 @@ const RadioSetBtn = (props) => {
         handlerOnRadioChangeVal(data);
     }, [selectedValue]);
 
-    const handleOnPress = (value) => {
-        setSelectedValuePrice(value.increasePrice);
-        setSelectedValue(value.optName);
+    const handleOnPress = (choice) => {
+        setSelectedValuePrice(choice.price);
+        setSelectedValue(choice.name);
     };
     return (
         <View>
-            {option.option.map((opt) => {
+            {option.choices.map((choice) => {
                 return (
-                    <View key={opt.optName}>
+                    <View key={choice.name}>
                         <RadioButton
-                            label={opt.optName}
-                            increasePrice={opt.increasePrice}
-                            value={opt.optName}
-                            selected={selectedValue === opt.optName}
-                            onPress={() => handleOnPress(opt)}
+                            label={choice.name}
+                            price={
+                                choice.method === "increase"
+                                    ? choice.price
+                                    : choice.price * -1
+                            }
+                            value={choice.name}
+                            selected={selectedValue === choice.name}
+                            onPress={() => handleOnPress(choice)}
                         />
                     </View>
                 );

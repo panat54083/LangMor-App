@@ -1,5 +1,7 @@
 import { Button, SectionList, StyleSheet, Text, View } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { IP_ADDRESS } from "@env";
 import FoodListHeader from "../../components/headers/FoodListHeader";
 import CardRestaurantName from "../../components/cards/CardRestaurantName";
 import Searchbar from "../../components/searchs/Searchbar";
@@ -9,7 +11,44 @@ import BtnToBasketDetail from "../../components/buttons/BtnToBasketDetail";
 const FoodList = ({ route, navigation }) => {
     const { basketDetail, setBasketDetail } = useContext(BasketContext);
     const { restaurant } = route.params;
-    // ของจริง fecth จาก restaurant
+
+    const [foodsData, setfoodsData] = useState();
+
+    useEffect(() => {
+        fetchFoods();
+    }, []);
+    const fetchFoods = () => {
+        axios
+            .get(
+                `http://${IP_ADDRESS}/restaurant/foods?restaurant_id=${restaurant._id}`
+            )
+            .then((res) => {
+                // console.log(formatToSectionList(res.data.foodsData)[0].data[1].options);
+                setfoodsData(formatToSectionList(res.data.foodsData));
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+    const formatToSectionList = (data) => {
+        const result = [];
+        const types = new Set();
+        // get types
+        data.forEach((food) => {
+            types.add(food.type);
+        });
+        // add object to specific type
+        types.forEach((type) => {
+            result.push({
+                title: type,
+                data: data.filter((food) => food.type === type),
+            });
+        });
+
+        return result;
+    };
+    // ของจริง fecth จาก restaurant (fake)
     const foodData = [
         {
             title: "อาหารคาว",
@@ -87,14 +126,14 @@ const FoodList = ({ route, navigation }) => {
             basketDetail.foods.forEach((food) => {
                 let foodPrice = food.food.price;
                 food.options.forEach((option) => {
-                    if (Array.isArray(option.increasePrice)) {
-                        const sum = option.increasePrice.reduce(
+                    if (Array.isArray(option.price)) {
+                        const sum = option.price.reduce(
                             (partialSum, price) => partialSum + price,
                             0
                         );
                         foodPrice = foodPrice + sum;
                     } else {
-                        foodPrice = foodPrice + option.increasePrice;
+                        foodPrice = foodPrice + option.price;
                     }
                 });
                 for (let i = 0; i < food.amount; i++) {
@@ -116,40 +155,55 @@ const FoodList = ({ route, navigation }) => {
     };
 
     const handlerOnPressBtnToBasketDetail = () => {
-        navigation.navigate("Cart")
+        navigation.navigate("Cart");
     };
     return (
         <View style={{ flex: 1 }}>
-            <FoodListHeader handlerOnPressBack={handlerOnPressBack} />
+            <FoodListHeader
+                handlerOnPressBack={handlerOnPressBack}
+                imgSrc={restaurant.picture}
+            />
             <View style={{ marginTop: -50 }}>
                 <CardRestaurantName restaurant={restaurant} />
             </View>
             <View style={styles.searchbar}>
                 <Searchbar height="45" />
             </View>
-            <View style={styles.sectionListContainer}>
-                <SectionList
-                    sections={foodData}
-                    keyExtractor={(item, index) => item + index}
-                    renderSectionHeader={({ section: { title } }) => (
-                        <View style={styles.headerSection}>
-                            <Text style={styles.header}>{title}</Text>
-                        </View>
-                    )}
-                    renderItem={({ item, index }) => (
-                        <View style={styles.item}>
-                            {/* <Text style={styles.title}>{item.name}</Text> */}
-                            <CardFood
-                                food={item}
-                                handlerOnPressCard={handlerOnPressCard}
-                            />
-                        </View>
-                    )}
-                />
-            </View>
+            <>
+                {foodsData ? (
+                    <View style={styles.sectionListContainer}>
+                        <SectionList
+                            sections={foodsData}
+                            keyExtractor={(item, index) => item + index}
+                            renderSectionHeader={({ section: { title } }) => (
+                                <View style={styles.headerSection}>
+                                    <Text style={styles.header}>{title}</Text>
+                                </View>
+                            )}
+                            renderItem={({ item, index }) => (
+                                <View style={styles.item}>
+                                    <CardFood
+                                        food={item}
+                                        handlerOnPressCard={handlerOnPressCard}
+                                    />
+                                </View>
+                            )}
+                        />
+                    </View>
+                ) : (
+                    <View>
+                        <Text>Now loadding</Text>
+                    </View>
+                )}
+            </>
+
             {basketDetail.foods.length !== 0 ? (
                 <View style={styles.confirmOrderBtn}>
-                    <BtnToBasketDetail amount={amount} price={price} onPress={handlerOnPressBtnToBasketDetail}/>
+                    <BtnToBasketDetail
+                        amount={amount}
+                        price={price}
+                        onPress={handlerOnPressBtnToBasketDetail}
+                    />
                 </View>
             ) : null}
         </View>
@@ -179,6 +233,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#ffffff",
         paddingTop: 10,
+        // paddingBottom:'20%'
+        // marginBottom:'20%'
     },
     headerSection: { marginBottom: 3, marginLeft: "2.1%" },
     confirmOrderBtn: {
