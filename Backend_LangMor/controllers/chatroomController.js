@@ -31,3 +31,23 @@ exports.closeChatroom = async (req, res) => {
         message: "Chatroom is closed!",
     });
 };
+
+exports.getChatrooms = async (req, res) => {
+    const {customerId, restaurantId} = req.query
+
+    if (customerId) {
+        const chatrooms = await Chatroom.find({customerId: customerId, closed: false})
+        res.json({
+            message: "Get All Chatroom",
+            chatrooms: chatrooms
+        })
+    }
+    else if (restaurantId) {
+        const chatrooms = await Chatroom.find({restaurantId: restaurantId, closed: false})
+        res.json({
+            message: "Get All Chatroom",
+            chatrooms: chatrooms
+        })
+    }
+
+}
