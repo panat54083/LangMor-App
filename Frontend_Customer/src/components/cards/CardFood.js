@@ -12,12 +12,19 @@ const CardFood = (props) => {
                 <TouchableOpacity onPress={headerOnPress}>
                     <View style={styles.container}>
                         <View>
+                            {
+                                food.picture ? (
+
                             <Image
                                 style={styles.logo}
                                 source={{
                                     uri: `data:${food.picture.type}/jpg;base64,${food.picture.base64}`,
                                 }}
                             />
+                                ): (
+                                    <View></View>
+                                )
+                            }
                         </View>
                         <View style={{ width: "65%", height: 88 }}>
                             <Text style={styles.foodName}>{food.name}</Text>

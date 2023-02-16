@@ -9,10 +9,12 @@ import OrderListSummary from "../../components/cards/OrderListSummary";
 import SubmitBtn from "../../components/buttons/SubmitBtn";
 //Configs
 import BasketContext from "../../hooks/context/BasketContext";
+import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
 
 const Cart = ({ route, navigation }) => {
     const { basketDetail } = useContext(BasketContext);
+    const { state } = useContext(UserContext);
     useEffect(() => {
         navigation.setOptions({
             title: basketDetail.restaurant.restaurantName,
@@ -50,8 +52,8 @@ const Cart = ({ route, navigation }) => {
     const createChatroom = async () => {
         axios
             .post(`http://${IP_ADDRESS}/chatroom/create`, {
-                customerId: null,
-                restaurantId: null,
+                customerId: state.userData._id,
+                restaurantId: basketDetail.restaurant._id,
             })
             .then((res) => {
                 console.log(res.data);
@@ -60,7 +62,13 @@ const Cart = ({ route, navigation }) => {
                 console.log(err);
             });
     };
-
+    const handleSubmit = () => {
+        // console.log(basketDetail.foods)
+        // console.log(basketDetail.restaurant._id)
+        // console.log(state.userData._id)
+        createChatroom()
+        navigation.navigate("Chat");
+    };
     return (
         <View style={{ backgroundColor: "#F5F5F5", flex: 1 }}>
             <ScrollView style={{ flex: 1 }}>
@@ -87,12 +95,7 @@ const Cart = ({ route, navigation }) => {
                     bottom: 0,
                 }}
             >
-                <SubmitBtn
-                    label={"สั่งซื้อ"}
-                    onPress={() => {
-                        navigation.navigate("Chat", { allprice: price });
-                    }}
-                />
+                <SubmitBtn label={"สั่งซื้อ"} onPress={handleSubmit} />
             </View>
         </View>
     );

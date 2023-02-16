@@ -157,7 +157,7 @@ const FoodDetail = ({ route, navigation }) => {
     };
 
     useEffect(() => {
-        console.log(confirmOption);
+        // console.log(confirmOption);
     }, [confirmOption]);
 
     // useEffect(() => {
@@ -187,7 +187,7 @@ const FoodDetail = ({ route, navigation }) => {
     return (
         <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <FoodDetailHeader
-                imgSrc={food.imgLink}
+                imgSrc={food.picture ? `data:${food.picture.type}/jpg;base64,${food.picture.base64}` : null}
                 handlerOnPressBack={handlerOnPressBack}
             />
             <View style={{ backgroundColor: "#FFFFFF", flexDirection: "row" }}>
