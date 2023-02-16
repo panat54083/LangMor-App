@@ -4,9 +4,9 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 
-const OrderCard = () => {
+const OrderCard = ({onPress}) => {
     return (
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={onPress}>
             <View style={[styles.id]}>
                 <View style={styles.box_id}>
                     <Text style={[styles.font_id]}>

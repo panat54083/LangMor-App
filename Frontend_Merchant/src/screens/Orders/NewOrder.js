@@ -12,14 +12,19 @@ import { IP_ADDRESS } from "@env";
 const NewOrder = () => {
     const { state } = useContext(UserContext);
     const { socket } = useContext(SocketContext);
+    const [chatrooms, setChatrooms] = useState([]);
 
+    useEffect(() => {
+        fetchChatrooms();
+    }, []);
     const fetchChatrooms = () => {
         axios
             .get(
                 `http://${IP_ADDRESS}/chatroom/chatrooms?restaurantId=${state.restaurantData._id}`
             )
             .then((res) => {
-                console.log(res.data.message);
+                // console.log(res.data.message);
+                setChatrooms(res.data.chatrooms);
             })
             .catch((err) => {
                 console.log(err);
@@ -27,8 +32,9 @@ const NewOrder = () => {
     };
     return (
         <View>
-            <Text>NewOrder</Text>
-            <OrderCard />
+            {chatrooms.map((room, index) => (
+                <OrderCard key={index} onPress={() => console.log(room)} />
+            ))}
         </View>
     );
 };
