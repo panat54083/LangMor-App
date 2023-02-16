@@ -1,3 +1,8 @@
+//Packages
+import { useContext, useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+//Components
 import {
     StyleSheet,
     Text,
@@ -8,19 +13,24 @@ import {
     Pressable,
     ScrollView,
 } from "react-native";
-import { useContext, useEffect, useState } from "react";
-import UserContext from "../hooks/context/UserContext";
-import SocketContext from "../hooks/context/SocketContext";
 import Logout from "../components/buttons/Logout";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Fav from "../components/buttons/Fav";
 import AddressBox from "../components/buttons/AddressBox";
 import BtnToFeature from "../components/buttons/BtnToFeature";
+//Configs
+import UserContext from "../hooks/context/UserContext";
+import SocketContext from "../hooks/context/SocketContext";
+import { IP_ADDRESS } from "@env";
 
 const Home = ({ navigation }) => {
     const { state, onAction } = useContext(UserContext);
     const [visible, setVisible] = useState(false);
     const { socket } = useContext(SocketContext);
+    const [chatrooms, setChatrooms] = useState([]);
+    useEffect(() => {
+        fetchChatrooms();
+    }, []);
+
     const handelModel = () => setVisible(!visible);
     const handleProfile = () => {
         handelModel();
@@ -31,12 +41,35 @@ const Home = ({ navigation }) => {
         socket.disconnect();
         await AsyncStorage.removeItem("C_Token");
     };
-
+    const fetchChatrooms = () => {
+        axios
+            .get(
+                `http://${IP_ADDRESS}/chatroom/chatrooms?customerId=${state.userData._id}`
+            )
+            .then((res) => {
+                // console.log(res.data.message);
+                setChatrooms(res.data.chatrooms);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
     return (
         <View style={styles.mainContainer}>
             {state.isSignin ? (
                 <View>
                     <ScrollView>
+                        {chatrooms.map((room, index) => (
+                            <Button
+                                key={index}
+                                title={room.restaurantId}
+                                onPress={() => {
+                                    navigation.navigate("Chat", {
+                                        chatroomData: room,
+                                    });
+                                }}
+                            />
+                        ))}
                         <View style={styles.itemheader}>
                             <AddressBox />
                             <Fav />

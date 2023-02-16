@@ -74,7 +74,6 @@ const Cart = ({ route, navigation }) => {
         // console.log(basketDetail.restaurant)
         // console.log(state.userData._id)
         createChatroom();
-        navigation.navigate("Chat");
     };
     return (
         <View style={{ backgroundColor: "#F5F5F5", flex: 1 }}>
