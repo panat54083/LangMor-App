@@ -21,6 +21,8 @@ require("./models/Merchant");
 require("./models/Restaurant")
 require("./models/Option")
 require("./models/Food")
+require("./models/Chatroom")
+
 //Setup Server
 const PORT = 8000;
 const app = require("./app");
