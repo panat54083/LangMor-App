@@ -1,5 +1,6 @@
 //packages
 import React, { useContext, useEffect } from "react";
+import axios from "axios";
 //components
 import {
     ScrollView,
@@ -16,6 +17,7 @@ import MessageModel from "../../components/cards/Chat/MessageModel";
 import BasketContext from "../../hooks/context/BasketContext";
 import UserContext from "../../hooks/context/UserContext";
 import SocketContext from "../../hooks/context/SocketContext";
+import { IP_ADDRESS } from "@env";
 
 const Chat = ({ navigation }) => {
     const { basketDetail } = useContext(BasketContext);
@@ -91,6 +93,18 @@ const Chat = ({ navigation }) => {
         }
     };
 
+    const closeChatroom = async () => {
+        axios
+            .post(`http://${IP_ADDRESS}/chatroom/closed`, {
+                chatroomId: null,
+            })
+            .then((res) => {
+                console.log(res.data.message);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
     const handleGetInfo = () => {
         connsole.log(basketDetail.foods[0].options);
     };

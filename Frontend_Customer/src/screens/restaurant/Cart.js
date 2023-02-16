@@ -1,10 +1,15 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+//Packages
 import React, { useContext, useEffect } from "react";
-import BasketContext from "../../hooks/context/BasketContext";
+import axios from "axios";
+//Components
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import AddressBoxDetail from "../../components/buttons/AddressBoxDetail";
 import OrderListSummary from "../../components/cards/OrderListSummary";
 import SubmitBtn from "../../components/buttons/SubmitBtn";
+//Configs
+import BasketContext from "../../hooks/context/BasketContext";
+import { IP_ADDRESS } from "@env";
 
 const Cart = ({ route, navigation }) => {
     const { basketDetail } = useContext(BasketContext);
@@ -41,6 +46,21 @@ const Cart = ({ route, navigation }) => {
         return priceOfOrder;
     };
     const price = findPriceOfOrder();
+
+    const createChatroom = async () => {
+        axios
+            .post(`http://${IP_ADDRESS}/chatroom/create`, {
+                customerId: null,
+                restaurantId: null,
+            })
+            .then((res) => {
+                console.log(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     return (
         <View style={{ backgroundColor: "#F5F5F5", flex: 1 }}>
             <ScrollView style={{ flex: 1 }}>
