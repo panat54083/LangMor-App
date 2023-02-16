@@ -12,7 +12,6 @@ import * as LIP from "../../lib/lm-image-picker";
 const ImageInput = ({ lable, image, setImage }) => {
     const [visible, setVisible] = useState(false);
     const handleImageInput = () => {
-        console.log("Select Options.");
         setVisible(!visible);
     };
 
