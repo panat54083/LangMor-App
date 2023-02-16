@@ -23,7 +23,11 @@ const customerSchema = new mongoose.Schema(
         },
         verified_email: {
             type: Boolean,
-            required: "Family name is required!",
+            required: true,
+        },
+        address: {
+            type: String,
+            default: "",
         },
     },
     {
