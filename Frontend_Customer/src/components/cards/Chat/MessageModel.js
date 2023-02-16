@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 
-const MessageModel = ({ message, user }) => {
-    const status = message.user === user;
+const MessageModel = ({ message, userId }) => {
+    const status = message.user === userId;
     return (
         <View style={styles.container}>
             <View

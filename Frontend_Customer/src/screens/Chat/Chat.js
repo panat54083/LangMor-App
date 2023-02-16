@@ -15,10 +15,13 @@ import MessageModel from "../../components/cards/Chat/MessageModel";
 //configs
 import BasketContext from "../../hooks/context/BasketContext";
 import UserContext from "../../hooks/context/UserContext";
+import SocketContext from "../../hooks/context/SocketContext";
 
 const Chat = ({ navigation }) => {
     const { basketDetail } = useContext(BasketContext);
     const { state } = useContext(UserContext);
+    const { socket } = useContext(SocketContext);
+
     useEffect(() => {
         navigation.setOptions({
             title: "หน้าแชท",
@@ -34,6 +37,7 @@ const Chat = ({ navigation }) => {
             ),
         });
     }, []);
+
     const old_restaurantData = {
         address: "address01",
         description: "ร้านป้านิดสุดอร่อย",
@@ -70,12 +74,30 @@ const Chat = ({ navigation }) => {
         { user: "Dipper Pine", message: "Hello A", id: 2 },
         { user: "Dipper Pine", message: "Hello A", id: 2 },
     ];
+
+    const chatroom_connect = ({ chatroom_id }) => {
+        if (socket) {
+            socket.emit("joinRoom", {
+                chatroom: chatroom_id,
+            });
+        }
+    };
+
+    const chatroom_disconnect = ({ chatroom_id }) => {
+        if (socket) {
+            socket.emit("leaveRoom", {
+                chatroom: chatroom_id,
+            });
+        }
+    };
+
     const handleGetInfo = () => {
         connsole.log(basketDetail.foods[0].options);
     };
+
     return (
         <View style={styles.main_container}>
-            {/* <Button onPress={handleGetInfo} title="Press me!!" /> */}
+            <Button onPress={handleGetInfo} title="Press me!!" />
             <View style={styles.messages_container}>
                 {listMessages[0] ? (
                     <FlatList
@@ -83,7 +105,7 @@ const Chat = ({ navigation }) => {
                         renderItem={({ item }) => (
                             <MessageModel
                                 message={item}
-                                user={state.userData.name}
+                                userId={state.userData._id}
                             />
                         )}
                         keyExtractor={(item, index) => index}
