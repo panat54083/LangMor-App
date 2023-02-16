@@ -24,6 +24,11 @@ require("./models/Food");
 require("./models/Chatroom");
 require("./models/Message");
 
+// Call MongoDB
+const Customer = mongoose.model("Customer");
+const Merchant = mongoose.model("Merchant");
+const Message = mongoose.model("Message");
+
 //Setup Server
 const PORT = 8000;
 const app = require("./app");
@@ -74,7 +79,22 @@ io.on("connection", (socket) => {
 
     socket.on("chatroomMessage", async ({ chatroomId, message }) => {
         if (message.trim().length > 0) {
-            console.log(message);
+            const customer = await Customer.findById(socket.userId);
+            const merchant = await Merchant.findById(socket.userId);
+            if (customer || merchant) {
+                const new_message = new Message({
+                    chatroom: chatroomId,
+                    user: socket.userId,
+                    message: message,
+                });
+                io.to(chatroomId).emit("newMessage",{
+                    id: new_message._id.toString(),
+                    user: new_message.user.toString(),
+                    message: new_message.message,
+                    timestamp: new_message.timestamp,
+                })
+                await new_message.save();
+            }
         }
     });
 });

@@ -47,6 +47,21 @@ const Chat = ({ navigation, route }) => {
         chatroom_connect(chatroomData._id);
     }, [socket]);
 
+    useEffect(() => {
+        if (socket) {
+            socket.on("newMessage", (data) => {
+                const { id, user, message, timestamp } = data;
+                const renew_message = {
+                    id,
+                    user,
+                    message,
+                    timestamp,
+                };
+                setListMessages([...listMessages, renew_message]);
+            });
+        }
+    }, [listMessages]);
+
     const chatroom_connect = (chatroom_id) => {
         if (socket) {
             socket.emit("joinRoom", {
@@ -89,11 +104,11 @@ const Chat = ({ navigation, route }) => {
         inputRef.current.clear();
     };
     const handleImagePick = () => {
-        console.log("Image picker")
-    }
+        console.log("Image picker");
+    };
     const handleCamera = () => {
-        console.log("camera")
-    }
+        console.log("Camera");
+    };
     const handleGetInfo = () => {
         // connsole.log(basketDetail.foods[0].options);
         console.log(chatroomData);
