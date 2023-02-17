@@ -1,18 +1,25 @@
 //Packages
 import React, { useEffect, useState, useContext, useRef } from "react";
+import axios from "axios";
 //Components
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button, FlatList } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import ChatInput from "../../components/Cards/Chat/ChatInput";
 import MessageModel from "../../components/Cards/Chat/MessageModel";
 //Configs
 import { IP_ADDRESS } from "@env";
+import UserContext from "../../hooks/context/UserContext";
+import SocketContext from "../../hooks/context/SocketContext";
 
 const Chat = ({ navigation, route }) => {
-    const { chatroomData, customerData } = route.params;
+    // config variables
+    const inputRef = useRef(null);
     const [listMessages, setListMessages] = useState([]);
-    const inputRef = useRef(null)
-    const [message, setMessage] = useState()
+    const { chatroomData, customerData } = route.params;
+    const { state } = useContext(UserContext);
+    const { socket } = useContext(SocketContext);
+    // data variables
+    const [message, setMessage] = useState();
     useEffect(() => {
         navigation.setOptions({
             title: "หน้าแชท",
@@ -28,22 +35,89 @@ const Chat = ({ navigation, route }) => {
             ),
         });
         // Functions
+        fetchInitialMessages();
     }, []);
+
+    useEffect(() => {
+        chatroom_connect(chatroomData._id);
+    }, [socket]);
+
+    useEffect(() => {
+        if (socket) {
+            socket.on("newMessage", (data) => {
+                const { id, user, message, timestamp } = data;
+                const renew_message = {
+                    id,
+                    user,
+                    message,
+                    timestamp,
+                };
+                setListMessages([...listMessages, renew_message]);
+            });
+        }
+    }, [listMessages]);
+    const chatroom_connect = (chatroom_id) => {
+        if (socket) {
+            socket.emit("joinRoom", {
+                chatroom: chatroom_id,
+            });
+        }
+    };
+
+    const chatroom_disconnect = (chatroom_id) => {
+        if (socket) {
+            socket.emit("leaveRoom", {
+                chatroom: chatroom_id,
+            });
+        }
+    };
+
+    const closeChatroom = async () => {
+        axios
+            .post(`http://${IP_ADDRESS}/chatroom/closed`, {
+                chatroomId: null,
+            })
+            .then((res) => {
+                console.log(res.data.message);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+    const sendMessage = (message) => {
+        if (socket) {
+            socket.emit("chatroomMessage", {
+                chatroomId: chatroomData._id,
+                message: message,
+            });
+        }
+        setMessage("");
+    };
+    const fetchInitialMessages = () => {
+        axios
+            .get(
+                `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${chatroomData._id}`
+            )
+            .then((res) => {
+                // console.log(res.data.messages)
+                setListMessages(res.data.messages);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
     const handleSendMessage = () => {
-        inputRef.current.clear()
-    }
-    const handleImagePick = () =>{
-
-    }
-    const handleCamera = () => {
-
-    }
+        sendMessage(message)
+        inputRef.current.clear();
+    };
+    const handleImagePick = () => {};
+    const handleCamera = () => {};
     const handleDebugger = () => {
         console.log(chatroomData, customerData);
     };
     return (
         <View style={styles.main_container}>
-            <Button onPress={handleDebugger} title="Debugger"/>
+            <Button onPress={handleDebugger} title="Debugger" />
             <View style={styles.messages_container}>
                 {listMessages[0] ? (
                     <FlatList
