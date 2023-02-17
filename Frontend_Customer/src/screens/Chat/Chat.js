@@ -29,7 +29,7 @@ const Chat = ({ navigation, route }) => {
     const inputRef = useRef(null);
     useEffect(() => {
         navigation.setOptions({
-            title: "หน้าแชท",
+            title: `${basketDetail.restaurant.name}`,
             headerTitleStyle: {
                 fontFamily: "Kanit-Bold",
                 fontSize: 22,

@@ -13,16 +13,16 @@ import SocketContext from "../../hooks/context/SocketContext";
 
 const Chat = ({ navigation, route }) => {
     // config variables
+    const { chatroomData, customerData } = route.params;
     const inputRef = useRef(null);
     const [listMessages, setListMessages] = useState([]);
-    const { chatroomData, customerData } = route.params;
     const { state } = useContext(UserContext);
     const { socket } = useContext(SocketContext);
     // data variables
     const [message, setMessage] = useState();
     useEffect(() => {
         navigation.setOptions({
-            title: "หน้าแชท",
+            title: `${customerData.name}`,
             headerTitleStyle: {
                 fontFamily: "Kanit-Bold",
                 fontSize: 22,
@@ -107,7 +107,7 @@ const Chat = ({ navigation, route }) => {
             });
     };
     const handleSendMessage = () => {
-        sendMessage(message)
+        sendMessage(message);
         inputRef.current.clear();
     };
     const handleImagePick = () => {};
