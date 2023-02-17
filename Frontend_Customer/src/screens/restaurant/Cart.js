@@ -16,7 +16,62 @@ const Cart = ({ route, navigation }) => {
     const { basketDetail } = useContext(BasketContext);
     const { state } = useContext(UserContext);
     const [chatroomData, setChatroomData] = useState(null);
-
+    const dummy = [
+        {
+            amount: 2,
+            food: {
+                __v: 0,
+                _id: "63e9200cdaf3c449c4bb7c3c",
+                description: "อาหารคลีน น้ำมันเยิ้ม",
+                name: "อกไก่ทอด",
+                options: [Array],
+                picture: [Object],
+                price: 10,
+                restaurant_id: "63e188c58ae333a7867b14f2",
+                type: "อาหารคลีน",
+            },
+            id: 1,
+            moreDetail: "ไม่เอาผัก",
+            options: [{"name": "ระดับความเผ็ด", "price": 10, "required": false, "value": "เผ็ดมาก"}],
+            price: 20,
+        },
+        {
+            amount: 1,
+            food: {
+                __v: 0,
+                _id: "63e9200cdaf3c449c4bb7c3c",
+                description: "อาหารคลีน น้ำมันเยิ้ม",
+                name: "อกไก่ทอด",
+                options: [Array],
+                picture: [Object],
+                price: 10,
+                restaurant_id: "63e188c58ae333a7867b14f2",
+                type: "อาหารคลีน",
+            },
+            id: 2,
+            moreDetail: null,
+            options: [[Object]],
+            price: 10,
+        },
+        {
+            amount: 1,
+            food: {
+                __v: 0,
+                _id: "63e9323adaf3c449c4bb7c7d",
+                description: "",
+                name: "ผัดกาดขาว",
+                options: [Array],
+                picture: null,
+                price: 0,
+                restaurant_id: "63e188c58ae333a7867b14f2",
+                type: "อาหารคาว",
+            },
+            id: 3,
+            moreDetail: "no spicy",
+            options: [],
+            price: 0,
+        },
+    ];
     useEffect(() => {
         navigation.setOptions({
             title: basketDetail.restaurant.name,
@@ -28,7 +83,10 @@ const Cart = ({ route, navigation }) => {
     }, []);
     useEffect(() => {
         if (chatroomData) {
-            navigation.navigate("Chat", { chatroomData: chatroomData });
+            navigation.navigate("Chat", {
+                chatroomData: chatroomData,
+                restaurantData: basketDetail.restaurant,
+            });
         }
     }, [chatroomData]);
 
@@ -74,6 +132,7 @@ const Cart = ({ route, navigation }) => {
         // console.log(basketDetail.restaurant)
         // console.log(state.userData._id)
         createChatroom();
+        console.log(basketDetail.foods[0].options);
     };
     return (
         <View style={{ backgroundColor: "#F5F5F5", flex: 1 }}>

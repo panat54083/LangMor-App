@@ -23,13 +23,13 @@ const Chat = ({ navigation, route }) => {
     const { basketDetail } = useContext(BasketContext);
     const { state } = useContext(UserContext);
     const { socket } = useContext(SocketContext);
-    const { chatroomData } = route.params;
+    const { chatroomData, restaurantData} = route.params;
     const [listMessages, setListMessages] = useState([]);
     const [message, setMessage] = useState("");
     const inputRef = useRef(null);
     useEffect(() => {
         navigation.setOptions({
-            title: `${basketDetail.restaurant.name}`,
+            title: `${restaurantData.name}`,
             headerTitleStyle: {
                 fontFamily: "Kanit-Bold",
                 fontSize: 22,
@@ -121,13 +121,13 @@ const Chat = ({ navigation, route }) => {
     const handleCamera = () => {
         console.log("Camera");
     };
-    const handleGetInfo = () => {
-        // console.log(chatroomData);
+    const handleDebugger= () => {
+        console.log(basketDetail.foods)
     };
 
     return (
         <View style={styles.main_container}>
-            <Button onPress={handleGetInfo} title="Debugger"/>
+            <Button onPress={handleDebugger} title="Debugger"/>
             <View style={styles.messages_container}>
                 {listMessages[0] ? (
                     <FlatList

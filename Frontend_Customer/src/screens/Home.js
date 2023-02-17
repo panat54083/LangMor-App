@@ -2,6 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { useIsFocused } from "@react-navigation/native"
 //Components
 import {
     StyleSheet,
@@ -23,13 +24,19 @@ import SocketContext from "../hooks/context/SocketContext";
 import { IP_ADDRESS } from "@env";
 
 const Home = ({ navigation }) => {
+    //config
     const { state, onAction } = useContext(UserContext);
     const [visible, setVisible] = useState(false);
     const { socket } = useContext(SocketContext);
+    const isFocused = useIsFocused()
+    //data
     const [chatrooms, setChatrooms] = useState([]);
     useEffect(() => {
+        if (isFocused){
+
         fetchChatrooms();
-    }, []);
+        }
+    }, [isFocused]);
 
     const handelModel = () => setVisible(!visible);
     const handleProfile = () => {
@@ -59,17 +66,18 @@ const Home = ({ navigation }) => {
             {state.isSignin ? (
                 <View>
                     <ScrollView>
-                        {chatrooms.map((room, index) => (
+                        {chatrooms ? (chatrooms.map((room, index) => (
                             <Button
                                 key={index}
-                                title={room.restaurantId}
+                                title={room.restaurant.name}
                                 onPress={() => {
                                     navigation.navigate("Chat", {
-                                        chatroomData: room,
+                                        chatroomData: room.chatroom,
+                                        restaurantData: room.restaurant,
                                     });
                                 }}
                             />
-                        ))}
+                        ))):""}
                         <View style={styles.itemheader}>
                             <AddressBox />
                             <Fav />

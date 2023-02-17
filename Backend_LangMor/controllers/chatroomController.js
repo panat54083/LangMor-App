@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Chatroom = mongoose.model("Chatroom");
 const Message = mongoose.model("Message");
 const Customer = mongoose.model("Customer");
+const Restaurant = mongoose.model("Restaurant")
 
 exports.createChatroom = async (req, res) => {
     const { customerId, restaurantId } = req.body;
@@ -38,13 +39,22 @@ exports.getChatrooms = async (req, res) => {
     const { customerId, restaurantId } = req.query;
 
     if (customerId) {
+        const data = []
         const chatrooms = await Chatroom.find({
             customerId: customerId,
             closed: false,
         });
+
+        const extraChatrooms = await Promise.all(
+            chatrooms.map(async (room, index) => {
+                const restaurant = await Restaurant.findById(room.restaurantId);
+                const tamp_data = { chatroom: room, restaurant: restaurant};
+                return [...data, tamp_data];
+            })
+        );
         res.json({
             message: "Get All Chatroom",
-            chatrooms: chatrooms,
+            chatrooms: extraChatrooms[0],
         });
     } else if (restaurantId) {
         const data = [];
