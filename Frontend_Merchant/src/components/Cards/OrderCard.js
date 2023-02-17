@@ -4,7 +4,7 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 
-const OrderCard = ({onPress}) => {
+const OrderCard = ({onPress, name}) => {
     return (
         <TouchableOpacity style={styles.container} onPress={onPress}>
             <View style={[styles.id]}>
@@ -16,7 +16,7 @@ const OrderCard = ({onPress}) => {
                 </View>
             </View>
             <View style={[styles.name, { justifyContent: "space-around" }]}>
-                <Text style={styles.font_name}>ปณัฎฐ์</Text>
+                <Text style={styles.font_name}>{name}</Text>
                 <View style={{ flexDirection: "row" }}>
                     <Entypo name="back-in-time" size={24} color="#FF4200" />
                     <Text

@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 //Components
-import { StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
 import OrderCard from "../../components/Cards/OrderCard";
 //Config
 import SocketContext from "../../hooks/context/SocketContext";
@@ -30,10 +30,14 @@ const NewOrder = () => {
                 console.log(err);
             });
     };
+    const handleDebugger = () => {
+        console.log(chatrooms)
+    }
     return (
         <View>
+            <Button title="Debugger" onPress={handleDebugger}/>
             {chatrooms.map((room, index) => (
-                <OrderCard key={index} onPress={() => console.log(room)} />
+                <OrderCard key={index} onPress={() => console.log(room.customer)} name={room.customer.name}/>
             ))}
         </View>
     );
