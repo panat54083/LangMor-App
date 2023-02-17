@@ -13,6 +13,7 @@ import Setting from "../screens/settings/Setting";
 import SelectRestaurant from "../screens/Introductions/SelectRestaurant";
 import AddMenu from "../screens/Menu/AddMenu";
 import AddOptions from "../screens/Menu/AddOptions";
+import Chat from "../screens/Chat/Chat";
 // Taps
 import MenuTabs from "./Tabs/MenuTabs";
 import OrderTabs from "./Tabs/OrderTabs";
@@ -50,6 +51,10 @@ function MyStack({}) {
                             <Stack.Screen
                                 name="AddOptions"
                                 component={AddOptions}
+                            />
+                            <Stack.Screen
+                                name="Chat"
+                                component={Chat}
                             />
                         </>
                     ) : (

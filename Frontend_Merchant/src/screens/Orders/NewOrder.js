@@ -9,7 +9,7 @@ import SocketContext from "../../hooks/context/SocketContext";
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
 
-const NewOrder = () => {
+const NewOrder = ({ navigation }) => {
     const { state } = useContext(UserContext);
     const { socket } = useContext(SocketContext);
     const [chatrooms, setChatrooms] = useState([]);
@@ -31,13 +31,19 @@ const NewOrder = () => {
             });
     };
     const handleDebugger = () => {
-        console.log(chatrooms)
-    }
+        console.log(chatrooms);
+    };
     return (
         <View>
-            <Button title="Debugger" onPress={handleDebugger}/>
+            <Button title="Debugger" onPress={handleDebugger} />
             {chatrooms.map((room, index) => (
-                <OrderCard key={index} onPress={() => console.log(room.customer)} name={room.customer.name}/>
+                <OrderCard
+                    key={index}
+                    onPress={() => {
+                        navigation.navigate("Chat", {chatroomData: room.chatroom, customerData: room.customer});
+                    }}
+                    name={room.customer.name}
+                />
             ))}
         </View>
     );
