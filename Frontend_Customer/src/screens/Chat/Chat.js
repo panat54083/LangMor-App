@@ -41,6 +41,8 @@ const Chat = ({ navigation, route }) => {
                 />
             ),
         });
+        // Functions
+        fetchInitialMessages()
     }, []);
 
     useEffect(() => {
@@ -99,6 +101,16 @@ const Chat = ({ navigation, route }) => {
         }
         setMessage("");
     };
+    const fetchInitialMessages = () => {
+        axios.get(
+            `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${chatroomData._id}`
+        ).then((res)=>{
+            // console.log(res.data.messages)
+            setListMessages(res.data.messages)
+        }).catch((err)=>{
+            console.log(err)
+        })
+    };
     const handleSendMessage = () => {
         sendMessage(message);
         inputRef.current.clear();
@@ -110,13 +122,12 @@ const Chat = ({ navigation, route }) => {
         console.log("Camera");
     };
     const handleGetInfo = () => {
-        // connsole.log(basketDetail.foods[0].options);
-        console.log(chatroomData);
+        // console.log(chatroomData);
     };
 
     return (
         <View style={styles.main_container}>
-            <Button onPress={handleGetInfo} title="Press me!!" />
+            <Button onPress={handleGetInfo} title="Debugger"/>
             <View style={styles.messages_container}>
                 {listMessages[0] ? (
                     <FlatList
