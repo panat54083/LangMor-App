@@ -75,7 +75,7 @@ const HomeManage = ({ navigation }) => {
                     {state.restaurantData.picture ? (
                         <ImageBackground
                             source={{
-                                uri: `data:${state.restaurantData.picture.type}/jpg;base64,${state.restaurantData.picture.base64}`,
+                                uri: `${state.restaurantData.picture.url}`,
                             }}
                             resizeMode="cover"
                             style={styles.image_background}

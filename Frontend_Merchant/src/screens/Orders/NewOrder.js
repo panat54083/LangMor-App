@@ -36,15 +36,20 @@ const NewOrder = ({ navigation }) => {
     return (
         <View>
             <Button title="Debugger" onPress={handleDebugger} />
-            {chatrooms.map((room, index) => (
-                <OrderCard
-                    key={index}
-                    onPress={() => {
-                        navigation.navigate("Chat", {chatroomData: room.chatroom, customerData: room.customer});
-                    }}
-                    name={room.customer.name}
-                />
-            ))}
+            {chatrooms
+                ? chatrooms.map((room, index) => (
+                      <OrderCard
+                          key={index}
+                          onPress={() => {
+                              navigation.navigate("Chat", {
+                                  chatroomData: room.chatroom,
+                                  customerData: room.customer,
+                              });
+                          }}
+                          name={room.customer.name}
+                      />
+                  ))
+                : ""}
         </View>
     );
 };
