@@ -1,5 +1,5 @@
 import * as ImagePicker from "expo-image-picker";
-import {CLOUD_DINARY_API} from "@env"
+import { CLOUD_DINARY_API } from "@env";
 
 export const pickImage = async () => {
     /*
@@ -37,15 +37,15 @@ export const openCamera = async (ownerId) => {
     }
 };
 
-export const handelUpload= (image, ownerId) => {
+export const handleUpload= async (image, ownerId) => {
     let base64Img = `data:${image.type}/jpg;base64,${image.base64}`;
     let apiUrl = CLOUD_DINARY_API;
     let data = {
         file: base64Img,
         upload_preset: "LangMorApp",
-        folder: `/LangMorApp/${ownerId}/`
+        folder: `/LangMorApp/${ownerId}/`,
     };
-    fetch(apiUrl, {
+    return fetch(apiUrl, {
         body: JSON.stringify(data),
         headers: {
             "content-type": "application/json",
@@ -55,7 +55,8 @@ export const handelUpload= (image, ownerId) => {
         .then(async (response) => {
             let data = await response.json();
             if (data.secure_url) {
-                console.log(data);
+                // console.log(data);
+                return data
             }
         })
         .catch((err) => {

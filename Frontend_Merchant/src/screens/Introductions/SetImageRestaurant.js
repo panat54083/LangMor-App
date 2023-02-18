@@ -12,10 +12,9 @@ import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
 
 const SetImageRestaurant = ({ navigation, route }) => {
+    const { restaurantData } = route.params;
     const { state, onAction } = useContext(UserContext);
     const [banner, setBanner] = useState(null);
-    const { restaurantData } = route.params;
-    const ownerId = null;
 
     useEffect(() => {
         navigation.setOptions({
@@ -34,13 +33,20 @@ const SetImageRestaurant = ({ navigation, route }) => {
             ),
         });
     }, []);
-    const handelSkip = () => {
-        // navigation.navigate("Congrat");
+    const handleSkip = () => {
+        navigation.navigate("Congrat");
     };
-    const handelSaveImage = () => {
-        // LIP.handelUpload(banner, restaurantData._id);
-        fetchUpdatedRestaurant({picture: null})
-        // navigation.navigate("Congrat");
+    const handleSaveImage = async () => {
+        LIP.handleUpload(banner, restaurantData._id)
+            .then((data) => {
+                // console.log(data)
+                fetchUpdatedRestaurant({picture: data })
+                navigation.navigate("Congrat");
+            })
+            .catch((err) => {
+                console.log(err)
+            });
+
     };
     const fetchUpdatedRestaurant = (data) => {
         axios
@@ -75,13 +81,13 @@ const SetImageRestaurant = ({ navigation, route }) => {
                 {!banner ? (
                     <AcceptButton
                         label="ข้ามไปก่อนละกัน"
-                        onPress={handelSkip}
+                        onPress={handleSkip}
                         backgroundColor="#FF0101"
                     />
                 ) : (
                     <AcceptButton
                         label="ไปกันต่อเลย"
-                        onPress={handelSaveImage}
+                        onPress={handleSaveImage}
                     />
                 )}
             </View>
