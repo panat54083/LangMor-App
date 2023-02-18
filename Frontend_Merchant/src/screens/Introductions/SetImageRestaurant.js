@@ -1,6 +1,6 @@
 //Packages
 import React, { useEffect, useState, useContext } from "react";
-import * as LIP from "../../lib/lm-image-picker"
+import * as LIP from "../../lib/lm-image-picker";
 import axios from "axios";
 //Components
 import { StyleSheet, Text, View, SafeAreaView } from "react-native";
@@ -9,13 +9,13 @@ import ImageInput from "../../components/Inputs/ImageInput";
 import AcceptButton from "../../components/buttons/AcceptButton";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
-import {IP_ADDRESS} from "@env"
+import { IP_ADDRESS } from "@env";
 
 const SetImageRestaurant = ({ navigation, route }) => {
-    const {state, onAction} = useContext(UserContext)
+    const { state, onAction } = useContext(UserContext);
     const [banner, setBanner] = useState(null);
-    const {restaurantData } = route.params
-    const ownerId = null
+    const { restaurantData } = route.params;
+    const ownerId = null;
 
     useEffect(() => {
         navigation.setOptions({
@@ -38,9 +38,22 @@ const SetImageRestaurant = ({ navigation, route }) => {
         // navigation.navigate("Congrat");
     };
     const handelSaveImage = () => {
-        console.log(restaurantData)
-        // LIP.handelUpload(banner, restaurantData._id)
+        // LIP.handelUpload(banner, restaurantData._id);
+        fetchUpdatedRestaurant({picture: null})
         // navigation.navigate("Congrat");
+    };
+    const fetchUpdatedRestaurant = (data) => {
+        axios
+            .post(`http://${IP_ADDRESS}/restaurant/updated`, {
+                restaurant_id: restaurantData._id,
+                updated_data: data,
+            })
+            .then((res) => {
+                console.log(res.data.message);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
     return (
         <SafeAreaView style={styles.container}>

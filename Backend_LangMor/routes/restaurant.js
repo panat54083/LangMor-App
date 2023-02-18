@@ -9,6 +9,7 @@ router.get(
     "/all_restaurant",
     catchErrors(restaurantController.getAllRestaurant)
 );
+router.post("/updated", catchErrors(restaurantController.restaurantUpdate));
 
 router.post(
     "/save_options",

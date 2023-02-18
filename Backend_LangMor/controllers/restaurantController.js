@@ -25,16 +25,26 @@ exports.register = async (req, res) => {
 
         res.json({
             message: "Restaurant registerd successfully. ✅",
-            restaurantData: restaurant
+            restaurantData: restaurant,
         });
     } else {
         res.json({
             message: "Restaurant existed. ❌",
-            restaurantData: restaurantExists
+            restaurantData: restaurantExists,
         });
     }
 };
 
+exports.restaurantUpdate = async (req, res) => {
+    const { restaurant_id, updated_data } = req.body;
+    const restaurantData = await Restaurant.findById(restaurant_id);
+    const newRestaurantData = { ...restaurantData.toObject(), ...updated_data };
+    await restaurantData.updateOne(newRestaurantData);
+    res.json({
+        message: "Restaurant Information is Updated!",
+        restaurantData: restaurantData,
+    });
+};
 exports.restaurantInfo = async (req, res) => {
     const { restaurant_id } = req.query;
     const restaurantData = await Restaurant.findById(restaurant_id);
@@ -45,7 +55,7 @@ exports.restaurantInfo = async (req, res) => {
 };
 
 exports.getAllRestaurant = async (req, res) => {
-    const restaurantDatas = await Restaurant.find({})
+    const restaurantDatas = await Restaurant.find({});
     res.json({
         message: "Get All Restaurant",
         restaurantData: restaurantDatas,
