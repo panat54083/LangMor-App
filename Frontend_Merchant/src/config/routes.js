@@ -17,6 +17,7 @@ import Chat from "../screens/Chat/Chat";
 // Taps
 import MenuTabs from "./Tabs/MenuTabs";
 import OrderTabs from "./Tabs/OrderTabs";
+import SetImageRestaurant from "../screens/Introductions/SetImageRestaurant";
 // Configs
 const Stack = createStackNavigator();
 
@@ -71,6 +72,10 @@ function MyStack({}) {
                             <Stack.Screen
                                 name="SelectRestaurant"
                                 component={SelectRestaurant}
+                            />
+                            <Stack.Screen
+                                name="SetImageRestaurant"
+                                component={SetImageRestaurant}
                             />
                             <Stack.Screen
                                 name="Congrat"

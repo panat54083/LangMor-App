@@ -8,11 +8,11 @@ import {
     TouchableOpacity,
 } from "react-native";
 
-const AcceptButton = ({ label, onPress }) => {
+const AcceptButton = ({ label, onPress ,backgroundColor="#FF7A00"}) => {
     return (
         <TouchableOpacity
             onPress={onPress}
-            style={[styles.button, styles.shadow]}
+            style={[styles.button, styles.shadow, {backgroundColor: backgroundColor}]}
         >
             <Text style={styles.text}>{label}</Text>
         </TouchableOpacity>

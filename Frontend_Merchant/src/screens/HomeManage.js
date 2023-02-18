@@ -72,7 +72,7 @@ const HomeManage = ({ navigation }) => {
         <>
             {state.restaurantData ? (
                 <SafeAreaView style={styles.container}>
-                    {state.restaurantData.picture.type ? (
+                    {state.restaurantData.picture ? (
                         <ImageBackground
                             source={{
                                 uri: `data:${state.restaurantData.picture.type}/jpg;base64,${state.restaurantData.picture.base64}`,

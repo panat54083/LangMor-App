@@ -9,7 +9,7 @@ import {
 import React, { useState } from "react";
 import { FontAwesome5, Feather, AntDesign, Entypo } from "@expo/vector-icons";
 import * as LIP from "../../lib/lm-image-picker";
-const ImageInput = ({ lable, image, setImage }) => {
+const ImageInput = ({ label, image, setImage }) => {
     const [visible, setVisible] = useState(false);
     const handleImageInput = () => {
         setVisible(!visible);
@@ -36,14 +36,24 @@ const ImageInput = ({ lable, image, setImage }) => {
                             onPress={handleImageInput}
                             style={styles.container}
                         >
-                            <View style={{ marginBottom: 20 }}>
+                            <View
+                                style={{
+                                    marginBottom: 20,
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                }}
+                            >
                                 <FontAwesome5
                                     name="plus"
                                     size={80}
                                     color="#FF7A00"
                                 />
+                                {label ? (
+                                    <Text style={styles.text}>{label}</Text>
+                                ) : (
+                                    ""
+                                )}
                             </View>
-                            <Text style={styles.text}>{lable}</Text>
                         </Pressable>
                     ) : (
                         <View>

@@ -1,6 +1,7 @@
 // Packages
 import { useEffect, useState, useContext } from "react";
 import axios from "axios";
+import * as LIP from "../../lib/lm-image-picker"
 // Components
 import {
     StyleSheet,
@@ -23,7 +24,6 @@ const SetRestaurant = ({ navigation }) => {
     const [restaurantName, setRestaurantName] = useState("");
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState("");
-    const [banner, setBanner] = useState(null);
     const { state } = useContext(UserContext);
 
     useEffect(() => {
@@ -51,7 +51,7 @@ const SetRestaurant = ({ navigation }) => {
         // console.log(`Address: ${address}`);
         // console.log(`Banner: ${banner}`);
         fetchRegister();
-        navigation.navigate("Congrat");
+        navigation.navigate("SetImageRestaurant");
     };
 
     const fetchRegister = () => {
@@ -60,7 +60,6 @@ const SetRestaurant = ({ navigation }) => {
                 name: restaurantName,
                 owner: state.userData._id,
                 phone: phone,
-                picture: banner,
                 address: address,
             })
             .then((res) => {
@@ -75,11 +74,11 @@ const SetRestaurant = ({ navigation }) => {
             <ScrollView>
                 <SafeAreaView style={styles.container}>
                     <View style={styles.picture}>
-                        <ImageInput
+                        {/* <ImageInput
                             lable={"เพิ่มรูปหน้าร้าน"}
                             image={banner}
                             setImage={setBanner}
-                        />
+                        /> */}
                     </View>
                     <View style={styles.detail}>
                         <CustomTextInput
@@ -124,16 +123,12 @@ const styles = StyleSheet.create({
     },
     picture: {
         margin: 20,
-        // flex:2,
     },
     detail: {},
     final: {
-        // position: "absolute",
         bottom: 0,
         flex: 1,
         justifyContent: "flex-end",
         padding: 20,
-        // marginTop: 170,
-        // marginBottom: 36,
     },
 });

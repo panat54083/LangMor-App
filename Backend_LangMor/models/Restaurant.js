@@ -20,7 +20,7 @@ const restaurantSchema = new mongoose.Schema(
         },
         picture: {
             type: mongoose.Schema.Types.Mixed,
-            require: true,
+            default: null,
         },
         address: {
             type: String,
