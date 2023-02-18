@@ -25,10 +25,12 @@ exports.register = async (req, res) => {
 
         res.json({
             message: "Restaurant registerd successfully. ✅",
+            restaurantData: restaurant
         });
     } else {
         res.json({
             message: "Restaurant existed. ❌",
+            restaurantData: restaurantExists
         });
     }
 };

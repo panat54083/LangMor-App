@@ -1,7 +1,6 @@
 // Packages
 import { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import * as LIP from "../../lib/lm-image-picker"
 // Components
 import {
     StyleSheet,
@@ -24,6 +23,7 @@ const SetRestaurant = ({ navigation }) => {
     const [restaurantName, setRestaurantName] = useState("");
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState("");
+    const [restaurantData, setRestaurantData] = useState(null);
     const { state } = useContext(UserContext);
 
     useEffect(() => {
@@ -44,6 +44,13 @@ const SetRestaurant = ({ navigation }) => {
         });
     }, []);
 
+    useEffect(() => {
+        if (restaurantData) {
+            navigation.navigate("SetImageRestaurant", {
+                restaurantData: restaurantData,
+            });
+        }
+    }, [restaurantData]);
     const handleSave = () => {
         // console.log(`Restaurant Name: ${restaurantName}`);
         // console.log(`Owner_ID: ${state.userData._id}`);
@@ -51,7 +58,6 @@ const SetRestaurant = ({ navigation }) => {
         // console.log(`Address: ${address}`);
         // console.log(`Banner: ${banner}`);
         fetchRegister();
-        navigation.navigate("SetImageRestaurant");
     };
 
     const fetchRegister = () => {
@@ -64,6 +70,7 @@ const SetRestaurant = ({ navigation }) => {
             })
             .then((res) => {
                 console.log(res.data.message);
+                setRestaurantData(res.data.restaurantData);
             })
             .catch((err) => {
                 console.log("Register Error: ", err);

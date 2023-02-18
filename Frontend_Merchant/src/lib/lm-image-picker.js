@@ -37,7 +37,7 @@ export const openCamera = async (ownerId) => {
     }
 };
 
-const handelUpload= (image, ownerId) => {
+export const handelUpload= (image, ownerId) => {
     let base64Img = `data:${image.type}/jpg;base64,${image.base64}`;
     let apiUrl = CLOUD_DINARY_API;
     let data = {

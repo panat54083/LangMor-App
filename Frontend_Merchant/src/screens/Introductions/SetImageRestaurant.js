@@ -1,13 +1,22 @@
 //Packages
 import React, { useEffect, useState, useContext } from "react";
+import * as LIP from "../../lib/lm-image-picker"
+import axios from "axios";
 //Components
 import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import ImageInput from "../../components/Inputs/ImageInput";
 import AcceptButton from "../../components/buttons/AcceptButton";
+//Configs
+import UserContext from "../../hooks/context/UserContext";
+import {IP_ADDRESS} from "@env"
 
-const SetImageRestaurant = ({ navigation }) => {
+const SetImageRestaurant = ({ navigation, route }) => {
+    const {state, onAction} = useContext(UserContext)
     const [banner, setBanner] = useState(null);
+    const {restaurantData } = route.params
+    const ownerId = null
+
     useEffect(() => {
         navigation.setOptions({
             title: "ตั้งรูปประจำร้าน",
@@ -26,11 +35,13 @@ const SetImageRestaurant = ({ navigation }) => {
         });
     }, []);
     const handelSkip = () => {
-        console.log("skip");
+        // navigation.navigate("Congrat");
     };
     const handelSaveImage = () => {
-        console.log("Image Saved..")
-    }
+        console.log(restaurantData)
+        // LIP.handelUpload(banner, restaurantData._id)
+        // navigation.navigate("Congrat");
+    };
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.image_container}>
