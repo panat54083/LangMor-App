@@ -18,7 +18,7 @@ const CardFood = (props) => {
                             <Image
                                 style={styles.logo}
                                 source={{
-                                    uri: `data:${food.picture.type}/jpg;base64,${food.picture.base64}`,
+                                    uri: `${food.picture.url}`,
                                 }}
                             />
                                 ): (

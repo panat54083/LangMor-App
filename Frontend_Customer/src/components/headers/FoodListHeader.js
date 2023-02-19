@@ -12,7 +12,7 @@ const FoodListHeader = (props) => {
             <ImageBackground
                 source={{
                     uri: imgSrc
-                        ? `data:${imgSrc.type}/jpg;base64,${imgSrc.base64}`
+                        ? `${imgSrc.url}`
                         : imgLink,
                 }}
                 resizeMode="cover"

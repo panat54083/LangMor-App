@@ -10,7 +10,7 @@ const FoodDetailHeader = (props) => {
     return (
         <View style={{ width: "100%", height: 158 }}>
             <ImageBackground
-                source={{ uri: imgSrc? (imgSrc):(imgLink) }}
+                source={{ uri: imgSrc? (imgSrc):(null) }}
                 resizeMode="cover"
                 style={{ flex: 1, flexDirection: "row" }}
             >

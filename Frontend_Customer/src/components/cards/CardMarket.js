@@ -15,9 +15,7 @@ const CardMarket = (props) => {
                         <View>
                             <Image
                                 style={styles.logo}
-                                source={{
-                                    uri: `data:${restaurant.picture.type}/jpg;base64,${restaurant.picture.base64}`,
-                                }}
+                                source={restaurant.picture ? { uri: `${restaurant.picture.url}`}: ""}
                             />
                         </View>
                         <View style={{ width: "65%", height: 88 }}>
@@ -26,7 +24,7 @@ const CardMarket = (props) => {
                             </Text>
                             <View>
                                 {restaurant.types ? (
-                                    <Text>ขาย {restaurant.types.join()} </Text>
+                                    <Text style={styles.body}>ขาย {restaurant.types.join()} </Text>
                                 ) : null}
                             </View>
                         </View>
@@ -66,6 +64,9 @@ const styles = StyleSheet.create({
     },
     restName: {
         fontSize: 22,
-        fontWeight: "bold",
+        fontFamily: "Kanit-Bold",
     },
+    body: {
+        fontFamily: "Kanit-Medium",
+    }
 });

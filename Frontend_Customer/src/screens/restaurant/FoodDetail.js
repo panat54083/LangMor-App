@@ -187,7 +187,7 @@ const FoodDetail = ({ route, navigation }) => {
     return (
         <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <FoodDetailHeader
-                imgSrc={food.picture ? `data:${food.picture.type}/jpg;base64,${food.picture.base64}` : null}
+                imgSrc={food.picture ? `${food.picture.url}` : null}
                 handlerOnPressBack={handlerOnPressBack}
             />
             <View style={{ backgroundColor: "#FFFFFF", flexDirection: "row" }}>
