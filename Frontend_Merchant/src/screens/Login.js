@@ -45,8 +45,17 @@ const Login = () => {
                 // check if there is token
                 if (token) {
                     console.log("🔑: There is the token..");
-                    fetchUserInfo(token);
-                    // await setupSocket(token);
+                    fetchUserInfo(token)
+                        .then(async (data) => {
+                            if (data) {
+                                await setupSocket(token);
+                            } else {
+                                console.log("⛔: No User's Data");
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
                 } else {
                     console.log("🚫: There is no the token..");
                 }
@@ -57,11 +66,11 @@ const Login = () => {
         checkToken(); // Call the function
     }, []);
     //setup Socket if There is userData
-    useEffect(() => {
-        if (state.userData) {
-            setupSocket(state.token);
-        }
-    }, [state.userData]);
+    // useEffect(() => {
+    //     if (state.userData) {
+    //         setupSocket(state.token);
+    //     }
+    // }, [state.userData]);
     // Check Google response
     useEffect(() => {
         if (response?.type === "success") {
@@ -100,25 +109,28 @@ const Login = () => {
                     user: res.data.userData,
                     token: res.data.token,
                 });
-                // await setupSocket(res.data.token);
+                await setupSocket(res.data.token);
             })
             .catch((err) => {
                 console.log("Fetch Login: ", err.response.data);
             });
     };
     //get user information by token
-    const fetchUserInfo = (token) => {
-        axios
+    const fetchUserInfo = async (token) => {
+        return axios
             .get(`http://${IP_ADDRESS}/merchant/info`, {
                 headers: {
                     Authorization: token,
                 },
             })
             .then((res) => {
-                onAction.signIn({
-                    user: res.data.userData,
-                    token: token,
-                });
+                if (res.data.userData) {
+                    onAction.signIn({
+                        user: res.data.userData,
+                        token: token,
+                    });
+                    return res.data.userData;
+                }
             })
             .catch((err) => {
                 console.log("fetch UserInfo: ", err);
@@ -133,12 +145,12 @@ const Login = () => {
         });
         //deal with connect event
         newSocket.on("connect", () => {
-            console.log(`   ▶ Socket Connect [${newSocket.id}]`);
+            console.log(`   ▶   Socket Connect [${newSocket.id}]`);
             setSocket(newSocket);
         });
         // disconnect event
         newSocket.on("disconnect", () => {
-            console.log("   ▶ Socket Disconnect!");
+            console.log("   ▶   Socket Disconnect!");
             setSocket(null);
         });
     };

@@ -41,9 +41,19 @@ const Login = () => {
                 const token = await AsyncStorage.getItem("C_Token"); // get token from local storage
                 // check if there is token
                 if (token) {
-                    fetchUserInfo(token);
                     console.log("🔑: There is the token..");
-                    await setupSocket(token);
+                    fetchUserInfo(token)
+                        .then(async (data) => {
+                            if (data) {
+                                console.log("📶: Setting up Socket");
+                                await setupSocket(token);
+                            } else {
+                                console.log("⛔: No User's Data");
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
                 } else {
                     console.log("🚫: There is no the token..");
                 }
@@ -63,7 +73,7 @@ const Login = () => {
                 headers: { Authorization: `Bearer ${accessToken}` },
             }).then((googleUserData) => {
                 googleUserData.json().then((data) => {
-                    console.log(data)
+                    console.log(data);
                     fetchLogin(data);
                 });
             });
@@ -99,18 +109,21 @@ const Login = () => {
             });
     };
     //get customer information by token
-    const fetchUserInfo = (token) => {
-        axios
+    const fetchUserInfo = async (token) => {
+        return axios
             .get(`http://${IP_ADDRESS}/customer/info`, {
                 headers: {
                     Authorization: token,
                 },
             })
             .then((res) => {
-                onAction.signIn({
-                    user: res.data.userData,
-                    token: token,
-                });
+                if (res.data.userData) {
+                    onAction.signIn({
+                        user: res.data.userData,
+                        token: token,
+                    });
+                    return res.data.userData;
+                }
             })
             .catch((err) => {
                 console.log("fetch UserInfo: ", err);
@@ -125,14 +138,13 @@ const Login = () => {
         });
         //deal with connect event
         newSocket.on("connect", () => {
-            console.log("🌞: Socket Connect!", newSocket.id);
             setSocket(newSocket);
+            console.log(`   ▶   Socket Connect [${newSocket.id}]`);
         });
         // disconnect event
         newSocket.on("disconnect", () => {
+            console.log("   ▶   Socket Disconnect!");
             setSocket(null);
-            // setTimeout(setupSocket, 3000)
-            console.log("🌚: Socket Disconnect!");
         });
     };
     return (
