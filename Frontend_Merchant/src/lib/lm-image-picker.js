@@ -38,6 +38,13 @@ export const openCamera = async (ownerId) => {
 };
 
 export const handleUpload= async (image, ownerId) => {
+    /*Example
+            LIP.handleUpload(banner, restaurantData._id)
+            .then((data) => {
+            })
+            .catch((err) => {
+            });
+     */
     let base64Img = `data:${image.type}/jpg;base64,${image.base64}`;
     let apiUrl = CLOUD_DINARY_API;
     let data = {

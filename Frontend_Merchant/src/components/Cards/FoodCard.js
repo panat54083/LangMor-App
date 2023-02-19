@@ -10,7 +10,7 @@ const FoodCard = ({ foodData, onPress }) => {
                 <View style={styles.image_container}>
                     <Image
                         source={{
-                            uri: `data:${foodData.picture.type}/jpg;base64,${foodData.picture.base64}`,
+                            uri: `${foodData.picture.url}`,
                         }}
                         style={styles.image}
                     />

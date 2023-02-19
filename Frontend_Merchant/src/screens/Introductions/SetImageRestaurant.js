@@ -80,7 +80,7 @@ const SetImageRestaurant = ({ navigation, route }) => {
             <View style={styles.submitButton}>
                 {!banner ? (
                     <AcceptButton
-                        label="ข้ามไปก่อนละกัน"
+                        label="ข้ามไปก่อนแล้วกัน"
                         onPress={handleSkip}
                         backgroundColor="#FF0101"
                     />

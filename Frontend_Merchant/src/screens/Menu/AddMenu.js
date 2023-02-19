@@ -1,6 +1,7 @@
 //Packages
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
+import * as LIP from "../../lib/lm-image-picker";
 //Components
 import {
     Modal,
@@ -99,11 +100,11 @@ const AddMenu = ({ navigation }) => {
             });
     };
 
-    const fetchFoodSave = () => {
+    const fetchFoodSave = (url_image) => {
         axios
             .post(`http://${IP_ADDRESS}/restaurant/save_food`, {
                 restaurant_id: state.restaurantData._id,
-                picture: image,
+                picture: url_image,
                 name: name,
                 price: Number(price),
                 description: description,
@@ -125,9 +126,17 @@ const AddMenu = ({ navigation }) => {
     };
 
     const handleSave = () => {
-        fetchTypesSave();
-        fetchFoodSave();
-        navigation.navigate("MenuTabs", { screen: "MenuManage" });
+        LIP.handleUpload(image, state.restaurantData._id)
+            .then((data) => {
+                fetchTypesSave();
+                fetchFoodSave(data);
+                navigation.navigate("MenuTabs", {
+                    screen: "MenuManage",
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
 
     const handleSelectOptions = (option) => {
@@ -161,7 +170,7 @@ const AddMenu = ({ navigation }) => {
                         <ImageInput
                             lable="เพิ่มรูปเมนู"
                             image={image}
-                            setImage={(image)=> setImage(image)}
+                            setImage={(image) => setImage(image)}
                         />
                     </View>
                     <CustomTextInput
