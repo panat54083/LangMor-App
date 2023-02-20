@@ -7,10 +7,8 @@ export const pickImage = async () => {
     import * as LIP from ....
     1. image = await LIP.pickImage() 
     2. LIP.pickImage().then((data)=>{
-
-        }).catch((err)=>{
-
-        })
+dd
+        }).catch((err)=>{ })
     */
     const permissionResult =
         await ImagePicker.requestMediaLibraryPermissionsAsync();

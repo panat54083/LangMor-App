@@ -1,7 +1,7 @@
 //packages
 import React, { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
-import * as LIP from "../../lib/lm-image-picker";
+import * as LIP from "../../lib/lm-image-picker"
 //components
 import {
     ScrollView,
@@ -26,6 +26,7 @@ const Chat = ({ navigation, route }) => {
     const { state } = useContext(UserContext);
     const { socket } = useContext(SocketContext);
     const inputRef = useRef(null);
+    const [isLoaded, setIsLoaded] = useState(false)
     //data
     const { chatroomData, restaurantData } = route.params;
     //messages
@@ -57,12 +58,13 @@ const Chat = ({ navigation, route }) => {
     useEffect(() => {
         if (socket) {
             socket.on("newMessage", (data) => {
-                const { id, user, message, timestamp } = data;
+                const { id, user, message, timestamp,picture } = data;
                 const renew_message = {
                     id,
                     user,
                     message,
                     timestamp,
+                    picture
                 };
                 setListMessages([...listMessages, renew_message]);
             });
@@ -97,11 +99,12 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
-    const sendMessage = (message) => {
+    const sendMessage = (message, picture) => {
         if (socket) {
             socket.emit("chatroomMessage", {
                 chatroomId: chatroomData._id,
                 message: message,
+                picture: picture,
             });
         }
         setMessage("");
@@ -120,13 +123,26 @@ const Chat = ({ navigation, route }) => {
             });
     };
     const handleSendMessage = () => {
-        sendMessage(message);
+        setIsLoaded(true)
+        if (image) {
+            LIP.handleUpload(image, state.userData._id)
+                .then((data) => {
+                    sendMessage(message, data)
+                    setImage(null)
+                    setIsLoaded(false)
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } else {
+            sendMessage(message, null);
+        }
         inputRef.current.clear();
     };
     const handleImagePick = () => {
         LIP.pickImage()
             .then((data) => {
-                console.log(data);
+                setImage(data);
             })
             .catch((err) => {
                 console.log(err);
@@ -135,7 +151,7 @@ const Chat = ({ navigation, route }) => {
     const handleCamera = () => {
         LIP.openCamera()
             .then((data) => {
-                console.log(data);
+                setImage(data);
             })
             .catch((err) => {
                 console.log(err);
