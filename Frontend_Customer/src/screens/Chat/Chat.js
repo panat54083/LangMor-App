@@ -1,6 +1,7 @@
 //packages
 import React, { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
+import * as LIP from "../../lib/lm-image-picker";
 //components
 import {
     ScrollView,
@@ -20,13 +21,17 @@ import SocketContext from "../../hooks/context/SocketContext";
 import { IP_ADDRESS } from "@env";
 
 const Chat = ({ navigation, route }) => {
+    //config
     const { basketDetail } = useContext(BasketContext);
     const { state } = useContext(UserContext);
     const { socket } = useContext(SocketContext);
-    const { chatroomData, restaurantData} = route.params;
+    const inputRef = useRef(null);
+    //data
+    const { chatroomData, restaurantData } = route.params;
+    //messages
     const [listMessages, setListMessages] = useState([]);
     const [message, setMessage] = useState("");
-    const inputRef = useRef(null);
+    const [image, setImage] = useState(null);
     useEffect(() => {
         navigation.setOptions({
             title: `${restaurantData.name}`,
@@ -42,7 +47,7 @@ const Chat = ({ navigation, route }) => {
             ),
         });
         // Functions
-        fetchInitialMessages()
+        fetchInitialMessages();
     }, []);
 
     useEffect(() => {
@@ -102,32 +107,47 @@ const Chat = ({ navigation, route }) => {
         setMessage("");
     };
     const fetchInitialMessages = () => {
-        axios.get(
-            `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${chatroomData._id}`
-        ).then((res)=>{
-            // console.log(res.data.messages)
-            setListMessages(res.data.messages)
-        }).catch((err)=>{
-            console.log(err)
-        })
+        axios
+            .get(
+                `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${chatroomData._id}`
+            )
+            .then((res) => {
+                // console.log(res.data.messages)
+                setListMessages(res.data.messages);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
     const handleSendMessage = () => {
         sendMessage(message);
         inputRef.current.clear();
     };
     const handleImagePick = () => {
-        console.log("Image picker");
+        LIP.pickImage()
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
     const handleCamera = () => {
-        console.log("Camera");
+        LIP.openCamera()
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
-    const handleDebugger= () => {
-        console.log(basketDetail.foods)
+    const handleDebugger = () => {
+        console.log(basketDetail.foods);
     };
 
     return (
         <View style={styles.main_container}>
-            <Button onPress={handleDebugger} title="Debugger"/>
+            <Button onPress={handleDebugger} title="Debugger" />
             <View style={styles.messages_container}>
                 {listMessages[0] ? (
                     <FlatList

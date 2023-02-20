@@ -1,6 +1,7 @@
 //Packages
 import React, { useEffect, useState, useContext, useRef } from "react";
 import axios from "axios";
+import * as LIP from "../../lib/lm-image-picker";
 //Components
 import { StyleSheet, Text, View, Button, FlatList } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
@@ -20,6 +21,7 @@ const Chat = ({ navigation, route }) => {
     const { socket } = useContext(SocketContext);
     // data variables
     const [message, setMessage] = useState();
+    const [image, setImage] = useState(null);
     useEffect(() => {
         navigation.setOptions({
             title: `${customerData.name}`,
@@ -110,8 +112,24 @@ const Chat = ({ navigation, route }) => {
         sendMessage(message);
         inputRef.current.clear();
     };
-    const handleImagePick = () => {};
-    const handleCamera = () => {};
+    const handleImagePick = () => {
+        LIP.pickImage()
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+    const handleCamera = () => {
+        LIP.openCamera()
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
     const handleDebugger = () => {
         console.log(chatroomData, customerData);
     };
