@@ -19,8 +19,9 @@ const Chat = ({ navigation, route }) => {
     const [listMessages, setListMessages] = useState([]);
     const { state } = useContext(UserContext);
     const { socket } = useContext(SocketContext);
+    const [isLoaded, setIsLoaded] = useState(false);
     // data variables
-    const [message, setMessage] = useState();
+    const [message, setMessage] = useState("");
     const [image, setImage] = useState(null);
     useEffect(() => {
         navigation.setOptions({
@@ -47,12 +48,13 @@ const Chat = ({ navigation, route }) => {
     useEffect(() => {
         if (socket) {
             socket.on("newMessage", (data) => {
-                const { id, user, message, timestamp } = data;
+                const { id, user, message, timestamp, picture } = data;
                 const renew_message = {
                     id,
                     user,
                     message,
                     timestamp,
+                    picture,
                 };
                 setListMessages([...listMessages, renew_message]);
             });
@@ -86,11 +88,12 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
-    const sendMessage = (message) => {
+    const sendMessage = (message, picture) => {
         if (socket) {
             socket.emit("chatroomMessage", {
                 chatroomId: chatroomData._id,
                 message: message,
+                picture: picture,
             });
         }
         setMessage("");
@@ -109,13 +112,26 @@ const Chat = ({ navigation, route }) => {
             });
     };
     const handleSendMessage = () => {
-        sendMessage(message);
+        setIsLoaded(true);
+        if (image) {
+            LIP.handleUpload(image, state.userData._id)
+                .then((data) => {
+                    sendMessage(message, data);
+                    setImage(null);
+                    setIsLoaded(false);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } else {
+            sendMessage(message, image);
+        }
         inputRef.current.clear();
     };
     const handleImagePick = () => {
         LIP.pickImage()
             .then((data) => {
-                console.log(data);
+                setImage(data);
             })
             .catch((err) => {
                 console.log(err);
@@ -124,7 +140,7 @@ const Chat = ({ navigation, route }) => {
     const handleCamera = () => {
         LIP.openCamera()
             .then((data) => {
-                console.log(data);
+                setImage(data);
             })
             .catch((err) => {
                 console.log(err);
