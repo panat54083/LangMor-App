@@ -15,6 +15,7 @@ const SetImageRestaurant = ({ navigation, route }) => {
     const { restaurantData } = route.params;
     const { state, onAction } = useContext(UserContext);
     const [banner, setBanner] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
         navigation.setOptions({
@@ -37,16 +38,16 @@ const SetImageRestaurant = ({ navigation, route }) => {
         navigation.navigate("Congrat");
     };
     const handleSaveImage = async () => {
+        setIsLoaded(true);
         LIP.handleUpload(banner, restaurantData._id)
             .then((data) => {
                 // console.log(data)
-                fetchUpdatedRestaurant({picture: data })
+                fetchUpdatedRestaurant({ picture: data });
                 navigation.navigate("Congrat");
             })
             .catch((err) => {
-                console.log(err)
+                console.log(err);
             });
-
     };
     const fetchUpdatedRestaurant = (data) => {
         axios
@@ -88,6 +89,7 @@ const SetImageRestaurant = ({ navigation, route }) => {
                     <AcceptButton
                         label="ไปกันต่อเลย"
                         onPress={handleSaveImage}
+                        isLoaded={isLoaded}
                     />
                 )}
             </View>

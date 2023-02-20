@@ -12,7 +12,7 @@ import BackScreen from "../../components/buttons/BackScreen";
 const Setting = ({ navigation }) => {
     const { onAction } = useContext(UserContext);
     const { socket } = useContext(SocketContext);
-    const [isLoaded, setIsLoaded] = useState(true)
+    const [isLoaded, setIsLoaded] = useState(true);
     useEffect(() => {
         navigation.setOptions({
             title: "การตั้งค่า",
@@ -29,7 +29,7 @@ const Setting = ({ navigation }) => {
                 <BackScreen onPress={() => navigation.goBack()} />
             ),
         });
-        setIsLoaded(false)
+        setIsLoaded(false);
     }, []);
     const handleLogOut = async () => {
         onAction.signOut();
@@ -38,11 +38,12 @@ const Setting = ({ navigation }) => {
     };
     return (
         <View style={{ flex: 1, justifyContent: "center" }}>
-            { isLoaded ? (
-                <View><ActivityIndicator size={"large"} color="#FF4200"/></View>
+            {!isLoaded ? (
+                <View>
+                    <ActivityIndicator size={"large"} color="#FF4200" />
+                </View>
             ) : (
                 <Logout onPress={handleLogOut} />
-
             )}
         </View>
     );

@@ -47,6 +47,7 @@ const AddMenu = ({ navigation }) => {
     const [type, setType] = useState("");
     const [types, setTypes] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
     // Used for Send to backend
     const [image, setImage] = useState(null);
     const [name, setName] = useState("");
@@ -126,6 +127,7 @@ const AddMenu = ({ navigation }) => {
     };
 
     const handleSave = () => {
+        setIsLoaded(true);
         LIP.handleUpload(image, state.restaurantData._id)
             .then((data) => {
                 fetchTypesSave();
@@ -252,7 +254,11 @@ const AddMenu = ({ navigation }) => {
                     ))}
                 </View>
                 <View style={styles.submitButton}>
-                    <AcceptButton label={"บันทึก"} onPress={handleSave} />
+                    <AcceptButton
+                        label={"บันทึก"}
+                        onPress={handleSave}
+                        isLoaded={isLoaded}
+                    />
                 </View>
             </View>
         </ScrollView>

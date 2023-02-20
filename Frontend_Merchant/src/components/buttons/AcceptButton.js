@@ -6,16 +6,42 @@ import {
     View,
     Pressable,
     TouchableOpacity,
+    ActivityIndicator,
 } from "react-native";
 
-const AcceptButton = ({ label, onPress ,backgroundColor="#FF7A00"}) => {
+const AcceptButton = ({
+    label,
+    onPress,
+    backgroundColor = "#FF7A00",
+    isLoaded = false,
+}) => {
     return (
-        <TouchableOpacity
-            onPress={onPress}
-            style={[styles.button, styles.shadow, {backgroundColor: backgroundColor}]}
-        >
-            <Text style={styles.text}>{label}</Text>
-        </TouchableOpacity>
+        <>
+            {!isLoaded ? (
+                <TouchableOpacity
+                    onPress={onPress}
+                    style={[
+                        styles.button,
+                        styles.shadow,
+                        { backgroundColor: backgroundColor },
+                    ]}
+                >
+                    <Text style={styles.text}>{label}</Text>
+                </TouchableOpacity>
+            ) : (
+                <View
+                    style={[
+                        styles.button,
+                        styles.shadow,
+                        { backgroundColor: "#DFDFDF"},
+                    ]}
+                >
+                    <View style={{ marginVertical: 5 ,flexDirection:"row"}}>
+                        <ActivityIndicator size={"small"} color="white" />
+                    </View>
+                </View>
+            )}
+        </>
     );
 };
 
