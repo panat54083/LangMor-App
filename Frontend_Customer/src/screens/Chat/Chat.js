@@ -162,7 +162,6 @@ const Chat = ({ navigation, route }) => {
     const handleDebugger = () => {
         console.log(basketDetail.foods);
     };
-
     return (
         <View style={styles.main_container}>
             <Button onPress={handleDebugger} title="Debugger" />

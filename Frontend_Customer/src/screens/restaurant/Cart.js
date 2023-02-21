@@ -16,7 +16,7 @@ const Cart = ({ route, navigation }) => {
     const { basketDetail } = useContext(BasketContext);
     const { state } = useContext(UserContext);
     const [chatroomData, setChatroomData] = useState(null);
-    const dummy = [
+    const basketDetail_foods = [
         {
             amount: 2,
             food: {
@@ -132,7 +132,6 @@ const Cart = ({ route, navigation }) => {
         // console.log(basketDetail.restaurant)
         // console.log(state.userData._id)
         createChatroom();
-        console.log(basketDetail.foods[0].options);
     };
     return (
         <View style={{ backgroundColor: "#F5F5F5", flex: 1 }}>

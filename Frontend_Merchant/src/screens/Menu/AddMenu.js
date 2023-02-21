@@ -128,6 +128,8 @@ const AddMenu = ({ navigation }) => {
 
     const handleSave = () => {
         setIsLoaded(true);
+        if (image) {
+
         LIP.handleUpload(image, state.restaurantData._id)
             .then((data) => {
                 fetchTypesSave();
@@ -139,6 +141,13 @@ const AddMenu = ({ navigation }) => {
             .catch((err) => {
                 console.log(err);
             });
+        } else{
+                fetchTypesSave();
+                fetchFoodSave(null);
+                navigation.navigate("MenuTabs", {
+                    screen: "MenuManage",
+                });
+        }
     };
 
     const handleSelectOptions = (option) => {
