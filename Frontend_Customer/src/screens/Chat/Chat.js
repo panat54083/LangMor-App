@@ -1,7 +1,7 @@
 //packages
 import React, { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
-import * as LIP from "../../lib/lm-image-picker"
+import * as LIP from "../../lib/lm-image-picker";
 //components
 import {
     ScrollView,
@@ -26,7 +26,8 @@ const Chat = ({ navigation, route }) => {
     const { state } = useContext(UserContext);
     const { socket } = useContext(SocketContext);
     const inputRef = useRef(null);
-    const [isLoaded, setIsLoaded] = useState(false)
+    const [isLoaded, setIsLoaded] = useState(false);
+    const scrollViewRef = useRef(null);
     //data
     const { chatroomData, restaurantData } = route.params;
     //messages
@@ -58,17 +59,18 @@ const Chat = ({ navigation, route }) => {
     useEffect(() => {
         if (socket) {
             socket.on("newMessage", (data) => {
-                const { id, user, message, timestamp,picture } = data;
+                const { id, user, message, timestamp, picture } = data;
                 const renew_message = {
                     id,
                     user,
                     message,
                     timestamp,
-                    picture
+                    picture,
                 };
                 setListMessages([...listMessages, renew_message]);
             });
         }
+        scrollViewRef.current?.scrollToEnd({ animated: true });
     }, [listMessages]);
 
     const chatroom_connect = (chatroom_id) => {
@@ -123,13 +125,13 @@ const Chat = ({ navigation, route }) => {
             });
     };
     const handleSendMessage = () => {
-        setIsLoaded(true)
+        setIsLoaded(true);
         if (image) {
             LIP.handleUpload(image, state.userData._id)
                 .then((data) => {
-                    sendMessage(message, data)
-                    setImage(null)
-                    setIsLoaded(false)
+                    sendMessage(message, data);
+                    setImage(null);
+                    setIsLoaded(false);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -167,6 +169,7 @@ const Chat = ({ navigation, route }) => {
             <View style={styles.messages_container}>
                 {listMessages[0] ? (
                     <FlatList
+                        ref={scrollViewRef}
                         data={listMessages}
                         renderItem={({ item }) => (
                             <MessageModel

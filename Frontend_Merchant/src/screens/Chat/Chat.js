@@ -20,6 +20,7 @@ const Chat = ({ navigation, route }) => {
     const { state } = useContext(UserContext);
     const { socket } = useContext(SocketContext);
     const [isLoaded, setIsLoaded] = useState(false);
+    const scrollViewRef = useRef(null);
     // data variables
     const [message, setMessage] = useState("");
     const [image, setImage] = useState(null);
@@ -59,6 +60,8 @@ const Chat = ({ navigation, route }) => {
                 setListMessages([...listMessages, renew_message]);
             });
         }
+
+        scrollViewRef.current?.scrollToEnd({ animated: true });
     }, [listMessages]);
     const chatroom_connect = (chatroom_id) => {
         if (socket) {
@@ -155,6 +158,7 @@ const Chat = ({ navigation, route }) => {
             <View style={styles.messages_container}>
                 {listMessages[0] ? (
                     <FlatList
+                        ref={scrollViewRef}
                         data={listMessages}
                         renderItem={({ item }) => (
                             <MessageModel

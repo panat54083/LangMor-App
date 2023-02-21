@@ -1,5 +1,7 @@
-import { StyleSheet, Text, View } from "react-native";
+//packages
 import React from "react";
+//components
+import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 
 const MessageModel = ({ message, userId }) => {
     const status = message.user === userId;
@@ -30,9 +32,34 @@ const MessageModel = ({ message, userId }) => {
                             : [styles.message, { backgroundColor: "#DFDFDF" }]
                     }
                 >
-                    <Text style={styles.text}>{message.message}</Text>
+                    {message.message !== "" ? (
+                        <Text style={styles.text}>{message.message}</Text>
+                    ) : (
+                        ""
+                    )}
+                    {message.picture ? (
+                        <Pressable
+                            onPress={() => console.log("Image Pressed..")}
+                            style={{ width: "70%" }}
+                        >
+                            <Image
+                                source={{ uri: `${message.picture.url}` }}
+                                style={[
+                                    {
+                                        width: "100%",
+                                        // height: undefined,
+                                        aspectRatio:
+                                            message.picture.width /
+                                            message.picture.height,
+                                    },
+                                ]}
+                            />
+                        </Pressable>
+                    ) : (
+                        ""
+                    )}
                 </View>
-                <Text style={[styles.text, { color: "#C9C5C4" }]}>
+                <Text style={[styles.text, { color: "#C9C5C4", fontSize: 12 }]}>
                     {timestamp}
                 </Text>
             </View>
@@ -50,11 +77,14 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
     message: {
-        maxWidth: "50%",
+        maxWidth: "100%",
         backgroundColor: "#FF7A00",
-        padding: 15,
+        padding: 10,
         borderRadius: 10,
-        // marginBottom: 2,
+    },
+    image: {
+        width: "50%",
+        height: undefined,
     },
     text: {
         fontFamily: "Kanit-Medium",
