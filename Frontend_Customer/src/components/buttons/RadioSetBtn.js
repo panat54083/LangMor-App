@@ -3,9 +3,13 @@ import { useEffect, useState } from "react";
 import RadioButton from "./RadioButton";
 
 const RadioSetBtn = (props) => {
-    const { option, handlerOnRadioChangeVal } = props;
-    const [selectedValue, setSelectedValue] = useState(null);
-    const [selectedValuePrice, setSelectedValuePrice] = useState(0);
+    const { option, handlerOnRadioChangeVal, seleValue, selePrice } = props;
+    const [selectedValue, setSelectedValue] = useState(
+        seleValue ? seleValue : null
+    );
+    const [selectedValuePrice, setSelectedValuePrice] = useState(
+        selePrice ? selePrice : 0
+    );
 
     useEffect(() => {
         const data = {
@@ -17,7 +21,9 @@ const RadioSetBtn = (props) => {
     }, [selectedValue]);
 
     const handleOnPress = (choice) => {
-        setSelectedValuePrice(choice.price);
+        setSelectedValuePrice(
+            choice.method === "increase" ? choice.price : choice.price * -1
+        );
         setSelectedValue(choice.name);
     };
     return (

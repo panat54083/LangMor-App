@@ -32,7 +32,14 @@ const Cart = ({ route, navigation }) => {
             },
             id: 1,
             moreDetail: "ไม่เอาผัก",
-            options: [{"name": "ระดับความเผ็ด", "price": 10, "required": false, "value": "เผ็ดมาก"}],
+            options: [
+                {
+                    name: "ระดับความเผ็ด",
+                    price: 10,
+                    required: false,
+                    value: "เผ็ดมาก",
+                },
+            ],
             price: 20,
         },
         {
@@ -72,6 +79,15 @@ const Cart = ({ route, navigation }) => {
             price: 0,
         },
     ];
+    const handleOnPressEdit = (order) => {
+        // console.log(order.food);
+
+        navigation.navigate("FoodDetail", {
+            food: order.food,
+            restaurant: basketDetail.restaurant,
+            editOrder: order,
+        });
+    };
     useEffect(() => {
         navigation.setOptions({
             title: basketDetail.restaurant.name,
@@ -147,7 +163,10 @@ const Cart = ({ route, navigation }) => {
                         <AddressBoxDetail />
                     </View>
                     <View style={{ marginTop: 8, width: "92.53%" }}>
-                        <OrderListSummary allprice={findPriceOfOrder()} />
+                        <OrderListSummary
+                            allprice={findPriceOfOrder()}
+                            handleOnPressEdit={handleOnPressEdit}
+                        />
                     </View>
                 </View>
             </ScrollView>

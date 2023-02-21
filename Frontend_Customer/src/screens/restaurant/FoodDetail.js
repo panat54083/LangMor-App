@@ -9,12 +9,26 @@ import SubmitBtn from "../../components/buttons/SubmitBtn";
 
 const FoodDetail = ({ route, navigation }) => {
     const { basketDetail, setBasketDetail } = useContext(BasketContext);
-    const { food, restaurant } = route.params;
+    const { food, restaurant, editOrder } = route.params;
     const [isAllInputsFilled, setIsAllInputsFilled] = useState(false);
-    const [number, setNumber] = useState(1);
+    const [number, setNumber] = useState(editOrder ? editOrder.amount : 1);
     const [moreDetail, setMoreDetail] = useState(null);
-    const [price, setPrice] = useState(food.price);
-    // console.log(food.options);
+    const [price, setPrice] = useState(
+        editOrder ? editOrder.price : food.price
+    );
+
+    const findOldOptionsVal = (optionName) => {
+        const index = editOrder.options.findIndex((option) => {
+            return option.name === optionName;
+        });
+        return editOrder.options[index].value;
+    };
+    const findOldOptionsPrice = (optionName) => {
+        const index = editOrder.options.findIndex((option) => {
+            return option.name === optionName;
+        });
+        return editOrder.options[index].price;
+    };
     const foodOption = [
         {
             name: "ความหวาน",
@@ -68,25 +82,30 @@ const FoodDetail = ({ route, navigation }) => {
         },
     ];
     const [confirmOption, setConfirmOption] = useState(() => {
-        let array = [];
-        food.options.forEach((option) => {
-            if (option.required) {
-                array.push({
-                    name: option.name,
-                    required: true,
-                    value: null,
-                    price: 0,
-                });
-            } else {
-                array.push({
-                    name: option.name,
-                    required: false,
-                    value: null,
-                    price: 0,
-                });
-            }
-        });
-        return array;
+        if (editOrder) {
+            return editOrder.options;
+        } else {
+            // console.log('HElo');
+            let array = [];
+            food.options.forEach((option) => {
+                if (option.required) {
+                    array.push({
+                        name: option.name,
+                        required: true,
+                        value: null,
+                        price: 0,
+                    });
+                } else {
+                    array.push({
+                        name: option.name,
+                        required: false,
+                        value: null,
+                        price: 0,
+                    });
+                }
+            });
+            return array;
+        }
     });
 
     const handlerOnRadioChangeVal = (data) => {
@@ -156,28 +175,46 @@ const FoodDetail = ({ route, navigation }) => {
         });
     };
 
-    useEffect(() => {
-        // console.log(confirmOption);
-    }, [confirmOption]);
+    // useEffect(() => {
+    //     console.log(confirmOption);
+    // }, [confirmOption]);
 
     // useEffect(() => {
     //     console.log(basketDetail);
     // }, [basketDetail]);
     const handleOnPressSubmit = () => {
-        setBasketDetail((prevDetail) => {
-            const newDetail = { ...prevDetail };
-            const foodData = {
-                id: prevDetail.foods.length + 1,
-                food: food,
-                options: confirmOption,
-                moreDetail: moreDetail,
-                amount: number,
-                price: price,
-            };
-            newDetail.restaurant = restaurant;
-            newDetail.foods.push(foodData);
-            return newDetail;
-        });
+        if (editOrder) {
+            setBasketDetail((prevDetail) => {
+                const newDetail = { ...prevDetail };
+                const foodData = {
+                    id: editOrder.id,
+                    food: food,
+                    options: confirmOption,
+                    moreDetail: moreDetail,
+                    amount: number,
+                    price: price,
+                };
+                newDetail.restaurant = restaurant;
+                newDetail.foods[editOrder.id - 1] = foodData;
+                return newDetail;
+            });
+        } else {
+            setBasketDetail((prevDetail) => {
+                const newDetail = { ...prevDetail };
+                const foodData = {
+                    id: prevDetail.foods.length + 1,
+                    food: food,
+                    options: confirmOption,
+                    moreDetail: moreDetail,
+                    amount: number,
+                    price: price,
+                };
+                newDetail.restaurant = restaurant;
+                newDetail.foods.push(foodData);
+                return newDetail;
+            });
+        }
+
         navigation.goBack();
     };
 
@@ -238,12 +275,40 @@ const FoodDetail = ({ route, navigation }) => {
                                                   handlerOnRadioChangeVal={
                                                       handlerOnRadioChangeVal
                                                   }
+                                                  seleValue={
+                                                      editOrder
+                                                          ? findOldOptionsVal(
+                                                                option.name
+                                                            )
+                                                          : null
+                                                  }
+                                                  selePrice={
+                                                      editOrder
+                                                          ? findOldOptionsPrice(
+                                                                option.name
+                                                            )
+                                                          : null
+                                                  }
                                               />
                                           ) : (
                                               <CheckBoxSetBtn
                                                   option={option}
                                                   handlerOnCheckBoxChangeVal={
                                                       handlerOnCheckBoxChangeVal
+                                                  }
+                                                  seleValue={
+                                                      editOrder
+                                                          ? findOldOptionsVal(
+                                                                option.name
+                                                            )
+                                                          : null
+                                                  }
+                                                  selePrice={
+                                                      editOrder
+                                                          ? findOldOptionsPrice(
+                                                                option.name
+                                                            )
+                                                          : null
                                                   }
                                               />
                                           )}
@@ -269,7 +334,7 @@ const FoodDetail = ({ route, navigation }) => {
 
             <View style={styles.addItemBtn}>
                 <SubmitBtn
-                    label={"เพิ่มลงตะกล้า"}
+                    label={editOrder ? "อัปเดต" : "เพิ่มลงตะกล้า"}
                     onPress={handleOnPressSubmit}
                 />
             </View>

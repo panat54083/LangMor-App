@@ -40,7 +40,8 @@ const Setting = ({ navigation }) => {
         <View style={{ flex: 1, justifyContent: "center" }}>
             {!isLoaded ? (
                 <View>
-                    <ActivityIndicator size={"large"} color="#FF4200" />
+                    {/* <ActivityIndicator size={"large"} color="#FF4200" /> */}
+                    <Logout onPress={handleLogOut} />
                 </View>
             ) : (
                 <Logout onPress={handleLogOut} />

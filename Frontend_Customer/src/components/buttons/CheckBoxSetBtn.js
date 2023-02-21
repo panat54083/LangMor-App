@@ -3,9 +3,13 @@ import React, { useEffect, useState } from "react";
 import Checkbox from "./CheckBox";
 
 const CheckBoxSetBtn = (props) => {
-    const { option, handlerOnCheckBoxChangeVal } = props;
-    const [checkedValues, setCheckedValues] = useState([]);
-    const [checkedValuesPrice, setCheckedValuesPrice] = useState([]);
+    const { option, handlerOnCheckBoxChangeVal, seleValue, selePrice } = props;
+    const [checkedValues, setCheckedValues] = useState(
+        seleValue ? seleValue : []
+    );
+    const [checkedValuesPrice, setCheckedValuesPrice] = useState(
+        selePrice ? selePrice : []
+    );
 
     const handleOnPress = (choice) => {
         // value
