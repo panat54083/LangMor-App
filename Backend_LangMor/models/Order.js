@@ -16,6 +16,10 @@ const orderSchema = new mongoose.Schema({
         default: "new",
         enum: ["new","doing","delivering","done"]
     },
+    address:{
+        type: String,
+        default: ""
+    },
     cart:{
         type: [],
         default: []

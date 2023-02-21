@@ -269,7 +269,7 @@ const FoodDetail = ({ route, navigation }) => {
 
             <View style={styles.addItemBtn}>
                 <SubmitBtn
-                    label={"เพิ่มลงตะกล้า"}
+                    label={"เพิ่มลงตะกร้า"}
                     onPress={handleOnPressSubmit}
                 />
             </View>

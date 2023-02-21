@@ -4,7 +4,7 @@ import axios from "axios";
 //Components
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
-import AddressBoxDetail from "../../components/buttons/AddressBoxDetail";
+import AddressBoxDetail from "../../components/cards/AddressBoxDetail";
 import OrderListSummary from "../../components/cards/OrderListSummary";
 import SubmitBtn from "../../components/buttons/SubmitBtn";
 //Configs
@@ -16,6 +16,7 @@ const Cart = ({ route, navigation }) => {
     const { basketDetail } = useContext(BasketContext);
     const { state } = useContext(UserContext);
     const [chatroomData, setChatroomData] = useState(null);
+    const [address, setAddress] = useState("");
     const basketDetail_foods = [
         {
             amount: 2,
@@ -32,7 +33,14 @@ const Cart = ({ route, navigation }) => {
             },
             id: 1,
             moreDetail: "ไม่เอาผัก",
-            options: [{"name": "ระดับความเผ็ด", "price": 10, "required": false, "value": "เผ็ดมาก"}],
+            options: [
+                {
+                    name: "ระดับความเผ็ด",
+                    price: 10,
+                    required: false,
+                    value: "เผ็ดมาก",
+                },
+            ],
             price: 20,
         },
         {
@@ -127,23 +135,34 @@ const Cart = ({ route, navigation }) => {
                 console.log(err);
             });
     };
-    const apiSaveOrder = async ()=>{
-        axios.post(`http://${IP_ADDRESS}/order/save`, {
-            customerId: state.userData._id,
-            restaurantId: basketDetail.restaurant._id,
-            cart: basketDetail.foods
-        }).then((res)=>{
-            console.log(res.data.message)
-        }).catch((err)=>{
-            console.log(err)
-        })
-    }
+    const apiSaveOrder = async () => {
+        axios
+            .post(`http://${IP_ADDRESS}/order/save`, {
+                customerId: state.userData._id,
+                restaurantId: basketDetail.restaurant._id,
+                cart: basketDetail.foods,
+                address: address
+            })
+            .then((res) => {
+                console.log(res.data.message);
+                // console.log(res.data.orderData);
+            })
+            .catch((err) => {
+                if (
+                    err &&
+                    err.response &&
+                    err.response.data &&
+                    err.response.data.message
+                )
+                    console.log("Error", err.response.data.message);
+            });
+    };
 
     const handleSubmit = () => {
         // console.log(basketDetail.foods)
         // console.log(basketDetail.restaurant)
         // console.log(state.userData._id)
-        apiSaveOrder()
+        apiSaveOrder();
         apiCreateChatroom();
     };
     return (
@@ -156,7 +175,9 @@ const Cart = ({ route, navigation }) => {
                             width: "92.53%",
                         }}
                     >
-                        <AddressBoxDetail />
+                        <AddressBoxDetail
+                            setValue={setAddress}
+                        />
                     </View>
                     <View style={{ marginTop: 8, width: "92.53%" }}>
                         <OrderListSummary allprice={findPriceOfOrder()} />

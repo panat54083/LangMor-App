@@ -3,8 +3,26 @@ const Order = mongoose.model("Order");
 
 exports.saveOrder = async (req, res) => {
     const orderData = req.body;
-    console.log(orderData);
-    res.json({
-        message: "Order is saved 🍔",
+    const existOrder = await Order.findOne({
+        customerId: orderData.customerId,
+        restaurantId: orderData.restaurantId,
     });
+    if (!existOrder || existOrder.status === "done") {
+        const order = new Order({
+            customerId: orderData.customerId,
+            restaurantId: orderData.restaurantId,
+            cart: orderData.cart,
+            address: orderData.address,
+        });
+        await order.save();
+        res.json({
+            message: "Order is saved 🍔",
+            orderData: order,
+        });
+    } else {
+        res.json({
+            message: "Order is pending. 🚫",
+            orderData: existOrder,
+        });
+    }
 };
