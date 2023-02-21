@@ -23,6 +23,7 @@ require("./models/Option");
 require("./models/Food");
 require("./models/Chatroom");
 require("./models/Message");
+require("./models/Order");
 
 // Call MongoDB
 const Customer = mongoose.model("Customer");

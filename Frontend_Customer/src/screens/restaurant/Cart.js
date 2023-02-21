@@ -114,7 +114,7 @@ const Cart = ({ route, navigation }) => {
         return priceOfOrder;
     };
 
-    const createChatroom = async () => {
+    const apiCreateChatroom = async () => {
         axios
             .post(`http://${IP_ADDRESS}/chatroom/create`, {
                 customerId: state.userData._id,
@@ -127,11 +127,24 @@ const Cart = ({ route, navigation }) => {
                 console.log(err);
             });
     };
+    const apiSaveOrder = async ()=>{
+        axios.post(`http://${IP_ADDRESS}/order/save`, {
+            customerId: state.userData._id,
+            restaurantId: basketDetail.restaurant._id,
+            cart: basketDetail.foods
+        }).then((res)=>{
+            console.log(res.data.message)
+        }).catch((err)=>{
+            console.log(err)
+        })
+    }
+
     const handleSubmit = () => {
         // console.log(basketDetail.foods)
         // console.log(basketDetail.restaurant)
         // console.log(state.userData._id)
-        createChatroom();
+        apiSaveOrder()
+        apiCreateChatroom();
     };
     return (
         <View style={{ backgroundColor: "#F5F5F5", flex: 1 }}>
