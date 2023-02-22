@@ -1,6 +1,7 @@
 //Packages
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { useIsFocused } from "@react-navigation/native";
 //Components
 import { Button, StyleSheet, Text, View } from "react-native";
 import OrderCard from "../../components/Cards/OrderCard";
@@ -14,8 +15,13 @@ const NewOrder = ({ navigation }) => {
     const { socket } = useContext(SocketContext);
     const [chatrooms, setChatrooms] = useState([]);
     const [orders, setOrders] = useState([]);
+    const isFocused = useIsFocused();
 
-    useEffect(() => {}, []);
+    useEffect(() => {
+        if (isFocused) {
+            apiShowOrder();
+        }
+    }, [isFocused]);
     const fetchChatrooms = () => {
         axios
             .get(
@@ -33,11 +39,13 @@ const NewOrder = ({ navigation }) => {
     const apiShowOrder = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/order/get?restaurant_id=${state.restaurantData._id}&&status=${"new"}`
+                `http://${IP_ADDRESS}/order/get?restaurant_id=${
+                    state.restaurantData._id
+                }&&status=${"new"}`
             )
             .then((res) => {
                 // console.log(res.data.orders);
-                setOrders(res.data.orders)
+                setOrders(res.data.orders);
             })
             .catch((err) => {
                 console.log(err);
@@ -46,7 +54,6 @@ const NewOrder = ({ navigation }) => {
 
     const handleDebugger = () => {
         // console.log(state.restaurantData);
-        apiShowOrder()
     };
     const handleSelectOrderOld = (order) => {
         navigation.navigate("Chat", {
