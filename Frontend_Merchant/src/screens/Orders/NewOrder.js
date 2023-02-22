@@ -33,10 +33,11 @@ const NewOrder = ({ navigation }) => {
     const apiShowOrder = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/order/get?restaurant_id=${"eiei"}&&status=${"new"}`
+                `http://${IP_ADDRESS}/order/get?restaurant_id=${state.restaurantData._id}&&status=${"new"}`
             )
             .then((res) => {
-                console.log(res.data.message);
+                // console.log(res.data.orders);
+                setOrders(res.data.orders)
             })
             .catch((err) => {
                 console.log(err);
@@ -44,26 +45,27 @@ const NewOrder = ({ navigation }) => {
     };
 
     const handleDebugger = () => {
-        console.log(state.restaurantData);
+        // console.log(state.restaurantData);
+        apiShowOrder()
     };
-    const handleSelectOrderOld = (room) => {
+    const handleSelectOrderOld = (order) => {
         navigation.navigate("Chat", {
-            chatroomData: room.chatroom,
-            customerData: room.customer,
+            orderData: order.order,
+            customerData: order.customer,
         });
     };
-    const handleSelectOrder = (room) => {
-        navigation.navigate("ShowOrder", room);
+    const handleSelectOrder = (order) => {
+        navigation.navigate("ShowOrder", order);
     };
     return (
         <View>
             <Button title="Debugger" onPress={handleDebugger} />
-            {chatrooms
-                ? chatrooms.map((room, index) => (
+            {orders
+                ? orders.map((order, index) => (
                       <OrderCard
                           key={index}
-                          onPress={() => handleSelectOrder(room)}
-                          name={room.customer.name}
+                          onPress={() => handleSelectOrderOld(order)}
+                          name={order.customer.name}
                       />
                   ))
                 : ""}

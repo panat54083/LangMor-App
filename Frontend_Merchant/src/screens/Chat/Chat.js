@@ -14,7 +14,7 @@ import SocketContext from "../../hooks/context/SocketContext";
 
 const Chat = ({ navigation, route }) => {
     // config variables
-    const { chatroomData, customerData } = route.params;
+    const { orderData, customerData } = route.params;
     const inputRef = useRef(null);
     const [listMessages, setListMessages] = useState([]);
     const { state } = useContext(UserContext);
@@ -43,7 +43,7 @@ const Chat = ({ navigation, route }) => {
     }, []);
 
     useEffect(() => {
-        chatroom_connect(chatroomData._id);
+        chatroom_connect(orderData._id);
     }, [socket]);
 
     useEffect(() => {
@@ -94,7 +94,7 @@ const Chat = ({ navigation, route }) => {
     const sendMessage = (message, picture) => {
         if (socket) {
             socket.emit("chatroomMessage", {
-                chatroomId: chatroomData._id,
+                chatroomId: orderData._id,
                 message: message,
                 picture: picture,
             });
@@ -104,7 +104,7 @@ const Chat = ({ navigation, route }) => {
     const fetchInitialMessages = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${chatroomData._id}`
+                `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${orderData._id}`
             )
             .then((res) => {
                 // console.log(res.data.messages)
@@ -150,7 +150,7 @@ const Chat = ({ navigation, route }) => {
             });
     };
     const handleDebugger = () => {
-        console.log(chatroomData, customerData);
+        console.log(orderData, customerData);
     };
     return (
         <View style={styles.main_container}>
