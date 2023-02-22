@@ -12,7 +12,12 @@ const CardFood = (props) => {
         return number;
     };
     const handlerOnPress = () => {
-        handlerOnPressCard(food);
+        handlerOnPressCard(
+            food,
+            basketDetail.foods.filter(
+                (foodInBasket) => foodInBasket.food.name === food.name
+            )
+        );
     };
     return (
         <View style={{ alignItems: "center" }}>

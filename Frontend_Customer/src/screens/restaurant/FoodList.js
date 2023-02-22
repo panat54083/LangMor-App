@@ -1,4 +1,12 @@
-import { Button, SectionList, StyleSheet, Text, View } from "react-native";
+import {
+    Button,
+    Modal,
+    SectionList,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { IP_ADDRESS } from "@env";
@@ -147,11 +155,16 @@ const FoodList = ({ route, navigation }) => {
     const handlerOnPressBack = () => {
         navigation.goBack();
     };
-    const handlerOnPressCard = (food) => {
-        navigation.navigate("FoodDetail", {
-            food: food,
-            restaurant: restaurant,
-        });
+    const handlerOnPressCard = (food, foodInBasket) => {
+        console.log(foodInBasket.length);
+        if (foodInBasket.length === 0) {
+            navigation.navigate("FoodDetail", {
+                food: food,
+                restaurant: restaurant,
+            });
+        } else {
+            setModalVisible(true);
+        }
     };
 
     const handlerOnPressBtnToBasketDetail = () => {
@@ -206,6 +219,30 @@ const FoodList = ({ route, navigation }) => {
                     />
                 </View>
             ) : null}
+            <Modal
+                transparent={true}
+                animationType="fade"
+                visible={modalVisible}
+                nRequestClose={() => setModalVisible(false)}
+            >
+                <TouchableOpacity
+                    onPress={() => setModalVisible(false)}
+                    activeOpacity={1}
+                    style={{
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "rgba(0, 0, 0, 0.2)",
+                    }}
+                >
+                    <View style={{ position: "absolute", bottom: 0 }}>
+                        <Button
+                            title="check"
+                            onPress={() => setModalVisible(false)}
+                        />
+                    </View>
+                </TouchableOpacity>
+            </Modal>
         </View>
     );
 };
