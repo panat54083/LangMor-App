@@ -33,6 +33,15 @@ const NewOrder = ({ navigation }) => {
     const handleDebugger = () => {
         console.log(chatrooms);
     };
+    const handleSelectOrderOld = (room) => {
+        navigation.navigate("Chat", {
+            chatroomData: room.chatroom,
+            customerData: room.customer,
+        });
+    };
+    const handleSelectOrder = (room) => {
+        navigation.navigate("ShowOrder", room);
+    };
     return (
         <View>
             <Button title="Debugger" onPress={handleDebugger} />
@@ -40,12 +49,7 @@ const NewOrder = ({ navigation }) => {
                 ? chatrooms.map((room, index) => (
                       <OrderCard
                           key={index}
-                          onPress={() => {
-                              navigation.navigate("Chat", {
-                                  chatroomData: room.chatroom,
-                                  customerData: room.customer,
-                              });
-                          }}
+                          onPress={() => handleSelectOrder(room)}
                           name={room.customer.name}
                       />
                   ))
