@@ -71,7 +71,7 @@ const NewOrder = ({ navigation }) => {
                 ? orders.map((order, index) => (
                       <OrderCard
                           key={index}
-                          onPress={() => handleSelectOrderOld(order)}
+                          onPress={() => handleSelectOrder(order)}
                           name={order.customer.name}
                       />
                   ))
