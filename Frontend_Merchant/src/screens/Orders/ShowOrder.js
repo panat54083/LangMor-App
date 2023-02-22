@@ -28,14 +28,30 @@ const ShowOrder = ({ navigation, route }) => {
         });
     }, []);
 
+    const apiShowOrder = () => {
+        axios
+            .get(
+                `http://${IP_ADDRESS}/order/get?customer_id=${
+                    room.chatroom.customerId
+                }&&restaurant_id=${room.chatroom.restaurantId}&&status=${"new"}`
+            )
+            .then((res) => {
+                console.log(res.data.message);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     const handleDebugger = () => {
-        console.log(room)
-    }
+        // console.log(room);
+        apiShowOrder();
+    };
     return (
         <View style={styles.container}>
-            <Button title="Debugger" onPress={handleDebugger}/>
-            <AddressBoxDetail address={"eiei"}/>
-            <OrderSummary/>
+            <Button title="Debugger" onPress={handleDebugger} />
+            <AddressBoxDetail address={"eiei"} />
+            <OrderSummary />
         </View>
     );
 };
@@ -43,6 +59,5 @@ const ShowOrder = ({ navigation, route }) => {
 export default ShowOrder;
 
 const styles = StyleSheet.create({
-    container: {
-    },
+    container: {},
 });
