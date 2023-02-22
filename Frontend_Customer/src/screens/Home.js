@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { useIsFocused } from "@react-navigation/native"
+import { useIsFocused } from "@react-navigation/native";
 //Components
 import {
     StyleSheet,
@@ -28,13 +28,13 @@ const Home = ({ navigation }) => {
     const { state, onAction } = useContext(UserContext);
     const [visible, setVisible] = useState(false);
     const { socket } = useContext(SocketContext);
-    const isFocused = useIsFocused()
+    const isFocused = useIsFocused();
     //data
     const [chatrooms, setChatrooms] = useState([]);
+    const [orders, setOrders] = useState([]);
     useEffect(() => {
-        if (isFocused){
-
-        fetchChatrooms();
+        if (isFocused) {
+            apiShowOrder()
         }
     }, [isFocused]);
 
@@ -61,23 +61,39 @@ const Home = ({ navigation }) => {
                 console.log(err);
             });
     };
+    const apiShowOrder = () => {
+        axios
+            .get(
+                `http://${IP_ADDRESS}/order/get?customer_id=${state.userData._id}`
+            )
+            .then((res) => {
+                // console.log(res.data.message);
+                // console.log(res.data.orders);
+                setOrders(res.data.orders);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
     return (
         <View style={styles.mainContainer}>
             {state.isSignin ? (
                 <View>
                     <ScrollView>
-                        {chatrooms ? (chatrooms.map((room, index) => (
-                            <Button
-                                key={index}
-                                title={room.restaurant.name}
-                                onPress={() => {
-                                    navigation.navigate("Chat", {
-                                        chatroomData: room.chatroom,
-                                        restaurantData: room.restaurant,
-                                    });
-                                }}
-                            />
-                        ))):""}
+                        { orders
+                            ? orders.map((order, index) => (
+                                  <Button
+                                      key={index}
+                                      title={order.restaurant.name}
+                                      onPress={() => {
+                                          navigation.navigate("Chat", {
+                                              orderData: order.order,
+                                              restaurantData: order.restaurant,
+                                          });
+                                      }}
+                                  />
+                              ))
+                            : ""}
                         <View style={styles.itemheader}>
                             <AddressBox />
                             <Fav />
