@@ -15,7 +15,7 @@ import { IP_ADDRESS } from "@env";
 const Cart = ({ route, navigation }) => {
     const { basketDetail } = useContext(BasketContext);
     const { state } = useContext(UserContext);
-    const [chatroomData, setChatroomData] = useState(null);
+    const [orderData, setOrderData] = useState(null);
     const [address, setAddress] = useState("");
     const basketDetail_foods = [
         {
@@ -90,13 +90,13 @@ const Cart = ({ route, navigation }) => {
         });
     }, []);
     useEffect(() => {
-        if (chatroomData) {
+        if (orderData) {
             navigation.navigate("Chat", {
-                chatroomData: chatroomData,
+                orderData: orderData,
                 restaurantData: basketDetail.restaurant,
             });
         }
-    }, [chatroomData]);
+    }, [orderData]);
 
     const findPriceOfOrder = () => {
         let priceOfOrder = 0;
@@ -146,6 +146,7 @@ const Cart = ({ route, navigation }) => {
             .then((res) => {
                 console.log(res.data.message);
                 // console.log(res.data.orderData);
+                setOrderData(res.data.orderData)
             })
             .catch((err) => {
                 if (
@@ -163,7 +164,7 @@ const Cart = ({ route, navigation }) => {
         // console.log(basketDetail.restaurant)
         // console.log(state.userData._id)
         apiSaveOrder();
-        apiCreateChatroom();
+        // apiCreateChatroom();
     };
     return (
         <View style={{ backgroundColor: "#F5F5F5", flex: 1 }}>

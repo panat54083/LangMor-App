@@ -13,10 +13,9 @@ const NewOrder = ({ navigation }) => {
     const { state } = useContext(UserContext);
     const { socket } = useContext(SocketContext);
     const [chatrooms, setChatrooms] = useState([]);
+    const [orders, setOrders] = useState([]);
 
-    useEffect(() => {
-        fetchChatrooms();
-    }, []);
+    useEffect(() => {}, []);
     const fetchChatrooms = () => {
         axios
             .get(
@@ -30,8 +29,22 @@ const NewOrder = ({ navigation }) => {
                 console.log(err);
             });
     };
+
+    const apiShowOrder = () => {
+        axios
+            .get(
+                `http://${IP_ADDRESS}/order/get?restaurant_id=${"eiei"}&&status=${"new"}`
+            )
+            .then((res) => {
+                console.log(res.data.message);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     const handleDebugger = () => {
-        console.log(chatrooms);
+        console.log(state.restaurantData);
     };
     const handleSelectOrderOld = (room) => {
         navigation.navigate("Chat", {

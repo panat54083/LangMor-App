@@ -29,7 +29,7 @@ const Chat = ({ navigation, route }) => {
     const [isLoaded, setIsLoaded] = useState(false);
     const scrollViewRef = useRef(null);
     //data
-    const { chatroomData, restaurantData } = route.params;
+    const { orderData, restaurantData } = route.params;
     //messages
     const [listMessages, setListMessages] = useState([]);
     const [message, setMessage] = useState("");
@@ -53,7 +53,7 @@ const Chat = ({ navigation, route }) => {
     }, []);
 
     useEffect(() => {
-        chatroom_connect(chatroomData._id);
+        chatroom_connect(orderData._id);
     }, [socket]);
 
     useEffect(() => {
@@ -104,7 +104,7 @@ const Chat = ({ navigation, route }) => {
     const sendMessage = (message, picture) => {
         if (socket) {
             socket.emit("chatroomMessage", {
-                chatroomId: chatroomData._id,
+                chatroomId: orderData._id,
                 message: message,
                 picture: picture,
             });
@@ -114,7 +114,7 @@ const Chat = ({ navigation, route }) => {
     const fetchInitialMessages = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${chatroomData._id}`
+                `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${orderData._id}`
             )
             .then((res) => {
                 // console.log(res.data.messages)

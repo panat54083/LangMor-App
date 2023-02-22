@@ -45,7 +45,7 @@ const ShowOrder = ({ navigation, route }) => {
 
     const handleDebugger = () => {
         // console.log(room);
-        apiShowOrder();
+        // apiShowOrder();
     };
     return (
         <View style={styles.container}>
