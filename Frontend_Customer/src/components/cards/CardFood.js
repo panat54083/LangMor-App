@@ -1,32 +1,43 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import React from "react";
-
+import React, { useContext } from "react";
+import BasketContext from "../../hooks/context/BasketContext";
 const CardFood = (props) => {
     const { food, handlerOnPressCard } = props;
-    const headerOnPress = () => {
+    const { basketDetail } = useContext(BasketContext);
+    const findAmountInBasket = () => {
+        let number = 0;
+        basketDetail.foods
+            .filter((foodInBasket) => foodInBasket.food.name === food.name)
+            .forEach((obj) => (number = number + obj.amount));
+        return number;
+    };
+    const handlerOnPress = () => {
         handlerOnPressCard(food);
     };
     return (
         <View style={{ alignItems: "center" }}>
             <View style={styles.card}>
-                <TouchableOpacity onPress={headerOnPress}>
+                <TouchableOpacity onPress={handlerOnPress}>
                     <View style={styles.container}>
                         <View>
-                            {
-                                food.picture ? (
-
-                            <Image
-                                style={styles.logo}
-                                source={{
-                                    uri: `${food.picture.url}`,
-                                }}
-                            />
-                                ): (
-                                    <View></View>
-                                )
-                            }
+                            {food.picture ? (
+                                <Image
+                                    style={styles.logo}
+                                    source={{
+                                        uri: `${food.picture.url}`,
+                                    }}
+                                />
+                            ) : (
+                                <View></View>
+                            )}
                         </View>
-                        <View style={{ width: "65%", height: 88 }}>
+                        <View
+                            style={{
+                                flex: 1,
+                                height: 88,
+                                // backgroundColor: "red",
+                            }}
+                        >
                             <Text style={styles.foodName}>{food.name}</Text>
                             <View>
                                 {food.description ? (
@@ -43,6 +54,30 @@ const CardFood = (props) => {
                                 </View>
                             </View>
                         </View>
+                        {findAmountInBasket() !== 0 ? (
+                            <View
+                                style={{
+                                    backgroundColor: "#FF7A00",
+                                    paddingHorizontal: "4%",
+                                    paddingVertical: "2%",
+                                    borderRadius: 10,
+                                    alignSelf: "flex-start",
+                                    marginTop: "2%",
+                                    marginRight: "2%",
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        alignSelf: "center",
+                                        color: "#FFFFFF",
+                                        fontSize: 18,
+                                        fontFamily: "Kanit-Bold",
+                                    }}
+                                >
+                                    {findAmountInBasket()}
+                                </Text>
+                            </View>
+                        ) : null}
                     </View>
                 </TouchableOpacity>
             </View>
@@ -60,11 +95,11 @@ const styles = StyleSheet.create({
         margin: 16,
     },
     container: {
-        width: "92%",
         height: 127,
         alignItems: "center",
-        justifyContent: "flex-start",
+        // justifyContent: "flex-start",
         flexDirection: "row",
+        // backgroundColor:'red'
     },
     card: {
         backgroundColor: "white",

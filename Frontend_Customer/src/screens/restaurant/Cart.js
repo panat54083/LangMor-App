@@ -79,6 +79,7 @@ const Cart = ({ route, navigation }) => {
             price: 0,
         },
     ];
+    console.log(basketDetail.foods);
     const handleOnPressEdit = (order) => {
         // console.log(order.food);
 

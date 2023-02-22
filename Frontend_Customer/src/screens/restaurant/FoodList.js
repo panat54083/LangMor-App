@@ -11,7 +11,7 @@ import BtnToBasketDetail from "../../components/buttons/BtnToBasketDetail";
 const FoodList = ({ route, navigation }) => {
     const { basketDetail, setBasketDetail } = useContext(BasketContext);
     const { restaurant } = route.params;
-
+    const [modalVisible, setModalVisible] = useState(false);
     const [foodsData, setfoodsData] = useState();
 
     useEffect(() => {
