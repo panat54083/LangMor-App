@@ -16,12 +16,14 @@ import Searchbar from "../../components/searchs/Searchbar";
 import CardFood from "../../components/cards/CardFood";
 import BasketContext from "../../hooks/context/BasketContext";
 import BtnToBasketDetail from "../../components/buttons/BtnToBasketDetail";
+import UpdateOrAddFood from "../../components/cards/UpdateOrAddFood";
+
 const FoodList = ({ route, navigation }) => {
     const { basketDetail, setBasketDetail } = useContext(BasketContext);
     const { restaurant } = route.params;
     const [modalVisible, setModalVisible] = useState(false);
     const [foodsData, setfoodsData] = useState();
-
+    const [sameFoodInBasket, setSameFoodInbasket] = useState();
     useEffect(() => {
         fetchFoods();
     }, []);
@@ -155,18 +157,24 @@ const FoodList = ({ route, navigation }) => {
     const handlerOnPressBack = () => {
         navigation.goBack();
     };
+
     const handlerOnPressCard = (food, foodInBasket) => {
-        console.log(foodInBasket.length);
+        // console.log(foodInBasket.length);
         if (foodInBasket.length === 0) {
-            navigation.navigate("FoodDetail", {
-                food: food,
-                restaurant: restaurant,
-            });
+            navigationToFoodDetail(food);
         } else {
             setModalVisible(true);
+            setSameFoodInbasket(foodInBasket);
         }
     };
 
+    const navigationToFoodDetail = (food, editFood = null) => {
+        navigation.navigate("FoodDetail", {
+            food: food,
+            restaurant: restaurant,
+            editOrder: editFood,
+        });
+    };
     const handlerOnPressBtnToBasketDetail = () => {
         navigation.navigate("Cart");
     };
@@ -234,14 +242,22 @@ const FoodList = ({ route, navigation }) => {
                         alignItems: "center",
                         backgroundColor: "rgba(0, 0, 0, 0.2)",
                     }}
+                ></TouchableOpacity>
+                <View
+                    style={{
+                        position: "absolute",
+                        bottom: 0,
+                        width: "100%",
+                    }}
                 >
-                    <View style={{ position: "absolute", bottom: 0 }}>
-                        <Button
-                            title="check"
-                            onPress={() => setModalVisible(false)}
+                    {sameFoodInBasket ? (
+                        <UpdateOrAddFood
+                            setModalVisible={(bool) => setModalVisible(bool)}
+                            sameFood={sameFoodInBasket}
+                            navigationToFoodDetail={navigationToFoodDetail}
                         />
-                    </View>
-                </TouchableOpacity>
+                    ) : null}
+                </View>
             </Modal>
         </View>
     );

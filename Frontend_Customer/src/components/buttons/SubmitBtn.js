@@ -1,6 +1,6 @@
 import React from "react";
 //conponent
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const SubmitBtn = ({ label, onPress }) => {
     return (

@@ -12,7 +12,7 @@ const FoodDetail = ({ route, navigation }) => {
     const { food, restaurant, editOrder } = route.params;
     const [isAllInputsFilled, setIsAllInputsFilled] = useState(false);
     const [number, setNumber] = useState(editOrder ? editOrder.amount : 1);
-    const [moreDetail, setMoreDetail] = useState(null);
+    const [moreDetail, setMoreDetail] = useState(editOrder? editOrder.moreDetail:null);
     const [price, setPrice] = useState(
         editOrder ? editOrder.price : food.price
     );
