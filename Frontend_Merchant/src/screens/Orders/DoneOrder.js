@@ -1,14 +1,73 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+//Packages
+import React, { useState, useEffect, useContext } from "react";
+import axios from "axios";
+import { useIsFocused } from "@react-navigation/native";
+//Components
+import { Button, StyleSheet, Text, View } from "react-native";
+import OrderCard from "../../components/Cards/OrderCard";
+//Config
+import SocketContext from "../../hooks/context/SocketContext";
+import UserContext from "../../hooks/context/UserContext";
+import { IP_ADDRESS } from "@env";
 
-const DoneOrder = () => {
-  return (
-    <View>
-      <Text>DoneOrder</Text>
-    </View>
-  )
-}
+const DoneOrder = ({navigation}) => {
+    //config
+    const { state } = useContext(UserContext);
+    const isFocused = useIsFocused();
+    //data
+    const [orders, setOrders] = useState([]);
+    useEffect(() => {
+        if (isFocused) {
+            apiShowOrder();
+        }
+    }, [isFocused]);
 
-export default DoneOrder
+    const apiShowOrder = () => {
+        axios
+            .get(
+                `http://${IP_ADDRESS}/order/get?restaurant_id=${
+                    state.restaurantData._id
+                }&&status=${"done"}`
+            )
+            .then((res) => {
+                // console.log(res.data.orders);
+                setOrders(res.data.orders);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
 
-const styles = StyleSheet.create({})
+    const handleSelectOrder = (order) => {
+        navigation.navigate("Chat", {
+            orderData: order.order,
+            customerData: order.customer,
+        });
+    };
+
+    const handleDebugger = () => {
+        console.log(orders);
+    };
+    return (
+        <View style={styles.container}>
+            {/* <Button title="Debugger" onPress={handleDebugger} /> */}
+            {orders
+                ? orders.map((order, index) => (
+                      <OrderCard
+                          key={index}
+                          onPress={() => handleSelectOrder(order)}
+                          name={order.customer.name}
+                      />
+                  ))
+                : ""}
+        </View>
+    );
+};
+
+export default DoneOrder;
+
+const styles = StyleSheet.create({
+    container: {
+        marginTop: 10,
+    },
+});

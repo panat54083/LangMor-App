@@ -207,7 +207,7 @@ const Chat = ({ navigation, route }) => {
     };
 
     const handleStatusButton = () => {
-        apiUpdateOrder("doing");
+        apiUpdateOrder("new");
     };
 
     const handleMoreDetail = () => {

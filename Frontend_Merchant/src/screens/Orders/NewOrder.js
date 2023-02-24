@@ -52,17 +52,19 @@ const NewOrder = ({ navigation }) => {
             });
     };
 
-    const handleDebugger = () => {
-        // console.log(state.restaurantData);
-    };
     const handleSelectOrderOld = (order) => {
         navigation.navigate("Chat", {
             orderData: order.order,
             customerData: order.customer,
         });
     };
+
     const handleSelectOrder = (order) => {
         navigation.navigate("ShowOrder", order);
+    };
+
+    const handleDebugger = () => {
+        console.log(orders);
     };
     return (
         <View style={styles.container}>
@@ -85,5 +87,5 @@ export default NewOrder;
 const styles = StyleSheet.create({
     container: {
         marginTop: 10,
-    }
+    },
 });
