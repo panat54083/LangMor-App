@@ -15,6 +15,7 @@ import BackScreen from "../../components/buttons/BackScreen";
 import ChatInput from "../../components/Cards/Chat/ChatInput";
 import MessageModel from "../../components/Cards/Chat/MessageModel";
 import AcceptButton from "../../components/buttons/AcceptButton";
+import OrderMessage from "../../components/Cards/Chat/OrderMessage";
 //Configs
 import { IP_ADDRESS } from "@env";
 import UserContext from "../../hooks/context/UserContext";

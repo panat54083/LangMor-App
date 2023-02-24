@@ -21,6 +21,8 @@ import BtnToFeature from "../components/buttons/BtnToFeature";
 //Configs
 import UserContext from "../hooks/context/UserContext";
 import SocketContext from "../hooks/context/SocketContext";
+import BasketContext from "../hooks/context/BasketContext";
+
 import { IP_ADDRESS } from "@env";
 
 const Home = ({ navigation }) => {
@@ -28,6 +30,7 @@ const Home = ({ navigation }) => {
     const { state, onAction } = useContext(UserContext);
     const [visible, setVisible] = useState(false);
     const { socket } = useContext(SocketContext);
+    const { basketDetail, setBasketDetail } = useContext(BasketContext);
     const isFocused = useIsFocused();
     //data
     const [chatrooms, setChatrooms] = useState([]);
@@ -75,8 +78,12 @@ const Home = ({ navigation }) => {
                 console.log(err);
             });
     };
+    const handleDebugger = () => {
+        console.log(orders)
+    }
     return (
         <View style={styles.mainContainer}>
+            {/* <Button title="Debugger" onPress={handleDebugger}/> */}
             {state.isSignin ? (
                 <View>
                     <ScrollView>
@@ -86,6 +93,9 @@ const Home = ({ navigation }) => {
                                       key={index}
                                       title={order.restaurant.name}
                                       onPress={() => {
+                                            setBasketDetail(()=>{
+                                                return {foods: order.order, restaurant: order.restaurant}
+                                            })
                                           navigation.navigate("Chat", {
                                               orderData: order.order,
                                               restaurantData: order.restaurant,

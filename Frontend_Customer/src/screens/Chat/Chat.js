@@ -14,6 +14,7 @@ import {
 import BackScreen from "../../components/buttons/BackScreen";
 import ChatInput from "../../components/cards/Chat/ChatInput";
 import MessageModel from "../../components/cards/Chat/MessageModel";
+import OrderMesssage from "../../components/cards/Chat/OrderMesssage";
 //configs
 import BasketContext from "../../hooks/context/BasketContext";
 import UserContext from "../../hooks/context/UserContext";
@@ -34,6 +35,7 @@ const Chat = ({ navigation, route }) => {
     const [listMessages, setListMessages] = useState([]);
     const [message, setMessage] = useState("");
     const [image, setImage] = useState(null);
+
     useEffect(() => {
         navigation.setOptions({
             title: `${restaurantData.name}`,
@@ -101,6 +103,7 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
+
     const sendMessage = (message, picture) => {
         if (socket) {
             socket.emit("chatroomMessage", {
@@ -111,6 +114,7 @@ const Chat = ({ navigation, route }) => {
         }
         setMessage("");
     };
+
     const fetchInitialMessages = () => {
         axios
             .get(
@@ -124,6 +128,7 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
+
     const handleSendMessage = () => {
         setIsLoaded(true);
         if (image) {
@@ -141,6 +146,7 @@ const Chat = ({ navigation, route }) => {
         }
         inputRef.current.clear();
     };
+
     const handleImagePick = () => {
         LIP.pickImage()
             .then((data) => {
@@ -150,6 +156,7 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
+
     const handleCamera = () => {
         LIP.openCamera()
             .then((data) => {
@@ -159,25 +166,28 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
+
     const handleDebugger = () => {
         console.log(basketDetail.foods);
     };
+
     return (
         <View style={styles.main_container}>
             {/* <Button onPress={handleDebugger} title="Debugger" /> */}
             <View style={styles.messages_container}>
                 {listMessages[0] ? (
-                    <FlatList
-                        ref={scrollViewRef}
-                        data={listMessages}
-                        renderItem={({ item }) => (
+                    <ScrollView ref={scrollViewRef}>
+                        <View style={styles.orderPopup}>
+                            <OrderMesssage order={basketDetail.foods} />
+                        </View>
+                        {listMessages.map((item, index) => (
                             <MessageModel
+                                key={index}
                                 message={item}
                                 userId={state.userData._id}
                             />
-                        )}
-                        keyExtractor={(item, index) => index}
-                    />
+                        ))}
+                    </ScrollView>
                 ) : (
                     ""
                 )}
@@ -202,5 +212,8 @@ const styles = StyleSheet.create({
     messages_container: {
         margin: 5,
         flex: 10,
+    },
+    orderPopup: {
+        marginHorizontal: "10%",
     },
 });
