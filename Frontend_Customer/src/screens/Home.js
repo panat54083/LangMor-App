@@ -37,7 +37,7 @@ const Home = ({ navigation }) => {
     const [orders, setOrders] = useState([]);
     useEffect(() => {
         if (isFocused) {
-            apiShowOrder()
+            apiShowOrder();
         }
     }, [isFocused]);
 
@@ -79,23 +79,26 @@ const Home = ({ navigation }) => {
             });
     };
     const handleDebugger = () => {
-        console.log(orders)
-    }
+        console.log(orders);
+    };
     return (
         <View style={styles.mainContainer}>
             {/* <Button title="Debugger" onPress={handleDebugger}/> */}
             {state.isSignin ? (
                 <View>
                     <ScrollView>
-                        { orders
+                        {orders
                             ? orders.map((order, index) => (
                                   <Button
                                       key={index}
                                       title={order.restaurant.name}
                                       onPress={() => {
-                                            setBasketDetail(()=>{
-                                                return {foods: order.order, restaurant: order.restaurant}
-                                            })
+                                          setBasketDetail(() => {
+                                              return {
+                                                  foods: order.order.cart,
+                                                  restaurant: order.restaurant,
+                                              };
+                                          });
                                           navigation.navigate("Chat", {
                                               orderData: order.order,
                                               restaurantData: order.restaurant,

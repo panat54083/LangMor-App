@@ -167,8 +167,8 @@ const Chat = ({ navigation, route }) => {
             });
     };
 
-    const handleMoreDetail= () => {
-        console.log();
+    const handleMoreDetail = () => {
+        console.log(basketDetail.foods);
     };
 
     const handleDebugger = () => {
@@ -188,7 +188,10 @@ const Chat = ({ navigation, route }) => {
                                     width: "100%",
                                 }}
                             >
-                                <OrderMessage order={basketDetail.foods} onPress={handleMoreDetail}/>
+                                <OrderMessage
+                                    order={orderData}
+                                    onPress={handleMoreDetail}
+                                />
                             </View>
                         </View>
                         {listMessages.map((item, index) => (
@@ -200,9 +203,12 @@ const Chat = ({ navigation, route }) => {
                         ))}
                     </ScrollView>
                 ) : (
-                        <View style={{ alignItems: "flex-end", width: "100%" }}>
-                            <OrderMessage order={basketDetail.foods} onPress={handleMoreDetail}/>
-                        </View>
+                    <View style={{ alignItems: "flex-end", width: "100%" }}>
+                        <OrderMessage
+                            order={orderData}
+                            onPress={handleMoreDetail}
+                        />
+                    </View>
                 )}
             </View>
             <ChatInput

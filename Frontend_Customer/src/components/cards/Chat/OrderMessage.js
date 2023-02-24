@@ -3,7 +3,7 @@ import React from "react";
 //components
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
-const OrderMessage = ({ order , onPress}) => {
+const OrderMessage = ({ order, onPress }) => {
     return (
         <View style={[styles.container]}>
             <View style={[styles.orderDetail, styles.shadow]}>
@@ -62,7 +62,11 @@ const OrderMessage = ({ order , onPress}) => {
                 <Text
                     style={[
                         styles.body_font,
-                        { color: "#FF4200", textDecorationLine: "underline", marginVertical: 3, },
+                        {
+                            color: "#FF4200",
+                            textDecorationLine: "underline",
+                            marginVertical: 3,
+                        },
                     ]}
                     onPress={onPress}
                 >
@@ -134,3 +138,42 @@ const order = {
     status: "new",
     updatedAt: "2023-02-22T10:36:29.590Z",
 };
+
+const orderOld = [
+    {
+        amount: 1,
+        food: {
+            __v: 0,
+            _id: "63f46ebe0ee8a09a9109668f",
+            description: "ส้มตำ แต่ไม่มีส้ม",
+            name: "ส้มตำ",
+            options: [Array],
+            picture: [Object],
+            price: 60,
+            restaurant_id: "63f46de10ee8a09a91096673",
+            type: "อาหารคาว",
+        },
+        id: 1,
+        moreDetail: null,
+        options: [[Object], [Object]],
+        price: 60,
+    },
+    {
+        amount: 1,
+        food: {
+            __v: 0,
+            _id: "63f46f960ee8a09a910966a4",
+            description: "",
+            name: "ชาไทย",
+            options: [Array],
+            picture: null,
+            price: 35,
+            restaurant_id: "63f46de10ee8a09a91096673",
+            type: "เครื่องดื่ม",
+        },
+        id: 2,
+        moreDetail: null,
+        options: [[Object]],
+        price: 45,
+    },
+];

@@ -13,73 +13,11 @@ import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
 
 const Cart = ({ route, navigation }) => {
-    const { basketDetail } = useContext(BasketContext);
+    const { basketDetail, setBasketDetail } = useContext(BasketContext);
     const { state } = useContext(UserContext);
     const [orderData, setOrderData] = useState(null);
     const [address, setAddress] = useState("");
-    const basketDetail_foods = [
-        {
-            amount: 2,
-            food: {
-                __v: 0,
-                _id: "63e9200cdaf3c449c4bb7c3c",
-                description: "อาหารคลีน น้ำมันเยิ้ม",
-                name: "อกไก่ทอด",
-                options: [Array],
-                picture: [Object],
-                price: 10,
-                restaurant_id: "63e188c58ae333a7867b14f2",
-                type: "อาหารคลีน",
-            },
-            id: 1,
-            moreDetail: "ไม่เอาผัก",
-            options: [
-                {
-                    name: "ระดับความเผ็ด",
-                    price: 10,
-                    required: false,
-                    value: "เผ็ดมาก",
-                },
-            ],
-            price: 20,
-        },
-        {
-            amount: 1,
-            food: {
-                __v: 0,
-                _id: "63e9200cdaf3c449c4bb7c3c",
-                description: "อาหารคลีน น้ำมันเยิ้ม",
-                name: "อกไก่ทอด",
-                options: [Array],
-                picture: [Object],
-                price: 10,
-                restaurant_id: "63e188c58ae333a7867b14f2",
-                type: "อาหารคลีน",
-            },
-            id: 2,
-            moreDetail: null,
-            options: [[Object]],
-            price: 10,
-        },
-        {
-            amount: 1,
-            food: {
-                __v: 0,
-                _id: "63e9323adaf3c449c4bb7c7d",
-                description: "",
-                name: "ผัดกาดขาว",
-                options: [Array],
-                picture: null,
-                price: 0,
-                restaurant_id: "63e188c58ae333a7867b14f2",
-                type: "อาหารคาว",
-            },
-            id: 3,
-            moreDetail: "no spicy",
-            options: [],
-            price: 0,
-        },
-    ];
+
     useEffect(() => {
         navigation.setOptions({
             title: basketDetail.restaurant.name,
@@ -95,6 +33,7 @@ const Cart = ({ route, navigation }) => {
                 orderData: orderData,
                 restaurantData: basketDetail.restaurant,
             });
+            setBasketDetail({restaurant:null, foods:[]})
         }
     }, [orderData]);
 
@@ -141,12 +80,12 @@ const Cart = ({ route, navigation }) => {
                 customerId: state.userData._id,
                 restaurantId: basketDetail.restaurant._id,
                 cart: basketDetail.foods,
-                address: address
+                address: address,
             })
             .then((res) => {
                 console.log(res.data.message);
                 // console.log(res.data.orderData);
-                setOrderData(res.data.orderData)
+                setOrderData(res.data.orderData);
             })
             .catch((err) => {
                 if (
@@ -176,9 +115,7 @@ const Cart = ({ route, navigation }) => {
                             width: "92.53%",
                         }}
                     >
-                        <AddressBoxDetail
-                            setValue={setAddress}
-                        />
+                        <AddressBoxDetail setValue={setAddress} />
                     </View>
                     <View style={{ marginTop: 8, width: "92.53%" }}>
                         <OrderListSummary allprice={findPriceOfOrder()} />
@@ -203,3 +140,67 @@ const Cart = ({ route, navigation }) => {
 export default Cart;
 
 const styles = StyleSheet.create({});
+
+const basketDetail_foods = [
+    {
+        amount: 2,
+        food: {
+            __v: 0,
+            _id: "63e9200cdaf3c449c4bb7c3c",
+            description: "อาหารคลีน น้ำมันเยิ้ม",
+            name: "อกไก่ทอด",
+            options: [Array],
+            picture: [Object],
+            price: 10,
+            restaurant_id: "63e188c58ae333a7867b14f2",
+            type: "อาหารคลีน",
+        },
+        id: 1,
+        moreDetail: "ไม่เอาผัก",
+        options: [
+            {
+                name: "ระดับความเผ็ด",
+                price: 10,
+                required: false,
+                value: "เผ็ดมาก",
+            },
+        ],
+        price: 20,
+    },
+    {
+        amount: 1,
+        food: {
+            __v: 0,
+            _id: "63e9200cdaf3c449c4bb7c3c",
+            description: "อาหารคลีน น้ำมันเยิ้ม",
+            name: "อกไก่ทอด",
+            options: [Array],
+            picture: [Object],
+            price: 10,
+            restaurant_id: "63e188c58ae333a7867b14f2",
+            type: "อาหารคลีน",
+        },
+        id: 2,
+        moreDetail: null,
+        options: [[Object]],
+        price: 10,
+    },
+    {
+        amount: 1,
+        food: {
+            __v: 0,
+            _id: "63e9323adaf3c449c4bb7c7d",
+            description: "",
+            name: "ผัดกาดขาว",
+            options: [Array],
+            picture: null,
+            price: 0,
+            restaurant_id: "63e188c58ae333a7867b14f2",
+            type: "อาหารคาว",
+        },
+        id: 3,
+        moreDetail: "no spicy",
+        options: [],
+        price: 0,
+    },
+];
