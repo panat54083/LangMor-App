@@ -41,8 +41,9 @@ const styles = StyleSheet.create({
     main_container: {
         flexDirection: "row",
         alignItems: "center",
-        flex: 1,
+        // flex: 1,
         backgroundColor: "white",
+        height: 50,
     },
     input_container: {
         backgroundColor: "white",

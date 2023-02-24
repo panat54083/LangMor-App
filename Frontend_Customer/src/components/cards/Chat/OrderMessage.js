@@ -3,7 +3,7 @@ import React from "react";
 //components
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
-const OrderMesssage = ({ order , onPress}) => {
+const OrderMessage = ({ order , onPress}) => {
     return (
         <View style={[styles.container]}>
             <View style={[styles.orderDetail, styles.shadow]}>
@@ -73,7 +73,7 @@ const OrderMesssage = ({ order , onPress}) => {
     );
 };
 
-export default OrderMesssage;
+export default OrderMessage;
 
 const styles = StyleSheet.create({
     container: {

@@ -14,7 +14,7 @@ import {
 import BackScreen from "../../components/buttons/BackScreen";
 import ChatInput from "../../components/cards/Chat/ChatInput";
 import MessageModel from "../../components/cards/Chat/MessageModel";
-import OrderMesssage from "../../components/cards/Chat/OrderMesssage";
+import OrderMessage from "../../components/cards/Chat/OrderMessage";
 //configs
 import BasketContext from "../../hooks/context/BasketContext";
 import UserContext from "../../hooks/context/UserContext";
@@ -189,7 +189,7 @@ const Chat = ({ navigation, route }) => {
                                     width: "100%",
                                 }}
                             >
-                                <OrderMesssage order={basketDetail.foods} onPress={handleMoreDetail}/>
+                                <OrderMessage order={basketDetail.foods} onPress={handleMoreDetail}/>
                             </View>
                         </View>
                         {listMessages.map((item, index) => (
@@ -201,11 +201,9 @@ const Chat = ({ navigation, route }) => {
                         ))}
                     </ScrollView>
                 ) : (
-                    <View style={styles.orderPopup}>
                         <View style={{ alignItems: "flex-end", width: "100%" }}>
-                            <OrderMesssage order={basketDetail.foods} onPress={handleMoreDetail}/>
+                            <OrderMessage order={basketDetail.foods} onPress={handleMoreDetail}/>
                         </View>
-                    </View>
                 )}
             </View>
             <ChatInput
@@ -228,10 +226,5 @@ const styles = StyleSheet.create({
     messages_container: {
         margin: 5,
         flex: 10,
-    },
-    orderPopup: {
-        // marginHorizontal: "10%",
-        // justifyContent: "flex-end",
-        // alignItems: "flex-end"
     },
 });

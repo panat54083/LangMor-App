@@ -10,6 +10,7 @@ import {
     Button,
     FlatList,
     Keyboard,
+    ScrollView,
 } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import ChatInput from "../../components/Cards/Chat/ChatInput";
@@ -189,8 +190,12 @@ const Chat = ({ navigation, route }) => {
         console.log("press");
     };
 
+    const handleMoreDetail = () => {
+        console.log();
+    };
+
     const handleDebugger = () => {
-        console.log(orderData, customerData);
+        console.log(orderData);
     };
 
     return (
@@ -198,19 +203,37 @@ const Chat = ({ navigation, route }) => {
             {/* <Button onPress={handleDebugger} title="Debugger" /> */}
             <View style={styles.messages_container}>
                 {listMessages[0] ? (
-                    <FlatList
-                        ref={scrollViewRef}
-                        data={listMessages}
-                        renderItem={({ item }) => (
+                    <ScrollView ref={scrollViewRef}>
+                        <View style={styles.orderPopup}>
+                            <View
+                                style={{
+                                    alignItems: "flex-start",
+                                    width: "100%",
+                                }}
+                            >
+                                <OrderMessage
+                                    order={orderData}
+                                    onPress={handleMoreDetail}
+                                backgroundColor={"#DFDFDF"}
+                                />
+                            </View>
+                        </View>
+                        {listMessages.map((item, index) => (
                             <MessageModel
+                                key={index}
                                 message={item}
                                 userId={state.userData._id}
                             />
-                        )}
-                        keyExtractor={(item, index) => index}
-                    />
+                        ))}
+                    </ScrollView>
                 ) : (
-                    ""
+                        <View style={{ alignItems: "flex-start", width: "100%" }}>
+                            <OrderMessage
+                                order={orderData}
+                                onPress={handleMoreDetail}
+                                backgroundColor={"#DFDFDF"}
+                            />
+                        </View>
                 )}
             </View>
             {!keyboardVisible && (
