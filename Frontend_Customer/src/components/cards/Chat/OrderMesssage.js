@@ -3,22 +3,27 @@ import React from "react";
 //components
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
-const OrderMesssage = ({ order }) => {
+const OrderMesssage = ({ order , onPress}) => {
     return (
         <View style={[styles.container]}>
-            <View style={styles.orderDetail}>
+            <View style={[styles.orderDetail, styles.shadow]}>
                 {order.cart
                     ? order.cart.map((food, index) => (
                           <View style={styles.body_container} key={index}>
-                            <View style={{flexDirection: "row"}}>
-                              <Text style={[styles.body_font, {marginRight: 5,}]}>
-                                  {food.amount} <Text style={{color: "white"}}>X</Text>
-                              </Text>
-                              <Text style={[styles.body_font, {flex: 0,}]}>
-                                  {food.food.name}
-                              </Text>
-
-                            </View>
+                              <View style={{ flexDirection: "row" }}>
+                                  <Text
+                                      style={[
+                                          styles.body_font,
+                                          { marginRight: 5 },
+                                      ]}
+                                  >
+                                      {food.amount}{" "}
+                                      <Text style={{ color: "white" }}>X</Text>
+                                  </Text>
+                                  <Text style={[styles.body_font, { flex: 0 }]}>
+                                      {food.food.name}
+                                  </Text>
+                              </View>
                               {food.options.map((option, index) => {
                                   if (option.value) {
                                       if (option.value.length !== 0) {
@@ -53,6 +58,17 @@ const OrderMesssage = ({ order }) => {
                       ))
                     : ""}
             </View>
+            <TouchableOpacity style={{ alignItems: "center" }}>
+                <Text
+                    style={[
+                        styles.body_font,
+                        { color: "#FF4200", textDecorationLine: "underline", marginVertical: 3, },
+                    ]}
+                    onPress={onPress}
+                >
+                    ดูรายละเอียดเพิ่มเติม
+                </Text>
+            </TouchableOpacity>
         </View>
     );
 };
@@ -61,21 +77,32 @@ export default OrderMesssage;
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "#FF7A00",
-        padding: 10,
-        alignItems: "center",
+        // padding: 10,
+        // alignItems: "center",
         borderRadius: 20,
-
+        marginBottom: 5,
+        backgroundColor: "white",
     },
     orderDetail: {
-        // flexDirection: "row",
+        backgroundColor: "#FF7A00",
+        padding: 10,
+        borderRadius: 20,
     },
-    body_container: {
-        // flexDirection: "row",
-    },
+    body_container: {},
     body_font: {
         fontFamily: "Kanit-SemiBold",
         fontSize: 14,
+    },
+    shadow: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 1.41,
+
+        elevation: 2,
     },
 });
 

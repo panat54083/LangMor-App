@@ -167,6 +167,11 @@ const Chat = ({ navigation, route }) => {
             });
     };
 
+
+    const handleMoreDetail= () => {
+        console.log();
+    };
+
     const handleDebugger = () => {
         console.log(basketDetail.foods);
     };
@@ -178,7 +183,14 @@ const Chat = ({ navigation, route }) => {
                 {listMessages[0] ? (
                     <ScrollView ref={scrollViewRef}>
                         <View style={styles.orderPopup}>
-                            <OrderMesssage order={basketDetail.foods} />
+                            <View
+                                style={{
+                                    alignItems: "flex-end",
+                                    width: "100%",
+                                }}
+                            >
+                                <OrderMesssage order={basketDetail.foods} onPress={handleMoreDetail}/>
+                            </View>
                         </View>
                         {listMessages.map((item, index) => (
                             <MessageModel
@@ -189,7 +201,11 @@ const Chat = ({ navigation, route }) => {
                         ))}
                     </ScrollView>
                 ) : (
-                    ""
+                    <View style={styles.orderPopup}>
+                        <View style={{ alignItems: "flex-end", width: "100%" }}>
+                            <OrderMesssage order={basketDetail.foods} onPress={handleMoreDetail}/>
+                        </View>
+                    </View>
                 )}
             </View>
             <ChatInput
@@ -214,6 +230,8 @@ const styles = StyleSheet.create({
         flex: 10,
     },
     orderPopup: {
-        marginHorizontal: "10%",
+        // marginHorizontal: "10%",
+        // justifyContent: "flex-end",
+        // alignItems: "flex-end"
     },
 });
