@@ -167,7 +167,6 @@ const Chat = ({ navigation, route }) => {
             });
     };
 
-
     const handleMoreDetail= () => {
         console.log();
     };

@@ -68,3 +68,19 @@ exports.getOrder = async (req, res) => {
         });
     }
 };
+
+exports.updateOrder = async (req, res) => {
+    const { order_id, status } = req.body;
+    const order = await Order.findById(order_id);
+    if (order) {
+        order.status = status;
+        await order.save();
+        res.json({
+            message: "update order done..",
+        });
+    }else{
+        res.json({
+            message: "can't find order.."
+        })
+    }
+};

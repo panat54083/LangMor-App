@@ -148,6 +148,26 @@ const Chat = ({ navigation, route }) => {
             });
     };
 
+    const apiUpdateOrder = (status) => {
+        axios
+            .post(`http://${IP_ADDRESS}/order/update`, {
+                order_id: orderData._id,
+                status: status,
+            })
+            .then((res) => {
+                console.log(res.data.message);
+            })
+            .catch((err) => {
+                if (
+                    err &&
+                    err.response &&
+                    err.response.data &&
+                    err.response.data.message
+                )
+                    console.log("Error", err.response.data.message);
+            });
+    };
+
     const handleSendMessage = () => {
         setIsLoaded(true);
         if (image) {
@@ -187,7 +207,7 @@ const Chat = ({ navigation, route }) => {
     };
 
     const handleStatusButton = () => {
-        console.log("press");
+        apiUpdateOrder("doing");
     };
 
     const handleMoreDetail = () => {
@@ -214,7 +234,7 @@ const Chat = ({ navigation, route }) => {
                                 <OrderMessage
                                     order={orderData}
                                     onPress={handleMoreDetail}
-                                backgroundColor={"#DFDFDF"}
+                                    backgroundColor={"#DFDFDF"}
                                 />
                             </View>
                         </View>
@@ -227,13 +247,13 @@ const Chat = ({ navigation, route }) => {
                         ))}
                     </ScrollView>
                 ) : (
-                        <View style={{ alignItems: "flex-start", width: "100%" }}>
-                            <OrderMessage
-                                order={orderData}
-                                onPress={handleMoreDetail}
-                                backgroundColor={"#DFDFDF"}
-                            />
-                        </View>
+                    <View style={{ alignItems: "flex-start", width: "100%" }}>
+                        <OrderMessage
+                            order={orderData}
+                            onPress={handleMoreDetail}
+                            backgroundColor={"#DFDFDF"}
+                        />
+                    </View>
                 )}
             </View>
             {!keyboardVisible && (
