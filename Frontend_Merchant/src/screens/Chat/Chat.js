@@ -36,6 +36,9 @@ const Chat = ({ navigation, route }) => {
     // data variables
     const [message, setMessage] = useState("");
     const [image, setImage] = useState(null);
+    const [buttonStatusLabel, setButtonStatusLabel] = useState("");
+    const [buttonStatusColor, setButtonStatusColor] = useState("");
+
     useEffect(() => {
         navigation.setOptions({
             title: `${customerData.name}`,
@@ -52,8 +55,8 @@ const Chat = ({ navigation, route }) => {
         });
         // Functions
         fetchInitialMessages();
+        initialStatusButton()
     }, []);
-
     useEffect(() => {
         chatroom_connect(orderData._id);
     }, [socket]);
@@ -94,6 +97,7 @@ const Chat = ({ navigation, route }) => {
 
         scrollViewRef.current?.scrollToEnd({ animated: true });
     }, [listMessages]);
+
     const chatroom_connect = (chatroom_id) => {
         if (socket) {
             socket.emit("joinRoom", {
@@ -155,7 +159,9 @@ const Chat = ({ navigation, route }) => {
                 status: status,
             })
             .then((res) => {
-                console.log(res.data.message);
+                // console.log(res.data.message);
+                console.log("Update Order to: ", res.data.orderData.status);
+                orderData.status = res.data.orderData.status;
             })
             .catch((err) => {
                 if (
@@ -205,13 +211,59 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
+ 
+    const initialStatusButton = () => {
+            if (orderData.status === "new"){
+                setButtonStatusLabel("ยืนยันออเดอร์")
+                setButtonStatusColor("#63BE00")
+            }
+            else if (orderData.status === "doing") {
+                setButtonStatusLabel("กำลังไปส่ง")
+                setButtonStatusColor("#FF7A00")
+            }
+            else if (orderData.status === "deliver") {
+                setButtonStatusLabel("จัดส่งสำเร็จ")
+                setButtonStatusColor("#FF7A00")
+            }
+            else if (orderData.status === "done") {
+                setButtonStatusLabel("ปิดการสนทนา")
+                setButtonStatusColor("#FF0101")
+            }
 
+    }
     const handleStatusButton = () => {
-        apiUpdateOrder("new");
+        let newStatus;
+        switch (orderData.status) {
+            case "new":
+                newStatus = "doing";
+                setButtonStatusLabel("กำลังไปส่ง")
+                setButtonStatusColor("#FF7A00")
+                break;
+            case "doing":
+                newStatus = "deliver";
+                setButtonStatusLabel("จัดส่งสำเร็จ")
+                setButtonStatusColor("#FF7A00")
+                break;
+            case "deliver":
+                newStatus = "done";
+                setButtonStatusLabel("ปิดการสนทนา")
+                setButtonStatusColor("#FF0101")
+                break;
+            case "done":
+                newStatus = "done";
+                chatroom_disconnect(orderData._id)
+                navigation.navigate("OrderTabs", { screen: "DoneOrder" });
+                break;
+            default:
+                newStatus = "new";
+                setButtonStatusLabel("ยืนยันออเดอร์")
+                setButtonStatusColor("#63BE00")
+                break;
+        }
+        apiUpdateOrder(newStatus);
     };
-
     const handleMoreDetail = () => {
-        console.log();
+        console.log(orderData.status);
     };
 
     const handleDebugger = () => {
@@ -259,10 +311,21 @@ const Chat = ({ navigation, route }) => {
             {!keyboardVisible && (
                 <View style={styles.button_container}>
                     <AcceptButton
-                        label={"ยืนยันออเดอร์"}
+                        // label={
+                        //     orderData.status === "new"
+                        //         ? "ยืนยันออเดอร์"
+                        //         : orderData.status === "doing"
+                        //         ? "กำลังไปส่ง"
+                        //         : orderData.status === "deliver"
+                        //         ? "จัดส่งเสร็จสิ้น"
+                        //         : orderData.status === "done"
+                        //         ? "ปิดการสนทนา"
+                        //         : ""
+                        // }
+                        label={buttonStatusLabel}
                         onPress={handleStatusButton}
                         fontSize={18}
-                        backgroundColor={"#63BE00"}
+                        backgroundColor={buttonStatusColor}
                     />
                 </View>
             )}

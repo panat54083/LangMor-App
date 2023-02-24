@@ -76,6 +76,7 @@ exports.updateOrder = async (req, res) => {
         order.status = status;
         await order.save();
         res.json({
+            orderData: order,
             message: "update order done..",
         });
     }else{
