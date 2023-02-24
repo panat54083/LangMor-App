@@ -65,8 +65,8 @@ const NewOrder = ({ navigation }) => {
         navigation.navigate("ShowOrder", order);
     };
     return (
-        <View>
-            <Button title="Debugger" onPress={handleDebugger} />
+        <View style={styles.container}>
+            {/* <Button title="Debugger" onPress={handleDebugger} /> */}
             {orders
                 ? orders.map((order, index) => (
                       <OrderCard
@@ -82,4 +82,8 @@ const NewOrder = ({ navigation }) => {
 
 export default NewOrder;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    container: {
+        marginTop: 10,
+    }
+});

@@ -2,10 +2,11 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 //Components
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button, ScrollView } from "react-native";
 import AddressBoxDetail from "../../components/Cards/Order/AddressBoxDetail";
 import BackScreen from "../../components/buttons/BackScreen";
 import OrderSummary from "../../components/Cards/Order/OrderSummary";
+import AcceptButton from "../../components/buttons/AcceptButton";
 //Configs
 import { IP_ADDRESS } from "@env";
 
@@ -27,15 +28,27 @@ const ShowOrder = ({ navigation, route }) => {
             ),
         });
     }, []);
-
+    const handleGotoChat = () => {
+        navigation.navigate("Chat", {
+            orderData: order.order,
+            customerData: order.customer,
+        });
+    };
     const handleDebugger = () => {
-        console.log(order.order.cart);
+        console.log(order);
     };
     return (
         <View style={styles.container}>
-            <Button title="Debugger" onPress={handleDebugger} />
-            <AddressBoxDetail address={order.order.address} />
-            <OrderSummary order={order.order}/>
+            {/* <Button title="Debugger" onPress={handleDebugger} /> */}
+            <View style={styles.detail}>
+                <ScrollView>
+                    <AddressBoxDetail address={order.order.address} />
+                    <OrderSummary order={order.order} />
+                </ScrollView>
+            </View>
+            <View style={styles.submit}>
+                <AcceptButton label={"เริ่มแชท"} onPress={handleGotoChat} />
+            </View>
         </View>
     );
 };
@@ -43,10 +56,19 @@ const ShowOrder = ({ navigation, route }) => {
 export default ShowOrder;
 
 const styles = StyleSheet.create({
-    container: { marginHorizontal: 10},
+    container: { marginHorizontal: 10, flex: 1 },
+    detail: {
+        margin: 5,
+        flex: 10,
+    },
+    submit: {
+        flex: 1,
+        justifyContent: "space-between",
+        // backgroundColor: "red",
+    },
 });
 
-const order= {
+const order = {
     customer: {
         __v: 0,
         _id: "63f46d5f0ee8a09a91096666",

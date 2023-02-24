@@ -7,97 +7,108 @@ const OrderSummary = ({ order }) => {
     const sum = order.cart.reduce((total, item) => total + item.price, 0);
     return (
         <View style={styles.container}>
-            <View style={{backgroundColor: "white", marginBottom: 10,}}>
-            <View style={styles.header_container}>
-                <View style={styles.header_listMenu}>
-                    <Text style={styles.header_font}>รายการอาหาร</Text>
+            <View style={{ backgroundColor: "white", marginBottom: 10 }}>
+                <View style={styles.header_container}>
+                    <View style={styles.header_listMenu}>
+                        <Text style={styles.header_font}>รายการอาหาร</Text>
+                    </View>
+                    <View style={styles.header_price}>
+                        <Text style={styles.header_font}>ราคา</Text>
+                    </View>
                 </View>
-                <View style={styles.header_price}>
-                    <Text style={styles.header_font}>ราคา</Text>
-                </View>
-            </View>
-            <View style={{ marginBottom: 12 }}>
-                {order.cart
-                    ? order.cart.map((food, index) => (
-                          <View style={styles.body_container} key={index}>
-                              <View style={styles.body_amount}>
-                                  <View style={styles.box_price}>
-                                      <Text style={styles.body_font_amount}>
-                                          {food.amount}x
+                <View style={{ marginBottom: 12 }}>
+                    {order.cart
+                        ? order.cart.map((food, index) => (
+                              <View style={styles.body_container} key={index}>
+                                  <View style={styles.body_amount}>
+                                      <View style={styles.box_price}>
+                                          <Text style={styles.body_font_amount}>
+                                              {food.amount}x
+                                          </Text>
+                                      </View>
+                                  </View>
+                                  <View style={styles.body_food}>
+                                      <Text style={styles.body_font}>
+                                          {food.food.name}
+                                      </Text>
+                                      {food.options.map((option, index) => {
+                                          if (option.value) {
+                                              if (option.value.length !== 0) {
+                                                  if (
+                                                      Array.isArray(
+                                                          option.value
+                                                      )
+                                                  ) {
+                                                      return (
+                                                          <Text
+                                                              key={index}
+                                                              style={[
+                                                                  styles.body_font,
+                                                                  {
+                                                                      color: "#C9C5C4",
+                                                                  },
+                                                              ]}
+                                                          >
+                                                              {option.name}:{" "}
+                                                              {option.value.toString()}
+                                                          </Text>
+                                                      );
+                                                  } else {
+                                                      return (
+                                                          <Text
+                                                              key={index}
+                                                              style={[
+                                                                  styles.body_font,
+                                                                  {
+                                                                      color: "#C9C5C4",
+                                                                  },
+                                                              ]}
+                                                          >
+                                                              {option.name}:{" "}
+                                                              {option.value}
+                                                          </Text>
+                                                      );
+                                                  }
+                                              }
+                                          }
+                                      })}
+                                      <Text
+                                          style={[
+                                              styles.body_font,
+                                              { color: "#C9C5C4" },
+                                          ]}
+                                      >
+                                          {food.moreDetail}
+                                      </Text>
+                                  </View>
+                                  <View style={styles.body_price}>
+                                      <Text
+                                          style={[
+                                              styles.body_font,
+                                              {
+                                                  color: "#1A0700",
+                                                  fontSize: 18,
+                                              },
+                                          ]}
+                                      >
+                                          {food.price}
                                       </Text>
                                   </View>
                               </View>
-                              <View style={styles.body_food}>
-                                  <Text style={styles.body_font}>
-                                      {food.food.name}
-                                  </Text>
-                                  {food.options.map((option, index) => {
-                                      if (option.value) {
-                                          if (option.value.length !== 0) {
-                                              if (Array.isArray(option.value)) {
-                                                  return (
-                                                      <Text
-                                                          key={index}
-                                                          style={[
-                                                              styles.body_font,
-                                                              {
-                                                                  color: "#C9C5C4",
-                                                              },
-                                                          ]}
-                                                      >
-                                                          {option.name}:{" "}
-                                                          {option.value.toString()}
-                                                      </Text>
-                                                  );
-                                              } else {
-                                                  return (
-                                                      <Text
-                                                          key={index}
-                                                          style={[
-                                                              styles.body_font,
-                                                              {
-                                                                  color: "#C9C5C4",
-                                                              },
-                                                          ]}
-                                                      >
-                                                          {option.name}:{" "}
-                                                          {option.value}
-                                                      </Text>
-                                                  );
-                                              }
-                                          }
-                                      }
-                                  })}
-                                  <Text
-                                      style={[
-                                          styles.body_font,
-                                          { color: "#C9C5C4" },
-                                      ]}
-                                  >
-                                      {food.moreDetail}
-                                  </Text>
-                              </View>
-                              <View style={styles.body_price}>
-                                  <Text
-                                      style={[
-                                          styles.body_font,
-                                          { color: "#1A0700", fontSize: 18 },
-                                      ]}
-                                  >
-                                      {food.price}
-                                  </Text>
-                              </View>
-                          </View>
-                      ))
-                    : ""}
-            </View>
-
+                          ))
+                        : ""}
+                </View>
             </View>
             <View style={styles.total_container}>
-                <View style={{ flex: 1, marginLeft: 10 }}>
-                    <Text style={styles.total_font}>ทั้งหมด</Text>
+                <View style={{ flex: 2 }}>
+                    <Text style={styles.total_font}>
+                        ทั้งหมด{" "}
+                        <Text style={{ color: "#FF7A00" }}>
+                            (ไม่รวมค่าจัดส่ง)
+                        </Text>
+                    </Text>
                 </View>
-                <View style={{ flex: 0 ,marginRight: 5,}}>
+                <View style={{ flex: 1, alignItems: "flex-end" }}>
                     <Text style={styles.total_font}>{sum} บาท</Text>
                 </View>
             </View>
