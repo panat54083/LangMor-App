@@ -164,7 +164,7 @@ const Chat = ({ navigation, route }) => {
     };
     return (
         <View style={styles.main_container}>
-            <Button onPress={handleDebugger} title="Debugger" />
+            {/* <Button onPress={handleDebugger} title="Debugger" /> */}
             <View style={styles.messages_container}>
                 {listMessages[0] ? (
                     <FlatList
@@ -200,6 +200,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     messages_container: {
+        margin: 5,
         flex: 10,
     },
 });

@@ -3,10 +3,18 @@ import React, { useEffect, useState, useContext, useRef } from "react";
 import axios from "axios";
 import * as LIP from "../../lib/lm-image-picker";
 //Components
-import { StyleSheet, Text, View, Button, FlatList } from "react-native";
+import {
+    StyleSheet,
+    Text,
+    View,
+    Button,
+    FlatList,
+    Keyboard,
+} from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import ChatInput from "../../components/Cards/Chat/ChatInput";
 import MessageModel from "../../components/Cards/Chat/MessageModel";
+import AcceptButton from "../../components/buttons/AcceptButton";
 //Configs
 import { IP_ADDRESS } from "@env";
 import UserContext from "../../hooks/context/UserContext";
@@ -21,6 +29,8 @@ const Chat = ({ navigation, route }) => {
     const { socket } = useContext(SocketContext);
     const [isLoaded, setIsLoaded] = useState(false);
     const scrollViewRef = useRef(null);
+    const [keyboardVisible, setKeyboardVisible] = useState(false);
+
     // data variables
     const [message, setMessage] = useState("");
     const [image, setImage] = useState(null);
@@ -45,6 +55,25 @@ const Chat = ({ navigation, route }) => {
     useEffect(() => {
         chatroom_connect(orderData._id);
     }, [socket]);
+
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener(
+            "keyboardDidShow",
+            () => {
+                setKeyboardVisible(true);
+            }
+        );
+        const keyboardDidHideListener = Keyboard.addListener(
+            "keyboardDidHide",
+            () => {
+                setKeyboardVisible(false);
+            }
+        );
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
+    }, []);
 
     useEffect(() => {
         if (socket) {
@@ -91,6 +120,7 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
+
     const sendMessage = (message, picture) => {
         if (socket) {
             socket.emit("chatroomMessage", {
@@ -101,6 +131,7 @@ const Chat = ({ navigation, route }) => {
         }
         setMessage("");
     };
+
     const fetchInitialMessages = () => {
         axios
             .get(
@@ -114,6 +145,7 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
+
     const handleSendMessage = () => {
         setIsLoaded(true);
         if (image) {
@@ -131,6 +163,7 @@ const Chat = ({ navigation, route }) => {
         }
         inputRef.current.clear();
     };
+
     const handleImagePick = () => {
         LIP.pickImage()
             .then((data) => {
@@ -140,6 +173,7 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
+
     const handleCamera = () => {
         LIP.openCamera()
             .then((data) => {
@@ -149,12 +183,18 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
+
+    const handleStatusButton = () => {
+        console.log("press");
+    };
+
     const handleDebugger = () => {
         console.log(orderData, customerData);
     };
+
     return (
         <View style={styles.main_container}>
-            <Button onPress={handleDebugger} title="Debugger" />
+            {/* <Button onPress={handleDebugger} title="Debugger" /> */}
             <View style={styles.messages_container}>
                 {listMessages[0] ? (
                     <FlatList
@@ -172,6 +212,17 @@ const Chat = ({ navigation, route }) => {
                     ""
                 )}
             </View>
+            {!keyboardVisible && (
+                <View style={styles.button_container}>
+                    <AcceptButton
+                        label={"ยืนยันออเดอร์"}
+                        onPress={handleStatusButton}
+                        fontSize={18}
+                        backgroundColor={"#63BE00"}
+                    />
+                </View>
+            )}
+
             <ChatInput
                 forwardedRef={inputRef}
                 onChangeText={(value) => setMessage(value)}
@@ -190,6 +241,12 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     messages_container: {
+        margin: 5,
         flex: 10,
+    },
+    button_container: {
+        flex: 0,
+        marginVertical: 5,
+        marginHorizontal: 40,
     },
 });
