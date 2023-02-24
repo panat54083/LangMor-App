@@ -88,6 +88,7 @@ io.on("connection", (socket) => {
                     user: socket.userId,
                     message: message,
                     picture: picture,
+                    timestamp:  new Date(Date.now()).toString(),
                 });
                 io.to(chatroomId).emit("newMessage",{
                     id: new_message._id.toString(),
