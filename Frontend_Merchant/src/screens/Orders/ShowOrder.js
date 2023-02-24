@@ -47,7 +47,7 @@ const ShowOrder = ({ navigation, route }) => {
                 </ScrollView>
             </View>
             <View style={styles.submit}>
-                <AcceptButton label={"เริ่มแชท"} onPress={handleGotoChat} />
+                <AcceptButton label={"เข้าสู่หน้าแชท"} onPress={handleGotoChat} />
             </View>
         </View>
     );

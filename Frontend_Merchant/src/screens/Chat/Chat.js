@@ -48,14 +48,32 @@ const Chat = ({ navigation, route }) => {
             },
             headerLeft: () => (
                 <BackScreen
-                    onPress={() => navigation.goBack()}
+                    onPress={() => {
+                        if (orderData.status === "new") {
+                            navigation.navigate("OrderTabs", {
+                                screen: "NewOrder",
+                            });
+                        } else if (orderData.status === "doing") {
+                            navigation.navigate("OrderTabs", {
+                                screen: "DoingOrder",
+                            });
+                        } else if (orderData.status === "deliver") {
+                            navigation.navigate("OrderTabs", {
+                                screen: "DeliverOrder",
+                            });
+                        } else if (orderData.status === "done") {
+                            navigation.navigate("OrderTabs", {
+                                screen: "DoneOrder",
+                            });
+                        }
+                    }}
                     color="#FF7A00"
                 />
             ),
         });
         // Functions
         fetchInitialMessages();
-        initialStatusButton()
+        initialStatusButton();
     }, []);
     useEffect(() => {
         chatroom_connect(orderData._id);
@@ -211,59 +229,59 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
- 
-    const initialStatusButton = () => {
-            if (orderData.status === "new"){
-                setButtonStatusLabel("ยืนยันออเดอร์")
-                setButtonStatusColor("#63BE00")
-            }
-            else if (orderData.status === "doing") {
-                setButtonStatusLabel("กำลังไปส่ง")
-                setButtonStatusColor("#FF7A00")
-            }
-            else if (orderData.status === "deliver") {
-                setButtonStatusLabel("จัดส่งสำเร็จ")
-                setButtonStatusColor("#FF7A00")
-            }
-            else if (orderData.status === "done") {
-                setButtonStatusLabel("ปิดการสนทนา")
-                setButtonStatusColor("#FF0101")
-            }
 
-    }
+    const initialStatusButton = () => {
+        if (orderData.status === "new") {
+            setButtonStatusLabel("ยืนยันออเดอร์");
+            setButtonStatusColor("#63BE00");
+        } else if (orderData.status === "doing") {
+            setButtonStatusLabel("กำลังไปส่ง");
+            setButtonStatusColor("#FF7A00");
+        } else if (orderData.status === "deliver") {
+            setButtonStatusLabel("จัดส่งสำเร็จ");
+            setButtonStatusColor("#FF7A00");
+        } else if (orderData.status === "done") {
+            setButtonStatusLabel("ปิดการสนทนา");
+            setButtonStatusColor("#FF0101");
+        }
+    };
+
     const handleStatusButton = () => {
         let newStatus;
         switch (orderData.status) {
             case "new":
                 newStatus = "doing";
-                setButtonStatusLabel("กำลังไปส่ง")
-                setButtonStatusColor("#FF7A00")
+                setButtonStatusLabel("กำลังไปส่ง");
+                setButtonStatusColor("#FF7A00");
                 break;
             case "doing":
                 newStatus = "deliver";
-                setButtonStatusLabel("จัดส่งสำเร็จ")
-                setButtonStatusColor("#FF7A00")
+                setButtonStatusLabel("จัดส่งสำเร็จ");
+                setButtonStatusColor("#FF7A00");
                 break;
             case "deliver":
                 newStatus = "done";
-                setButtonStatusLabel("ปิดการสนทนา")
-                setButtonStatusColor("#FF0101")
+                setButtonStatusLabel("ปิดการสนทนา");
+                setButtonStatusColor("#FF0101");
                 break;
             case "done":
-                newStatus = "done";
-                chatroom_disconnect(orderData._id)
+                newStatus = "close";
+                chatroom_disconnect(orderData._id);
                 navigation.navigate("OrderTabs", { screen: "DoneOrder" });
                 break;
             default:
                 newStatus = "new";
-                setButtonStatusLabel("ยืนยันออเดอร์")
-                setButtonStatusColor("#63BE00")
+                setButtonStatusLabel("ยืนยันออเดอร์");
+                setButtonStatusColor("#63BE00");
                 break;
         }
         apiUpdateOrder(newStatus);
     };
+
     const handleMoreDetail = () => {
-        console.log(orderData.status);
+        // console.log(orderData.status);
+        const order = {order: orderData, customer: customerData}
+        navigation.navigate("ShowOrder", order);
     };
 
     const handleDebugger = () => {

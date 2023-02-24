@@ -51,7 +51,7 @@ exports.getOrder = async (req, res) => {
         const data = [];
         const orders = await Order.find({
             customerId: customer_id,
-            status: { $nin: ["done", "cancel"] },
+            status: { $nin: ["close", "cancel"] },
         });
         const metaOrders = await Promise.all(
             orders.map(async (order, index) => {
