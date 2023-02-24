@@ -190,33 +190,37 @@ const FoodList = ({ route, navigation }) => {
             <View style={styles.searchbar}>
                 <Searchbar height="45" />
             </View>
-            <>
-                {foodsData ? (
-                    <View style={styles.sectionListContainer}>
-                        <SectionList
-                            sections={foodsData}
-                            keyExtractor={(item, index) => item + index}
-                            renderSectionHeader={({ section: { title } }) => (
-                                <View style={styles.headerSection}>
-                                    <Text style={styles.header}>{title}</Text>
-                                </View>
-                            )}
-                            renderItem={({ item, index }) => (
-                                <View style={styles.item}>
-                                    <CardFood
-                                        food={item}
-                                        handlerOnPressCard={handlerOnPressCard}
-                                    />
-                                </View>
-                            )}
-                        />
-                    </View>
-                ) : (
-                    <View>
-                        <Text>Now loadding</Text>
-                    </View>
-                )}
-            </>
+            {foodsData ? (
+                <View
+                    style={
+                        basketDetail.foods.length !== 0
+                            ? styles.sectionListContainerWithPaddingBot
+                            : styles.sectionListContainer
+                    }
+                >
+                    <SectionList
+                        sections={foodsData}
+                        keyExtractor={(item, index) => item + index}
+                        renderSectionHeader={({ section: { title } }) => (
+                            <View style={styles.headerSection}>
+                                <Text style={styles.header}>{title}</Text>
+                            </View>
+                        )}
+                        renderItem={({ item, index }) => (
+                            <View style={styles.item}>
+                                <CardFood
+                                    food={item}
+                                    handlerOnPressCard={handlerOnPressCard}
+                                />
+                            </View>
+                        )}
+                    />
+                </View>
+            ) : (
+                <View>
+                    <Text>Now loadding</Text>
+                </View>
+            )}
 
             {basketDetail.foods.length !== 0 ? (
                 <View style={styles.confirmOrderBtn}>
@@ -248,6 +252,7 @@ const FoodList = ({ route, navigation }) => {
                         position: "absolute",
                         bottom: 0,
                         width: "100%",
+                        flex: 1,
                     }}
                 >
                     {sameFoodInBasket ? (
@@ -286,11 +291,18 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#ffffff",
         paddingTop: 10,
-        // paddingBottom:'20%'
+        // marginBottom:'20%'
+    },
+    sectionListContainerWithPaddingBot: {
+        flex: 1,
+        backgroundColor: "#ffffff",
+        paddingTop: 10,
+        paddingBottom: "20%",
         // marginBottom:'20%'
     },
     headerSection: { marginBottom: 3, marginLeft: "2.1%" },
     confirmOrderBtn: {
+        // backgroundColor: "red",
         position: "absolute",
         bottom: 0,
         alignSelf: "center",

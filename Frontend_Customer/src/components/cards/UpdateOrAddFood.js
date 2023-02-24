@@ -5,6 +5,7 @@ import {
     View,
     TouchableOpacity,
     ScrollView,
+    FlatList,
 } from "react-native";
 import React from "react";
 import SubmitBtn from "../buttons/SubmitBtn";
@@ -24,85 +25,101 @@ const UpdateOrAddFood = (props) => {
                 backgroundColor: "#FFFFFF",
                 paddingVertical: "3%",
                 borderRadius: 20,
+                flex: 1,
             }}
         >
             <View
                 style={{
                     marginLeft: "5%",
                     marginBottom: "3%",
+                    backgroundColor:'red'
                 }}
             >
                 <Text style={{ fontSize: 22, fontFamily: "Kanit-Bold" }}>
                     {sameFood[0].food.name}
                 </Text>
             </View>
-            <View style={{ marginBottom: "4%" }}>
-                {sameFood.map((order) => {
-                    return (
-                        <View key={order.id} style={styles.contentContainer}>
-                            <View style={styles.amountView}>
-                                <Text style={styles.amountText}>
-                                    x{order.amount}
-                                </Text>
-                            </View>
-                            <View style={{ flex: 1.25 }}>
-                                <View>
-                                    {order.options.map((option) => {
-                                        if (option.value) {
-                                            if (option.value.length !== 0) {
-                                                if (
-                                                    Array.isArray(option.value)
-                                                ) {
-                                                    return (
-                                                        <Text
-                                                            key={option.name}
-                                                            style={
-                                                                styles.optionText
-                                                            }
-                                                        >
-                                                            {option.name}:{" "}
-                                                            {option.value.toString()}
-                                                        </Text>
-                                                    );
-                                                } else {
-                                                    return (
-                                                        <Text
-                                                            key={option.name}
-                                                            style={
-                                                                styles.optionText
-                                                            }
-                                                        >
-                                                            {option.name}:{" "}
-                                                            {option.value}
-                                                        </Text>
-                                                    );
+            <View style={{ marginBottom: "4%", flex: 1 , maxHeight:600}}>
+                <ScrollView>
+                    {sameFood.map((order) => {
+                        return (
+                            <View
+                                key={order.id}
+                                style={styles.contentContainer}
+                            >
+                                <View style={styles.amountView}>
+                                    <Text style={styles.amountText}>
+                                        {order.amount}x
+                                    </Text>
+                                </View>
+                                <View style={{ flex: 1 }}>
+                                    <View>
+                                        {order.options.map((option) => {
+                                            if (option.value) {
+                                                if (option.value.length !== 0) {
+                                                    if (
+                                                        Array.isArray(
+                                                            option.value
+                                                        )
+                                                    ) {
+                                                        return (
+                                                            <Text
+                                                                key={
+                                                                    option.name
+                                                                }
+                                                                style={
+                                                                    styles.optionText
+                                                                }
+                                                            >
+                                                                {option.name}:{" "}
+                                                                {option.value.toString()}
+                                                            </Text>
+                                                        );
+                                                    } else {
+                                                        return (
+                                                            <Text
+                                                                key={
+                                                                    option.name
+                                                                }
+                                                                style={
+                                                                    styles.optionText
+                                                                }
+                                                            >
+                                                                {option.name}:{" "}
+                                                                {option.value}
+                                                            </Text>
+                                                        );
+                                                    }
                                                 }
                                             }
-                                        }
-                                    })}
-                                </View>
-                                <View>
-                                    {order.moreDetail ? (
-                                        <Text style={styles.optionText}>
-                                            {order.moreDetail}
+                                        })}
+                                    </View>
+
+                                    <View>
+                                        {order.moreDetail ? (
+                                            <Text style={styles.optionText}>
+                                                {order.moreDetail}
+                                            </Text>
+                                        ) : null}
+                                    </View>
+                                    <TouchableOpacity
+                                        style={styles.editOpa}
+                                        onPress={() => handleOnPressEdit(order)}
+                                    >
+                                        <Text style={styles.editText}>
+                                            Edit{" "}
                                         </Text>
-                                    ) : null}
+                                    </TouchableOpacity>
                                 </View>
-                                <TouchableOpacity
-                                    style={styles.editOpa}
-                                    onPress={() => handleOnPressEdit(order)}
-                                >
-                                    <Text style={styles.editText}>Edit </Text>
-                                </TouchableOpacity>
+                                <View style={styles.priceView}>
+                                    <Text style={styles.priceText}>
+                                        {order.price * order.amount} B.
+                                    </Text>
+                                </View>
                             </View>
-                            <View style={styles.priceView}>
-                                <Text style={styles.priceText}>
-                                    {order.price * order.amount} B.
-                                </Text>
-                            </View>
-                        </View>
-                    );
-                })}
+                        );
+                    })}
+                </ScrollView>
             </View>
             <View
                 style={{
@@ -127,6 +144,8 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         flexDirection: "row",
         marginTop: 6,
+        flex: 1,
+        // backgroundColor: "red",
     },
     amountView: {
         flex: 0.5,
