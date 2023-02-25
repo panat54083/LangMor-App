@@ -32,14 +32,13 @@ const UpdateOrAddFood = (props) => {
                 style={{
                     marginLeft: "5%",
                     marginBottom: "3%",
-                    backgroundColor:'red'
                 }}
             >
                 <Text style={{ fontSize: 22, fontFamily: "Kanit-Bold" }}>
                     {sameFood[0].food.name}
                 </Text>
             </View>
-            <View style={{ marginBottom: "4%", flex: 1 , maxHeight:600}}>
+            <View style={{ marginBottom: "4%", flex: 1, maxHeight: 600 }}>
                 <ScrollView>
                     {sameFood.map((order) => {
                         return (
