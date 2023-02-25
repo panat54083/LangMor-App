@@ -2,18 +2,33 @@ const mongoose = require("mongoose");
 const Order = mongoose.model("Order");
 const Restaurant = mongoose.model("Restaurant");
 const Customer = mongoose.model("Customer");
+
 exports.saveOrder = async (req, res) => {
     const orderData = req.body;
     const existOrder = await Order.findOne({
         customerId: orderData.customerId,
         restaurantId: orderData.restaurantId,
+        status: { $nin: ["close", "cancel"] },
     });
-    if (!existOrder || existOrder.status === "done") {
+    const now = new Date();
+    const startOfToday = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate()
+    );
+    const order_number = await Order.find({
+        createdAt: { $gte: startOfToday },
+        restaurantId: orderData.restaurantId,
+
+    }).count();
+
+    if (!existOrder) {
         const order = new Order({
             customerId: orderData.customerId,
             restaurantId: orderData.restaurantId,
             cart: orderData.cart,
             address: orderData.address,
+            order_number: order_number+1
         });
         await order.save();
         res.json({
@@ -79,9 +94,9 @@ exports.updateOrder = async (req, res) => {
             orderData: order,
             message: "update order done..",
         });
-    }else{
+    } else {
         res.json({
-            message: "can't find order.."
-        })
+            message: "can't find order..",
+        });
     }
 };

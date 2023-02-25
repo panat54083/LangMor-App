@@ -10,7 +10,7 @@ import SocketContext from "../../hooks/context/SocketContext";
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
 
-const DoneOrder = ({navigation}) => {
+const DoneOrder = ({ navigation }) => {
     //config
     const { state } = useContext(UserContext);
     const isFocused = useIsFocused();
@@ -55,8 +55,10 @@ const DoneOrder = ({navigation}) => {
                 ? orders.map((order, index) => (
                       <OrderCard
                           key={index}
+                          order_number={order.order.order_number}
                           onPress={() => handleSelectOrder(order)}
                           name={order.customer.name}
+                          time={order.order.createdAt}
                       />
                   ))
                 : ""}

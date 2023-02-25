@@ -55,8 +55,10 @@ const DoingOrder = ({ navigation }) => {
                 ? orders.map((order, index) => (
                       <OrderCard
                           key={index}
+                          order_number={order.order.order_number}
                           onPress={() => handleSelectOrder(order)}
                           name={order.customer.name}
+                          time={order.order.createdAt}
                       />
                   ))
                 : ""}

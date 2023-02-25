@@ -23,7 +23,10 @@ const orderSchema = new mongoose.Schema({
     cart:{
         type: [],
         default: []
-    }
+    },
+    order_number:{
+        type: Number,
+    },
 
 },{
     timestamps: true
