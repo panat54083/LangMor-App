@@ -1,18 +1,36 @@
 //Packages
-import React from "react";
+import React, { useEffect, useState } from "react";
 //Components
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 
-const OrderCard = ({onPress, name}) => {
+const OrderCard = ({ onPress, name, time, index }) => {
+    const [timestamp, setTimestamp] = useState("");
+    useEffect(() => {
+        formatTimestamp(time);
+    }, []);
+    const formatTimestamp = (time) => {
+        if (time !== null) {
+            const date = new Date(time);
+            const times = date.toLocaleTimeString("en-US", {
+                hour12: true,
+                hourCycle: "h12",
+            });
+            const [hour, minute] = times.split(':').slice(0, 2);
+            const formattedTime = `${hour}.${minute}`;
+            setTimestamp(formattedTime);
+        } else {
+            setTimestamp("");
+        }
+    };
     return (
         <TouchableOpacity style={styles.container} onPress={onPress}>
             <View style={[styles.id]}>
                 <View style={styles.box_id}>
-                    <Text style={[styles.font_id]}>
-                        ID 
+                    <Text style={[styles.font_id]}>ลำดับ</Text>
+                    <Text style={[styles.font_id, { color: "white" }]}>
+                        {index}
                     </Text>
-                        <Text style={[styles.font_id,{ color: "white" }]}>0001</Text>
                 </View>
             </View>
             <View style={[styles.name, { justifyContent: "space-around" }]}>
@@ -25,7 +43,7 @@ const OrderCard = ({onPress, name}) => {
                             { color: "#FF4200", marginLeft: 4 },
                         ]}
                     >
-                        รับภายใน 10 นาที
+                        สั่งเมื่อ {timestamp}
                     </Text>
                 </View>
             </View>
@@ -53,7 +71,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         width: "100%",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
     },
     font_id: {
         fontFamily: "Kanit-Bold",

@@ -73,8 +73,11 @@ const NewOrder = ({ navigation }) => {
                 ? orders.map((order, index) => (
                       <OrderCard
                           key={index}
+                          index={index+1}
+                        //   onPress={() => console.log(order)}
                           onPress={() => handleSelectOrder(order)}
                           name={order.customer.name}
+                          time={order.order.createdAt}
                       />
                   ))
                 : ""}
@@ -89,3 +92,31 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
 });
+
+const order = {
+    customer: {
+        __v: 0,
+        _id: "63f46d5f0ee8a09a91096666",
+        address: "",
+        createdAt: "2023-02-21T07:06:07.150Z",
+        email: "panat54083@gmail.com",
+        family_name: "Pine",
+        given_name: "Dipper",
+        name: "Dipper Pine",
+        picture:
+            "https://lh3.googleusercontent.com/a/AEdFTp4gf41HTmLLKrbABIMKNYeOSu7ve6xSm8S-n9uK0w=s96-c",
+        updatedAt: "2023-02-21T07:06:07.150Z",
+        verified_email: true,
+    },
+    order: {
+        __v: 0,
+        _id: "63f87b7a24ba8175c6483413",
+        address: "กระสอบทราย",
+        cart: [[Object], [Object]],
+        createdAt: "2023-02-24T08:55:22.765Z",
+        customerId: "63f46d5f0ee8a09a91096666",
+        restaurantId: "63f46de10ee8a09a91096673",
+        status: "new",
+        updatedAt: "2023-02-25T07:33:43.480Z",
+    },
+};
