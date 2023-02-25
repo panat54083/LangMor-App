@@ -10,7 +10,11 @@ import {
     View,
     Button,
     FlatList,
+    Pressable,
+    Image,
+
 } from "react-native";
+import { Entypo } from "@expo/vector-icons";
 import BackScreen from "../../components/buttons/BackScreen";
 import ChatInput from "../../components/cards/Chat/ChatInput";
 import MessageModel from "../../components/cards/Chat/MessageModel";
@@ -172,6 +176,10 @@ const Chat = ({ navigation, route }) => {
         navigation.navigate("ShowOrder", order)
     };
 
+    const handleClosedImage = () => {
+        setImage(null);
+    };
+
     const handleDebugger = () => {
         console.log(basketDetail.foods);
     };
@@ -212,6 +220,45 @@ const Chat = ({ navigation, route }) => {
                     </View>
                 )}
             </View>
+                        {image && (
+                <View
+                    style={{
+                        marginLeft: 5,
+                        marginTop: 10,
+                        backgroundColor: "white",
+                        borderWidth: 3,
+                        borderRadius: 5,
+                        borderColor: "#FF7A00",
+                        flexDirection: "row",
+                        position: "absolute",
+                        bottom: 100
+                    }}
+                >
+                    <Image
+                        source={{
+                            uri: `data:${image.type}/jpg;base64,${image.base64}`,
+                        }}
+                        style={{ width: 100, height: 100 }}
+                    />
+                    <Pressable
+                        onPress={handleClosedImage}
+                        style={{
+                            position: "absolute",
+                            backgroundColor: "white",
+                            borderRadius: 40,
+                            // alignSelf: "flex-end",
+                            marginLeft: 90,
+                            marginTop: -10,
+                        }}
+                    >
+                        <Entypo
+                            name="circle-with-cross"
+                            size={24}
+                            color="#FF0101"
+                        />
+                    </Pressable>
+                </View>
+            )}
             <ChatInput
                 forwardedRef={inputRef}
                 onChangeText={(value) => setMessage(value)}

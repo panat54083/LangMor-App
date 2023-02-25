@@ -11,7 +11,10 @@ import {
     FlatList,
     Keyboard,
     ScrollView,
+    Image,
+    Pressable,
 } from "react-native";
+import { Entypo } from "@expo/vector-icons";
 import BackScreen from "../../components/buttons/BackScreen";
 import ChatInput from "../../components/Cards/Chat/ChatInput";
 import MessageModel from "../../components/Cards/Chat/MessageModel";
@@ -280,10 +283,13 @@ const Chat = ({ navigation, route }) => {
 
     const handleMoreDetail = () => {
         // console.log(orderData.status);
-        const order = {order: orderData, customer: customerData}
+        const order = { order: orderData, customer: customerData };
         navigation.navigate("ShowOrder", order);
     };
 
+    const handleClosedImage = () => {
+        setImage(null);
+    };
     const handleDebugger = () => {
         console.log(orderData);
     };
@@ -329,17 +335,6 @@ const Chat = ({ navigation, route }) => {
             {!keyboardVisible && (
                 <View style={styles.button_container}>
                     <AcceptButton
-                        // label={
-                        //     orderData.status === "new"
-                        //         ? "ยืนยันออเดอร์"
-                        //         : orderData.status === "doing"
-                        //         ? "กำลังไปส่ง"
-                        //         : orderData.status === "deliver"
-                        //         ? "จัดส่งเสร็จสิ้น"
-                        //         : orderData.status === "done"
-                        //         ? "ปิดการสนทนา"
-                        //         : ""
-                        // }
                         label={buttonStatusLabel}
                         onPress={handleStatusButton}
                         fontSize={18}
@@ -347,7 +342,45 @@ const Chat = ({ navigation, route }) => {
                     />
                 </View>
             )}
-
+            {image && (
+                <View
+                    style={{
+                        marginLeft: 5,
+                        marginTop: 10,
+                        backgroundColor: "white",
+                        borderWidth: 3,
+                        borderRadius: 5,
+                        borderColor: "#FF7A00",
+                        flexDirection: "row",
+                        position: "absolute",
+                        bottom: 100
+                    }}
+                >
+                    <Image
+                        source={{
+                            uri: `data:${image.type}/jpg;base64,${image.base64}`,
+                        }}
+                        style={{ width: 100, height: 100 }}
+                    />
+                    <Pressable
+                        onPress={handleClosedImage}
+                        style={{
+                            position: "absolute",
+                            backgroundColor: "white",
+                            borderRadius: 40,
+                            // alignSelf: "flex-end",
+                            marginLeft: 90,
+                            marginTop: -10,
+                        }}
+                    >
+                        <Entypo
+                            name="circle-with-cross"
+                            size={24}
+                            color="#FF0101"
+                        />
+                    </Pressable>
+                </View>
+            )}
             <ChatInput
                 forwardedRef={inputRef}
                 onChangeText={(value) => setMessage(value)}
