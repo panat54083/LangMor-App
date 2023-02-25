@@ -209,6 +209,7 @@ const Chat = ({ navigation, route }) => {
                 });
         } else {
             sendMessage(message, image);
+            setIsLoaded(false);
         }
         inputRef.current.clear();
     };
@@ -387,6 +388,7 @@ const Chat = ({ navigation, route }) => {
                 sendOnPress={handleSendMessage}
                 pictureOnPress={handleImagePick}
                 cameraOnPress={handleCamera}
+                isLoaded={isLoaded}
             />
         </View>
     );

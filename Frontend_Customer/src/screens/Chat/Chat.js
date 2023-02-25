@@ -12,7 +12,6 @@ import {
     FlatList,
     Pressable,
     Image,
-
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import BackScreen from "../../components/buttons/BackScreen";
@@ -147,6 +146,7 @@ const Chat = ({ navigation, route }) => {
                 });
         } else {
             sendMessage(message, null);
+            setIsLoaded(false);
         }
         inputRef.current.clear();
     };
@@ -172,8 +172,8 @@ const Chat = ({ navigation, route }) => {
     };
 
     const handleMoreDetail = () => {
-        let order = {order: orderData, restaurant: restaurantData}
-        navigation.navigate("ShowOrder", order)
+        let order = { order: orderData, restaurant: restaurantData };
+        navigation.navigate("ShowOrder", order);
     };
 
     const handleClosedImage = () => {
@@ -220,7 +220,7 @@ const Chat = ({ navigation, route }) => {
                     </View>
                 )}
             </View>
-                        {image && (
+            {image && (
                 <View
                     style={{
                         marginLeft: 5,
@@ -231,7 +231,7 @@ const Chat = ({ navigation, route }) => {
                         borderColor: "#FF7A00",
                         flexDirection: "row",
                         position: "absolute",
-                        bottom: 100
+                        bottom: 100,
                     }}
                 >
                     <Image
@@ -265,6 +265,7 @@ const Chat = ({ navigation, route }) => {
                 sendOnPress={handleSendMessage}
                 pictureOnPress={handleImagePick}
                 cameraOnPress={handleCamera}
+                isLoaded={isLoaded}
             />
         </View>
     );
