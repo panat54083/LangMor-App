@@ -1,15 +1,48 @@
 import React from "react";
 //conponent
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+    StyleSheet,
+    Text,
+    View,
+    Pressable,
+    TouchableOpacity,
+    ActivityIndicator,
+} from "react-native";
 
-const SubmitBtn = ({ label, onPress }) => {
+const SubmitBtn= ({
+    label,
+    onPress,
+    backgroundColor = "#FF7A00",
+    isLoaded = false,
+    fontSize= 20,
+}) => {
     return (
-        <TouchableOpacity
-            onPress={onPress}
-            style={[styles.button, styles.shadow]}
-        >
-            <Text style={styles.text}>{label}</Text>
-        </TouchableOpacity>
+        <>
+            {!isLoaded ? (
+                <TouchableOpacity
+                    onPress={onPress}
+                    style={[
+                        styles.button,
+                        styles.shadow,
+                        { backgroundColor: backgroundColor },
+                    ]}
+                >
+                    <Text style={[styles.text, {fontSize: fontSize} ]}>{label}</Text>
+                </TouchableOpacity>
+            ) : (
+                <View
+                    style={[
+                        styles.button,
+                        styles.shadow,
+                        { backgroundColor: "#DFDFDF"},
+                    ]}
+                >
+                    <View style={{ marginVertical: 5 ,flexDirection:"row"}}>
+                        <ActivityIndicator size={"small"} color="white" />
+                    </View>
+                </View>
+            )}
+        </>
     );
 };
 
@@ -19,13 +52,11 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: "#FF7A00",
         borderRadius: 10,
-        paddingVertical: 6,
-        paddingHorizontal: 100,
+        paddingVertical: 3,
         alignItems: "center",
     },
     text: {
         fontFamily: "Kanit-SemiBold",
-        fontSize: 20,
         color: "white",
     },
     shadow: {

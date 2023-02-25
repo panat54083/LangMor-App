@@ -168,7 +168,8 @@ const Chat = ({ navigation, route }) => {
     };
 
     const handleMoreDetail = () => {
-        console.log(basketDetail.foods);
+        let order = {order: orderData, restaurant: restaurantData}
+        navigation.navigate("ShowOrder", order)
     };
 
     const handleDebugger = () => {

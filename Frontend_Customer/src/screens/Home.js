@@ -93,12 +93,6 @@ const Home = ({ navigation }) => {
                                       key={index}
                                       title={order.restaurant.name}
                                       onPress={() => {
-                                          setBasketDetail(() => {
-                                              return {
-                                                  foods: order.order.cart,
-                                                  restaurant: order.restaurant,
-                                              };
-                                          });
                                           navigation.navigate("Chat", {
                                               orderData: order.order,
                                               restaurantData: order.restaurant,
