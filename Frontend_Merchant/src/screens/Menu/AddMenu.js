@@ -131,18 +131,26 @@ const AddMenu = ({ navigation, route }) => {
 
     const handleSave = () => {
         setIsLoaded(true);
-        if (image.type !== "upload") {
-            LIP.handleUpload(image, state.restaurantData._id)
-                .then((data) => {
-                    fetchTypesSave();
-                    fetchFoodSave(data);
-                    navigation.navigate("MenuTabs", {
-                        screen: "MenuManage",
+        if (image) {
+            if (image.type !== "upload") {
+                LIP.handleUpload(image, state.restaurantData._id)
+                    .then((data) => {
+                        fetchTypesSave();
+                        fetchFoodSave(data);
+                        navigation.navigate("MenuTabs", {
+                            screen: "MenuManage",
+                        });
+                    })
+                    .catch((err) => {
+                        console.log(err);
                     });
-                })
-                .catch((err) => {
-                    console.log(err);
+            } else {
+                fetchTypesSave();
+                fetchFoodSave(image);
+                navigation.navigate("MenuTabs", {
+                    screen: "MenuManage",
                 });
+            }
         } else {
             fetchTypesSave();
             fetchFoodSave(null);
@@ -176,10 +184,9 @@ const AddMenu = ({ navigation, route }) => {
         console.log("Press");
     };
 
-    const handleDebugger= () => {
+    const handleDebugger = () => {
         console.log(selectOptions);
     };
-
 
     return (
         <ScrollView style={{}}>
@@ -266,7 +273,9 @@ const AddMenu = ({ navigation, route }) => {
                         <CheckboxButton
                             key={index}
                             label={option.name}
-                            checked={selectOptions.some((item) => item.name === option.name)}
+                            checked={selectOptions.some(
+                                (item) => item.name === option.name
+                            )}
                             onPress={() => handleSelectOptions(option)}
                         />
                     ))}
