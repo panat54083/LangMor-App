@@ -4,6 +4,7 @@ import {
     View,
     FlatList,
     TouchableOpacity,
+    ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -14,9 +15,10 @@ import AddressBox from "../../components/buttons/AddressBox";
 import CardMarket from "../../components/cards/CardMarket";
 import CardRestaurantTag from "../../components/cards/CardRestaurantTag";
 
-
 const MarketList = ({ navigation }) => {
     const [restaurants, setRestaurants] = useState();
+    const [searchQuery, setSearchQuery] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
         // setHeader
         navigation.setOptions({
@@ -32,21 +34,47 @@ const MarketList = ({ navigation }) => {
         });
         fetchRestaurants();
     }, []);
+
+    useEffect(() => {
+        if (searchQuery) {
+            setIsLoading(true);
+            const delayDebounceFn = setTimeout(async () => {
+                try {
+                    const response = await axios.get(
+                        `http://${IP_ADDRESS}/restaurant/search_restaurant?keyword=${searchQuery}`
+                    );
+                    const data = response.data.results;
+                    setRestaurants(data);
+                    setIsLoading(false);
+                } catch (error) {
+                    console.error(error);
+                    setIsLoading(false);
+                }
+            }, 1000);
+
+            return () => clearTimeout(delayDebounceFn);
+        } else {
+            setIsLoading(true);
+            axios
+                .get(`http://${IP_ADDRESS}/restaurant/all_restaurant`)
+                .then((res) => {
+                    // console.log(res.data.restaurantData);
+                    setRestaurants(res.data.restaurantData);
+                    setIsLoading(false);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+    }, [searchQuery]);
     const onPressCardMarket = (restaurant) => {
         navigation.navigate("FoodList", { restaurant: restaurant });
     };
-
-    const fetchRestaurants = () => {
-        axios
-            .get(`http://${IP_ADDRESS}/restaurant/all_restaurant`)
-            .then((res) => {
-                // console.log(res.data.restaurantData);
-                setRestaurants(res.data.restaurantData);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+    const onSearchBoxChange = (text) => {
+        // console.log(text);
+        setSearchQuery(text);
     };
+    const fetchRestaurants = () => {};
 
     //ของจริงใช้ fetch ข้อมูลจาก backend
     const exampleData = [
@@ -126,7 +154,7 @@ const MarketList = ({ navigation }) => {
                     marginVertical: 10,
                 }}
             >
-                <Searchbar height="55" />
+                <Searchbar height="55" onSearchBoxChange={onSearchBoxChange} />
             </View>
 
             <View>
@@ -147,26 +175,30 @@ const MarketList = ({ navigation }) => {
                 </View>
             </View>
             <View style={styles.tick}></View>
-            <View style={{ flex: 1 }}>
-                {restaurants ? (
-                    <View>
-                        <FlatList
-                            style={{ paddingTop: 10 }}
-                            data={restaurants}
-                            renderItem={({ item }) => (
-                                <CardMarket
-                                    restaurant={item}
-                                    onPressCard={onPressCardMarket}
-                                />
-                            )}
-                        />
-                    </View>
-                ) : (
-                    <View>
-                        <Text>Now Loadding</Text>
-                    </View>
-                )}
-            </View>
+            {isLoading ? (
+                <ActivityIndicator />
+            ) : (
+                <View style={{ flex: 1 }}>
+                    {restaurants ? (
+                        <View>
+                            <FlatList
+                                style={{ paddingTop: 10 }}
+                                data={restaurants}
+                                renderItem={({ item }) => (
+                                    <CardMarket
+                                        restaurant={item}
+                                        onPressCard={onPressCardMarket}
+                                    />
+                                )}
+                            />
+                        </View>
+                    ) : (
+                        <View>
+                            <Text>Now Loadding</Text>
+                        </View>
+                    )}
+                </View>
+            )}
         </View>
     );
 };

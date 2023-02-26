@@ -209,3 +209,12 @@ exports.restaurantSearch = async (req, res) => {
         }
     });
 };
+
+exports.FoodsSearch = async (req, res) => {
+    const { restaurant_id , keyword} = req.query;
+    const foodsData = await Food.find({ restaurant_id: restaurant_id });
+    res.json({
+        message: `Get All Foods`,
+        foodsData: foodsData,
+    });
+};
