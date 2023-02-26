@@ -30,4 +30,6 @@ router.get(
     "/search_restaurant",
     catchErrors(restaurantController.restaurantSearch)
 );
+
+router.get("/search_foods", catchErrors(restaurantController.foodsSearch));
 module.exports = router;

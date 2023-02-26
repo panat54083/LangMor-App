@@ -54,19 +54,10 @@ const MarketList = ({ navigation }) => {
 
             return () => clearTimeout(delayDebounceFn);
         } else {
-            setIsLoading(true);
-            axios
-                .get(`http://${IP_ADDRESS}/restaurant/all_restaurant`)
-                .then((res) => {
-                    // console.log(res.data.restaurantData);
-                    setRestaurants(res.data.restaurantData);
-                    setIsLoading(false);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
+            fetchRestaurants();
         }
     }, [searchQuery]);
+    
     const onPressCardMarket = (restaurant) => {
         navigation.navigate("FoodList", { restaurant: restaurant });
     };
@@ -74,7 +65,19 @@ const MarketList = ({ navigation }) => {
         // console.log(text);
         setSearchQuery(text);
     };
-    const fetchRestaurants = () => {};
+    const fetchRestaurants = () => {
+        setIsLoading(true);
+        axios
+            .get(`http://${IP_ADDRESS}/restaurant/all_restaurant`)
+            .then((res) => {
+                // console.log(res.data.restaurantData);
+                setRestaurants(res.data.restaurantData);
+                setIsLoading(false);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
 
     //ของจริงใช้ fetch ข้อมูลจาก backend
     const exampleData = [

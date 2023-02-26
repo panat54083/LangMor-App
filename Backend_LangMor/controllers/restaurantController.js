@@ -172,7 +172,17 @@ exports.restaurantFoodsInfo = async (req, res) => {
         foodsData: foodsData,
     });
 };
-
+exports.foodsSearch = async (req, res) => {
+    const { restaurant_id, keyword } = req.query;
+    const foodsData = await Food.find({
+        name: { $regex: `${keyword}`, $options: "i" },
+        restaurant_id: restaurant_id,
+    });
+    res.json({
+        message: `Get Foods`,
+        foodsData: foodsData,
+    });
+};
 exports.restaurantSearch = async (req, res) => {
     const { keyword } = req.query;
     Restaurant.aggregate([
@@ -207,14 +217,5 @@ exports.restaurantSearch = async (req, res) => {
                 results: results,
             });
         }
-    });
-};
-
-exports.FoodsSearch = async (req, res) => {
-    const { restaurant_id , keyword} = req.query;
-    const foodsData = await Food.find({ restaurant_id: restaurant_id });
-    res.json({
-        message: `Get All Foods`,
-        foodsData: foodsData,
     });
 };

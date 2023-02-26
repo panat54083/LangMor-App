@@ -24,10 +24,33 @@ const FoodList = ({ route, navigation }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [foodsData, setfoodsData] = useState();
     const [sameFoodInBasket, setSameFoodInbasket] = useState();
+    const [searchQuery, setSearchQuery] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
-        fetchFoods();
-    }, []);
+        if (searchQuery) {
+            setIsLoading(true);
+            const delayDebounceFn = setTimeout(async () => {
+                try {
+                    console.log(restaurant._id, searchQuery);
+                    const response = await axios.get(
+                        `http://${IP_ADDRESS}/restaurant/search_foods?restaurant_id=${restaurant._id}&keyword=${searchQuery}`
+                    );
+                    const data = response.data.foodsData;
+                    setfoodsData(formatToSectionList(data));
+                    setIsLoading(false);
+                } catch (error) {
+                    console.error(error);
+                    setIsLoading(false);
+                }
+            }, 1000);
+
+            return () => clearTimeout(delayDebounceFn);
+        } else {
+            fetchFoods();
+        }
+    }, [searchQuery]);
     const fetchFoods = () => {
+        setIsLoading(true);
         axios
             .get(
                 `http://${IP_ADDRESS}/restaurant/foods?restaurant_id=${restaurant._id}`
@@ -35,6 +58,7 @@ const FoodList = ({ route, navigation }) => {
             .then((res) => {
                 // console.log(formatToSectionList(res.data.foodsData)[0].data[1].options);
                 setfoodsData(formatToSectionList(res.data.foodsData));
+                setIsLoading(false);
             })
             .catch((err) => {
                 console.log(err);
@@ -167,7 +191,10 @@ const FoodList = ({ route, navigation }) => {
             setSameFoodInbasket(foodInBasket);
         }
     };
-
+    const onSearchBoxChange = (text) => {
+        // console.log(text);
+        setSearchQuery(text);
+    };
     const navigationToFoodDetail = (food, editFood = null) => {
         navigation.navigate("FoodDetail", {
             food: food,
@@ -188,7 +215,7 @@ const FoodList = ({ route, navigation }) => {
                 <CardRestaurantName restaurant={restaurant} />
             </View>
             <View style={styles.searchbar}>
-                <Searchbar height="45" />
+                <Searchbar height="45" onSearchBoxChange={onSearchBoxChange} />
             </View>
             {foodsData ? (
                 <View
