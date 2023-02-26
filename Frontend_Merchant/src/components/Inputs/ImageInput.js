@@ -57,12 +57,21 @@ const ImageInput = ({ label, image, setImage }) => {
                         </Pressable>
                     ) : (
                         <View>
-                            <Image
-                                source={{
-                                    uri: `data:${image.type}/jpg;base64,${image.base64}`,
-                                }}
-                                style={styles.container}
-                            />
+                            {image.type === "upload" ? (
+                                <Image
+                                    source={{
+                                        uri: `${image.url}`,
+                                    }}
+                                    style={styles.container}
+                                />
+                            ) : (
+                                <Image
+                                    source={{
+                                        uri: `data:${image.type}/jpg;base64,${image.base64}`,
+                                    }}
+                                    style={styles.container}
+                                />
+                            )}
                             <Pressable
                                 onPress={handleClosedImage}
                                 style={styles.cross}

@@ -23,6 +23,7 @@ const CustomTextInput = ({
     return (
         <View style={[styles.container, style]}>
             <TextInput
+                value={value}
                 placeholder={placeholder}
                 style={styles.input}
                 keyboardType={keyboardType}

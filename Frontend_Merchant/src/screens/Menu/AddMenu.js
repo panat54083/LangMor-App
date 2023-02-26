@@ -10,6 +10,7 @@ import {
     TouchableOpacity,
     View,
     Pressable,
+    Button,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import BackScreen from "../../components/buttons/BackScreen";
@@ -21,7 +22,8 @@ import CheckboxButton from "../../components/Checkboxes/CheckboxButton";
 import MiniBtn from "../../components/buttons/MiniBtn";
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
-const AddMenu = ({ navigation }) => {
+
+const AddMenu = ({ navigation, route }) => {
     useEffect(() => {
         navigation.setOptions({
             title: "เพิ่มเมนูอาหาร",
@@ -43,18 +45,19 @@ const AddMenu = ({ navigation }) => {
 
     // Helping Variable
     const { state } = useContext(UserContext);
+    const { foodData } = route.params;
     const [options, setOptions] = useState([]);
     const [type, setType] = useState("");
     const [types, setTypes] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     // Used for Send to backend
-    const [image, setImage] = useState(null);
-    const [name, setName] = useState("");
-    const [price, setPrice] = useState("");
-    const [description, setDescription] = useState("");
-    const [selectOptions, setSelectOptions] = useState([]);
-    const [selectedType, setSelectedType] = useState("");
+    const [image, setImage] = useState(foodData.picture);
+    const [name, setName] = useState(foodData.name);
+    const [price, setPrice] = useState(foodData.price);
+    const [description, setDescription] = useState(foodData.description);
+    const [selectOptions, setSelectOptions] = useState(foodData.options);
+    const [selectedType, setSelectedType] = useState(foodData.type);
 
     const fetchOptions = () => {
         axios
@@ -128,25 +131,24 @@ const AddMenu = ({ navigation }) => {
 
     const handleSave = () => {
         setIsLoaded(true);
-        if (image) {
-
-        LIP.handleUpload(image, state.restaurantData._id)
-            .then((data) => {
-                fetchTypesSave();
-                fetchFoodSave(data);
-                navigation.navigate("MenuTabs", {
-                    screen: "MenuManage",
+        if (image.type !== "upload") {
+            LIP.handleUpload(image, state.restaurantData._id)
+                .then((data) => {
+                    fetchTypesSave();
+                    fetchFoodSave(data);
+                    navigation.navigate("MenuTabs", {
+                        screen: "MenuManage",
+                    });
+                })
+                .catch((err) => {
+                    console.log(err);
                 });
-            })
-            .catch((err) => {
-                console.log(err);
+        } else {
+            fetchTypesSave();
+            fetchFoodSave(null);
+            navigation.navigate("MenuTabs", {
+                screen: "MenuManage",
             });
-        } else{
-                fetchTypesSave();
-                fetchFoodSave(null);
-                navigation.navigate("MenuTabs", {
-                    screen: "MenuManage",
-                });
         }
     };
 
@@ -173,8 +175,15 @@ const AddMenu = ({ navigation }) => {
     const handleTestButton = () => {
         console.log("Press");
     };
+
+    const handleDebugger= () => {
+        console.log(selectOptions);
+    };
+
+
     return (
         <ScrollView style={{}}>
+            {/* <Button title="Debugger" onPress={handleDebugger}/> */}
             <View style={styles.container}>
                 <View style={styles.input_components}>
                     <View style={{ marginBottom: 8 }}>
@@ -191,7 +200,7 @@ const AddMenu = ({ navigation }) => {
                     />
                     <CustomTextInput
                         placeholder={"ราคา (บาท)"}
-                        value={price}
+                        value={String(price)}
                         onChangeText={setPrice}
                         keyboardType={"numeric"}
                     />
@@ -257,7 +266,7 @@ const AddMenu = ({ navigation }) => {
                         <CheckboxButton
                             key={index}
                             label={option.name}
-                            checked={selectOptions.includes(option)}
+                            checked={selectOptions.some((item) => item.name === option.name)}
                             onPress={() => handleSelectOptions(option)}
                         />
                     ))}
