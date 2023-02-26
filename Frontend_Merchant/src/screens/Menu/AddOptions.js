@@ -9,6 +9,7 @@ import {
     View,
     SafeAreaView,
     Alert,
+    Button,
 } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import CustomTextInput from "../../components/Inputs/CustomTextInput";
@@ -19,7 +20,7 @@ import AddOptionsChoices from "../../components/Cards/AddOptionsChoices";
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
 
-const AddOptions = ({ navigation }) => {
+const AddOptions = ({ navigation, route }) => {
     useEffect(() => {
         navigation.setOptions({
             title: "สร้างตัวเลือกใหม่",
@@ -37,11 +38,12 @@ const AddOptions = ({ navigation }) => {
     }, []);
 
     const { state } = useContext(UserContext);
+    const { optionData } = route.params;
     const scrollViewRef = useRef(null);
-    const [name, setName] = useState("");
-    const [required, setRequired] = useState(false);
-    const [maximum, setMaximum] = useState(0);
-    const [choices, setChoices] = useState([]);
+    const [name, setName] = useState(optionData.name);
+    const [required, setRequired] = useState(optionData.required);
+    const [maximum, setMaximum] = useState(optionData.maximum);
+    const [choices, setChoices] = useState(optionData.choices);
     const [options, setOptions] = useState({
         name: null,
         required: null,
@@ -64,6 +66,7 @@ const AddOptions = ({ navigation }) => {
     const handleSave = () => {
         fetchSaveOptions();
         navigation.navigate("MenuTabs", { screen: "OptionsManage" });
+        // console.log(options)
     };
 
     const fetchSaveOptions = () => {
@@ -82,8 +85,12 @@ const AddOptions = ({ navigation }) => {
                     console.log("Error", err.response.data.message);
             });
     };
+    const handleDebugger = () => {
+        console.log(optionData);
+    };
     return (
         <SafeAreaView style={{ flex: 1 }}>
+            {/* <Button title="Debugger" onPress={handleDebugger} /> */}
             <ScrollView style={[styles.container]} ref={scrollViewRef}>
                 <View style={styles.first_part}>
                     <CustomTextInput
@@ -93,7 +100,9 @@ const AddOptions = ({ navigation }) => {
                     />
                     <View style={{ marginBottom: 4 }}>
                         <AddOptionsCheck
+                            requiredCheck={required}
                             getRequired={setRequired}
+                            maximumValue={maximum}
                             getMaximum={setMaximum}
                         />
                     </View>
@@ -105,9 +114,9 @@ const AddOptions = ({ navigation }) => {
                     />
                 </View>
             </ScrollView>
-                <View style={styles.third_part}>
-                    <AcceptButton label={"บันทึก"} onPress={handleSave} />
-                </View>
+            <View style={styles.third_part}>
+                <AcceptButton label={"บันทึก"} onPress={handleSave} />
+            </View>
         </SafeAreaView>
     );
 };
@@ -119,6 +128,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
         paddingHorizontal: 20,
+        marginTop: 10,
     },
     first_part: {
         flex: 1,

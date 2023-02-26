@@ -28,11 +28,17 @@ const OptionsManage = ({ navigation }) => {
     }, [isFocused]);
 
     const handleAddOptions = () => {
-        console.log("Add Options");
-        navigation.navigate("AddOptions");
+        // console.log("Add Options");
+        navigation.navigate("AddOptions", {optionData: {
+            name: "",
+            required: false,
+            maximum: 0,
+            choices: [],
+        }});
     };
     const handleEditOption = (option) => {
-        console.log(option);
+        // console.log(option);
+        navigation.navigate("AddOptions",{optionData: option});
     };
     const fetchOptions = () => {
         axios
@@ -81,3 +87,18 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
     },
 });
+
+const options = {
+    __v: 0,
+    _id: "63f46fcd0ee8a09a910966ac",
+    choices: [
+        { method: "increase", name: "หวานน้อย", price: 0 },
+        { method: "increase", name: "หวานกลาง", price: 0 },
+        { method: "increase", name: "หวานมาก", price: 10 },
+        { method: "increase", name: "หวานตัดขา", price: 20 },
+    ],
+    maximum: 1,
+    name: "ระดับความหวาน",
+    required: true,
+    restaurant_id: "63f46de10ee8a09a91096673",
+};
