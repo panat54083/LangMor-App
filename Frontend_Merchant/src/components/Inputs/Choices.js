@@ -21,7 +21,7 @@ const Choices = ({ name, price, method, setName, setPrice, setMethod }) => {
             <View style={styles.third}>
                 <TextInput
                     style={styles.input}
-                    onChangeText={(price) => setPrice(Number(price))}
+                    onChangeText={(price) => setPrice(price)}
                     value={String(price)}
                     placeholder="ราคา (บาท)"
                     keyboardType="numeric"

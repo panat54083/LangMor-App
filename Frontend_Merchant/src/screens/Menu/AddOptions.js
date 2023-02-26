@@ -65,7 +65,8 @@ const AddOptions = ({ navigation, route }) => {
     }, [name, maximum, required, choices]);
     const handleSave = () => {
         fetchSaveOptions();
-        navigation.navigate("MenuTabs", { screen: "OptionsManage" });
+        // navigation.navigate("MenuTabs", { screen: "OptionsManage" });
+        navigation.goBack()
         // console.log(options)
     };
 

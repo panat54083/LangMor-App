@@ -180,7 +180,19 @@ const AddMenu = ({ navigation, route }) => {
         }
         setModalVisible(false);
     };
-    const handleTestButton = () => {
+    const handleEditTypes= () => {
+        console.log("Press");
+    };
+    const handleAddOptions= () => {
+        // console.log("Press");
+        navigation.navigate("AddOptions", {optionData: {
+            name: "",
+            required: false,
+            maximum: 0,
+            choices: [],
+        }});
+    };
+    const handleEditOptions= () => {
         console.log("Press");
     };
 
@@ -263,7 +275,7 @@ const AddMenu = ({ navigation, route }) => {
                         <MiniBtn
                             label={"แก้ไข"}
                             color="#FF0101"
-                            onPress={handleTestButton}
+                            onPress={handleEditTypes}
                         />
                     </View>
                 </View>
@@ -279,6 +291,11 @@ const AddMenu = ({ navigation, route }) => {
                             onPress={() => handleSelectOptions(option)}
                         />
                     ))}
+                    <View style={styles.add_edit_button}>
+
+                    <MiniBtn label={"เพิ่ม"} color="#FF7A00" onPress={handleAddOptions}/>
+                    <MiniBtn label={"แก้ไข"} color="#FF0101" onPress={handleEditOptions}/>
+                    </View>
                 </View>
                 <View style={styles.submitButton}>
                     <AcceptButton
