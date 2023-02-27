@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { StyleSheet, Text, View, TextInput, Modal } from "react-native";
 import Dropdown from "./Dropdown";
 
-const Choices = ({ name, price, setName, setPrice, setMethod }) => {
+const Choices = ({ name, price, method, setName, setPrice, setMethod }) => {
     return (
         <View style={[styles.container, styles.shadow]}>
             <View style={[styles.first]}>
@@ -16,13 +16,13 @@ const Choices = ({ name, price, setName, setPrice, setMethod }) => {
                 />
             </View>
             <View style={[styles.second]}>
-                <Dropdown getValue={setMethod} />
+                <Dropdown value={method} getValue={setMethod} />
             </View>
             <View style={styles.third}>
                 <TextInput
                     style={styles.input}
-                    onChangeText={(price) => setPrice(Number(price))}
-                    value={price}
+                    onChangeText={(price) => setPrice(price)}
+                    value={String(price)}
                     placeholder="ราคา (บาท)"
                     keyboardType="numeric"
                 />

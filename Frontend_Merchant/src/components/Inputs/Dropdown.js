@@ -11,14 +11,16 @@ import {
 
 const WIDTH = Dimensions.get("window").width;
 const HEIGHT = Dimensions.get("window").height;
-const Dropdown = ({ getValue }) => {
+const Dropdown = ({ value, getValue }) => {
     const options = [
         { key: 0, label: "เพิ่ม", value: "increase" },
         { key: 1, label: "ลด", value: "decrease" },
     ];
     const [modalVisible, setModalVisible] = useState(false);
-    const [value, setValue] = useState(options[0].value);
-    const [label, setLabel] = useState(options[0].label);
+    // const [value, setValue] = useState(options[0].value);
+    const [label, setLabel] = useState(
+        options[options.findIndex((option) => option.value === value)].label
+    );
 
     const handleOptionPress = (label, value) => {
         setLabel(label);

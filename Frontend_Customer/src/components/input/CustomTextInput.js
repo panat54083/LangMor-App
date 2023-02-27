@@ -23,7 +23,6 @@ const CustomTextInput = ({
     return (
         <View style={[styles.container, style]}>
             <TextInput
-                value={value}
                 placeholder={placeholder}
                 style={styles.input}
                 keyboardType={keyboardType}
@@ -51,6 +50,7 @@ const styles = StyleSheet.create({
         paddingVertical: 14,
         borderRadius: 15,
         marginBottom: 4,
+
     },
     input: {
         paddingLeft: 10,

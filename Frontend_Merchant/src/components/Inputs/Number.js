@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 
-const Number = ({ getNumber, minNumber = 0, maxNumber = 99 }) => {
-    const [digit, setDigit] = useState(1);
+const Number = ({ number=0, getNumber, minNumber = 0, maxNumber = 99 }) => {
+    const [digit, setDigit] = useState(number);
     const minus = () => {
         if (digit > minNumber) {
             setDigit(digit - 1);

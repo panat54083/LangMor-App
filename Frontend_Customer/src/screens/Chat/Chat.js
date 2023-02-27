@@ -10,10 +10,14 @@ import {
     View,
     Button,
     FlatList,
+    Pressable,
+    Image,
 } from "react-native";
+import { Entypo } from "@expo/vector-icons";
 import BackScreen from "../../components/buttons/BackScreen";
 import ChatInput from "../../components/cards/Chat/ChatInput";
 import MessageModel from "../../components/cards/Chat/MessageModel";
+import OrderMessage from "../../components/cards/Chat/OrderMessage";
 //configs
 import BasketContext from "../../hooks/context/BasketContext";
 import UserContext from "../../hooks/context/UserContext";
@@ -29,11 +33,12 @@ const Chat = ({ navigation, route }) => {
     const [isLoaded, setIsLoaded] = useState(false);
     const scrollViewRef = useRef(null);
     //data
-    const { chatroomData, restaurantData } = route.params;
+    const { orderData, restaurantData } = route.params;
     //messages
     const [listMessages, setListMessages] = useState([]);
     const [message, setMessage] = useState("");
     const [image, setImage] = useState(null);
+
     useEffect(() => {
         navigation.setOptions({
             title: `${restaurantData.name}`,
@@ -53,7 +58,7 @@ const Chat = ({ navigation, route }) => {
     }, []);
 
     useEffect(() => {
-        chatroom_connect(chatroomData._id);
+        chatroom_connect(orderData._id);
     }, [socket]);
 
     useEffect(() => {
@@ -101,20 +106,22 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
+
     const sendMessage = (message, picture) => {
         if (socket) {
             socket.emit("chatroomMessage", {
-                chatroomId: chatroomData._id,
+                chatroomId: orderData._id,
                 message: message,
                 picture: picture,
             });
         }
         setMessage("");
     };
+
     const fetchInitialMessages = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${chatroomData._id}`
+                `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${orderData._id}`
             )
             .then((res) => {
                 // console.log(res.data.messages)
@@ -124,6 +131,7 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
+
     const handleSendMessage = () => {
         setIsLoaded(true);
         if (image) {
@@ -138,9 +146,11 @@ const Chat = ({ navigation, route }) => {
                 });
         } else {
             sendMessage(message, null);
+            setIsLoaded(false);
         }
         inputRef.current.clear();
     };
+
     const handleImagePick = () => {
         LIP.pickImage()
             .then((data) => {
@@ -150,6 +160,7 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
+
     const handleCamera = () => {
         LIP.openCamera()
             .then((data) => {
@@ -159,36 +170,102 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
+
+    const handleMoreDetail = () => {
+        let order = { order: orderData, restaurant: restaurantData };
+        navigation.navigate("ShowOrder", order);
+    };
+
+    const handleClosedImage = () => {
+        setImage(null);
+    };
+
     const handleDebugger = () => {
         console.log(basketDetail.foods);
     };
 
     return (
         <View style={styles.main_container}>
-            <Button onPress={handleDebugger} title="Debugger" />
+            {/* <Button onPress={handleDebugger} title="Debugger" /> */}
             <View style={styles.messages_container}>
                 {listMessages[0] ? (
-                    <FlatList
-                        ref={scrollViewRef}
-                        data={listMessages}
-                        renderItem={({ item }) => (
+                    <ScrollView ref={scrollViewRef}>
+                        <View style={styles.orderPopup}>
+                            <View
+                                style={{
+                                    alignItems: "flex-end",
+                                    width: "100%",
+                                }}
+                            >
+                                <OrderMessage
+                                    order={orderData}
+                                    onPress={handleMoreDetail}
+                                />
+                            </View>
+                        </View>
+                        {listMessages.map((item, index) => (
                             <MessageModel
+                                key={index}
                                 message={item}
                                 userId={state.userData._id}
                             />
-                        )}
-                        keyExtractor={(item, index) => index}
-                    />
+                        ))}
+                    </ScrollView>
                 ) : (
-                    ""
+                    <View style={{ alignItems: "flex-end", width: "100%" }}>
+                        <OrderMessage
+                            order={orderData}
+                            onPress={handleMoreDetail}
+                        />
+                    </View>
                 )}
             </View>
+            {image && (
+                <View
+                    style={{
+                        marginLeft: 5,
+                        marginTop: 10,
+                        backgroundColor: "white",
+                        borderWidth: 3,
+                        borderRadius: 5,
+                        borderColor: "#FF7A00",
+                        flexDirection: "row",
+                        position: "absolute",
+                        bottom: 100,
+                    }}
+                >
+                    <Image
+                        source={{
+                            uri: `data:${image.type}/jpg;base64,${image.base64}`,
+                        }}
+                        style={{ width: 100, height: 100 }}
+                    />
+                    <Pressable
+                        onPress={handleClosedImage}
+                        style={{
+                            position: "absolute",
+                            backgroundColor: "white",
+                            borderRadius: 40,
+                            // alignSelf: "flex-end",
+                            marginLeft: 90,
+                            marginTop: -10,
+                        }}
+                    >
+                        <Entypo
+                            name="circle-with-cross"
+                            size={24}
+                            color="#FF0101"
+                        />
+                    </Pressable>
+                </View>
+            )}
             <ChatInput
                 forwardedRef={inputRef}
                 onChangeText={(value) => setMessage(value)}
                 sendOnPress={handleSendMessage}
                 pictureOnPress={handleImagePick}
                 cameraOnPress={handleCamera}
+                isLoaded={isLoaded}
             />
         </View>
     );
@@ -201,6 +278,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     messages_container: {
+        margin: 5,
         flex: 10,
     },
 });

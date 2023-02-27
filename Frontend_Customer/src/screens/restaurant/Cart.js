@@ -4,7 +4,7 @@ import axios from "axios";
 //Components
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
-import AddressBoxDetail from "../../components/buttons/AddressBoxDetail";
+import AddressBoxDetail from "../../components/cards/AddressBoxDetail";
 import OrderListSummary from "../../components/cards/OrderListSummary";
 import SubmitBtn from "../../components/buttons/SubmitBtn";
 //Configs
@@ -13,82 +13,13 @@ import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
 
 const Cart = ({ route, navigation }) => {
-    const { basketDetail } = useContext(BasketContext);
+    const { basketDetail, setBasketDetail } = useContext(BasketContext);
     const { state } = useContext(UserContext);
     const [chatroomData, setChatroomData] = useState(null);
-    const dummy = [
-        {
-            amount: 2,
-            food: {
-                __v: 0,
-                _id: "63e9200cdaf3c449c4bb7c3c",
-                description: "อาหารคลีน น้ำมันเยิ้ม",
-                name: "อกไก่ทอด",
-                options: [Array],
-                picture: [Object],
-                price: 10,
-                restaurant_id: "63e188c58ae333a7867b14f2",
-                type: "อาหารคลีน",
-            },
-            id: 1,
-            moreDetail: "ไม่เอาผัก",
-            options: [
-                {
-                    name: "ระดับความเผ็ด",
-                    price: 10,
-                    required: false,
-                    value: "เผ็ดมาก",
-                },
-            ],
-            price: 20,
-        },
-        {
-            amount: 1,
-            food: {
-                __v: 0,
-                _id: "63e9200cdaf3c449c4bb7c3c",
-                description: "อาหารคลีน น้ำมันเยิ้ม",
-                name: "อกไก่ทอด",
-                options: [Array],
-                picture: [Object],
-                price: 10,
-                restaurant_id: "63e188c58ae333a7867b14f2",
-                type: "อาหารคลีน",
-            },
-            id: 2,
-            moreDetail: null,
-            options: [[Object]],
-            price: 10,
-        },
-        {
-            amount: 1,
-            food: {
-                __v: 0,
-                _id: "63e9323adaf3c449c4bb7c7d",
-                description: "",
-                name: "ผัดกาดขาว",
-                options: [Array],
-                picture: null,
-                price: 0,
-                restaurant_id: "63e188c58ae333a7867b14f2",
-                type: "อาหารคาว",
-            },
-            id: 3,
-            moreDetail: "no spicy",
-            options: [],
-            price: 0,
-        },
-    ];
-    console.log(basketDetail.foods);
-    const handleOnPressEdit = (order) => {
-        // console.log(order.food);
+    const [orderData, setOrderData] = useState(null);
+    const [address, setAddress] = useState("");
 
-        navigation.navigate("FoodDetail", {
-            food: order.food,
-            restaurant: basketDetail.restaurant,
-            editOrder: order,
-        });
-    };
+
     useEffect(() => {
         navigation.setOptions({
             title: basketDetail.restaurant.name,
@@ -99,13 +30,14 @@ const Cart = ({ route, navigation }) => {
         });
     }, []);
     useEffect(() => {
-        if (chatroomData) {
+        if (orderData) {
             navigation.navigate("Chat", {
-                chatroomData: chatroomData,
+                orderData: orderData,
                 restaurantData: basketDetail.restaurant,
             });
+            setBasketDetail({restaurant:null, foods:[]})
         }
-    }, [chatroomData]);
+    }, [orderData]);
 
     const findPriceOfOrder = () => {
         let priceOfOrder = 0;
@@ -131,7 +63,7 @@ const Cart = ({ route, navigation }) => {
         return priceOfOrder;
     };
 
-    const createChatroom = async () => {
+    const apiCreateChatroom = async () => {
         axios
             .post(`http://${IP_ADDRESS}/chatroom/create`, {
                 customerId: state.userData._id,
@@ -144,13 +76,48 @@ const Cart = ({ route, navigation }) => {
                 console.log(err);
             });
     };
+    const apiSaveOrder = async () => {
+        axios
+            .post(`http://${IP_ADDRESS}/order/save`, {
+                customerId: state.userData._id,
+                restaurantId: basketDetail.restaurant._id,
+                cart: basketDetail.foods,
+                address: address,
+            })
+            .then((res) => {
+                console.log(res.data.message);
+                // console.log(res.data.orderData);
+                setOrderData(res.data.orderData);
+            })
+            .catch((err) => {
+                if (
+                    err &&
+                    err.response &&
+                    err.response.data &&
+                    err.response.data.message
+                )
+                    console.log("Error", err.response.data.message);
+            });
+    };
+
     const handleSubmit = () => {
         // console.log(basketDetail.foods)
         // console.log(basketDetail.restaurant)
         // console.log(state.userData._id)
-        createChatroom();
-        console.log(basketDetail.foods[0].options);
+        apiSaveOrder();
+        // apiCreateChatroom();
     };
+
+    const handleOnPressEdit = (order) => {
+        // console.log(order.food);
+
+        navigation.navigate("FoodDetail", {
+            food: order.food,
+            restaurant: basketDetail.restaurant,
+            editOrder: order,
+        });
+    };
+
     return (
         <View style={{ backgroundColor: "#F5F5F5", flex: 1 }}>
             <ScrollView style={{ flex: 1 }}>
@@ -161,7 +128,7 @@ const Cart = ({ route, navigation }) => {
                             width: "92.53%",
                         }}
                     >
-                        <AddressBoxDetail />
+                        <AddressBoxDetail setValue={setAddress} />
                     </View>
                     <View style={{ marginTop: 8, width: "92.53%" }}>
                         <OrderListSummary
@@ -189,3 +156,67 @@ const Cart = ({ route, navigation }) => {
 export default Cart;
 
 const styles = StyleSheet.create({});
+
+const basketDetail_foods = [
+    {
+        amount: 2,
+        food: {
+            __v: 0,
+            _id: "63e9200cdaf3c449c4bb7c3c",
+            description: "อาหารคลีน น้ำมันเยิ้ม",
+            name: "อกไก่ทอด",
+            options: [Array],
+            picture: [Object],
+            price: 10,
+            restaurant_id: "63e188c58ae333a7867b14f2",
+            type: "อาหารคลีน",
+        },
+        id: 1,
+        moreDetail: "ไม่เอาผัก",
+        options: [
+            {
+                name: "ระดับความเผ็ด",
+                price: 10,
+                required: false,
+                value: "เผ็ดมาก",
+            },
+        ],
+        price: 20,
+    },
+    {
+        amount: 1,
+        food: {
+            __v: 0,
+            _id: "63e9200cdaf3c449c4bb7c3c",
+            description: "อาหารคลีน น้ำมันเยิ้ม",
+            name: "อกไก่ทอด",
+            options: [Array],
+            picture: [Object],
+            price: 10,
+            restaurant_id: "63e188c58ae333a7867b14f2",
+            type: "อาหารคลีน",
+        },
+        id: 2,
+        moreDetail: null,
+        options: [[Object]],
+        price: 10,
+    },
+    {
+        amount: 1,
+        food: {
+            __v: 0,
+            _id: "63e9323adaf3c449c4bb7c7d",
+            description: "",
+            name: "ผัดกาดขาว",
+            options: [Array],
+            picture: null,
+            price: 0,
+            restaurant_id: "63e188c58ae333a7867b14f2",
+            type: "อาหารคาว",
+        },
+        id: 3,
+        moreDetail: "no spicy",
+        options: [],
+        price: 0,
+    },
+];

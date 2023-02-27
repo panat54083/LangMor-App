@@ -23,6 +23,7 @@ require("./models/Option");
 require("./models/Food");
 require("./models/Chatroom");
 require("./models/Message");
+require("./models/Order");
 
 // Call MongoDB
 const Customer = mongoose.model("Customer");
@@ -87,6 +88,7 @@ io.on("connection", (socket) => {
                     user: socket.userId,
                     message: message,
                     picture: picture,
+                    timestamp:  new Date(Date.now()).toString(),
                 });
                 io.to(chatroomId).emit("newMessage",{
                     id: new_message._id.toString(),
