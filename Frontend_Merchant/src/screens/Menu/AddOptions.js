@@ -23,7 +23,7 @@ import { IP_ADDRESS } from "@env";
 const AddOptions = ({ navigation, route }) => {
     useEffect(() => {
         navigation.setOptions({
-            title: "สร้างตัวเลือกใหม่",
+            title: !optionData._id ? "สร้างตัวเลือกใหม่" : "แก้ไขตัวเลือก",
             headerTitleStyle: {
                 fontFamily: "Kanit-Bold",
                 fontSize: 22,
@@ -66,7 +66,7 @@ const AddOptions = ({ navigation, route }) => {
     const handleSave = () => {
         fetchSaveOptions();
         // navigation.navigate("MenuTabs", { screen: "OptionsManage" });
-        navigation.goBack()
+        navigation.goBack();
         // console.log(options)
     };
 

@@ -26,7 +26,7 @@ import { IP_ADDRESS } from "@env";
 const AddMenu = ({ navigation, route }) => {
     useEffect(() => {
         navigation.setOptions({
-            title: "เพิ่มเมนูอาหาร",
+            title: !foodData._id ? "เพิ่มเมนูอาหาร" : "แก้ไขเมนูอาหาร",
             headerTitleStyle: {
                 fontFamily: "Kanit-Bold",
                 fontSize: 22,
@@ -180,24 +180,27 @@ const AddMenu = ({ navigation, route }) => {
         }
         setModalVisible(false);
     };
-    const handleEditTypes= () => {
+    const handleEditTypes = () => {
         console.log("Press");
     };
-    const handleAddOptions= () => {
+    const handleAddOptions = () => {
         // console.log("Press");
-        navigation.navigate("AddOptions", {optionData: {
-            name: "",
-            required: false,
-            maximum: 0,
-            choices: [],
-        }});
+        navigation.navigate("AddOptions", {
+            optionData: {
+                name: "",
+                required: false,
+                maximum: 0,
+                choices: [],
+            },
+        });
     };
-    const handleEditOptions= () => {
-        console.log("Press");
+    const handleEditOptions = () => {
+        navigation.navigate("MenuTabs",{screen: "OptionsManage"})
+
     };
 
     const handleDebugger = () => {
-        console.log(selectOptions);
+        console.log(foodData);
     };
 
     return (
@@ -292,14 +295,21 @@ const AddMenu = ({ navigation, route }) => {
                         />
                     ))}
                     <View style={styles.add_edit_button}>
-
-                    <MiniBtn label={"เพิ่ม"} color="#FF7A00" onPress={handleAddOptions}/>
-                    <MiniBtn label={"แก้ไข"} color="#FF0101" onPress={handleEditOptions}/>
+                        <MiniBtn
+                            label={"เพิ่ม"}
+                            color="#FF7A00"
+                            onPress={handleAddOptions}
+                        />
+                        <MiniBtn
+                            label={"แก้ไข"}
+                            color="#FF0101"
+                            onPress={handleEditOptions}
+                        />
                     </View>
                 </View>
                 <View style={styles.submitButton}>
                     <AcceptButton
-                        label={"บันทึก"}
+                        label={!foodData._id ? "บันทึก" : "อัปเดต"}
                         onPress={handleSave}
                         isLoaded={isLoaded}
                     />

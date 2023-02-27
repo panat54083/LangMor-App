@@ -143,6 +143,8 @@ exports.restaurantFoodSave = async (req, res) => {
     const foodExist = await Food.findOne({
         name: foodData.name,
     });
+    // const foodExist = await Food.findById(foodData._id);
+
     if (!foodExist) {
         const food = new Food({
             restaurant_id: foodData.restaurant_id,
