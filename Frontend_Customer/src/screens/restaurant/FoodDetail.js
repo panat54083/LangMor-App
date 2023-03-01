@@ -334,7 +334,7 @@ const FoodDetail = ({ route, navigation }) => {
 
             <View style={styles.addItemBtn}>
                 <SubmitBtn
-                    label={editOrder ? "อัปเดต" : "เพิ่มลงตะกล้า"}
+                    label={editOrder ? "อัปเดต" : "เพิ่มลงตะกร้า"}
                     onPress={handleOnPressSubmit}
                 />
             </View>

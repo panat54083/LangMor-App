@@ -78,6 +78,15 @@ const Home = ({ navigation }) => {
                 console.log(err);
             });
     };
+    const handleRestaurant = () => {
+        navigation.navigate("MarketList");
+    };
+    const handleSecondHand = () => {
+        navigation.navigate("SecondTabs");
+    };
+    const handleLostItem = () => {
+        navigation.navigate("LostTabs");
+    };
     const handleDebugger = () => {
         console.log(orders);
     };
@@ -109,23 +118,17 @@ const Home = ({ navigation }) => {
                             <BtnToFeature
                                 name="สั่งอาหาร"
                                 imgSrc={require("../assets/icons/hamburger.png")}
-                                navigateToFeature={() => {
-                                    navigation.navigate("MarketList");
-                                }}
+                                navigateToFeature={handleRestaurant}
                             />
                             <BtnToFeature
                                 name="ของมือสอง"
                                 imgSrc={require("../assets/icons/second-hand.png")}
-                                navigateToFeature={() => {
-                                    navigation.navigate("LostItemList");
-                                }}
+                                navigateToFeature={handleSecondHand}
                             />
                             <BtnToFeature
                                 name="ของหาย"
                                 imgSrc={require("../assets/icons/lost-items.png")}
-                                navigateToFeature={() => {
-                                    navigation.navigate("SecondHandList");
-                                }}
+                                navigateToFeature={handleLostItem}
                             />
                         </View>
                     </ScrollView>

@@ -85,6 +85,7 @@ function MyTabBar({ state, descriptors, navigation, position }) {
                                     color: fontColor,
                                     fontFamily: "Kanit-Medium",
                                     fontSize: 16,
+                                    
                                 }}
                                 numberOfLines={1}
                                 adjustsFontSizeToFit={true}
