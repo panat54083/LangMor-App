@@ -19,7 +19,7 @@ const MyStack = ({}) => {
     return (
         <Stack.Navigator
             screenOptions={{
-                cardStyle: { backgroundColor: "#F5F5F5"}
+                cardStyle: { backgroundColor: "#F5F5F5" },
             }}
         >
             {state.userData ? (
@@ -32,6 +32,9 @@ const MyStack = ({}) => {
                                 state.isSignin ? state.userData.name : "Loading"
                             }`,
                             headerRight: () => <HomePageHeader />,
+                            headerTitleStyle: {
+                                fontFamily: "Kanit-Bold",
+                            },
                         }}
                     />
                     <Stack.Screen name="MarketList" component={MarketList} />

@@ -25,6 +25,7 @@ const MoreDetailCard = (props) => {
                     borderWidth: 0.5,
                     paddingHorizontal: 10,
                     marginBottom: 20,
+                    fontFamily: "Kanit-SemiBold",
                 }}
             />
             <View>

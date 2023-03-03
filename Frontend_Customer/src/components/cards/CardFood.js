@@ -51,11 +51,20 @@ const CardFood = (props) => {
                                     </Text>
                                 ) : null}
                                 <View style={styles.priceContainer}>
-                                    <Text style={styles.props}>ราคา </Text>
+                                    <Text
+                                        style={{ fontFamily: "Kanit-Medium" }}
+                                    >
+                                        ราคา{" "}
+                                    </Text>
                                     <Text style={styles.price}>
                                         {food.price}
                                     </Text>
-                                    <Text style={styles.props}> บาท</Text>
+                                    <Text
+                                        style={{ fontFamily: "Kanit-Medium" }}
+                                    >
+                                        {" "}
+                                        บาท
+                                    </Text>
                                 </View>
                             </View>
                         </View>

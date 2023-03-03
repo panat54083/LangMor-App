@@ -12,11 +12,13 @@ const FoodDetail = ({ route, navigation }) => {
     const { food, restaurant, editOrder } = route.params;
     const [isAllInputsFilled, setIsAllInputsFilled] = useState(false);
     const [number, setNumber] = useState(editOrder ? editOrder.amount : 1);
-    const [moreDetail, setMoreDetail] = useState(editOrder? editOrder.moreDetail:null);
+    const [moreDetail, setMoreDetail] = useState(
+        editOrder ? editOrder.moreDetail : null
+    );
     const [price, setPrice] = useState(
         editOrder ? editOrder.price : food.price
     );
-
+    const [requiredCheckList, setrequiredCheckList] = useState([]);
     const findOldOptionsVal = (optionName) => {
         const index = editOrder.options.findIndex((option) => {
             return option.name === optionName;
@@ -89,11 +91,15 @@ const FoodDetail = ({ route, navigation }) => {
             let array = [];
             food.options.forEach((option) => {
                 if (option.required) {
+                    setrequiredCheckList((prev) => {
+                        return [...prev, option.name];
+                    });
                     array.push({
                         name: option.name,
                         required: true,
                         value: null,
                         price: 0,
+                        maximum: option.maximum,
                     });
                 } else {
                     array.push({
@@ -101,6 +107,7 @@ const FoodDetail = ({ route, navigation }) => {
                         required: false,
                         value: null,
                         price: 0,
+                        maximum: option.maximum,
                     });
                 }
             });
@@ -121,6 +128,7 @@ const FoodDetail = ({ route, navigation }) => {
                     required: false,
                     value: data.value,
                     price: data.price,
+                    maximum: prevValue.maximum,
                 };
                 setPrice((prevPrice) => {
                     return prevPrice + data.price - prevValue[index].price;
@@ -134,17 +142,30 @@ const FoodDetail = ({ route, navigation }) => {
         const index = confirmOption.findIndex((option) => {
             return option.name === data.name;
         });
-
+        console.log(requiredCheckList);
         setConfirmOption((prevValue) => {
             const newArr = [...prevValue];
             if (index !== -1) {
-                newArr[index] = {
-                    name: newArr[index].name,
-                    // ตรงนี้ต้อง Check ตามจำนวนที่ Required มาอีกที😒😒
-                    required: false,
-                    value: data.value,
-                    price: data.price,
-                };
+                if (
+                    data.value.length === 0 &&
+                    requiredCheckList.includes(data.name) // ถ้าข้อมูลไม่ได้กรอก เเละ เป็นข้อมูลที่จำเป็นต้องใส่ => required: true
+                ) {
+                    newArr[index] = {
+                        name: newArr[index].name,
+                        maximum: prevValue.maximum,
+                        required: true,
+                        value: data.value,
+                        price: data.price,
+                    };
+                } else {
+                    newArr[index] = {
+                        name: newArr[index].name,
+                        required: false,
+                        value: data.value,
+                        price: data.price,
+                    };
+                }
+
                 if (prevValue[index].price.length > data.price.length) {
                     setPrice((prevPrice) => {
                         const diffValue = prevValue[index].value.filter(
@@ -175,9 +196,18 @@ const FoodDetail = ({ route, navigation }) => {
         });
     };
 
-    // useEffect(() => {
-    //     console.log(confirmOption);
-    // }, [confirmOption]);
+    useEffect(() => {
+        console.log(confirmOption);
+        const check = confirmOption.reduce(
+            (accumulator, option) => accumulator || option.required,
+            false
+        );
+        if (!check) {
+            setIsAllInputsFilled(true);
+        } else {
+            setIsAllInputsFilled(false);
+        }
+    }, [confirmOption]);
 
     // useEffect(() => {
     //     console.log(basketDetail);
@@ -263,6 +293,12 @@ const FoodDetail = ({ route, navigation }) => {
                                           <Text style={styles.optionNameText}>
                                               {option.name}
                                           </Text>
+                                          <Text
+                                              style={styles.subOptionNameText}
+                                          >
+                                              {" "}
+                                              (เลือกได้สูงสุด {option.maximum})
+                                          </Text>
                                       </View>
                                       <View
                                           style={styles.optionChoiceContainer}
@@ -334,6 +370,7 @@ const FoodDetail = ({ route, navigation }) => {
 
             <View style={styles.addItemBtn}>
                 <SubmitBtn
+                    disable={!isAllInputsFilled}
                     label={editOrder ? "อัปเดต" : "เพิ่มลงตะกล้า"}
                     onPress={handleOnPressSubmit}
                 />
@@ -358,7 +395,7 @@ const styles = StyleSheet.create({
         width: "89.33%",
         height: 46,
         marginBottom: 20,
-
+        position: "absolute",
         alignSelf: "center",
         bottom: 0,
     },
@@ -369,10 +406,16 @@ const styles = StyleSheet.create({
         marginLeft: "6%",
         marginTop: 10,
         marginBottom: 5,
+        flexDirection: "row",
+        alignItems: "flex-end",
     },
     optionNameText: {
         fontFamily: "Kanit-Bold",
         fontSize: 14,
+    },
+    subOptionNameText: {
+        fontFamily: "Kanit-SemiBold",
+        fontSize: 10,
     },
     optionChoiceContainer: {
         width: "80%",

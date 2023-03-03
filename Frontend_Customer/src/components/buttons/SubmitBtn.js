@@ -2,13 +2,18 @@ import React from "react";
 //conponent
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-const SubmitBtn = ({ label, onPress }) => {
+const SubmitBtn = ({ label, onPress, disable }) => {
     return (
         <TouchableOpacity
+            disabled={disable}
             onPress={onPress}
-            style={[styles.button, styles.shadow]}
+            style={[
+                styles.button,
+                styles.shadow,
+                disable ? { opacity: 0.5 } : null,
+            ]}
         >
-            <Text style={styles.text}>{label}</Text>
+            <Text style={[styles.text]}>{label}</Text>
         </TouchableOpacity>
     );
 };
