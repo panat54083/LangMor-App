@@ -142,7 +142,7 @@ const FoodDetail = ({ route, navigation }) => {
         const index = confirmOption.findIndex((option) => {
             return option.name === data.name;
         });
-        console.log(requiredCheckList);
+        // console.log(requiredCheckList);
         setConfirmOption((prevValue) => {
             const newArr = [...prevValue];
             if (index !== -1) {
@@ -197,7 +197,7 @@ const FoodDetail = ({ route, navigation }) => {
     };
 
     useEffect(() => {
-        console.log(confirmOption);
+        // console.log(confirmOption);
         const check = confirmOption.reduce(
             (accumulator, option) => accumulator || option.required,
             false
