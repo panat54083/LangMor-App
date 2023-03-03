@@ -143,6 +143,8 @@ exports.restaurantFoodSave = async (req, res) => {
     const foodExist = await Food.findOne({
         name: foodData.name,
     });
+    // const foodExist = await Food.findById(foodData._id);
+
     if (!foodExist) {
         const food = new Food({
             restaurant_id: foodData.restaurant_id,
@@ -158,8 +160,10 @@ exports.restaurantFoodSave = async (req, res) => {
             message: `Save Food successfully`,
         });
     } else {
+        const updatedFood = {...foodExist.toObject(), ...foodData}
+        await foodExist.updateOne(updatedFood)
         res.json({
-            message: `Save Food Error`,
+            message: `Update Food successfully`,
         });
     }
 };

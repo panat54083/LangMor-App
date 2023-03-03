@@ -37,7 +37,7 @@ const AddOptionsChoices = ({ inititalChoices, getChoices }) => {
     };
 
     const addNewOptions = () => {
-        setChoices([...choices, { name: "", method: "increase", price: 0 }]);
+        setChoices([...choices, { name: "", method: "increase", price: "" }]);
     };
 
     const updateOptions = (choice, index) => {
@@ -63,6 +63,7 @@ const AddOptionsChoices = ({ inititalChoices, getChoices }) => {
                     <Choices
                         name={choice.name}
                         price={choice.price}
+                        method={choice.method}
                         setName={(name) =>
                             updateOptions({ ...choice, name: name }, index)
                         }

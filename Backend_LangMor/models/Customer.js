@@ -25,10 +25,6 @@ const customerSchema = new mongoose.Schema(
             type: Boolean,
             required: true,
         },
-        address: {
-            type: String,
-            default: "",
-        },
     },
     {
         timestamps: true,

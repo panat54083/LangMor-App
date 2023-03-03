@@ -7,17 +7,31 @@ import {
     View,
     TextInput,
     TouchableOpacity,
+    ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 
-const ChatInput = ({forwardedRef, onChangeText, sendOnPress, cameraOnPress, pictureOnPress}) => {
+const ChatInput = ({
+    forwardedRef,
+    onChangeText,
+    sendOnPress,
+    cameraOnPress,
+    pictureOnPress,
+    isLoaded = false,
+}) => {
     return (
         <View style={styles.main_container}>
-            <TouchableOpacity style={styles.image_input} onPress={pictureOnPress}>
+            <TouchableOpacity
+                style={styles.image_input}
+                onPress={pictureOnPress}
+            >
                 <FontAwesome name="file-picture-o" size={20} color="#FF4200" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.image_input} onPress={cameraOnPress}>
+            <TouchableOpacity
+                style={styles.image_input}
+                onPress={cameraOnPress}
+            >
                 <FontAwesome name="camera" size={20} color="#FF4200" />
             </TouchableOpacity>
             <View style={styles.input_container}>
@@ -28,9 +42,18 @@ const ChatInput = ({forwardedRef, onChangeText, sendOnPress, cameraOnPress, pict
                     onChangeText={onChangeText}
                 />
             </View>
-            <TouchableOpacity style={styles.send_container} onPress={sendOnPress}>
-                <Ionicons name="send" size={30} color="#FF4200" />
-            </TouchableOpacity>
+            {!isLoaded ? (
+                <TouchableOpacity
+                    style={styles.send_container}
+                    onPress={sendOnPress}
+                >
+                    <Ionicons name="send" size={30} color="#FF4200" />
+                </TouchableOpacity>
+            ) : (
+                <View style={styles.send_container}>
+                    <ActivityIndicator size={"large"} color="#FF4200" />
+                </View>
+            )}
         </View>
     );
 };
@@ -41,8 +64,9 @@ const styles = StyleSheet.create({
     main_container: {
         flexDirection: "row",
         alignItems: "center",
-        flex: 1,
+        // flex: 1,
         backgroundColor: "white",
+        height: 50,
     },
     input_container: {
         backgroundColor: "white",

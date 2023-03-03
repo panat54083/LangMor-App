@@ -14,6 +14,7 @@ const AcceptButton = ({
     onPress,
     backgroundColor = "#FF7A00",
     isLoaded = false,
+    fontSize= 20,
 }) => {
     return (
         <>
@@ -26,7 +27,7 @@ const AcceptButton = ({
                         { backgroundColor: backgroundColor },
                     ]}
                 >
-                    <Text style={styles.text}>{label}</Text>
+                    <Text style={[styles.text, {fontSize: fontSize} ]}>{label}</Text>
                 </TouchableOpacity>
             ) : (
                 <View
@@ -51,13 +52,11 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: "#FF7A00",
         borderRadius: 10,
-        paddingVertical: 6,
-        paddingHorizontal: 100,
+        paddingVertical: 3,
         alignItems: "center",
     },
     text: {
         fontFamily: "Kanit-SemiBold",
-        fontSize: 20,
         color: "white",
     },
     shadow: {

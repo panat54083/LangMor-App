@@ -3,10 +3,23 @@ import React, { useEffect, useState, useContext, useRef } from "react";
 import axios from "axios";
 import * as LIP from "../../lib/lm-image-picker";
 //Components
-import { StyleSheet, Text, View, Button, FlatList } from "react-native";
+import {
+    StyleSheet,
+    Text,
+    View,
+    Button,
+    FlatList,
+    Keyboard,
+    ScrollView,
+    Image,
+    Pressable,
+} from "react-native";
+import { Entypo } from "@expo/vector-icons";
 import BackScreen from "../../components/buttons/BackScreen";
 import ChatInput from "../../components/Cards/Chat/ChatInput";
 import MessageModel from "../../components/Cards/Chat/MessageModel";
+import AcceptButton from "../../components/buttons/AcceptButton";
+import OrderMessage from "../../components/Cards/Chat/OrderMessage";
 //Configs
 import { IP_ADDRESS } from "@env";
 import UserContext from "../../hooks/context/UserContext";
@@ -14,16 +27,21 @@ import SocketContext from "../../hooks/context/SocketContext";
 
 const Chat = ({ navigation, route }) => {
     // config variables
-    const { chatroomData, customerData } = route.params;
+    const { orderData, customerData } = route.params;
     const inputRef = useRef(null);
     const [listMessages, setListMessages] = useState([]);
     const { state } = useContext(UserContext);
     const { socket } = useContext(SocketContext);
     const [isLoaded, setIsLoaded] = useState(false);
     const scrollViewRef = useRef(null);
+    const [keyboardVisible, setKeyboardVisible] = useState(false);
+
     // data variables
     const [message, setMessage] = useState("");
     const [image, setImage] = useState(null);
+    const [buttonStatusLabel, setButtonStatusLabel] = useState("");
+    const [buttonStatusColor, setButtonStatusColor] = useState("");
+
     useEffect(() => {
         navigation.setOptions({
             title: `${customerData.name}`,
@@ -33,18 +51,55 @@ const Chat = ({ navigation, route }) => {
             },
             headerLeft: () => (
                 <BackScreen
-                    onPress={() => navigation.goBack()}
+                    onPress={() => {
+                        if (orderData.status === "new") {
+                            navigation.navigate("OrderTabs", {
+                                screen: "NewOrder",
+                            });
+                        } else if (orderData.status === "doing") {
+                            navigation.navigate("OrderTabs", {
+                                screen: "DoingOrder",
+                            });
+                        } else if (orderData.status === "deliver") {
+                            navigation.navigate("OrderTabs", {
+                                screen: "DeliverOrder",
+                            });
+                        } else if (orderData.status === "done") {
+                            navigation.navigate("OrderTabs", {
+                                screen: "DoneOrder",
+                            });
+                        }
+                    }}
                     color="#FF7A00"
                 />
             ),
         });
         // Functions
         fetchInitialMessages();
+        initialStatusButton();
     }, []);
+    useEffect(() => {
+        chatroom_connect(orderData._id);
+    }, [socket]);
 
     useEffect(() => {
-        chatroom_connect(chatroomData._id);
-    }, [socket]);
+        const keyboardDidShowListener = Keyboard.addListener(
+            "keyboardDidShow",
+            () => {
+                setKeyboardVisible(true);
+            }
+        );
+        const keyboardDidHideListener = Keyboard.addListener(
+            "keyboardDidHide",
+            () => {
+                setKeyboardVisible(false);
+            }
+        );
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
+    }, []);
 
     useEffect(() => {
         if (socket) {
@@ -63,6 +118,7 @@ const Chat = ({ navigation, route }) => {
 
         scrollViewRef.current?.scrollToEnd({ animated: true });
     }, [listMessages]);
+
     const chatroom_connect = (chatroom_id) => {
         if (socket) {
             socket.emit("joinRoom", {
@@ -91,20 +147,22 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
+
     const sendMessage = (message, picture) => {
         if (socket) {
             socket.emit("chatroomMessage", {
-                chatroomId: chatroomData._id,
+                chatroomId: orderData._id,
                 message: message,
                 picture: picture,
             });
         }
         setMessage("");
     };
+
     const fetchInitialMessages = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${chatroomData._id}`
+                `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${orderData._id}`
             )
             .then((res) => {
                 // console.log(res.data.messages)
@@ -114,6 +172,29 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
+
+    const apiUpdateOrder = (status) => {
+        axios
+            .post(`http://${IP_ADDRESS}/order/update`, {
+                order_id: orderData._id,
+                status: status,
+            })
+            .then((res) => {
+                // console.log(res.data.message);
+                console.log("Update Order to: ", res.data.orderData.status);
+                orderData.status = res.data.orderData.status;
+            })
+            .catch((err) => {
+                if (
+                    err &&
+                    err.response &&
+                    err.response.data &&
+                    err.response.data.message
+                )
+                    console.log("Error", err.response.data.message);
+            });
+    };
+
     const handleSendMessage = () => {
         setIsLoaded(true);
         if (image) {
@@ -128,9 +209,11 @@ const Chat = ({ navigation, route }) => {
                 });
         } else {
             sendMessage(message, image);
+            setIsLoaded(false);
         }
         inputRef.current.clear();
     };
+
     const handleImagePick = () => {
         LIP.pickImage()
             .then((data) => {
@@ -140,6 +223,7 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
+
     const handleCamera = () => {
         LIP.openCamera()
             .then((data) => {
@@ -149,35 +233,162 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
-    const handleDebugger = () => {
-        console.log(chatroomData, customerData);
+
+    const initialStatusButton = () => {
+        if (orderData.status === "new") {
+            setButtonStatusLabel("ยืนยันออเดอร์");
+            setButtonStatusColor("#63BE00");
+        } else if (orderData.status === "doing") {
+            setButtonStatusLabel("กำลังไปส่ง");
+            setButtonStatusColor("#FF7A00");
+        } else if (orderData.status === "deliver") {
+            setButtonStatusLabel("จัดส่งสำเร็จ");
+            setButtonStatusColor("#FF7A00");
+        } else if (orderData.status === "done") {
+            setButtonStatusLabel("ปิดการสนทนา");
+            setButtonStatusColor("#FF0101");
+        }
     };
+
+    const handleStatusButton = () => {
+        let newStatus;
+        switch (orderData.status) {
+            case "new":
+                newStatus = "doing";
+                setButtonStatusLabel("กำลังไปส่ง");
+                setButtonStatusColor("#FF7A00");
+                break;
+            case "doing":
+                newStatus = "deliver";
+                setButtonStatusLabel("จัดส่งสำเร็จ");
+                setButtonStatusColor("#FF7A00");
+                break;
+            case "deliver":
+                newStatus = "done";
+                setButtonStatusLabel("ปิดการสนทนา");
+                setButtonStatusColor("#FF0101");
+                break;
+            case "done":
+                newStatus = "close";
+                chatroom_disconnect(orderData._id);
+                navigation.navigate("OrderTabs", { screen: "DoneOrder" });
+                break;
+            default:
+                newStatus = "new";
+                setButtonStatusLabel("ยืนยันออเดอร์");
+                setButtonStatusColor("#63BE00");
+                break;
+        }
+        apiUpdateOrder(newStatus);
+    };
+
+    const handleMoreDetail = () => {
+        // console.log(orderData.status);
+        const order = { order: orderData, customer: customerData };
+        navigation.navigate("ShowOrder", order);
+    };
+
+    const handleClosedImage = () => {
+        setImage(null);
+    };
+    const handleDebugger = () => {
+        console.log(orderData);
+    };
+
     return (
         <View style={styles.main_container}>
-            <Button onPress={handleDebugger} title="Debugger" />
+            {/* <Button onPress={handleDebugger} title="Debugger" /> */}
             <View style={styles.messages_container}>
                 {listMessages[0] ? (
-                    <FlatList
-                        ref={scrollViewRef}
-                        data={listMessages}
-                        renderItem={({ item }) => (
+                    <ScrollView ref={scrollViewRef}>
+                        <View style={styles.orderPopup}>
+                            <View
+                                style={{
+                                    alignItems: "flex-start",
+                                    width: "100%",
+                                }}
+                            >
+                                <OrderMessage
+                                    order={orderData}
+                                    onPress={handleMoreDetail}
+                                    backgroundColor={"#DFDFDF"}
+                                />
+                            </View>
+                        </View>
+                        {listMessages.map((item, index) => (
                             <MessageModel
+                                key={index}
                                 message={item}
                                 userId={state.userData._id}
                             />
-                        )}
-                        keyExtractor={(item, index) => index}
-                    />
+                        ))}
+                    </ScrollView>
                 ) : (
-                    ""
+                    <View style={{ alignItems: "flex-start", width: "100%" }}>
+                        <OrderMessage
+                            order={orderData}
+                            onPress={handleMoreDetail}
+                            backgroundColor={"#DFDFDF"}
+                        />
+                    </View>
                 )}
             </View>
+            {!keyboardVisible && (
+                <View style={styles.button_container}>
+                    <AcceptButton
+                        label={buttonStatusLabel}
+                        onPress={handleStatusButton}
+                        fontSize={18}
+                        backgroundColor={buttonStatusColor}
+                    />
+                </View>
+            )}
+            {image && (
+                <View
+                    style={{
+                        marginLeft: 5,
+                        marginTop: 10,
+                        backgroundColor: "white",
+                        borderWidth: 3,
+                        borderRadius: 5,
+                        borderColor: "#FF7A00",
+                        flexDirection: "row",
+                        position: "absolute",
+                        bottom: 100
+                    }}
+                >
+                    <Image
+                        source={{
+                            uri: `data:${image.type}/jpg;base64,${image.base64}`,
+                        }}
+                        style={{ width: 100, height: 100 }}
+                    />
+                    <Pressable
+                        onPress={handleClosedImage}
+                        style={{
+                            position: "absolute",
+                            backgroundColor: "white",
+                            borderRadius: 40,
+                            // alignSelf: "flex-end",
+                            marginLeft: 90,
+                            marginTop: -10,
+                        }}
+                    >
+                        <Entypo
+                            name="circle-with-cross"
+                            size={24}
+                            color="#FF0101"
+                        />
+                    </Pressable>
+                </View>
+            )}
             <ChatInput
                 forwardedRef={inputRef}
                 onChangeText={(value) => setMessage(value)}
                 sendOnPress={handleSendMessage}
                 pictureOnPress={handleImagePick}
                 cameraOnPress={handleCamera}
+                isLoaded={isLoaded}
             />
         </View>
     );
@@ -190,6 +401,12 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     messages_container: {
+        margin: 5,
         flex: 10,
+    },
+    button_container: {
+        flex: 0,
+        marginVertical: 5,
+        marginHorizontal: 40,
     },
 });

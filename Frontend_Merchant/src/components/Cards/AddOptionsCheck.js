@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import CheckboxButton from "../Checkboxes/CheckboxButton";
 import Number from "../Inputs/Number";
-const AddOptionsCheck = ({ getRequired, getMaximum }) => {
-    const [checked1, setChecked1] = useState(false);
-    const [maximum, setMaximum] = useState(1);
+const AddOptionsCheck = ({ getRequired, getMaximum, requiredCheck = false, maximumValue=0 }) => {
+    const [checked1, setChecked1] = useState(requiredCheck);
+    const [maximum, setMaximum] = useState(maximumValue);
 
     useEffect(() => {
         getMaximum(maximum);
@@ -25,7 +25,7 @@ const AddOptionsCheck = ({ getRequired, getMaximum }) => {
                     <Text style={styles.text}>เลือกได้สูงสุด</Text>
                 </View>
                 <View style={{ flex: 2, alignItems: "center" }}>
-                    <Number getNumber={setMaximum} />
+                    <Number getNumber={setMaximum} number={maximum} />
                 </View>
             </View>
             <View

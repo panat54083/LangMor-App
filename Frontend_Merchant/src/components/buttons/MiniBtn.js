@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 
-const MiniBtn = ({ label, color, onPress }) => {
+const MiniBtn = ({ label, color="#FF7A00", onPress }) => {
     return (
         <TouchableOpacity
             style={[styles.container, { backgroundColor: color }]}
