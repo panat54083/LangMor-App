@@ -9,12 +9,13 @@ import {
     ActivityIndicator,
 } from "react-native";
 
-const SubmitBtn= ({
+const SubmitBtn = ({
     label,
     onPress,
     backgroundColor = "#FF7A00",
     isLoaded = false,
-    fontSize= 20,
+    fontSize = 20,
+    disable = false,
 }) => {
     return (
         <>
@@ -25,19 +26,22 @@ const SubmitBtn= ({
                         styles.button,
                         styles.shadow,
                         { backgroundColor: backgroundColor },
+                        disable ? { opacity: 0.5 } : null,
                     ]}
                 >
-                    <Text style={[styles.text, {fontSize: fontSize} ]}>{label}</Text>
+                    <Text style={[styles.text, { fontSize: fontSize }]}>
+                        {label}
+                    </Text>
                 </TouchableOpacity>
             ) : (
                 <View
                     style={[
                         styles.button,
                         styles.shadow,
-                        { backgroundColor: "#DFDFDF"},
+                        { backgroundColor: "#DFDFDF" },
                     ]}
                 >
-                    <View style={{ marginVertical: 5 ,flexDirection:"row"}}>
+                    <View style={{ marginVertical: 5, flexDirection: "row" }}>
                         <ActivityIndicator size={"small"} color="white" />
                     </View>
                 </View>

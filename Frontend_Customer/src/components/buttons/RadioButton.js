@@ -60,5 +60,6 @@ const styles = StyleSheet.create({
     radioButtonLabel: {
         marginLeft: 10,
         fontSize: 16,
+        fontFamily: "Kanit-SemiBold",
     },
 });

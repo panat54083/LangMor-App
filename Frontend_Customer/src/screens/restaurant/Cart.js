@@ -147,7 +147,7 @@ const Cart = ({ route, navigation }) => {
                     bottom: 0,
                 }}
             >
-                <SubmitBtn label={"สั่งซื้อ"} onPress={handleSubmit} />
+                <SubmitBtn label={"สั่งซื้อ"} onPress={handleSubmit} disable={false}/>
             </View>
         </View>
     );

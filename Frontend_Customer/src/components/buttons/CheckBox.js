@@ -13,11 +13,11 @@ const Checkbox = (props) => {
             <Text style={styles.checkboxLabel}>{props.label}</Text>
             <Text
                 style={[
-                    styles.radioButtonLabel,
+                    styles.checkboxLabel,
                     { marginLeft: "auto", marginRight: "12.33%" },
                 ]}
             >
-                {props.price}
+                {props.price} ฿
             </Text>
         </TouchableOpacity>
     );
@@ -53,5 +53,6 @@ const styles = StyleSheet.create({
     checkboxLabel: {
         marginLeft: 10,
         fontSize: 16,
+        fontFamily: "Kanit-SemiBold",
     },
 });

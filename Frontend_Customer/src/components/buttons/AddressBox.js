@@ -8,7 +8,9 @@ const AddressBox = () => {
             <TouchableOpacity>
                 <View style={styles.container}>
                     <Ionicons name="location-sharp" size={24} color="#FF0101" />
-                    <Text>หอพักของฉัน</Text>
+                    <Text style={{ fontFamily: "Kanit-Bold" }}>
+                        หอพักของฉัน
+                    </Text>
                     <Ionicons name="pencil" size={21} color="black" />
                 </View>
             </TouchableOpacity>

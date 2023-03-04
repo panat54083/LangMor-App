@@ -3,7 +3,7 @@ import React from "react";
 import Home from "../screens/Home";
 import Profile from "../screens/Profile";
 import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 
 const TapStackRoutes = () => {
     const TabStack = createMaterialBottomTabNavigator();
@@ -11,15 +11,16 @@ const TapStackRoutes = () => {
         <TabStack.Navigator
             screenOptions={{
                 headerShown: false,
-                
             }}
-            barStyle={{height:70}}
+            barStyle={{ height: 70 }}
         >
             <TabStack.Screen
                 name="Home"
                 component={Home}
                 options={{
-                    tabBarLabel: "Home",
+                    tabBarLabel: (
+                        <Text style={{ fontFamily: "Kanit-Bold" }}>Home</Text>
+                    ),
                     tabBarIcon: () => {
                         return (
                             <MaterialCommunityIcons
@@ -38,7 +39,11 @@ const TapStackRoutes = () => {
                 name="Profile"
                 component={Profile}
                 options={{
-                    tabBarLabel: "Home",
+                    tabBarLabel: (
+                        <Text style={{ fontFamily: "Kanit-Bold" }}>
+                            Profile
+                        </Text>
+                    ),
                     tabBarIcon: () => {
                         return (
                             <FontAwesome5

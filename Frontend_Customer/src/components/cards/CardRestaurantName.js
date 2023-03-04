@@ -26,7 +26,7 @@ const CardRestaurantName = (props) => {
             </View>
 
             <View style={styles.rating}>
-                <Text style={{ fontFamily: "Kanit" }}>
+                <Text style={{ fontFamily: "Kanit-SemiBold" }}>
                     Rating : {restaurant.rating ? restaurant.rating : "ไม่มี"}{" รอเเก้ไขเป็นรายละเอียดร้านค้า"}
                 </Text>
                 <Ionicons name="star" size={18} color="#FF7A00" />
