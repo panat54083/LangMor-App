@@ -1,3 +1,8 @@
+//Packages
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { IP_ADDRESS } from "@env";
+//Components
 import {
     StyleSheet,
     Text,
@@ -6,14 +11,12 @@ import {
     TouchableOpacity,
     ActivityIndicator,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { IP_ADDRESS } from "@env";
 import Searchbar from "../../components/searchs/Searchbar";
 import Fav from "../../components/buttons/Fav";
 import AddressBox from "../../components/buttons/AddressBox";
 import CardMarket from "../../components/cards/CardMarket";
 import CardRestaurantTag from "../../components/cards/CardRestaurantTag";
+import BackScreen from "../../components/buttons/BackScreen";
 
 const MarketList = ({ navigation }) => {
     const [restaurants, setRestaurants] = useState();
@@ -23,9 +26,18 @@ const MarketList = ({ navigation }) => {
         // setHeader
         navigation.setOptions({
             title: "สั่งอาหาร",
+            headerStyle: {
+                backgroundColor: "#FF7A00",
+            },
             headerTitleAlign: "center",
-            headerTitleStyle: styles.headerTitle,
-            headerStyle: styles.headerStyle,
+            headerTintColor: "#ffffff",
+            headerTitleStyle: {
+                fontFamily: "Kanit-SemiBold",
+                fontSize: 24,
+            },
+            headerLeft: () => (
+                <BackScreen onPress={() => navigation.goBack()} color="white" />
+            ),
             headerRight: () => (
                 <View style={{ marginRight: "20%" }}>
                     <Fav />
@@ -57,7 +69,7 @@ const MarketList = ({ navigation }) => {
             fetchRestaurants();
         }
     }, [searchQuery]);
-    
+
     const onPressCardMarket = (restaurant) => {
         navigation.navigate("FoodList", { restaurant: restaurant });
     };

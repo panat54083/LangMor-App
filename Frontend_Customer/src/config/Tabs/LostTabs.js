@@ -12,19 +12,21 @@ import MyPost from "../../screens/LostItems/MyPost";
 //Configs
 const Tab = createMaterialTopTabNavigator();
 
-const LostTabs = ({navigation}) => {
+const LostTabs = ({ navigation }) => {
     useEffect(() => {
         navigation.setOptions({
             title: "ของหาย",
+            headerStyle: {
+                backgroundColor: "#FF7A00",
+            },
+            headerTitleAlign: "center",
+            headerTintColor: "#ffffff",
             headerTitleStyle: {
-                fontFamily: "Kanit-Bold",
-                fontSize: 22,
+                fontFamily: "Kanit-SemiBold",
+                fontSize: 24,
             },
             headerLeft: () => (
-                <BackScreen
-                    onPress={() => navigation.goBack()}
-                    color="#FF7A00"
-                />
+                <BackScreen onPress={() => navigation.goBack()} color="white" />
             ),
         });
     }, []);

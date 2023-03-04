@@ -15,15 +15,17 @@ const SecondTabs = ({navigation}) => {
     useEffect(() => {
         navigation.setOptions({
             title: "ของมือสอง",
+            headerStyle: {
+                backgroundColor: "#FF7A00",
+            },
+            headerTitleAlign: "center",
+            headerTintColor: "#ffffff",
             headerTitleStyle: {
-                fontFamily: "Kanit-Bold",
-                fontSize: 22,
+                fontFamily: "Kanit-SemiBold",
+                fontSize: 24,
             },
             headerLeft: () => (
-                <BackScreen
-                    onPress={() => navigation.goBack()}
-                    color="#FF7A00"
-                />
+                <BackScreen onPress={() => navigation.goBack()} color="white" />
             ),
         });
     }, []);

@@ -2,7 +2,7 @@ import { StyleSheet, Pressable, TouchableOpacity } from "react-native";
 import React from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const BackScreen = ({ onPress }) => {
+const BackScreen = ({ onPress, color = "black" }) => {
     return (
         <TouchableOpacity
             onPress={onPress}
@@ -12,7 +12,7 @@ const BackScreen = ({ onPress }) => {
                 paddingHorizontal: 12,
             }}
         >
-            <MaterialIcons name="arrow-back-ios" size={24} color="#FF7A00" />
+            <MaterialIcons name="arrow-back-ios" size={24} color={color} />
         </TouchableOpacity>
     );
 };

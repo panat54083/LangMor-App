@@ -1,16 +1,29 @@
 //Packages
 import React from "react";
 //Components
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
+import AddButton from "../../components/buttons/AddButton";
 
-const MyPost = () => {
+const MyPost = ({navigation}) => {
+    const handleAddLost = () => {
+        navigation.navigate("AddLost")
+    }
     return (
-        <View>
-            <Text>MyPost</Text>
-        </View>
+        <ScrollView style={styles.scrollView_container}>
+            <View style={styles.add_container}>
+                <AddButton onPress={handleAddLost}/>
+            </View>
+        </ScrollView>
     );
 };
 
 export default MyPost;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    scrollView_container: {
+        flex: 1,
+    },
+    add_container: {
+        marginHorizontal: 15,
+    },
+});
