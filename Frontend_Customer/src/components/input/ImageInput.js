@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     text: {
-        fontFamily: "Kanit-Bold",
+        fontFamily: "Kanit-SemiBold",
         fontSize: 20,
     },
 });

@@ -1,24 +1,65 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import React from "react";
+//Packages
+import React, { useEffect, useRef } from "react";
+//Components
+import {
+    StyleSheet,
+    Text,
+    View,
+    TouchableOpacity,
+    Animated,
+} from "react-native";
 
 const Checkbox = (props) => {
+    const {
+        onPress,
+        checked,
+        label,
+        price,
+        fontFamily = "Kanit-SemiBold",
+        backgroundColor = "#FFE8E0",
+    } = props;
+    const scaleValue = useRef(new Animated.Value(0)).current;
+    useEffect(() => {
+        if (checked) {
+            Animated.timing(scaleValue, {
+                toValue: 1,
+                duration: 200,
+                useNativeDriver: true,
+            }).start();
+        } else {
+            Animated.timing(scaleValue, {
+                toValue: 0,
+                duration: 200,
+                useNativeDriver: true,
+            }).start();
+        }
+    }, [checked]);
+
+    const innerSquareStyle = {
+        transform: [{ scale: scaleValue }],
+    };
     return (
-        <TouchableOpacity
-            style={styles.checkboxContainer}
-            onPress={props.onPress}
-        >
+        <TouchableOpacity style={[styles.checkboxContainer, {backgroundColor: backgroundColor}]} onPress={onPress}>
             <View style={styles.checkbox}>
-                {props.checked ? <View style={styles.checkedCheckbox} /> : null}
+                {checked ? (
+                    <Animated.View
+                        style={[styles.checkedCheckbox, innerSquareStyle]}
+                    />
+                ) : null}
             </View>
-            <Text style={styles.checkboxLabel}>{props.label}</Text>
-            <Text
-                style={[
-                    styles.checkboxLabel,
-                    { marginLeft: "auto", marginRight: "12.33%" },
-                ]}
-            >
-                {props.price} ฿
-            </Text>
+            <Text style={[styles.checkboxLabel, {fontFamily: fontFamily}]}>{label}</Text>
+            {price ? (
+                <Text
+                    style={[
+                        styles.checkboxLabel,
+                        { marginLeft: "auto", marginRight: "12.33%" },
+                    ]}
+                >
+                    {price} ฿
+                </Text>
+            ) : (
+                ""
+            )}
         </TouchableOpacity>
     );
 };
@@ -29,7 +70,6 @@ const styles = StyleSheet.create({
     checkboxContainer: {
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: "#FFE8E0",
         height: 40,
         marginBottom: 6,
         borderRadius: 20,
@@ -46,13 +86,14 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
     },
     checkedCheckbox: {
-        height: 10,
-        width: 10,
+        height: 12,
+        width: 12,
         backgroundColor: "#000000",
+        justifyContent: "center",
+        alignItems: "center",
     },
     checkboxLabel: {
         marginLeft: 10,
         fontSize: 16,
-        fontFamily: "Kanit-SemiBold",
     },
 });

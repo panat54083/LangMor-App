@@ -33,7 +33,6 @@ const AddLost = ({ navigation }) => {
         console.log("Save");
     };
     return (
-             <ScrollView style={{}}>
             <View style={styles.container}>
                 <View style={styles.input_container}>
                     <View style={{ marginBottom: 10 }}>
@@ -43,8 +42,19 @@ const AddLost = ({ navigation }) => {
                             setImage={setImage}
                         />
                     </View>
-                    <View>
-                    <RadioButton label={"eiei"}/>
+                    <View style={styles.radio_container}>
+                        <RadioButton
+                            label={"พบของหาย"}
+                            backgroundColor={null}
+                            fontFamily={"Kanit-Medium"}
+                            selected = {true}
+                        />
+                        <RadioButton
+                            label={"ตามหาของหาย"}
+                            backgroundColor={null}
+                            fontFamily={"Kanit-Medium"}
+                            selected = {false}
+                        />
                     </View>
                     <CustomTextInput
                         placeholder={"ชื่อของหาย"}
@@ -63,7 +73,6 @@ const AddLost = ({ navigation }) => {
                     <SubmitBtn label={"เพิ่ม"} onPress={handleSave} />
                 </View>
             </View>
-        </ScrollView>
     );
 };
 
@@ -73,6 +82,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
+    radio_container: {
+        flexDirection: "row",
+    },
     input_container: {
         marginTop: 10,
         marginHorizontal: 30,
@@ -80,8 +92,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     submit_container: {
-        flex: 1,
-        justifyContent: "flex-end",
-        padding: 20,
+                width: "89.33%",
+        position: "absolute",
+        alignSelf: "center",
+        bottom: 20,
     },
 });
