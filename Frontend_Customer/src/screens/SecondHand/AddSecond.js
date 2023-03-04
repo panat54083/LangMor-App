@@ -85,7 +85,5 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "flex-end",
         padding: 20,
-        // marginHorizontal: 20,
-        // backgroundColor: "red",
     },
 });

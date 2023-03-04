@@ -11,14 +11,18 @@ const RadioButton = (props) => {
                     ) : null}
                 </View>
                 <Text style={styles.radioButtonLabel}>{props.label}</Text>
-                <Text
-                    style={[
-                        styles.radioButtonLabel,
-                        { marginLeft: "auto", marginRight: "12.33%" },
-                    ]}
-                >
-                    {props.price} ฿
-                </Text>
+                {props.price ? (
+                    <Text
+                        style={[
+                            styles.radioButtonLabel,
+                            { marginLeft: "auto", marginRight: "12.33%" },
+                        ]}
+                    >
+                        {props.price} ฿
+                    </Text>
+                ) : (
+                    ""
+                )}
             </View>
         </TouchableOpacity>
     );
