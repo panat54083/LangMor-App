@@ -21,7 +21,7 @@ const lostItemSchema = new  mongoose.Schema({
     },
     closed: {
         type: Boolean,
-        defualt: false,
+        default: false,
     }
 })
 

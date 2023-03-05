@@ -1,5 +1,6 @@
 //Packages
 import React, { useEffect, useState, useContext } from "react";
+import axios from "axios"
 //Components
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
@@ -9,6 +10,7 @@ import SubmitBtn from "../../components/buttons/SubmitBtn";
 import RadioButton from "../../components/buttons/RadioButton";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
+import { IP_ADDRESS } from "@env";
 
 const AddLost = ({ navigation }) => {
     useEffect(() => {
@@ -47,6 +49,23 @@ const AddLost = ({ navigation }) => {
             setSelectedType(item);
         }
     };
+        const handleCreateLost= () => {
+        axios
+            .post(`http://${IP_ADDRESS}/lostItem/create`, {
+                name: name,
+                detail: detail,
+                type: selectedType,
+                picture: image,
+                owner_id: state.userData._id,
+                closed: false,
+            })
+            .then((res) => {
+                console.log(res.data.message);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
     const handleSave = () => {
         console.log("Save");
         console.log({
@@ -57,6 +76,7 @@ const AddLost = ({ navigation }) => {
             owner_id: state.userData._id,
             closed: false,
         });
+        handleCreateLost()
     };
     return (
         <View style={styles.container}>
