@@ -24,6 +24,8 @@ require("./models/Food");
 require("./models/Chatroom");
 require("./models/Message");
 require("./models/Order");
+require("./models/SecondHand");
+require("./models/LostItem");
 
 // Call MongoDB
 const Customer = mongoose.model("Customer");

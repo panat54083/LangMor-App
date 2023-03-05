@@ -1,11 +1,13 @@
 //Packages
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 //Components
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import CustomTextInput from "../../components/input/CustomTextInput";
 import ImageInput from "../../components/input/ImageInput";
 import SubmitBtn from "../../components/buttons/SubmitBtn";
+//Configs
+import UserContext from "../../hooks/context/UserContext";
 
 const AddSecond = ({ navigation }) => {
     useEffect(() => {
@@ -24,6 +26,10 @@ const AddSecond = ({ navigation }) => {
         });
     }, []);
 
+    // Configs
+    const { state } = useContext(UserContext);
+
+    // Variables
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");
     const [detail, setDetail] = useState("");
@@ -31,6 +37,14 @@ const AddSecond = ({ navigation }) => {
 
     const handleSave = () => {
         console.log("Save");
+        console.log({
+            name: name,
+            detail: detail,
+            price: price,
+            picture: image,
+            owner_id: state.userData._id,
+            closed: false,
+        });
     };
     return (
         <ScrollView style={{}}>
