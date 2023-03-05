@@ -2,22 +2,27 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 
 const Checkbox = (props) => {
+    const { checked, onPress, label, price, disable } = props;
     return (
         <TouchableOpacity
-            style={styles.checkboxContainer}
-            onPress={props.onPress}
+            style={[
+                styles.checkboxContainer,
+                disable ? { opacity: 0.5 } : null,
+            ]}
+            onPress={onPress}
+            disabled={disable}
         >
             <View style={styles.checkbox}>
-                {props.checked ? <View style={styles.checkedCheckbox} /> : null}
+                {checked ? <View style={styles.checkedCheckbox} /> : null}
             </View>
-            <Text style={styles.checkboxLabel}>{props.label}</Text>
+            <Text style={styles.checkboxLabel}>{label}</Text>
             <Text
                 style={[
                     styles.checkboxLabel,
                     { marginLeft: "auto", marginRight: "12.33%" },
                 ]}
             >
-                {props.price} ฿
+                {price} ฿
             </Text>
         </TouchableOpacity>
     );

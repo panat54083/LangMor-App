@@ -28,6 +28,7 @@ const SubmitBtn = ({
                         { backgroundColor: backgroundColor },
                         disable ? { opacity: 0.5 } : null,
                     ]}
+                    disabled={disable}
                 >
                     <Text style={[styles.text, { fontSize: fontSize }]}>
                         {label}
