@@ -10,6 +10,8 @@ app.use("/merchant", require("./routes/merchant"));
 app.use("/restaurant", require("./routes/restaurant"));
 app.use("/chatroom", require("./routes/chatroom"));
 app.use("/order", require("./routes/order"));
+app.use("/secondHand", require("./routes/secondHand"))
+app.use("/lostItem", require("./routes/lostItem"))
 
 //Setup Error handlers
 const errorHandlers = require("./handler/errorHandler");
