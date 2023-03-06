@@ -264,7 +264,9 @@ const FoodDetail = ({ route, navigation }) => {
                 <View style={{ marginLeft: "5.33%", marginTop: 14 }}>
                     <Text style={styles.foodNameText}>{food.name}</Text>
                     <View style={{ marginBottom: 11, marginTop: 10 }}>
-                        <Text style={styles.detailText}>{food.detail}</Text>
+                        <Text style={styles.detailText}>
+                            {food.description}
+                        </Text>
                     </View>
                 </View>
 
@@ -296,13 +298,22 @@ const FoodDetail = ({ route, navigation }) => {
                                           <Text style={styles.optionNameText}>
                                               {option.name}
                                           </Text>
+                                          {requiredCheckList.includes(
+                                              option.name
+                                          ) ? (
+                                              <Text
+                                                  style={[styles.requiredMark]}
+                                              >
+                                                  {"  "}*
+                                              </Text>
+                                          ) : null}
                                           {option.maximum > 1 ? (
                                               <Text
                                                   style={
                                                       styles.subOptionNameText
                                                   }
                                               >
-                                                  {" "}
+                                                  {"  "}
                                                   (เลือกได้สูงสุด{" "}
                                                   {option.maximum})
                                               </Text>
@@ -416,7 +427,9 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginBottom: 5,
         flexDirection: "row",
-        alignItems: "flex-end",
+        alignItems: "baseline",
+        // justifyContent: "space-between",
+        // backgroundColor: "green",
     },
     optionNameText: {
         fontFamily: "Kanit-Bold",
@@ -425,6 +438,7 @@ const styles = StyleSheet.create({
     subOptionNameText: {
         fontFamily: "Kanit-SemiBold",
         fontSize: 10,
+        // alignSelf: "flex-end",
     },
     optionChoiceContainer: {
         width: "80%",
@@ -438,5 +452,11 @@ const styles = StyleSheet.create({
         color: "#FF7A00",
         fontSize: 20,
         fontFamily: "Kanit-Bold",
+    },
+    requiredMark: {
+        fontFamily: "Kanit-SemiBold",
+        fontSize: 14,
+        color: "red",
+        // alignSelf: "flex-end",
     },
 });
