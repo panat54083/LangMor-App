@@ -3,20 +3,16 @@ import React from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const BtnToFeature = (props) => {
-    const { name, imgSrc, navigateToFeature} = props;
-    
-    
+    const { name, imgSrc, navigateToFeature } = props;
+
     return (
         <TouchableOpacity onPress={navigateToFeature}>
             <View style={styles.container}>
-                <View style={{ justifyContent: "center" }}>
+                <View style={styles.textContainer}>
                     <Text style={styles.text}>{name}</Text>
                 </View>
-                <View style={{ justifyContent: "center" }}>
-                    <Image
-                        source={imgSrc}
-                        style={{ width: 100, height: 100 }}
-                    />
+                <View style={styles.picContainer}>
+                    <Image source={imgSrc} style={{ width: 80, height: 80 }} />
                 </View>
             </View>
         </TouchableOpacity>
@@ -36,13 +32,16 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.9,
         shadowRadius: 10,
-        width: 320,
-        height: 140,
+        width: "80%",
+        height: 130,
+        alignSelf: "center",
         marginBottom: 13,
         backgroundColor: "#FFFFFF",
     },
     text: {
-        fontFamily:"Kanit-Bold",
+        fontFamily: "Kanit-Bold",
         fontSize: 38,
     },
+    textContainer: { flex: 2, justifyContent: "center", alignItems: "center" },
+    picContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
 });

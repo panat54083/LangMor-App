@@ -17,6 +17,7 @@ const Checkbox = (props) => {
         price,
         fontFamily = "Kanit-SemiBold",
         backgroundColor = "#FFE8E0",
+        disable = false,
     } = props;
     const scaleValue = useRef(new Animated.Value(0)).current;
     useEffect(() => {
@@ -39,7 +40,15 @@ const Checkbox = (props) => {
         transform: [{ scale: scaleValue }],
     };
     return (
-        <TouchableOpacity style={[styles.checkboxContainer, {backgroundColor: backgroundColor}]} onPress={onPress}>
+        <TouchableOpacity
+            style={[
+                styles.checkboxContainer,
+                { backgroundColor: backgroundColor },
+                disable ? { backgroundColor: "#F3F3F3", opacity: 0.5} : null,
+            ]}
+            onPress={onPress}
+            disabled={disable}
+        >
             <View style={styles.checkbox}>
                 {checked ? (
                     <Animated.View
@@ -47,7 +56,9 @@ const Checkbox = (props) => {
                     />
                 ) : null}
             </View>
-            <Text style={[styles.checkboxLabel, {fontFamily: fontFamily}]}>{label}</Text>
+            <Text style={[styles.checkboxLabel, { fontFamily: fontFamily }]}>
+                {label}
+            </Text>
             {price ? (
                 <Text
                     style={[
@@ -95,5 +106,6 @@ const styles = StyleSheet.create({
     checkboxLabel: {
         marginLeft: 10,
         fontSize: 16,
+        fontFamily: "Kanit-SemiBold"
     },
 });

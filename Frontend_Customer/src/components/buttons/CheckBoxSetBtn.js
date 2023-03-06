@@ -3,7 +3,13 @@ import React, { useEffect, useState } from "react";
 import Checkbox from "./CheckBox";
 
 const CheckBoxSetBtn = (props) => {
-    const { option, handlerOnCheckBoxChangeVal, seleValue, selePrice } = props;
+    const {
+        option,
+        handlerOnCheckBoxChangeVal,
+        seleValue,
+        selePrice,
+        maximum,
+    } = props;
     const [checkedValues, setCheckedValues] = useState(
         seleValue ? seleValue : []
     );
@@ -42,26 +48,47 @@ const CheckBoxSetBtn = (props) => {
         };
         handlerOnCheckBoxChangeVal(data);
     }, [checkedValues, checkedValuesPrice]);
+
+    const createChackBox = (choice, disable = false) => {
+        return (
+            <View key={choice.name}>
+                <Checkbox
+                    label={choice.name}
+                    price={
+                        choice.method === "increase"
+                            ? choice.price
+                            : choice.price * -1
+                    }
+                    value={choice.name}
+                    checked={checkedValues.includes(choice.name)}
+                    onPress={() => handleOnPress(choice)}
+                    disable={disable}
+                />
+            </View>
+        );
+    };
     return (
-        <View>
+        <>
             {option.choices.map((choice) => {
                 return (
                     <View key={choice.name}>
-                        <Checkbox
-                            label={choice.name}
-                            price={
-                                choice.method === "increase"
-                                    ? choice.price
-                                    : choice.price * -1
-                            }
-                            value={choice.name}
-                            checked={checkedValues.includes(choice.name)}
-                            onPress={() => handleOnPress(choice)}
-                        />
+                        {checkedValues.length === maximum && maximum !== 0 ? (
+                            <View key={choice.name}>
+                                {checkedValues.includes(choice.name) ? (
+                                    <>{createChackBox(choice)}</>
+                                ) : (
+                                    <>{createChackBox(choice, true)}</>
+                                )}
+                            </View>
+                        ) : (
+                            <View key={choice.name}>
+                                {createChackBox(choice)}
+                            </View>
+                        )}
                     </View>
                 );
             })}
-        </View>
+        </>
     );
 };
 

@@ -85,6 +85,7 @@ const FoodDetail = ({ route, navigation }) => {
     ];
     const [confirmOption, setConfirmOption] = useState(() => {
         if (editOrder) {
+            setrequiredCheckList(editOrder.requiredCheckList);
             return editOrder.options;
         } else {
             // console.log('HElo');
@@ -223,6 +224,7 @@ const FoodDetail = ({ route, navigation }) => {
                     moreDetail: moreDetail,
                     amount: number,
                     price: price,
+                    requiredCheckList: requiredCheckList,
                 };
                 newDetail.restaurant = restaurant;
                 newDetail.foods[editOrder.id - 1] = foodData;
@@ -238,6 +240,7 @@ const FoodDetail = ({ route, navigation }) => {
                     moreDetail: moreDetail,
                     amount: number,
                     price: price,
+                    requiredCheckList: requiredCheckList,
                 };
                 newDetail.restaurant = restaurant;
                 newDetail.foods.push(foodData);
@@ -293,12 +296,17 @@ const FoodDetail = ({ route, navigation }) => {
                                           <Text style={styles.optionNameText}>
                                               {option.name}
                                           </Text>
-                                          <Text
-                                              style={styles.subOptionNameText}
-                                          >
-                                              {" "}
-                                              (เลือกได้สูงสุด {option.maximum})
-                                          </Text>
+                                          {option.maximum > 1 ? (
+                                              <Text
+                                                  style={
+                                                      styles.subOptionNameText
+                                                  }
+                                              >
+                                                  {" "}
+                                                  (เลือกได้สูงสุด{" "}
+                                                  {option.maximum})
+                                              </Text>
+                                          ) : null}
                                       </View>
                                       <View
                                           style={styles.optionChoiceContainer}
@@ -346,6 +354,7 @@ const FoodDetail = ({ route, navigation }) => {
                                                             )
                                                           : null
                                                   }
+                                                  maximum={option.maximum}
                                               />
                                           )}
                                       </View>
