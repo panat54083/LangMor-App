@@ -15,10 +15,10 @@ const SellSecond = ({ navigation }) => {
     //Variables
     const [listSecondHands, setListSecondHands] = useState([]);
 
-    const api_getSeconds = () => {
+    const api_getMyPosts= () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/secondHand/get?owner_id=${state.userData._id}`
+                `http://${IP_ADDRESS}/secondHand/getMyPosts?owner_id=${state.userData._id}`
             )
             .then((res) => {
                 console.log(res.data.message);
@@ -34,7 +34,7 @@ const SellSecond = ({ navigation }) => {
     };
 
     const handleDebugger = () => {
-        api_getSeconds();
+        api_getMyPosts();
     };
 
     return (
@@ -44,7 +44,7 @@ const SellSecond = ({ navigation }) => {
                 <AddButton onPress={handleAddSecond} />
             </View>
             {listSecondHands.map((item, index) => (
-                <Text key={index}>second.name</Text>
+                <Text key={index}>{item.name}</Text>
             ))}
         </ScrollView>
     );

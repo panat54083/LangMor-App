@@ -17,7 +17,7 @@ exports.createSecondHand = async (req, res) => {
     });
 };
 
-exports.getSecondHands = async (req, res) => {
+exports.getMySecondHandsPosts = async (req, res) => {
     const { owner_id } = req.query;
     const secondHands = await SecondHand.find({ owner_id: owner_id, closed: false });
     res.json({
