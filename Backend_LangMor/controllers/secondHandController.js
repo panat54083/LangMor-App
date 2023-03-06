@@ -16,3 +16,12 @@ exports.createSecondHand = async (req, res) => {
         message: "Created Second Hand done...",
     });
 };
+
+exports.getSecondHands = async (req, res) => {
+    const { owner_id } = req.query;
+    const secondHands = await SecondHand.find({ owner_id: owner_id, closed: false });
+    res.json({
+        message: "Get Second Hands done...",
+        listSecondHands: secondHands,
+    });
+};

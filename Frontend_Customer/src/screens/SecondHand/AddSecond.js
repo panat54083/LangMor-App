@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import * as LIP from "../../lib/lm-image-picker";
 //Components
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View, Button } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import CustomTextInput from "../../components/input/CustomTextInput";
 import ImageInput from "../../components/input/ImageInput";
@@ -38,7 +38,7 @@ const AddSecond = ({ navigation }) => {
     const [detail, setDetail] = useState("");
     const [image, setImage] = useState(null);
 
-    const createSecond = (picture) => {
+    const api_createSecond = (picture) => {
         axios
             .post(`http://${IP_ADDRESS}/secondHand/create`, {
                 name: name,
@@ -55,13 +55,13 @@ const AddSecond = ({ navigation }) => {
                 console.log(err);
             });
     };
-
+    
     const handleSave = () => {
         setIsLoaded(true);
         if (image) {
             LIP.handleUpload(image, state.userData._id)
                 .then((data) => {
-                    createSecond(data);
+                    api_createSecond(data);
                     setImage(null);
                     setIsLoaded(false);
                     navigation.navigate("SecondTabs", { screen: "SellSecond" });
@@ -70,13 +70,18 @@ const AddSecond = ({ navigation }) => {
                     console.log(err);
                 });
         } else {
-            createSecond(null);
+            api_createSecond(null);
             setIsLoaded(false);
             navigation.navigate("SecondTabs", { screen: "SellSecond" });
         }
     };
+
+    const handleDebugger = () => {
+    };
+
     return (
         <ScrollView style={{}}>
+            <Button title="Debugger" onPress={handleDebugger} />
             <View style={styles.container}>
                 <View style={styles.input_container}>
                     <View style={{ marginBottom: 10 }}>
