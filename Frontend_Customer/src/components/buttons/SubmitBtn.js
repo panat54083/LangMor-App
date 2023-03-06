@@ -26,11 +26,11 @@ const SubmitBtn = ({
                         styles.button,
                         styles.shadow,
                         { backgroundColor: backgroundColor },
-                        disable ? { opacity: 0.5 } : null,
+                        disable ? { backgroundColor: "#F6F6F6"} : null,
                     ]}
                     disabled={disable}
                 >
-                    <Text style={[styles.text, { fontSize: fontSize }]}>
+                    <Text style={[styles.text, { fontSize: fontSize }, disable ? {color: "#CCCCCC"}: null]}>
                         {label}
                     </Text>
                 </TouchableOpacity>
@@ -39,7 +39,7 @@ const SubmitBtn = ({
                     style={[
                         styles.button,
                         styles.shadow,
-                        { backgroundColor: "#DFDFDF" },
+                        { backgroundColor: "#D3D3D3" },
                     ]}
                 >
                     <View style={{ marginVertical: 5, flexDirection: "row" }}>

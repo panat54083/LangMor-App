@@ -1,6 +1,7 @@
 //Packages
 import React, { useEffect, useState, useContext } from "react";
-import axios from "axios"
+import axios from "axios";
+import * as LIP from "../../lib/lm-image-picker";
 //Components
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
@@ -31,7 +32,7 @@ const AddLost = ({ navigation }) => {
 
     // Configs
     const { state } = useContext(UserContext);
-
+    const [isLoaded, setIsLoaded] = useState(false);
     // Variables
     const [name, setName] = useState("");
     const [detail, setDetail] = useState("");
@@ -49,13 +50,14 @@ const AddLost = ({ navigation }) => {
             setSelectedType(item);
         }
     };
-        const handleCreateLost= () => {
+
+    const createLost = (picture) => {
         axios
             .post(`http://${IP_ADDRESS}/lostItem/create`, {
                 name: name,
                 detail: detail,
                 type: selectedType,
-                picture: image,
+                picture: picture,
                 owner_id: state.userData._id,
                 closed: false,
             })
@@ -66,18 +68,27 @@ const AddLost = ({ navigation }) => {
                 console.log(err);
             });
     };
+
     const handleSave = () => {
-        console.log("Save");
-        console.log({
-            name: name,
-            detail: detail,
-            type: selectedType,
-            picture: image,
-            owner_id: state.userData._id,
-            closed: false,
-        });
-        handleCreateLost()
+        setIsLoaded(true);
+        if (image) {
+            LIP.handleUpload(image, state.userData._id)
+                .then((data) => {
+                    createLost(data);
+                    setImage(null);
+                    setIsLoaded(false);
+                    navigation.navigate("LostTabs", { screen: "MyPost" });
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } else {
+            createLost(null);
+            setIsLoaded(false);
+            navigation.navigate("LostTabs", { screen: "MyPost" });
+        }
     };
+
     return (
         <View style={styles.container}>
             <View style={styles.input_container}>
@@ -106,7 +117,9 @@ const AddLost = ({ navigation }) => {
                     onChangeText={setName}
                 />
                 <CustomTextInput
-                    placeholder={"รายละเอียดของหาย"}
+                    placeholder={
+                        "รายละเอียดของหาย\n- สถานที่ที่คาดว่าทำหาย\n- เวลาที่ทำหาย"
+                    }
                     multiline={true}
                     numberOfLines={5}
                     value={detail}
@@ -114,7 +127,11 @@ const AddLost = ({ navigation }) => {
                 />
             </View>
             <View style={styles.submit_container}>
-                <SubmitBtn label={"เพิ่ม"} onPress={handleSave} />
+                <SubmitBtn
+                    label={"เพิ่มของหาย"}
+                    onPress={handleSave}
+                    isLoaded={isLoaded}
+                />
             </View>
         </View>
     );

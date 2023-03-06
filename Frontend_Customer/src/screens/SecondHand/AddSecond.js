@@ -1,6 +1,7 @@
 //Packages
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
+import * as LIP from "../../lib/lm-image-picker";
 //Components
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
@@ -30,19 +31,20 @@ const AddSecond = ({ navigation }) => {
 
     // Configs
     const { state } = useContext(UserContext);
+    const [isLoaded, setIsLoaded] = useState(false);
     // Variables
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");
     const [detail, setDetail] = useState("");
     const [image, setImage] = useState(null);
-    
-    const handleCreateSecond = () => {
+
+    const createSecond = (picture) => {
         axios
             .post(`http://${IP_ADDRESS}/secondHand/create`, {
                 name: name,
                 detail: detail,
                 price: price,
-                picture: image,
+                picture: picture,
                 owner_id: state.userData._id,
                 closed: false,
             })
@@ -55,16 +57,23 @@ const AddSecond = ({ navigation }) => {
     };
 
     const handleSave = () => {
-        console.log("Save");
-        console.log({
-            name: name,
-            detail: detail,
-            price: price,
-            picture: image,
-            owner_id: state.userData._id,
-            closed: false,
-        });
-        handleCreateSecond()
+        setIsLoaded(true);
+        if (image) {
+            LIP.handleUpload(image, state.userData._id)
+                .then((data) => {
+                    createSecond(data);
+                    setImage(null);
+                    setIsLoaded(false);
+                    navigation.navigate("SecondTabs", { screen: "SellSecond" });
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } else {
+            createSecond(null);
+            setIsLoaded(false);
+            navigation.navigate("SecondTabs", { screen: "SellSecond" });
+        }
     };
     return (
         <ScrollView style={{}}>
@@ -96,7 +105,11 @@ const AddSecond = ({ navigation }) => {
                     />
                 </View>
                 <View style={styles.submit_container}>
-                    <SubmitBtn label={"เพิ่มสินค้า"} onPress={handleSave} />
+                    <SubmitBtn
+                        label={"เพิ่มสินค้า"}
+                        onPress={handleSave}
+                        isLoaded={isLoaded}
+                    />
                 </View>
             </View>
         </ScrollView>
