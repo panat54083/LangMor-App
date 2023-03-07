@@ -15,7 +15,11 @@ const CardMarket = (props) => {
                         <View>
                             <Image
                                 style={styles.logo}
-                                source={restaurant.picture ? { uri: `${restaurant.picture.url}`}: ""}
+                                source={
+                                    restaurant.picture
+                                        ? { uri: `${restaurant.picture.url}` }
+                                        : ""
+                                }
                             />
                         </View>
                         <View style={{ width: "65%", height: 88 }}>
@@ -24,7 +28,9 @@ const CardMarket = (props) => {
                             </Text>
                             <View>
                                 {restaurant.types ? (
-                                    <Text style={styles.body}>ขาย {restaurant.types.join()} </Text>
+                                    <Text style={styles.body}>
+                                        ขาย {restaurant.types.join()}{" "}
+                                    </Text>
                                 ) : null}
                             </View>
                         </View>
@@ -46,7 +52,7 @@ const styles = StyleSheet.create({
     },
     container: {
         width: "92%",
-        height: 127,
+        height: 110,
         alignItems: "center",
         justifyContent: "flex-start",
         flexDirection: "row",
@@ -55,18 +61,18 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         borderRadius: 10,
         width: 350,
-        height: 127,
-        marginBottom: 15,
+        // height: 110,
+        marginBottom: 10,
     },
     elevation: {
         elevation: 5,
         shadowColor: "#171717",
     },
     restName: {
-        fontSize: 22,
+        fontSize: 18,
         fontFamily: "Kanit-Bold",
     },
     body: {
         fontFamily: "Kanit-Medium",
-    }
+    },
 });

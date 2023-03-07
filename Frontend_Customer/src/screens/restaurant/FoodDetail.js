@@ -1,4 +1,11 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+    Modal,
+    TouchableOpacity,
+} from "react-native";
 import BasketContext from "../../hooks/context/BasketContext";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import FoodDetailHeader from "../../components/headers/FoodDetailHeader";
@@ -6,8 +13,9 @@ import RadioSetBtn from "../../components/buttons/RadioSetBtn";
 import CheckBoxSetBtn from "../../components/buttons/CheckBoxSetBtn";
 import MoreDetailCard from "../../components/cards/MoreDetailCard";
 import SubmitBtn from "../../components/buttons/SubmitBtn";
-
+import AlertChangeRes from "../../components/cards/AlertChangeRes";
 const FoodDetail = ({ route, navigation }) => {
+    const [modalVisible, setModalVisible] = useState(false);
     const { basketDetail, setBasketDetail } = useContext(BasketContext);
     const { food, restaurant, editOrder } = route.params;
     const [isAllInputsFilled, setIsAllInputsFilled] = useState(false);
@@ -214,41 +222,49 @@ const FoodDetail = ({ route, navigation }) => {
     //     console.log(basketDetail);
     // }, [basketDetail]);
     const handleOnPressSubmit = () => {
-        if (editOrder) {
-            setBasketDetail((prevDetail) => {
-                const newDetail = { ...prevDetail };
-                const foodData = {
-                    id: editOrder.id,
-                    food: food,
-                    options: confirmOption,
-                    moreDetail: moreDetail,
-                    amount: number,
-                    price: price,
-                    requiredCheckList: requiredCheckList,
-                };
-                newDetail.restaurant = restaurant;
-                newDetail.foods[editOrder.id - 1] = foodData;
-                return newDetail;
-            });
-        } else {
-            setBasketDetail((prevDetail) => {
-                const newDetail = { ...prevDetail };
-                const foodData = {
-                    id: prevDetail.foods.length + 1,
-                    food: food,
-                    options: confirmOption,
-                    moreDetail: moreDetail,
-                    amount: number,
-                    price: price,
-                    requiredCheckList: requiredCheckList,
-                };
-                newDetail.restaurant = restaurant;
-                newDetail.foods.push(foodData);
-                return newDetail;
-            });
-        }
+        if (
+            basketDetail.restaurant === null ||
+            basketDetail.restaurant.name === restaurant.name
+        ) {
+            if (editOrder) {
+                setBasketDetail((prevDetail) => {
+                    const newDetail = { ...prevDetail };
+                    const foodData = {
+                        id: editOrder.id,
+                        food: food,
+                        options: confirmOption,
+                        moreDetail: moreDetail,
+                        amount: number,
+                        price: price,
+                        requiredCheckList: requiredCheckList,
+                    };
+                    newDetail.restaurant = restaurant;
+                    newDetail.foods[editOrder.id - 1] = foodData;
+                    return newDetail;
+                });
+            } else {
+                setBasketDetail((prevDetail) => {
+                    const newDetail = { ...prevDetail };
+                    const foodData = {
+                        id: prevDetail.foods.length + 1,
+                        food: food,
+                        options: confirmOption,
+                        moreDetail: moreDetail,
+                        amount: number,
+                        price: price,
+                        requiredCheckList: requiredCheckList,
+                    };
+                    newDetail.restaurant = restaurant;
+                    newDetail.foods.push(foodData);
+                    return newDetail;
+                });
+            }
 
-        navigation.goBack();
+            navigation.goBack();
+        } else {
+            setModalVisible((prev) => !prev);
+            return;
+        }
     };
 
     const handlerOnPressBack = () => {
@@ -395,6 +411,13 @@ const FoodDetail = ({ route, navigation }) => {
                     onPress={handleOnPressSubmit}
                 />
             </View>
+            <AlertChangeRes
+                modalVisible={modalVisible}
+                toggleModalVisible={() => {
+                    setModalVisible(!modalVisible);
+                }}
+                handleOnPressSubmit={handleOnPressSubmit}
+            />
         </View>
     );
 };

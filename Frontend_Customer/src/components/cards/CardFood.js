@@ -103,13 +103,13 @@ export default CardFood;
 
 const styles = StyleSheet.create({
     logo: {
-        width: 90,
-        height: 90,
+        width: 75,
+        height: 75,
         borderRadius: 10,
         margin: 16,
     },
     container: {
-        height: 127,
+        height: 90,
         alignItems: "center",
         // justifyContent: "flex-start",
         flexDirection: "row",
@@ -119,7 +119,6 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         borderRadius: 10,
         width: "93%",
-        height: 127,
         borderWidth: 1,
         borderColor: "#ddd",
         shadowColor: "#000000",
@@ -128,16 +127,16 @@ const styles = StyleSheet.create({
         shadowRadius: 10,
     },
     foodName: {
-        fontSize: 18,
+        fontSize: 16,
         fontFamily: "Kanit-Bold",
     },
     price: {
-        fontSize: 18,
+        fontSize: 16,
         fontFamily: "Kanit-Bold",
         color: "#FF4200",
     },
     pricedetails: {
-        fontSize: 13,
+        fontSize: 11,
         fontFamily: "Kanit-Medium",
     },
     priceContainer: {
@@ -146,7 +145,7 @@ const styles = StyleSheet.create({
     },
     foodDetail: {
         marginBottom: 19,
-        fontSize: 10,
+        fontSize: 8,
         fontFamily: "Kanit-Medium",
     },
 });

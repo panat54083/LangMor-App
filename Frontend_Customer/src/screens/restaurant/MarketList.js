@@ -1,5 +1,5 @@
 //Packages
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { IP_ADDRESS } from "@env";
 //Components
@@ -17,11 +17,13 @@ import AddressBox from "../../components/buttons/AddressBox";
 import CardMarket from "../../components/cards/CardMarket";
 import CardRestaurantTag from "../../components/cards/CardRestaurantTag";
 import BackScreen from "../../components/buttons/BackScreen";
+import BasketContext from "../../hooks/context/BasketContext";
 
 const MarketList = ({ navigation }) => {
     const [restaurants, setRestaurants] = useState();
     const [searchQuery, setSearchQuery] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const { basketDetail, setBasketDetail } = useContext(BasketContext);
     useEffect(() => {
         // setHeader
         navigation.setOptions({
@@ -159,9 +161,9 @@ const MarketList = ({ navigation }) => {
 
     return (
         <View style={{ flex: 1 }}>
-            <View style={{ marginTop: 18, marginLeft: "7%" }}>
+            {/* <View style={{ marginTop: 18, marginLeft: "7%" }}>
                 <AddressBox />
-            </View>
+            </View> */}
             <View
                 style={{
                     width: "100%",
@@ -172,7 +174,7 @@ const MarketList = ({ navigation }) => {
                 <Searchbar height="55" onSearchBoxChange={onSearchBoxChange} />
             </View>
 
-            <View>
+            {/* <View>
                 <Text style={styles.TagsText}>หมวดหมู่</Text>
                 <View style={{}}>
                     <FlatList
@@ -188,7 +190,7 @@ const MarketList = ({ navigation }) => {
                         horizontal={true}
                     />
                 </View>
-            </View>
+            </View> */}
             <View style={styles.tick}></View>
             {isLoading ? (
                 <ActivityIndicator />
