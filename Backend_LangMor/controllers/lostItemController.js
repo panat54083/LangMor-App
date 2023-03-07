@@ -19,10 +19,30 @@ exports.createLostItem = async (req, res) => {
 
 exports.getMyLostItemsPosts = async (req, res) => {
     const { owner_id } = req.query;
-    const lostItems = await LostItem.find({ owner_id: owner_id, closed: false });
+    const lostItems = await LostItem.find({
+        owner_id: owner_id,
+        closed: false,
+    });
 
     res.json({
         message: "Get Lost Items done...",
-        listLostItems: lostItems,
+        listOfLostItems: lostItems,
     });
+};
+
+exports.getAllLostItems = async (req, res) => {
+    const { type } = req.query;
+    if (type === "find" || type === "found") {
+        const lostItems = await LostItem.find({ type: type });
+        res.json({
+            message: `Get All ${type} Lost items done...`,
+            listOfLostItems: lostItems,
+        });
+    } else {
+        const lostItems = await LostItem.find({});
+        res.json({
+            message: "Get All Lost items done...",
+            listOfLostItems: lostItems,
+        });
+    }
 };

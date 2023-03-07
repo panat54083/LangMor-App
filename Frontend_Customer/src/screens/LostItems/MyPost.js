@@ -30,7 +30,7 @@ const MyPost = ({ navigation }) => {
             )
             .then((res) => {
                 console.log(res.data.message);
-                setListLostItems(res.data.listLostItems);
+                setListLostItems(res.data.listOfLostItems);
             })
             .catch((err) => {
                 console.log(err);

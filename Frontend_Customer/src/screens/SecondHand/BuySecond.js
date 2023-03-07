@@ -37,7 +37,7 @@ const BuySecond = ({ navigation }) => {
 
     return (
         <ScrollView>
-            <Text>BuySecond page</Text>
+            <Text>BuySecond screen</Text>
             {
                 listSecondHands.map((item, index)=>(
                     <Text key={index}>{item.name}</Text>
