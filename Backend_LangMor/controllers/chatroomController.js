@@ -5,16 +5,18 @@ const Customer = mongoose.model("Customer");
 const Restaurant = mongoose.model("Restaurant")
 
 exports.createChatroom = async (req, res) => {
-    const { customerId, restaurantId } = req.body;
+    const { customerId, merchantId, type} = req.body;
     const chatroomExist = await Chatroom.findOne({
         customerId: customerId,
-        restaurantId: restaurantId,
+        merchantId: merchantId,
+        type: type,
         closed: false,
     });
     if (!chatroomExist) {
         const chatroom = new Chatroom({
             customerId: customerId,
-            restaurantId: restaurantId,
+            merchantId: merchantId,
+            type: type,
         });
         await chatroom.save();
 
@@ -36,19 +38,20 @@ exports.closeChatroom = async (req, res) => {
 };
 
 exports.getChatrooms = async (req, res) => {
-    const { customerId, restaurantId } = req.query;
+    const { customerId, merchantId, type} = req.query;
 
     if (customerId) {
         const data = []
         const chatrooms = await Chatroom.find({
             customerId: customerId,
+            type: type,
             closed: false,
         });
 
         const extraChatrooms = await Promise.all(
             chatrooms.map(async (room, index) => {
-                const restaurant = await Restaurant.findById(room.restaurantId);
-                const tamp_data = { chatroom: room, restaurant: restaurant};
+                const merchant = await Customer.findById(room.merchantId);
+                const tamp_data = { chatroom: room, merchant: merchant};
                 return [...data, tamp_data];
             })
         );
@@ -56,10 +59,12 @@ exports.getChatrooms = async (req, res) => {
             message: "Get All Chatroom",
             chatrooms: extraChatrooms[0],
         });
-    } else if (restaurantId) {
+
+    } else if (merchantId) {
         const data = [];
         const chatrooms = await Chatroom.find({
-            restaurantId: restaurantId,
+            merchantId: merchantId,
+            type: type,
             closed: false,
         });
         const extraChatrooms = await Promise.all(
@@ -69,7 +74,6 @@ exports.getChatrooms = async (req, res) => {
                 return [...data, tamp_data];
             })
         );
-        // console.log(extraChatrooms)
         res.json({
             message: "Get All Chatroom",
             chatrooms: extraChatrooms[0],
