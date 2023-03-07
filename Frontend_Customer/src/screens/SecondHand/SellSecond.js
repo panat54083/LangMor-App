@@ -49,6 +49,7 @@ const SellSecond = ({ navigation }) => {
     };
 
     const handleDebugger = () => {
+        navigation.navigate("ChatTabs", {screen:"ChatSecondHand"})
     };
 
     return (

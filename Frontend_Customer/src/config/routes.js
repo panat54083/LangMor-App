@@ -17,6 +17,7 @@ import AddLost from "../screens/LostItems/AddLost";
 import TapStackRoutes from "./TapStackRoutes";
 import SecondTabs from "./Tabs/SecondTabs";
 import LostTabs from "./Tabs/LostTabs";
+import ChatTabs from "./Tabs/ChatTabs";
 //config
 const Stack = createStackNavigator();
 
@@ -61,6 +62,7 @@ const MyStack = ({}) => {
                     <Stack.Screen name="AddSecond" component={AddSecond}/>
                     <Stack.Screen name="LostTabs" component={LostTabs} />
                     <Stack.Screen name="AddLost" component={AddLost}/>
+                    <Stack.Screen name="ChatTabs" component={ChatTabs}/>
                 </>
             ) : (
                 <>

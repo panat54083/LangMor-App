@@ -46,10 +46,10 @@ const MyPost = ({ navigation }) => {
     };
 
     const handleContact = () => {
-        console.log("Contact");
     };
-
+    
     const handleDebugger = () => {
+        navigation.navigate("ChatTabs", {screen:"ChatLostItem"})
     };
     return (
         <ScrollView style={styles.scrollView_container}>
