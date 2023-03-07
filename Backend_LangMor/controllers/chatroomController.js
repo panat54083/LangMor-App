@@ -5,10 +5,11 @@ const Customer = mongoose.model("Customer");
 const Restaurant = mongoose.model("Restaurant")
 
 exports.createChatroom = async (req, res) => {
-    const { customerId, merchantId, type} = req.body;
+    const { customerId, merchantId, type, itemId} = req.body;
     const chatroomExist = await Chatroom.findOne({
         customerId: customerId,
         merchantId: merchantId,
+        itemId: itemId,
         type: type,
         closed: false,
     });
@@ -16,6 +17,7 @@ exports.createChatroom = async (req, res) => {
         const chatroom = new Chatroom({
             customerId: customerId,
             merchantId: merchantId,
+            itemId: itemId,
             type: type,
         });
         await chatroom.save();
@@ -24,6 +26,12 @@ exports.createChatroom = async (req, res) => {
             chatroomData: chatroom,
             message: "Chatroom is created!",
         });
+    } else {
+        res.json({
+            chatroomData: chatroomExist,
+            message: "Chatroom is Existed!",
+        });
+
     }
 };
 

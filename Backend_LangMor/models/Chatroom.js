@@ -10,6 +10,10 @@ const chatroomSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             required: true,
         },
+        itemId: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+        },
         type:{
             type: String,
             enum: ["LostItem", "SecondHand"]

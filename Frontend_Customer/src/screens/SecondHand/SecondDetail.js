@@ -13,9 +13,9 @@ import { IP_ADDRESS } from "@env";
 const SecondDetail = ({ route, navigation }) => {
     //Config
     const { secondData } = route.params;
-    const {state} = useContext(UserContext)
+    const { state } = useContext(UserContext);
     //data
-
+    const [chatroomData, setChatroomData] = useState(null);
     //start-up
     useEffect(() => {
         navigation.setOptions({
@@ -32,18 +32,49 @@ const SecondDetail = ({ route, navigation }) => {
             ),
         });
     }, []);
-    
+    useEffect(() => {
+        if (chatroomData) {
+            navigation.navigate("Chat2", {
+                itemData: secondData,
+                chatroomData: chatroomData,
+            });
+        }
+    }, [chatroomData]);
+    const api_createChatroom = async () => {
+        axios
+            .post(`http://${IP_ADDRESS}/chatroom/create`, {
+                customerId: state.userData._id,
+                merchantId: secondData.owner_id,
+                itemId: secondData._id,
+                type: "SecondHand",
+            })
+            .then((res) => {
+                console.log(res.data.message);
+                // console.log(res.data.chatroomData);
+                setChatroomData(res.data.chatroomData);
+            })
+            .catch((err) => {
+                if (
+                    err &&
+                    err.response &&
+                    err.response.data &&
+                    err.response.data.message
+                )
+                    console.log("Error", err.response.data.message);
+            });
+    };
     const handleDebugger = () => {
-        console.log(secondData)
-    }
-    
-    const handleContact= () => {
-        console.log(secondData)
-    }
+        console.log(secondData);
+    };
+
+    const handleContact = () => {
+        api_createChatroom();
+        // navigation.navigate("Chat2", { itemData: secondData });
+    };
     return (
         <View>
-            {/* <Button title="Debugger" onPress={handleDebugger}/> */}
-            <SubmitBtn label={"เริ่มแชทกับผู้ขาย"} onPress={handleContact}/>
+            <Button title="Debugger" onPress={handleDebugger} />
+            <SubmitBtn label={"เริ่มแชทกับผู้ขาย"} onPress={handleContact} />
         </View>
     );
 };
