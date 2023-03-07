@@ -1,9 +1,11 @@
 //Packages
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
+import { useIsFocused } from "@react-navigation/native";
 //Components
 import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
 import AddButton from "../../components/buttons/AddButton";
+import CardTwoSide from "../../components/cards/CardTwoSide";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
@@ -11,9 +13,15 @@ import { IP_ADDRESS } from "@env";
 const MyPost = ({ navigation }) => {
     //Configs
     const { state } = useContext(UserContext);
-
+    const isFocused = useIsFocused();
     //Variables
     const [listLostItems, setListLostItems] = useState([]);
+    
+    useEffect(() => {
+        if (isFocused) {
+            api_getMyPosts();
+        }
+    }, [isFocused]);
 
     const api_getMyPosts = () => {
         axios
@@ -33,18 +41,33 @@ const MyPost = ({ navigation }) => {
         navigation.navigate("AddLost");
     };
 
+    const handleItem = () => {
+        console.log("Item");
+    };
+
+    const handleContact = () => {
+        console.log("Contact");
+    };
+
     const handleDebugger = () => {
-        api_getMyPosts();
     };
     return (
         <ScrollView style={styles.scrollView_container}>
-            <Button title="Debugger" onPress={handleDebugger} />
+            {/* <Button title="Debugger" onPress={handleDebugger} /> */}
             <View style={styles.add_container}>
                 <AddButton onPress={handleAddLost} />
             </View>
-            {listLostItems.map((item, index) => (
-                <Text key={index}>{item.name}</Text>
-            ))}
+            <View style={{ marginHorizontal: 16 }}>
+                {listLostItems.map((item, index) => (
+                    <CardTwoSide
+                        key={index}
+                        label={item.name}
+                        numberOfContact={0}
+                        onPressLeft={handleItem}
+                        onPressRight={handleContact}
+                    />
+                ))}
+            </View>
         </ScrollView>
     );
 };
