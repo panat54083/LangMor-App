@@ -3,7 +3,7 @@ import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
 //Components
-import { StyleSheet, Text, View, ScrollView, Botton } from "react-native";
+import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
@@ -31,11 +31,20 @@ const FindLost = ({ navigation }) => {
                 console.log(err);
             });
     };
+    const handleFindLostDetail = (data) => {
+        // console.log(data);
+        navigation.navigate("LostDetail",{lostData: data})
+    };
     return (
         <View>
             <Text>FindLost screen</Text>
             {listOfLostItems.map((item, index) => (
-                <Text key={index}>{item.name}</Text>
+                <View key={index} style={{ marginBottom: 5 }}>
+                    <Button
+                        title={item.name}
+                        onPress={() => handleFindLostDetail(item)}
+                    />
+                </View>
             ))}
         </View>
     );

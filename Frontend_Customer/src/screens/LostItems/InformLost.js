@@ -3,12 +3,12 @@ import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
 //Components
-import { StyleSheet, Text, View, ScrollView, Botton } from "react-native";
+import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
 
-const InformLost = () => {
+const InformLost = ({navigation}) => {
     //Configs
     const { state } = useContext(UserContext);
     const isFocused = useIsFocused();
@@ -31,11 +31,20 @@ const InformLost = () => {
                 console.log(err);
             });
     };
+    const handleInformLostDetail = (data) => {
+        // console.log(data);
+        navigation.navigate("LostDetail",{lostData: data})
+    };
     return (
         <View>
             <Text>InformLost screen</Text>
             {listOfLostItems.map((item, index) => (
-                <Text key={index}>{item.name}</Text>
+                <View key={index} style={{ marginBottom: 5 }}>
+                    <Button
+                        title={item.name}
+                        onPress={() => handleInformLostDetail(item)}
+                    />
+                </View>
             ))}
         </View>
     );

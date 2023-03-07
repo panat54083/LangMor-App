@@ -16,6 +16,7 @@ import AddSecond from "../screens/SecondHand/AddSecond";
 import AddLost from "../screens/LostItems/AddLost";
 import ChatContact from "../screens/Chat/ChatContact";
 import SecondDetail from "../screens/SecondHand/SecondDetail";
+import LostDetail from "../screens/LostItems/LostDetail";
 //Tabs
 import TapStackRoutes from "./TapStackRoutes";
 import SecondTabs from "./Tabs/SecondTabs";
@@ -69,6 +70,8 @@ const MyStack = ({}) => {
                     <Stack.Screen name="ChatTabs" component={ChatTabs}/>
                     <Stack.Screen name="ChatContact" component={ChatContact}/>
                     <Stack.Screen name="SecondDetail" component={SecondDetail}/>
+                    <Stack.Screen name="LostDetail" component={LostDetail}/>
+
                 </>
             ) : (
                 <>
