@@ -31,15 +31,8 @@ const Home = ({ navigation }) => {
     const [visible, setVisible] = useState(false);
     const { socket } = useContext(SocketContext);
     const { basketDetail, setBasketDetail } = useContext(BasketContext);
-    const isFocused = useIsFocused();
     //data
     const [chatrooms, setChatrooms] = useState([]);
-    const [orders, setOrders] = useState([]);
-    useEffect(() => {
-        if (isFocused) {
-            apiShowOrder();
-        }
-    }, [isFocused]);
 
     const handelModel = () => setVisible(!visible);
     const handleProfile = () => {
@@ -64,20 +57,7 @@ const Home = ({ navigation }) => {
                 console.log(err);
             });
     };
-    const apiShowOrder = () => {
-        axios
-            .get(
-                `http://${IP_ADDRESS}/order/get?customer_id=${state.userData._id}`
-            )
-            .then((res) => {
-                // console.log(res.data.message);
-                // console.log(res.data.orders);
-                setOrders(res.data.orders);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
+
     const handleRestaurant = () => {
         navigation.navigate("MarketList");
     };
@@ -96,20 +76,7 @@ const Home = ({ navigation }) => {
             {state.isSignin ? (
                 <View>
                     <ScrollView>
-                        {orders
-                            ? orders.map((order, index) => (
-                                  <Button
-                                      key={index}
-                                      title={order.restaurant.name}
-                                      onPress={() => {
-                                          navigation.navigate("Chat", {
-                                              orderData: order.order,
-                                              restaurantData: order.restaurant,
-                                          });
-                                      }}
-                                  />
-                              ))
-                            : ""}
+                        
                         <View style={styles.itemheader}>
                             <AddressBox />
                             <Fav />
