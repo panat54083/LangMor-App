@@ -1,18 +1,38 @@
-import { StyleSheet, Text, View } from "react-native";
+//Packages
 import React from "react";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { useTheme } from "react-native-paper";
+//Components
+import { StyleSheet, Text, View } from "react-native";
+import {
+    MaterialCommunityIcons,
+    FontAwesome5,
+    AntDesign,
+} from "@expo/vector-icons";
+//Screens
 import Home from "../screens/Home";
 import Profile from "../screens/Profile";
-import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import ChatTabs from "./Tabs/ChatTabs";
+//Configs
+const TabStack = createMaterialBottomTabNavigator();
 
 const TapStackRoutes = () => {
-    const TabStack = createMaterialBottomTabNavigator();
+    const theme = useTheme();
+    theme.colors.secondaryContainer = "transperent";
     return (
         <TabStack.Navigator
             screenOptions={{
                 headerShown: false,
             }}
-            barStyle={{ height: 70 }}
+            shifting={true}
+            sceneAnimationEnabled={true}
+            sceneAnimationType="shifting"
+            activeColor="#FF4200"
+            inactiveColor="#C9C5C4"
+            barStyle={{
+                height: 65,
+                backgroundColor: "white",
+            }}
         >
             <TabStack.Screen
                 name="Home"
@@ -21,17 +41,32 @@ const TapStackRoutes = () => {
                     tabBarLabel: (
                         <Text style={{ fontFamily: "Kanit-Bold" }}>Home</Text>
                     ),
-                    tabBarIcon: () => {
+                    tabBarIcon: ({ color }) => {
                         return (
                             <MaterialCommunityIcons
                                 name="home-search-outline"
                                 size={24}
-                                color="#FF4200"
+                                color={color}
                             />
                         );
                     },
-                    tabBarOptions: {
-                        showIcon: true,
+                }}
+            />
+            <TabStack.Screen
+                name="ChatTabs"
+                component={ChatTabs}
+                options={{
+                    tabBarLabel: (
+                        <Text style={{ fontFamily: "Kanit-Bold" }}>Chat</Text>
+                    ),
+                    tabBarIcon: ({ color }) => {
+                        return (
+                            <AntDesign
+                                name="message1"
+                                size={24}
+                                color={color}
+                            />
+                        );
                     },
                 }}
             />
@@ -44,17 +79,10 @@ const TapStackRoutes = () => {
                             Profile
                         </Text>
                     ),
-                    tabBarIcon: () => {
+                    tabBarIcon: ({ color }) => {
                         return (
-                            <FontAwesome5
-                                name="user"
-                                size={19}
-                                color="#FF4200"
-                            />
+                            <FontAwesome5 name="user" size={19} color={color} />
                         );
-                    },
-                    tabBarOptions: {
-                        showIcon: true,
                     },
                 }}
             />

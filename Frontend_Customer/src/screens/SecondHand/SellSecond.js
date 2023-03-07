@@ -45,7 +45,7 @@ const SellSecond = ({ navigation }) => {
     };
 
     const handleContact = () => {
-        console.log("Contact");
+        navigation.navigate("ChatContact")
     };
 
     const handleDebugger = () => {

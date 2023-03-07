@@ -46,6 +46,7 @@ const MyPost = ({ navigation }) => {
     };
 
     const handleContact = () => {
+        navigation.navigate("ChatContact")
     };
     
     const handleDebugger = () => {
