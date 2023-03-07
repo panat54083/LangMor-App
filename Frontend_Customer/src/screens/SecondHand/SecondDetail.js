@@ -40,6 +40,7 @@ const SecondDetail = ({ route, navigation }) => {
             });
         }
     }, [chatroomData]);
+
     const api_createChatroom = async () => {
         axios
             .post(`http://${IP_ADDRESS}/chatroom/create`, {
@@ -73,6 +74,7 @@ const SecondDetail = ({ route, navigation }) => {
     };
     return (
         <View>
+            <Text>SecondDetail</Text>
             <Button title="Debugger" onPress={handleDebugger} />
             <SubmitBtn label={"เริ่มแชทกับผู้ขาย"} onPress={handleContact} />
         </View>
