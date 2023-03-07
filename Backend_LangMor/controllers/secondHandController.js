@@ -25,3 +25,11 @@ exports.getMySecondHandsPosts = async (req, res) => {
         listSecondHands: secondHands,
     });
 };
+
+exports.getAllSecondHands= async (req, res) => {
+    const secondHands = await SecondHand.find({});
+    res.json({
+        message: "Get All Second Hands done...",
+        listSecondHands: secondHands,
+    });
+};
