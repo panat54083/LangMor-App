@@ -23,7 +23,7 @@ const BuySecond = ({ navigation }) => {
 
     const api_getAllSecondHands = () => {
         axios
-            .get(`http://${IP_ADDRESS}/secondHand/getAll`)
+            .get(`http://${IP_ADDRESS}/secondHand/getAll?owner_id=${state.userData._id}`)
             .then((res) => {
                 console.log(res.data.message);
                 setListSecondHands(res.data.listSecondHands);

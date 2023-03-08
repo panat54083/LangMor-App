@@ -22,7 +22,7 @@ const FindLost = ({ navigation }) => {
     }, [isFocused]);
     const api_getAllLostItems = () => {
         axios
-            .get(`http://${IP_ADDRESS}/lostItem/getAll?type=${"find"}`)
+            .get(`http://${IP_ADDRESS}/lostItem/getAll?type=${"find"}&owner_id=${state.userData._id}`)
             .then((res) => {
                 console.log(res.data.message);
                 setListOfLostItems(res.data.listOfLostItems);

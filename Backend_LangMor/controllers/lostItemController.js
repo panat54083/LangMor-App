@@ -31,13 +31,25 @@ exports.getMyLostItemsPosts = async (req, res) => {
 };
 
 exports.getAllLostItems = async (req, res) => {
-    const { type } = req.query;
+    const { type, owner_id } = req.query;
+    console.log(owner_id)
     if (type === "find" || type === "found") {
-        const lostItems = await LostItem.find({ type: type });
-        res.json({
-            message: `Get All ${type} Lost items done...`,
-            listOfLostItems: lostItems,
-        });
+        if (owner_id) {
+            const lostItems = await LostItem.find({
+                type: type,
+                owner_id: { $nin: [owner_id] },
+            });
+            res.json({
+                message: `Get All ${type} Lost items without Owner one done...`,
+                listOfLostItems: lostItems,
+            });
+        } else {
+            const lostItems = await LostItem.find({ type: type });
+            res.json({
+                message: `Get All ${type} Lost items done...`,
+                listOfLostItems: lostItems,
+            });
+        }
     } else {
         const lostItems = await LostItem.find({});
         res.json({

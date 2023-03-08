@@ -22,7 +22,7 @@ const InformLost = ({navigation}) => {
     }, [isFocused]);
     const api_getAllLostItems = () => {
         axios
-            .get(`http://${IP_ADDRESS}/lostItem/getAll?type=${"found"}`)
+            .get(`http://${IP_ADDRESS}/lostItem/getAll?type=${"found"}&owner_id=${state.userData._id}`)
             .then((res) => {
                 console.log(res.data.message);
                 setListOfLostItems(res.data.listOfLostItems);
