@@ -113,3 +113,41 @@ exports.getMessages = async (req, res) => {
         messages: messages,
     });
 };
+
+exports.closeItemForLostandSecond = async (req, res) => {
+    const { itemData } = req.body;
+    if (itemData.price) {
+        // console.log("SecondHand");
+        const item = await SecondHand.findById(itemData._id);
+        item.closed = true;
+        await item.save();
+        const chatrooms = await Chatroom.find({
+            itemId: itemData._id,
+            type: "SecondHand",
+        });
+        await Promise.all(
+            chatrooms.map(async (room, index) => {
+                room.closed = true;
+                await room.save();
+            })
+        );
+    } else if (itemData.type) {
+        // console.log("LostItem");
+        const item = await LostItem.findById(itemData._id);
+        item.closed = true;
+        await item.save();
+        const chatrooms = await Chatroom.find({
+            itemId: itemData._id,
+            type: "LostItem",
+        });
+        await Promise.all(
+            chatrooms.map(async (room, index) => {
+                room.closed = true;
+                await room.save();
+            })
+        );
+    }
+    res.json({
+        message: "Close Item done..",
+    });
+};

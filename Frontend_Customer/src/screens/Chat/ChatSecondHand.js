@@ -53,7 +53,7 @@ const ChatSecondHand = ({ navigation }) => {
             <Text>ChatSecondHand</Text>
             {/* <Button title="Debugger" onPress={handleDebugger}/> */}
             {
-                listOfChatrooms ? listOfChatrooms.map((item, index)=>(
+                listOfChatrooms[0] ? listOfChatrooms.map((item, index)=>(
                     <Button
                     key={index}
                     title={item.itemData.name}

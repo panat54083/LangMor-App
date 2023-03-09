@@ -29,11 +29,34 @@ const ChatContact = ({ navigation, route }) => {
         });
     }, []);
 
+    const api_closeItems = (data) => {
+        axios
+            .post(`http://${IP_ADDRESS}/chatroom/closeItem`, {
+                itemData: data,
+            })
+            .then((res) => {
+                console.log(res.data.message);
+            })
+            .catch((err) => {
+                if (
+                    err &&
+                    err.response &&
+                    err.response.data &&
+                    err.response.data.message
+                )
+                    console.log("Error", err.response.data.message);
+            });
+    };
+
     const handleChatroom = (room) => {
-        navigation.navigate("Chat2", {itemData: itemData, chatroomData: room})
+        navigation.navigate("Chat2", {
+            itemData: itemData,
+            chatroomData: room,
+        });
     };
     const handleCloseSecondHand = () => {
-        // console.log(secondHandData, chatroomsData)
+        api_closeItems(itemData);
+        navigation.goBack()
     };
     const handleDebugger = () => {
         console.log(itemData, chatroomsData);

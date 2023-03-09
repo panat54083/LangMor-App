@@ -85,12 +85,12 @@ const Chat2 = ({ navigation, route }) => {
             })
             .catch((err) => {
                      if (
-                    err &&
-                    err.response &&
-                    err.response.data &&
-                    err.response.data.message
-                )
-                    console.log("Error", err.response.data.message);
+                         err &&
+                         err.response &&
+                         err.response.data &&
+                         err.response.data.message
+                     )
+                         console.log("Error", err.response.data.message);
             });
     };
     const socket_chatroomConnect = (chatroom_id) => {
