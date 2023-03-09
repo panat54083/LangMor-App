@@ -8,11 +8,62 @@ import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
 
-const ChatSecondHand = ({navigation}) => {
+const ChatSecondHand = ({ navigation }) => {
+    //configs
+    const isFocused = useIsFocused();
+    const { state } = useContext(UserContext);
+    //data
+    const [listOfChatrooms, setListOfChatrooms] = useState([]);
+    
+    useEffect(() => {
+        if (isFocused) {
+            api_getAllChatrooms();
+        }
+    }, [isFocused]);
+
+    const api_getAllChatrooms = () => {
+        axios
+            .get(
+                `http://${IP_ADDRESS}/chatroom/chatrooms?customerId=${
+                    state.userData._id
+                }&type=${"SecondHand"}`
+            )
+            .then((res) => {
+                console.log(res.data.message);
+                // console.log(res.data.chatrooms)
+                setListOfChatrooms(res.data.chatrooms);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+    const handleChatroom = (data) => {
+        navigation.navigate("Chat2", {
+            itemData: data.itemData,
+            chatroomData: data.chatroom
+        })
+    }
+
+    const handleDebugger = () => {
+        console.log(listOfChatrooms)
+    }
     return (
-        <View>
+        <ScrollView>
             <Text>ChatSecondHand</Text>
-        </View>
+            {/* <Button title="Debugger" onPress={handleDebugger}/> */}
+            {
+                listOfChatrooms ? listOfChatrooms.map((item, index)=>(
+                    <Button
+                    key={index}
+                    title={item.itemData.name}
+                    onPress={()=> handleChatroom(item)}
+                    />
+                )) : (
+                    <Text>คุณยังไม่ได้ทำการสั่งซื้อของมือสอง</Text>
+                )
+            }
+        </ScrollView>
     );
 };
 

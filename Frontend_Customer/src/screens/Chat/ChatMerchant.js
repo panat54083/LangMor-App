@@ -20,7 +20,7 @@ const ChatMerchant = ({ navigation }) => {
             apiShowOrder();
         }
     }, [isFocused]);
-    
+
     const apiShowOrder = () => {
         axios
             .get(
@@ -35,22 +35,25 @@ const ChatMerchant = ({ navigation }) => {
                 console.log(err);
             });
     };
+    const handleChatroom = (order) => {
+        navigation.navigate("Chat", {
+            orderData: order.order,
+            restaurantData: order.restaurant,
+        });
+    };
     return (
         <ScrollView>
-            {orders
-                ? orders.map((order, index) => (
-                      <Button
-                          key={index}
-                          title={order.restaurant.name}
-                          onPress={() => {
-                              navigation.navigate("Chat", {
-                                  orderData: order.order,
-                                  restaurantData: order.restaurant,
-                              });
-                          }}
-                      />
-                  ))
-                : ""}
+            {orders ? (
+                orders.map((order, index) => (
+                    <Button
+                        key={index}
+                        title={order.restaurant.name}
+                        onPress={() => handleChatroom(order)}
+                    />
+                ))
+            ) : (
+                <Text>คุณยังไม่ได้ทำรายการสั่งอาหาร</Text>
+            )}
         </ScrollView>
     );
 };
