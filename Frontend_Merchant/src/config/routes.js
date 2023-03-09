@@ -16,6 +16,7 @@ import AddOptions from "../screens/Menu/AddOptions";
 import Chat from "../screens/Chat/Chat";
 import ShowOrder from "../screens/Orders/ShowOrder";
 import SetImageRestaurant from "../screens/Introductions/SetImageRestaurant";
+import History from "../screens/History";
 // Taps
 import MenuTabs from "./Tabs/MenuTabs";
 import OrderTabs from "./Tabs/OrderTabs";
@@ -61,6 +62,10 @@ function MyStack({}) {
                             <Stack.Screen
                                 name="ShowOrder"
                                 component={ShowOrder}
+                            />
+                            <Stack.Screen
+                                name="History"
+                                component={History}
                             />
                         </>
                     ) : (

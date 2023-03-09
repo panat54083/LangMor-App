@@ -65,6 +65,9 @@ const HomeManage = ({ navigation }) => {
     const handleOrder = () => {
         navigation.navigate("OrderTabs");
     };
+    const handleHistory= () => {
+        navigation.navigate("History");
+    };
     const handleDebugger = () => {
         console.log(state.restaurantData);
     };
@@ -109,7 +112,7 @@ const HomeManage = ({ navigation }) => {
                                     image={require("../assets/icons/menu.png")}
                                     onPress={handleMenu}
                                 />
-                                <>
+                                <View>
                                     {state.restaurantData.closed ? (
                                         <Small
                                             label="ร้านเปิดอยู่"
@@ -123,25 +126,22 @@ const HomeManage = ({ navigation }) => {
                                             onPress={handleOpenClose}
                                         />
                                     )}
-                                </>
+                                </View>
                                 <Small
-                                    label="แก้ไขข้อมูลร้าน"
-                                    image={require("../assets/icons/restaurant.png")}
-                                />
-                                <Small
-                                    label="ประวัติการสั่งซื้อ"
+                                    label="ประวัติการขาย"
                                     image={require("../assets/icons/clock.png")}
+                                    onPress={handleHistory}
                                 />
                                 <Small
                                     label="การตั้งค่า"
                                     image={require("../assets/icons/gear.png")}
                                     onPress={handleSetting}
                                 />
-                                <Small
+                                {/* <Small
                                     label="Debugger"
                                     image={require("../assets/icons/bug.png")}
                                     onPress={handleDebugger}
-                                />
+                                /> */}
                             </View>
                         </ScrollView>
                     </View>
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
         // backgroundColor:"red",
         marginTop: "5%",
         marginHorizontal: "5%",
-        height: "25%",
+        // height: "25%",
     },
     small_button: {
         // backgroundColor:"blue",

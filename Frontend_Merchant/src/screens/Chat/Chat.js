@@ -68,6 +68,8 @@ const Chat = ({ navigation, route }) => {
                             navigation.navigate("OrderTabs", {
                                 screen: "DoneOrder",
                             });
+                        } else if (orderData.status === "close") {
+                            navigation.goBack();
                         }
                     }}
                     color="#FF7A00"
@@ -335,12 +337,19 @@ const Chat = ({ navigation, route }) => {
             </View>
             {!keyboardVisible && (
                 <View style={styles.button_container}>
+                    {
+                        orderData.status !== "close" ? (
                     <AcceptButton
                         label={buttonStatusLabel}
                         onPress={handleStatusButton}
                         fontSize={18}
                         backgroundColor={buttonStatusColor}
                     />
+
+                        ):(
+                            ""
+                        )
+                    }
                 </View>
             )}
             {image && (
@@ -354,7 +363,7 @@ const Chat = ({ navigation, route }) => {
                         borderColor: "#FF7A00",
                         flexDirection: "row",
                         position: "absolute",
-                        bottom: 100
+                        bottom: 100,
                     }}
                 >
                     <Image
@@ -382,14 +391,18 @@ const Chat = ({ navigation, route }) => {
                     </Pressable>
                 </View>
             )}
-            <ChatInput
-                forwardedRef={inputRef}
-                onChangeText={(value) => setMessage(value)}
-                sendOnPress={handleSendMessage}
-                pictureOnPress={handleImagePick}
-                cameraOnPress={handleCamera}
-                isLoaded={isLoaded}
-            />
+            {orderData.status !== "close" ? (
+                <ChatInput
+                    forwardedRef={inputRef}
+                    onChangeText={(value) => setMessage(value)}
+                    sendOnPress={handleSendMessage}
+                    pictureOnPress={handleImagePick}
+                    cameraOnPress={handleCamera}
+                    isLoaded={isLoaded}
+                />
+            ) : (
+                ""
+            )}
         </View>
     );
 };
