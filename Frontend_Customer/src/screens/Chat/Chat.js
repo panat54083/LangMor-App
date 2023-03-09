@@ -181,7 +181,7 @@ const Chat = ({ navigation, route }) => {
     };
 
     const handleDebugger = () => {
-        console.log(basketDetail.foods);
+        console.log(orderData);
     };
 
     return (

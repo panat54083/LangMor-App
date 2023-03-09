@@ -29,10 +29,10 @@ const ChatContact = ({ navigation, route }) => {
         });
     }, []);
 
-    const handleChatroom = () => {
-        // console.log(secondHandData, chatroomsData)
+    const handleChatroom = (room) => {
+        navigation.navigate("Chat2", {itemData: itemData, chatroomData: room})
     };
-    const handleCloseSecondHand= () => {
+    const handleCloseSecondHand = () => {
         // console.log(secondHandData, chatroomsData)
     };
     const handleDebugger = () => {
@@ -48,13 +48,17 @@ const ChatContact = ({ navigation, route }) => {
                     <Button
                         key={index}
                         title={item.customer.name}
-                        onPress={() => console.log(item)}
+                        onPress={() => handleChatroom(item.chatroom)}
                     />
                 ))
             ) : (
                 <Text style={styles.alert_font}>No one contacted.</Text>
             )}
-            <SubmitBtn label={"ปิดการขายสินค้า"} onPress={handleCloseSecondHand} backgroundColor="#FF0101"/>
+            <SubmitBtn
+                label={"ปิดการขายสินค้า"}
+                onPress={handleCloseSecondHand}
+                backgroundColor="#FF0101"
+            />
         </View>
     );
 };

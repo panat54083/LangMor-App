@@ -84,7 +84,13 @@ const Chat2 = ({ navigation, route }) => {
                 setListOfMessages(res.data.messages);
             })
             .catch((err) => {
-                console.log(err);
+                     if (
+                    err &&
+                    err.response &&
+                    err.response.data &&
+                    err.response.data.message
+                )
+                    console.log("Error", err.response.data.message);
             });
     };
     const socket_chatroomConnect = (chatroom_id) => {
@@ -144,12 +150,12 @@ const Chat2 = ({ navigation, route }) => {
         setImage(null);
     };
     const handleDebugger = () => {
-        console.log(listOfMessages);
+        console.log(chatroomData);
     };
 
     return (
         <View style={styles.main_container}>
-            {/* <Button title="Debugger" onPress={handleDebugger} /> */}
+            <Button title="Debugger" onPress={handleDebugger} />
             <View style={styles.messages_container}>
                 {listOfMessages[0] ? (
                     <ScrollView ref={scrollViewRef}>

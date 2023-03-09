@@ -23,7 +23,9 @@ const BuySecond = ({ navigation }) => {
 
     const api_getAllSecondHands = () => {
         axios
-            .get(`http://${IP_ADDRESS}/secondHand/getAll?owner_id=${state.userData._id}`)
+            .get(
+                `http://${IP_ADDRESS}/secondHand/getAll?owner_id=${state.userData._id}`
+            )
             .then((res) => {
                 console.log(res.data.message);
                 setListSecondHands(res.data.listSecondHands);
@@ -34,19 +36,23 @@ const BuySecond = ({ navigation }) => {
     };
     const handleSecondDetail = (data) => {
         // console.log(data)
-        navigation.navigate("SecondDetail",{secondData: data})
-    }
+        navigation.navigate("SecondDetail", { secondData: data });
+    };
     return (
         <ScrollView>
             <Text>BuySecond screen</Text>
-            {listSecondHands.map((item, index) => (
-                <View key={index} style={{ marginBottom: 4 }}>
-                    <Button
-                        title={item.name}
-                        onPress={() => handleSecondDetail(item)}
-                    />
-                </View>
-            ))}
+            {listSecondHands[0] ? (
+                listSecondHands.map((item, index) => (
+                    <View key={index} style={{ marginBottom: 4 }}>
+                        <Button
+                            title={item.name}
+                            onPress={() => handleSecondDetail(item)}
+                        />
+                    </View>
+                ))
+            ) : (
+                <Text>ไม่พบรายการสินค้า</Text>
+            )}
         </ScrollView>
     );
 };
