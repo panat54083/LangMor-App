@@ -71,8 +71,25 @@ const AddOptions = ({ navigation, route }) => {
         });
     }, [name, maximum, required, choices]);
     const handleSave = () => {
+        if (!name.trim()) {
+            Alert.alert("Error", "กรุณาเติมชื่อตัวเลือก");
+            scrollViewRef.current?.scrollTo({
+                y: 0,
+                animated: true,
+            });
+            return false;
+        } else if (options.choices.length < 1) {
+            Alert.alert("Error", "กรุณาเพิ่มตัวเลือก");
+            scrollViewRef.current?.scrollTo({
+                y: 0,
+                animated: true,
+            });
+            return false;
+        } else if (options.choices.some((obj) => obj.price === "")) {
+            Alert.alert("Error", "กรุณาเติมราคา");
+        }
+
         fetchSaveOptions();
-        // navigation.navigate("MenuTabs", { screen: "OptionsManage" });
         navigation.goBack();
         // console.log(options)
     };
@@ -99,7 +116,7 @@ const AddOptions = ({ navigation, route }) => {
             .delete(`http://${IP_ADDRESS}/restaurant/delete_option`, {
                 data: {
                     option_id: optionData._id,
-                    restaurant_id: state.restaurantData._id
+                    restaurant_id: state.restaurantData._id,
                 },
             })
             .then((res) => {

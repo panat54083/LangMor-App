@@ -1,5 +1,5 @@
 //Packages
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import axios from "axios";
 import * as LIP from "../../lib/lm-image-picker";
 //Components
@@ -11,6 +11,7 @@ import {
     View,
     Pressable,
     Button,
+    Alert,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import BackScreen from "../../components/buttons/BackScreen";
@@ -58,6 +59,7 @@ const AddMenu = ({ navigation, route }) => {
     const [types, setTypes] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
+    const scrollViewRef = useRef(null);
     // Used for Send to backend
     const [image, setImage] = useState(foodData.picture);
     const [name, setName] = useState(foodData.name);
@@ -78,6 +80,7 @@ const AddMenu = ({ navigation, route }) => {
                 console.log(err);
             });
     };
+
     const fetchTypes = () => {
         axios
             .get(
@@ -156,7 +159,20 @@ const AddMenu = ({ navigation, route }) => {
                     console.log("Error", err.response.data.message);
             });
     };
+
     const handleSave = () => {
+        if (!name.trim() || !price.trim()) {
+            if (!name.trim()) {
+                Alert.alert("Error", "กรุณาเติมชื่อเมนูอาหาร");
+            } else if (!price.trim()) {
+                Alert.alert("Error", "กรุณาเติมราคาเมนูอาหาร");
+            }
+            scrollViewRef.current?.scrollTo({
+                y: 0,
+                animated: true,
+            });
+            return false;
+        }
         setIsLoaded(true);
         if (image) {
             if (image.type !== "upload") {
@@ -235,7 +251,7 @@ const AddMenu = ({ navigation, route }) => {
     };
 
     return (
-        <ScrollView style={{}}>
+        <ScrollView ref={scrollViewRef} style={{}}>
             {/* <Button title="Debugger" onPress={handleDebugger}/> */}
             <View style={styles.container}>
                 <View style={styles.input_components}>

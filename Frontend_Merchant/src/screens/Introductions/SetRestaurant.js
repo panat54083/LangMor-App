@@ -10,6 +10,7 @@ import {
     KeyboardAvoidingView,
     ScrollView,
     Pressable,
+    Alert,
 } from "react-native";
 import ImageInput from "../../components/Inputs/ImageInput";
 import CustomTextInput from "../../components/Inputs/CustomTextInput";
@@ -52,6 +53,10 @@ const SetRestaurant = ({ navigation }) => {
         }
     }, [restaurantData]);
     const handleSave = () => {
+        if (restaurantName.trim() === "") {
+            Alert.alert("Error", "กรุณาเติมชื่อณร้านค้า");
+            return false;
+        }
         // console.log(`Restaurant Name: ${restaurantName}`);
         // console.log(`Owner_ID: ${state.userData._id}`);
         // console.log(`Phone: ${phone}`);
