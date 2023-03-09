@@ -25,3 +25,21 @@ exports.getMySecondHandsPosts = async (req, res) => {
         listSecondHands: secondHands,
     });
 };
+
+exports.getAllSecondHands= async (req, res) => {
+    const { owner_id } = req.query
+    if (owner_id){
+    const secondHands = await SecondHand.find({owner_id: { $nin: [owner_id,]}});
+    res.json({
+        message: "Get All Second Hands except owner done...",
+        listSecondHands: secondHands,
+    });
+    }
+    else {
+    const secondHands = await SecondHand.find({});
+    res.json({
+        message: "Get All Second Hands done...",
+        listSecondHands: secondHands,
+    });
+    }
+};

@@ -10,15 +10,18 @@ import FoodList from "../screens/restaurant/FoodList";
 import FoodDetail from "../screens/restaurant/FoodDetail";
 import Cart from "../screens/restaurant/Cart";
 import Chat from "../screens/Chat/Chat";
+import Chat2 from "../screens/Chat/Chat2";
 import ShowOrder from "../screens/restaurant/ShowOrder";
 import AddSecond from "../screens/SecondHand/AddSecond";
 import AddLost from "../screens/LostItems/AddLost";
+import ChatContact from "../screens/Chat/ChatContact";
+import SecondDetail from "../screens/SecondHand/SecondDetail";
+import LostDetail from "../screens/LostItems/LostDetail";
 //Tabs
 import TapStackRoutes from "./TapStackRoutes";
 import SecondTabs from "./Tabs/SecondTabs";
 import LostTabs from "./Tabs/LostTabs";
 import ChatTabs from "./Tabs/ChatTabs";
-import ChatContact from "../screens/Chat/ChatContact";
 //config
 const Stack = createStackNavigator();
 
@@ -58,6 +61,7 @@ const MyStack = ({}) => {
                     />
                     <Stack.Screen name="Cart" component={Cart} />
                     <Stack.Screen name="Chat" component={Chat} />
+                    <Stack.Screen name="Chat2" component={Chat2} />
                     <Stack.Screen name="ShowOrder" component={ShowOrder} />
                     <Stack.Screen name="SecondTabs" component={SecondTabs} />
                     <Stack.Screen name="AddSecond" component={AddSecond}/>
@@ -65,6 +69,9 @@ const MyStack = ({}) => {
                     <Stack.Screen name="AddLost" component={AddLost}/>
                     <Stack.Screen name="ChatTabs" component={ChatTabs}/>
                     <Stack.Screen name="ChatContact" component={ChatContact}/>
+                    <Stack.Screen name="SecondDetail" component={SecondDetail}/>
+                    <Stack.Screen name="LostDetail" component={LostDetail}/>
+
                 </>
             ) : (
                 <>

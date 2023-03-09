@@ -2,25 +2,36 @@ const mongoose = require("mongoose");
 const Chatroom = mongoose.model("Chatroom");
 const Message = mongoose.model("Message");
 const Customer = mongoose.model("Customer");
-const Restaurant = mongoose.model("Restaurant")
+const Restaurant = mongoose.model("Restaurant");
+const SecondHand = mongoose.model("SecondHand");
+const LostItem = mongoose.model("LostItem");
 
 exports.createChatroom = async (req, res) => {
-    const { customerId, restaurantId } = req.body;
+    const { customerId, merchantId, type, itemId } = req.body;
     const chatroomExist = await Chatroom.findOne({
         customerId: customerId,
-        restaurantId: restaurantId,
+        merchantId: merchantId,
+        itemId: itemId,
+        type: type,
         closed: false,
     });
     if (!chatroomExist) {
         const chatroom = new Chatroom({
             customerId: customerId,
-            restaurantId: restaurantId,
+            merchantId: merchantId,
+            itemId: itemId,
+            type: type,
         });
         await chatroom.save();
 
         res.json({
             chatroomData: chatroom,
             message: "Chatroom is created!",
+        });
+    } else {
+        res.json({
+            chatroomData: chatroomExist,
+            message: "Chatroom is Existed!",
         });
     }
 };
@@ -36,43 +47,61 @@ exports.closeChatroom = async (req, res) => {
 };
 
 exports.getChatrooms = async (req, res) => {
-    const { customerId, restaurantId } = req.query;
-
+    const { customerId, merchantId, type } = req.query;
     if (customerId) {
-        const data = []
         const chatrooms = await Chatroom.find({
             customerId: customerId,
+            type: type,
             closed: false,
         });
 
         const extraChatrooms = await Promise.all(
             chatrooms.map(async (room, index) => {
-                const restaurant = await Restaurant.findById(room.restaurantId);
-                const tamp_data = { chatroom: room, restaurant: restaurant};
-                return [...data, tamp_data];
+                const merchant = await Customer.findById(room.merchantId);
+                if (room.type === "SecondHand") {
+                    const secondHand = await SecondHand.findById(room.itemId);
+                    const tamp_data = {
+                        chatroom: room,
+                        merchant: merchant,
+                        itemData: secondHand,
+                    };
+                    return tamp_data;
+                } else if (room.type === "LostItem") {
+                    const lostItem = await LostItem.findById(room.itemId);
+                    const tamp_data = {
+                        chatroom: room,
+                        merchant: merchant,
+                        itemData: lostItem,
+                    };
+                    return tamp_data;
+                }
             })
         );
         res.json({
-            message: "Get All Chatroom",
-            chatrooms: extraChatrooms[0],
+            message: `Get All Chatroom [Customer] ${type}`,
+            chatrooms: extraChatrooms,
         });
-    } else if (restaurantId) {
-        const data = [];
+    } else if (merchantId) {
         const chatrooms = await Chatroom.find({
-            restaurantId: restaurantId,
+            merchantId: merchantId,
+            type: type,
             closed: false,
         });
         const extraChatrooms = await Promise.all(
             chatrooms.map(async (room, index) => {
                 const customer = await Customer.findById(room.customerId);
                 const tamp_data = { chatroom: room, customer: customer };
-                return [...data, tamp_data];
+                return tamp_data;
             })
         );
-        // console.log(extraChatrooms)
         res.json({
-            message: "Get All Chatroom",
-            chatrooms: extraChatrooms[0],
+            message: "Get All Chatroom [Merchant]",
+            chatrooms: extraChatrooms,
+        });
+    } else {
+        res.json({
+            message: "Error maybe wrong Query String",
+            chatroom: null,
         });
     }
 };
@@ -82,5 +111,43 @@ exports.getMessages = async (req, res) => {
     const messages = await Message.find({ chatroom: chatroomId });
     res.json({
         messages: messages,
+    });
+};
+
+exports.closeItemForLostandSecond = async (req, res) => {
+    const { itemData } = req.body;
+    if (itemData.price) {
+        // console.log("SecondHand");
+        const item = await SecondHand.findById(itemData._id);
+        item.closed = true;
+        await item.save();
+        const chatrooms = await Chatroom.find({
+            itemId: itemData._id,
+            type: "SecondHand",
+        });
+        await Promise.all(
+            chatrooms.map(async (room, index) => {
+                room.closed = true;
+                await room.save();
+            })
+        );
+    } else if (itemData.type) {
+        // console.log("LostItem");
+        const item = await LostItem.findById(itemData._id);
+        item.closed = true;
+        await item.save();
+        const chatrooms = await Chatroom.find({
+            itemId: itemData._id,
+            type: "LostItem",
+        });
+        await Promise.all(
+            chatrooms.map(async (room, index) => {
+                room.closed = true;
+                await room.save();
+            })
+        );
+    }
+    res.json({
+        message: "Close Item done..",
     });
 };

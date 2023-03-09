@@ -16,12 +16,34 @@ const SellSecond = ({ navigation }) => {
     const isFocused = useIsFocused();
     //Variables
     const [listSecondHands, setListSecondHands] = useState([]);
+    const [listOfChatrooms, setListOfChatrooms] = useState([]);
+    const [listOfSecondChats, setListOfSecondChats] = useState([]);
 
     useEffect(() => {
         if (isFocused) {
             api_getMyPosts();
+            api_getAllChatrooms();
         }
     }, [isFocused]);
+
+    useEffect(()=>{
+        if (listOfChatrooms && listSecondHands) {
+            concat_listOfSecondChat()
+        }
+    },[listOfChatrooms, listSecondHands])
+
+    const concat_listOfSecondChat = () => {
+        const tempData = [];
+        const tempSecondHand = listSecondHands.map((item, index) => {
+            const tempList = listOfChatrooms.filter(
+                (data) => data.chatroom.itemId === item._id
+            );
+            // console.log(index, tempList.length);
+            return { secondHand: item, chatrooms: tempList };
+        });
+        setListOfSecondChats(tempSecondHand);
+    };
+
     const api_getMyPosts = () => {
         axios
             .get(
@@ -36,6 +58,23 @@ const SellSecond = ({ navigation }) => {
             });
     };
 
+    const api_getAllChatrooms = () => {
+        axios
+            .get(
+                `http://${IP_ADDRESS}/chatroom/chatrooms?merchantId=${
+                    state.userData._id
+                }&type=${"SecondHand"}`
+            )
+            .then((res) => {
+                console.log(res.data.message);
+                // console.log(res.data.chatrooms)
+                setListOfChatrooms(res.data.chatrooms);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     const handleAddSecond = () => {
         navigation.navigate("AddSecond");
     };
@@ -44,30 +83,37 @@ const SellSecond = ({ navigation }) => {
         console.log("Item");
     };
 
-    const handleContact = () => {
-        navigation.navigate("ChatContact")
+    const handleContact = (data) => {
+        navigation.navigate("ChatContact",{chatroomsData: data.chatrooms, itemData: data.secondHand});
     };
 
     const handleDebugger = () => {
-        navigation.navigate("ChatTabs", {screen:"ChatSecondHand"})
+        concat_listOfSecondChat();
+        // api_getAllChatrooms()
+        // console.log(listOfChatrooms.length)
     };
 
     return (
         <ScrollView style={styles.scrollView_container}>
             {/* <Button title="Debugger" onPress={handleDebugger} /> */}
+            {/* <Button
+                title="Debugger"
+                onPress={() => console.log(listOfSecondChats)}
+            /> */}
             <View style={styles.add_container}>
                 <AddButton onPress={handleAddSecond} />
             </View>
             <View style={{ marginHorizontal: 16 }}>
-                {listSecondHands.map((item, index) => (
+                {listOfSecondChats.length !== 0 ? listOfSecondChats.map((item, index) => (
                     <CardTwoSide
                         key={index}
-                        label={item.name}
-                        numberOfContact={0}
+                        label={item.secondHand.name}
+                        numberOfContact={item.chatrooms.length}
                         onPressLeft={handleItem}
-                        onPressRight={handleContact}
+                        onPressRight={()=>handleContact(item)}
                     />
-                ))}
+                    // <Button title={String(index)} key={index} onPress={()=>console.log(item)}/>
+                )) : null}
             </View>
         </ScrollView>
     );
@@ -83,3 +129,9 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
     },
 });
+
+const dum = [
+    [{ chatrooms: [Array], secondHand: [Object] }],
+    [{ chatrooms: [Array], secondHand: [Object] }],
+    [{ chatrooms: [Array], secondHand: [Object] }],
+];

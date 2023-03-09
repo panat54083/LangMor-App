@@ -16,13 +16,32 @@ const MyPost = ({ navigation }) => {
     const isFocused = useIsFocused();
     //Variables
     const [listLostItems, setListLostItems] = useState([]);
-    
+    const [listOfChatrooms, setListOfChatrooms] = useState([]);
+    const [listOfLostChats, setListOfLostChats] = useState([]);
+
     useEffect(() => {
         if (isFocused) {
             api_getMyPosts();
+            api_getAllChatrooms();
         }
     }, [isFocused]);
 
+    useEffect(() => {
+        if (listOfChatrooms && listLostItems) {
+            concat_listOfSecondChat();
+        }
+    }, [listOfChatrooms, listLostItems]);
+
+    const concat_listOfSecondChat = () => {
+        const tempLostItem= listLostItems.map((item, index) => {
+            const tempList = listOfChatrooms.filter(
+                (data) => data.chatroom.itemId === item._id
+            );
+            // console.log(index, tempList.length);
+            return { lostItem: item, chatrooms: tempList };
+        });
+        setListOfLostChats(tempLostItem);
+    };
     const api_getMyPosts = () => {
         axios
             .get(
@@ -30,13 +49,29 @@ const MyPost = ({ navigation }) => {
             )
             .then((res) => {
                 console.log(res.data.message);
-                setListLostItems(res.data.listLostItems);
+                setListLostItems(res.data.listOfLostItems);
             })
             .catch((err) => {
                 console.log(err);
             });
     };
 
+    const api_getAllChatrooms = () => {
+        axios
+            .get(
+                `http://${IP_ADDRESS}/chatroom/chatrooms?merchantId=${
+                    state.userData._id
+                }&type=${"LostItem"}`
+            )
+            .then((res) => {
+                console.log(res.data.message);
+                // console.log(res.data.chatrooms)
+                setListOfChatrooms(res.data.chatrooms);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
     const handleAddLost = () => {
         navigation.navigate("AddLost");
     };
@@ -45,12 +80,12 @@ const MyPost = ({ navigation }) => {
         console.log("Item");
     };
 
-    const handleContact = () => {
-        navigation.navigate("ChatContact")
+    const handleContact = (data) => {
+        navigation.navigate("ChatContact",{chatroomsData: data.chatrooms, itemData: data.lostItem});
     };
-    
+
     const handleDebugger = () => {
-        navigation.navigate("ChatTabs", {screen:"ChatLostItem"})
+        console.log(listOfLostChats)
     };
     return (
         <ScrollView style={styles.scrollView_container}>
@@ -59,15 +94,15 @@ const MyPost = ({ navigation }) => {
                 <AddButton onPress={handleAddLost} />
             </View>
             <View style={{ marginHorizontal: 16 }}>
-                {listLostItems.map((item, index) => (
+                {listOfLostChats.length !== 0 ? listOfLostChats.map((item, index) => (
                     <CardTwoSide
                         key={index}
-                        label={item.name}
-                        numberOfContact={0}
+                        label={item.lostItem.name}
+                        numberOfContact={item.chatrooms.length}
                         onPressLeft={handleItem}
-                        onPressRight={handleContact}
+                        onPressRight={()=>handleContact(item)}
                     />
-                ))}
+                )): null}
             </View>
         </ScrollView>
     );

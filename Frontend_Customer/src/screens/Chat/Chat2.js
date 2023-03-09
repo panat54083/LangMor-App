@@ -9,7 +9,6 @@ import {
     Text,
     View,
     Button,
-    FlatList,
     Pressable,
     Image,
 } from "react-native";
@@ -17,31 +16,28 @@ import { Entypo } from "@expo/vector-icons";
 import BackScreen from "../../components/buttons/BackScreen";
 import ChatInput from "../../components/cards/Chat/ChatInput";
 import MessageModel from "../../components/cards/Chat/MessageModel";
-import OrderMessage from "../../components/cards/Chat/OrderMessage";
 //configs
-import BasketContext from "../../hooks/context/BasketContext";
 import UserContext from "../../hooks/context/UserContext";
 import SocketContext from "../../hooks/context/SocketContext";
 import { IP_ADDRESS } from "@env";
 
-const Chat = ({ navigation, route }) => {
-    //config
-    const { basketDetail } = useContext(BasketContext);
+const Chat2 = ({ navigation, route }) => {
+    //Initial Data
+    const { itemData, chatroomData } = route.params;
     const { state } = useContext(UserContext);
     const { socket } = useContext(SocketContext);
-    const inputRef = useRef(null);
-    const [isLoaded, setIsLoaded] = useState(false);
+    //Configs
+    const [listOfMessages, setListOfMessages] = useState([]);
     const scrollViewRef = useRef(null);
-    //data
-    const { orderData, restaurantData } = route.params;
-    //messages
-    const [listMessages, setListMessages] = useState([]);
+    const [isLoaded, setIsLoaded] = useState(false);
+    const inputRef = useRef(null);
+    //Data
     const [message, setMessage] = useState("");
     const [image, setImage] = useState(null);
-
+    //Start-up
     useEffect(() => {
         navigation.setOptions({
-            title: `${restaurantData.name}`,
+            title: `${itemData.name}`,
             headerTitleStyle: {
                 fontFamily: "Kanit-Bold",
                 fontSize: 22,
@@ -54,11 +50,11 @@ const Chat = ({ navigation, route }) => {
             ),
         });
         // Functions
-        fetchInitialMessages();
+        api_initialMessages();
     }, []);
 
     useEffect(() => {
-        chatroom_connect(orderData._id);
+        socket_chatroomConnect(chatroomData._id);
     }, [socket]);
 
     useEffect(() => {
@@ -72,72 +68,54 @@ const Chat = ({ navigation, route }) => {
                     timestamp,
                     picture,
                 };
-                setListMessages([...listMessages, renew_message]);
+                setListOfMessages([...listOfMessages, renew_message]);
             });
         }
         scrollViewRef.current?.scrollToEnd({ animated: true });
-    }, [listMessages]);
+    }, [listOfMessages]);
 
-    const chatroom_connect = (chatroom_id) => {
+    const api_initialMessages = () => {
+        axios
+            .get(
+                `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${chatroomData._id}`
+            )
+            .then((res) => {
+                // console.log(res.data.messages)
+                setListOfMessages(res.data.messages);
+            })
+            .catch((err) => {
+                     if (
+                         err &&
+                         err.response &&
+                         err.response.data &&
+                         err.response.data.message
+                     )
+                         console.log("Error", err.response.data.message);
+            });
+    };
+    const socket_chatroomConnect = (chatroom_id) => {
         if (socket) {
             socket.emit("joinRoom", {
                 chatroom: chatroom_id,
             });
         }
     };
-
-    const chatroom_disconnect = (chatroom_id) => {
-        if (socket) {
-            socket.emit("leaveRoom", {
-                chatroom: chatroom_id,
-            });
-        }
-    };
-
-    const closeChatroom = async () => {
-        axios
-            .post(`http://${IP_ADDRESS}/chatroom/closed`, {
-                chatroomId: null,
-            })
-            .then((res) => {
-                console.log(res.data.message);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
-
-    const sendMessage = (message, picture) => {
+    const socket_sendMessage = (message, picture) => {
         if (socket) {
             socket.emit("chatroomMessage", {
-                chatroomId: orderData._id,
+                chatroomId: chatroomData._id,
                 message: message,
                 picture: picture,
             });
         }
         setMessage("");
     };
-
-    const fetchInitialMessages = () => {
-        axios
-            .get(
-                `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${orderData._id}`
-            )
-            .then((res) => {
-                // console.log(res.data.messages)
-                setListMessages(res.data.messages);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
-
     const handleSendMessage = () => {
         setIsLoaded(true);
         if (image) {
             LIP.handleUpload(image, state.userData._id)
                 .then((data) => {
-                    sendMessage(message, data);
+                    socket_sendMessage(message, data);
                     setImage(null);
                     setIsLoaded(false);
                 })
@@ -145,12 +123,11 @@ const Chat = ({ navigation, route }) => {
                     console.log(err);
                 });
         } else {
-            sendMessage(message, null);
+            socket_sendMessage(message, null);
             setIsLoaded(false);
         }
         inputRef.current.clear();
     };
-
     const handleImagePick = () => {
         LIP.pickImage()
             .then((data) => {
@@ -160,7 +137,6 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
-
     const handleCamera = () => {
         LIP.openCamera()
             .then((data) => {
@@ -170,54 +146,30 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
-
-    const handleMoreDetail = () => {
-        let order = { order: orderData, restaurant: restaurantData };
-        navigation.navigate("ShowOrder", order);
-    };
-
     const handleClosedImage = () => {
         setImage(null);
     };
-
     const handleDebugger = () => {
-        console.log(orderData);
+        console.log(chatroomData);
     };
 
     return (
         <View style={styles.main_container}>
-            {/* <Button onPress={handleDebugger} title="Debugger" /> */}
+            <Button title="Debugger" onPress={handleDebugger} />
             <View style={styles.messages_container}>
-                {listMessages[0] ? (
+                {listOfMessages[0] ? (
                     <ScrollView ref={scrollViewRef}>
-                        <View style={styles.orderPopup}>
-                            <View
-                                style={{
-                                    alignItems: "flex-end",
-                                    width: "100%",
-                                }}
-                            >
-                                <OrderMessage
-                                    order={orderData}
-                                    onPress={handleMoreDetail}
-                                />
-                            </View>
-                        </View>
-                        {listMessages.map((item, index) => (
+                        {listOfMessages.map((item, index) => (
                             <MessageModel
-                                key={index}
-                                message={item}
-                                userId={state.userData._id}
+                            key={index}
+                            message={item}
+                            userId={state.userData._id}
                             />
-                        ))}
+                        )
+                        )}
                     </ScrollView>
                 ) : (
-                    <View style={{ alignItems: "flex-end", width: "100%" }}>
-                        <OrderMessage
-                            order={orderData}
-                            onPress={handleMoreDetail}
-                        />
-                    </View>
+                    ""
                 )}
             </View>
             {image && (
@@ -271,7 +223,7 @@ const Chat = ({ navigation, route }) => {
     );
 };
 
-export default Chat;
+export default Chat2;
 
 const styles = StyleSheet.create({
     main_container: {

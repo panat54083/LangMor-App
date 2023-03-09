@@ -7,4 +7,6 @@ router.post('/closed', catchErrors(chatroomController.closeChatroom))
 
 router.get('/chatrooms', catchErrors(chatroomController.getChatrooms))
 router.get('/messages', catchErrors(chatroomController.getMessages))
+router.post('/closeItem', catchErrors(chatroomController.closeItemForLostandSecond))
+
 module.exports = router

@@ -5,12 +5,18 @@ const chatroomSchema = new mongoose.Schema(
         customerId: {
             type: mongoose.Schema.Types.ObjectId,
             required: true,
-            ref: "Customer",
         },
-        restaurantId: {
+        merchantId: {
             type: mongoose.Schema.Types.ObjectId,
             required: true,
-            ref: "Restaurant",
+        },
+        itemId: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+        },
+        type:{
+            type: String,
+            enum: ["LostItem", "SecondHand"]
         },
         closed: {
             type: Boolean,
