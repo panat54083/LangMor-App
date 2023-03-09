@@ -4,6 +4,7 @@ import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
 //Components
 import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
+import SecondHand from "../../components/cards/SecondHand";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
@@ -40,18 +41,41 @@ const BuySecond = ({ navigation }) => {
     };
     return (
         <ScrollView>
-            <Text>BuySecond screen</Text>
-            {listSecondHands[0] ? (
-                listSecondHands.map((item, index) => (
-                    <View key={index} style={{ marginBottom: 4 }}>
-                        <Button
-                            title={item.name}
-                            onPress={() => handleSecondDetail(item)}
-                        />
-                    </View>
-                ))
+            {/* <Text>BuySecond screen</Text> */}
+            {listSecondHands.length !== 0 ? (
+                <>
+                    {listSecondHands.map((item, index) => (
+                        // <View key={index} style={{ marginBottom: "1%" }}>
+                        //     <Button
+                        //         title={item.name}
+                        //         onPress={() => handleSecondDetail(item)}
+                        //     />
+                        // </View>
+                        <View
+                            key={index}
+                            style={{
+                                marginBottom: "1%",
+                                width: "90%",
+                                alignSelf: "center",
+                            }}
+                        >
+                            <SecondHand
+                                secondHandData={item}
+                                onPress={() => handleSecondDetail(item)}
+                            />
+                        </View>
+                    ))}
+                </>
             ) : (
-                <Text>ไม่พบรายการสินค้า</Text>
+                <Text
+                    style={{
+                        fontFamily: "Kanit-Bold",
+                        fontSize: 22,
+                        textAlign: "center",
+                    }}
+                >
+                    ไม่พบรายการสินค้า
+                </Text>
             )}
         </ScrollView>
     );
