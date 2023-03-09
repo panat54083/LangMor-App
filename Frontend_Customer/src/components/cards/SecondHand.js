@@ -4,7 +4,7 @@ import React from "react";
 
 const SecondHand = (props) => {
     const { secondHandData, onPress } = props;
-    console.log(secondHandData);
+    // console.log(secondHandData);
     return (
         <TouchableOpacity onPress={onPress}>
             <View style={styles.container}>

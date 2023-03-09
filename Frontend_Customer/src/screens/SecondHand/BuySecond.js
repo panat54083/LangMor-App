@@ -28,7 +28,7 @@ const BuySecond = ({ navigation }) => {
                 `http://${IP_ADDRESS}/secondHand/getAll?owner_id=${state.userData._id}`
             )
             .then((res) => {
-                console.log(res.data.message);
+                // console.log(res.data.message);
                 setListSecondHands(res.data.listSecondHands);
             })
             .catch((err) => {

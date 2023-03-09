@@ -7,7 +7,13 @@ const HomeHeader = (props) => {
     return (
         <View style={{ flexDirection: "row" }}>
             <View style={{ flex: 0.65 }}>
-                <View style={{ marginLeft: "6%", justifyContent: "center" }}>
+                <View
+                    style={{
+                        marginLeft: "6%",
+                        justifyContent: "space-evenly",
+                        flex: 1,
+                    }}
+                >
                     <Text style={{ fontFamily: "Kanit-Bold", fontSize: 32 }}>
                         สวัสดีคุณ
                     </Text>
@@ -15,7 +21,6 @@ const HomeHeader = (props) => {
                         style={{
                             fontFamily: "Kanit-Bold",
                             fontSize: 32,
-                            textAlign: "justify",
                         }}
                     >
                         {user.name}
@@ -32,8 +37,8 @@ const HomeHeader = (props) => {
             >
                 <Image
                     style={{
-                        width: 60,
-                        height: 60,
+                        width: 50,
+                        height: 50,
                         borderRadius: 50,
                         borderWidth: 0.4,
                         borderColor: "black",
