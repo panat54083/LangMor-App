@@ -16,6 +16,7 @@ import CustomTextInput from "../../components/Inputs/CustomTextInput";
 import AcceptButton from "../../components/buttons/AcceptButton";
 import AddOptionsCheck from "../../components/Cards/AddOptionsCheck";
 import AddOptionsChoices from "../../components/Cards/AddOptionsChoices";
+import Bin from "../../components/buttons/Bin";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
@@ -34,6 +35,12 @@ const AddOptions = ({ navigation, route }) => {
                     color="#FF7A00"
                 />
             ),
+            headerRight: () =>
+                optionData._id ? (
+                    <Bin onPress={handleDeleteOption} color="#E61931" />
+                ) : (
+                    ""
+                ),
         });
     }, []);
 
@@ -86,8 +93,36 @@ const AddOptions = ({ navigation, route }) => {
                     console.log("Error", err.response.data.message);
             });
     };
+
+    const api_deleteOptions = () => {
+        axios
+            .delete(`http://${IP_ADDRESS}/restaurant/delete_option`, {
+                data: {
+                    option_id: optionData._id,
+                    restaurant_id: state.restaurantData._id
+                },
+            })
+            .then((res) => {
+                console.log(res.data.message);
+            })
+            .catch((err) => {
+                if (
+                    err &&
+                    err.response &&
+                    err.response.data &&
+                    err.response.data.message
+                )
+                    console.log("Error", err.response.data.message);
+            });
+    };
+    const handleDeleteOption = () => {
+        // console.log(optionData._id);
+        api_deleteOptions();
+        navigation.goBack();
+    };
+
     const handleDebugger = () => {
-        console.log(optionData);
+        console.log(state.restaurantData);
     };
     return (
         <SafeAreaView style={{ flex: 1 }}>

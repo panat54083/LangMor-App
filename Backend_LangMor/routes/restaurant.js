@@ -16,6 +16,7 @@ router.post(
     catchErrors(restaurantController.restaurantOptionsSave)
 );
 router.get("/options", catchErrors(restaurantController.restaurantOptionsInfo));
+router.delete("/delete_option", catchErrors(restaurantController.restaurantOptionsDelete));
 
 router.post(
     "/save_types",
