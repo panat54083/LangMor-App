@@ -38,15 +38,16 @@ const MyStack = ({}) => {
                     <Stack.Screen
                         name="TapStackRoutes"
                         component={TapStackRoutes}
-                        options={{
-                            title: `สวัสดีคุณ ${
-                                state.isSignin ? state.userData.name : "Loading"
-                            }`,
-                            headerRight: () => <HomePageHeader />,
-                            headerTitleStyle: {
-                                fontFamily: "Kanit-Bold",
-                            },
-                        }}
+                        options={{ headerShown: false }}
+                        // options={{
+                        //     title: `สวัสดีคุณ ${
+                        //         state.isSignin ? state.userData.name : "Loading"
+                        //     }`,
+                        //     headerRight: () => <HomePageHeader />,
+                        //     headerTitleStyle: {
+                        //         fontFamily: "Kanit-Bold",
+                        //     },
+                        // }}
                     />
                     <Stack.Screen name="MarketList" component={MarketList} />
                     <Stack.Screen
@@ -64,14 +65,16 @@ const MyStack = ({}) => {
                     <Stack.Screen name="Chat2" component={Chat2} />
                     <Stack.Screen name="ShowOrder" component={ShowOrder} />
                     <Stack.Screen name="SecondTabs" component={SecondTabs} />
-                    <Stack.Screen name="AddSecond" component={AddSecond}/>
+                    <Stack.Screen name="AddSecond" component={AddSecond} />
                     <Stack.Screen name="LostTabs" component={LostTabs} />
-                    <Stack.Screen name="AddLost" component={AddLost}/>
-                    <Stack.Screen name="ChatTabs" component={ChatTabs}/>
-                    <Stack.Screen name="ChatContact" component={ChatContact}/>
-                    <Stack.Screen name="SecondDetail" component={SecondDetail}/>
-                    <Stack.Screen name="LostDetail" component={LostDetail}/>
-
+                    <Stack.Screen name="AddLost" component={AddLost} />
+                    <Stack.Screen name="ChatTabs" component={ChatTabs} />
+                    <Stack.Screen name="ChatContact" component={ChatContact} />
+                    <Stack.Screen
+                        name="SecondDetail"
+                        component={SecondDetail}
+                    />
+                    <Stack.Screen name="LostDetail" component={LostDetail} />
                 </>
             ) : (
                 <>

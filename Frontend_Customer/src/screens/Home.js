@@ -22,7 +22,7 @@ import BtnToFeature from "../components/buttons/BtnToFeature";
 import UserContext from "../hooks/context/UserContext";
 import SocketContext from "../hooks/context/SocketContext";
 import BasketContext from "../hooks/context/BasketContext";
-
+import HomeHeader from "../components/headers/HomeHeader";
 import { IP_ADDRESS } from "@env";
 
 const Home = ({ navigation }) => {
@@ -75,12 +75,10 @@ const Home = ({ navigation }) => {
             {/* <Button title="Debugger" onPress={handleDebugger}/> */}
             {state.isSignin ? (
                 <View>
+                    <View style={{ marginTop: "4%", marginBottom: "2%" }}>
+                        <HomeHeader user={state.userData} />
+                    </View>
                     <ScrollView>
-                        
-                        <View style={styles.itemheader}>
-                            <AddressBox />
-                            <Fav />
-                        </View>
                         <View style={{ alignItems: "center" }}>
                             <BtnToFeature
                                 name="สั่งอาหาร"
