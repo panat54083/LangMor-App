@@ -25,6 +25,7 @@ router.post(
 router.get("/types", catchErrors(restaurantController.restaurantTypesInfo));
 
 router.post("/save_food", catchErrors(restaurantController.restaurantFoodSave));
+router.delete("/delete_food", catchErrors(restaurantController.restaurantFoodDelete));
 router.get("/foods", catchErrors(restaurantController.restaurantFoodsInfo));
 
 router.get(

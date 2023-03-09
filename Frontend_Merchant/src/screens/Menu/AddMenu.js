@@ -18,8 +18,9 @@ import ImageInput from "../../components/Inputs/ImageInput";
 import CustomTextInput from "../../components/Inputs/CustomTextInput";
 import AcceptButton from "../../components/buttons/AcceptButton";
 import CheckboxButton from "../../components/Checkboxes/CheckboxButton";
-//Config
+import Bin from "../../components/buttons/Bin";
 import MiniBtn from "../../components/buttons/MiniBtn";
+//Config
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
 
@@ -37,6 +38,12 @@ const AddMenu = ({ navigation, route }) => {
                     color="#FF7A00"
                 />
             ),
+            headerRight: () =>
+                foodData._id ? (
+                    <Bin onPress={handleDeleteMenu} color="#E61931" />
+                ) : (
+                    ""
+                ),
         });
         // Fetuch Functions
         fetchOptions();
@@ -129,6 +136,26 @@ const AddMenu = ({ navigation, route }) => {
             });
     };
 
+    const api_deleteMenu = () => {
+        axios
+            .delete(`http://${IP_ADDRESS}/restaurant/delete_food`, {
+                data: {
+                    food_id: foodData._id,
+                },
+            })
+            .then((res) => {
+                console.log(res.data.message);
+            })
+            .catch((err) => {
+                if (
+                    err &&
+                    err.response &&
+                    err.response.data &&
+                    err.response.data.message
+                )
+                    console.log("Error", err.response.data.message);
+            });
+    };
     const handleSave = () => {
         setIsLoaded(true);
         if (image) {
@@ -195,8 +222,12 @@ const AddMenu = ({ navigation, route }) => {
         });
     };
     const handleEditOptions = () => {
-        navigation.navigate("MenuTabs",{screen: "OptionsManage"})
+        navigation.navigate("MenuTabs", { screen: "OptionsManage" });
+    };
 
+    const handleDeleteMenu = () => {
+        api_deleteMenu();
+        navigation.goBack();
     };
 
     const handleDebugger = () => {

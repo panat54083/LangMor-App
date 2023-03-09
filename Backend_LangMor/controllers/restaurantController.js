@@ -191,6 +191,14 @@ exports.restaurantFoodSave = async (req, res) => {
     }
 };
 
+exports.restaurantFoodDelete = async (req, res) => {
+    const {food_id} = req.body
+    const food = await Food.findByIdAndDelete(food_id)
+    res.json({
+        message: `Food ${food.name} delete done..`
+    })
+}
+
 exports.restaurantFoodsInfo = async (req, res) => {
     const { restaurant_id } = req.query;
     const foodsData = await Food.find({ restaurant_id: restaurant_id });
