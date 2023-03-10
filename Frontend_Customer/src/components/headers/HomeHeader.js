@@ -3,7 +3,7 @@ import React from "react";
 import Fav from "../buttons/Fav";
 const HomeHeader = (props) => {
     const { user } = props;
-    console.log(user);
+    // console.log(user);
     return (
         <View style={{ flexDirection: "row" }}>
             <View style={{ flex: 0.65 }}>

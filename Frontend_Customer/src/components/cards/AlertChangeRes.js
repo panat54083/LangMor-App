@@ -1,18 +1,20 @@
 import { StyleSheet, Text, View, Modal, TouchableOpacity } from "react-native";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import BasketContext from "../../hooks/context/BasketContext";
 const AlertChangeRes = (props) => {
     const { modalVisible, toggleModalVisible, handleOnPressSubmit } = props;
     const { basketDetail, setBasketDetail } = useContext(BasketContext);
+    const [userConfirm, setUserConfirm] = useState(false);
     const OnConfirm = () => {
         toggleModalVisible();
         setBasketDetail({ restaurant: null, foods: [] });
+        setUserConfirm(true);
     };
     useEffect(() => {
-        if (basketDetail.restaurant === null) {
+        if (userConfirm) {
             handleOnPressSubmit();
         }
-    }, [basketDetail]);
+    }, [userConfirm]);
     return (
         <Modal
             transparent={true}
