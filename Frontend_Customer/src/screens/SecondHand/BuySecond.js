@@ -4,7 +4,7 @@ import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
 //Components
 import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
-import SecondHand from "../../components/cards/SecondHand";
+import Item from "../../components/cards/Item";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
@@ -59,9 +59,10 @@ const BuySecond = ({ navigation }) => {
                                 alignSelf: "center",
                             }}
                         >
-                            <SecondHand
-                                secondHandData={item}
+                            <Item
+                                itemData={item}
                                 onPress={() => handleSecondDetail(item)}
+                                type={"second"}
                             />
                         </View>
                     ))}
