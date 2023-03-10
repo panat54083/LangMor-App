@@ -6,13 +6,14 @@ import { useIsFocused } from "@react-navigation/native";
 import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import SubmitBtn from "../../components/buttons/SubmitBtn";
+import ContactSet from "../../components/buttons/ContactSet";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
 
 const ChatContact = ({ navigation, route }) => {
     const { itemData, chatroomsData } = route.params;
-
+    console.log(chatroomsData);
     useEffect(() => {
         navigation.setOptions({
             title: "แชท",
@@ -56,36 +57,55 @@ const ChatContact = ({ navigation, route }) => {
     };
     const handleCloseSecondHand = () => {
         api_closeItems(itemData);
-        navigation.goBack()
+        navigation.goBack();
     };
     const handleDebugger = () => {
         console.log(itemData, chatroomsData);
     };
 
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             <Text>ChatContact</Text>
             {/* <Button title="Debugger" onPress={handleDebugger}/> */}
-            {chatroomsData[0] ? (
-                chatroomsData.map((item, index) => (
-                    <Button
-                        key={index}
-                        title={item.customer.name}
-                        onPress={() => handleChatroom(item.chatroom)}
-                    />
-                ))
+            {chatroomsData.length !== 0 ? (
+                <ScrollView>
+                    <View
+                        style={{
+                            paddingBottom: "20%",
+                            marginTop: "4%",
+                        }}
+                    >
+                        <ContactSet chatroomsData={chatroomsData} />
+                    </View>
+                </ScrollView>
             ) : (
                 <Text style={styles.alert_font}>No one contacted.</Text>
             )}
-            <SubmitBtn
-                label={"ปิดการขายสินค้า"}
-                onPress={handleCloseSecondHand}
-                backgroundColor="#FF0101"
-            />
+
+            <View style={styles.submitBtn}>
+                <SubmitBtn
+                    label={"ปิดการขายสินค้า"}
+                    onPress={handleCloseSecondHand}
+                    backgroundColor="#FF0101"
+                />
+            </View>
         </View>
     );
 };
 
 export default ChatContact;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    submitBtn: {
+        position: "absolute",
+        bottom: 0,
+        width: "90%",
+        alignSelf: "center",
+        marginBottom: "8%",
+    },
+    alert_font: {
+        fontFamily: "Kanit-Bold",
+        fontSize: 18,
+        textAlign: "center",
+    },
+});
