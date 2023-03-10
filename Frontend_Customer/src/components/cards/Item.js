@@ -65,7 +65,9 @@ const Item = (props) => {
                                             fontFamily: "Kanit-Bold",
                                         }}
                                     >
-                                        พบที่:
+                                        {itemData.type === "found"
+                                            ? "พบที่: "
+                                            : "สถานที่ที่ทำหาย: "}
                                     </Text>{" "}
                                     {`${itemData.detail}`}
                                 </Text>

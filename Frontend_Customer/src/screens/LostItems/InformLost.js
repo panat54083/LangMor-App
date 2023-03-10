@@ -42,7 +42,7 @@ const InformLost = ({ navigation }) => {
     };
     return (
         <ScrollView>
-            <Text>InformLost screen</Text>
+            {/* <Text>InformLost screen</Text> */}
             {listOfLostItems.length !== 0 ? (
                 listOfLostItems.map((item, index) => (
                     <View

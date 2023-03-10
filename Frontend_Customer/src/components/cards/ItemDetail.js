@@ -5,30 +5,71 @@ import React from "react";
 const ItemDetail = (props) => {
     const { item, type } = props;
     return (
-        <View>
-            <View style={{ marginBottom: "8%" }}>
-                <Text style={styles.itemName}>{item.name}</Text>
-                <View style={styles.textPriceContainer}>
-                    <FontAwesome5
-                        name="money-bill-wave"
-                        size={16}
-                        color="green"
-                    />
-                    <Text style={styles.textPriceStyle}>
-                        {`  ${item.price}`} บาท
-                    </Text>
+        <>
+            {type === "second" ? (
+                <View>
+                    <View style={{ marginBottom: "8%" }}>
+                        <Text style={styles.itemName}>{item.name}</Text>
+                        <View style={styles.textPriceContainer}>
+                            <FontAwesome5
+                                name="money-bill-wave"
+                                size={16}
+                                color="green"
+                            />
+                            <Text style={styles.textPriceStyle}>
+                                {`  ${item.price}`} บาท
+                            </Text>
+                        </View>
+                    </View>
+                    <View>
+                        <Text style={styles.detailTextStyle}>รายละเอียด</Text>
+                        <Text
+                            style={[
+                                styles.textDetailStyle,
+                                { marginBottom: "1%" },
+                            ]}
+                        >
+                            ชื่อพ่อค้า: รอดึงมาจาก DB นะคับ
+                        </Text>
+                        <Text style={styles.textDetailStyle}>
+                            รายละเอียดเพิ่มเติม: {item.detail}{" "}
+                        </Text>
+                    </View>
                 </View>
-            </View>
-            <View>
-                <Text style={styles.detailTextStyle}>รายละเอียด</Text>
-                <Text style={[styles.textDetailStyle, { marginBottom: "1%" }]}>
-                    ชื่อพ่อค้า: รอดึงมาจาก DB นะคับ
-                </Text>
-                <Text style={styles.textDetailStyle}>
-                    รายละเอียดเพิ่มเติม: {item.detail}{" "}
-                </Text>
-            </View>
-        </View>
+            ) : (
+                <View>
+                    <View style={{ marginBottom: "8%" }}>
+                        <Text style={styles.itemName}>{item.name}</Text>
+                        <View style={styles.textPriceContainer}>
+                            <Text style={styles.textTypeStyle}>
+                                {`ประเภทการประการ: ${
+                                    item.type === "found"
+                                        ? "เเจ้งของหาย"
+                                        : "ตามหาของหาย"
+                                }`}
+                            </Text>
+                        </View>
+                    </View>
+                    <View>
+                        <Text style={styles.detailTextStyle}>รายละเอียด</Text>
+                        <Text
+                            style={[
+                                styles.textDetailStyle,
+                                { marginBottom: "1%" },
+                            ]}
+                        >
+                            ชื่อผู้โพส: รอดึงมาจาก DB นะคับ
+                        </Text>
+                        <Text style={styles.textDetailStyle}>
+                            {item.type === "found"
+                                ? "พบที่: "
+                                : "สถานที่ที่ทำหาย: "}
+                            {item.detail}
+                        </Text>
+                    </View>
+                </View>
+            )}
+        </>
     );
 };
 
@@ -42,12 +83,12 @@ const styles = StyleSheet.create({
     textPriceStyle: {
         color: "#9D9693",
         fontFamily: "Kanit-Medium",
-        fontSize: 14,
+        fontSize: 18,
     },
     textDetailStyle: {
         color: "#9D9693",
         fontFamily: "Kanit-Medium",
-        fontSize: 14,
+        fontSize: 18,
     },
     itemName: {
         fontFamily: "Kanit-Bold",
@@ -58,5 +99,10 @@ const styles = StyleSheet.create({
         fontFamily: "Kanit-SemiBold",
         fontSize: 32,
         marginBottom: "2%",
+    },
+    textTypeStyle: {
+        color: "#9D9693",
+        fontFamily: "Kanit-Medium",
+        fontSize: 18,
     },
 });
