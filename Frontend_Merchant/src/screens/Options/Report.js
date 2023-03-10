@@ -19,6 +19,9 @@ import { IP_ADDRESS } from "@env";
 import UserContext from "../../hooks/context/UserContext";
 
 const Report = ({ navigation }) => {
+    const [subject, setSubject] = useState("");
+    const [message, setMessage] = useState("");
+    const { state } = useContext(UserContext);
     //Start-up
     useEffect(() => {
         navigation.setOptions({
@@ -37,15 +40,35 @@ const Report = ({ navigation }) => {
     }, []);
 
     const sendEmail = () => {
-
+        axios
+            .post(`http://${IP_ADDRESS}/setting/sendReport`, {
+                subject: subject,
+                message: message,
+                sender: state.userData.email,
+                app: "Merchant",
+            })
+            .then((res) => {
+                // console.log(res.data.message);
+            })
+            .catch((err) => {
+                if (
+                    err &&
+                    err.response &&
+                    err.response.data &&
+                    err.response.data.message
+                )
+                    console.log("Error", err.response.data.message);
+            });
     };
+    const handleDebugger = () => {
+        console.log(state.userData)
+    }
     return (
         <View>
             <Text>Report</Text>
-            {isAvaiabled ? (
 
+            {/* <Button title="Debugger" onPress={handleDebugger} /> */}
             <Button title="Send Report" onPress={sendEmail} />
-            ) : ("")}
         </View>
     );
 };
