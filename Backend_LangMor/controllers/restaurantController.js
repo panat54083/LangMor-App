@@ -116,6 +116,29 @@ exports.restaurantOptionsInfo = async (req, res) => {
     });
 };
 
+exports.restaurantOptionsDelete = async (req, res) => {
+    const { option_id, restaurant_id } = req.body;
+    const foods = await Food.find({
+        restaurant_id: restaurant_id,
+        "options._id": option_id,
+    });
+    // console.log(foods[0]);
+    await Promise.all(
+        foods.map(async (food, index) => {
+            food.options = food.options.filter((option) => 
+                option._id !== option_id
+            );
+            await food.save();
+        })
+    );
+
+    const del_option = await Option.findByIdAndDelete(option_id);
+
+    res.json({
+        message: `Delete ${del_option.name} options of the restaurant!!`,
+    });
+};
+
 exports.restaurantTypesSave = async (req, res) => {
     const { types, restaurant_id } = req.body;
     const restaurant = await Restaurant.findById(restaurant_id);
@@ -160,13 +183,21 @@ exports.restaurantFoodSave = async (req, res) => {
             message: `Save Food successfully`,
         });
     } else {
-        const updatedFood = {...foodExist.toObject(), ...foodData}
-        await foodExist.updateOne(updatedFood)
+        const updatedFood = { ...foodExist.toObject(), ...foodData };
+        await foodExist.updateOne(updatedFood);
         res.json({
             message: `Update Food successfully`,
         });
     }
 };
+
+exports.restaurantFoodDelete = async (req, res) => {
+    const {food_id} = req.body
+    const food = await Food.findByIdAndDelete(food_id)
+    res.json({
+        message: `Food ${food.name} delete done..`
+    })
+}
 
 exports.restaurantFoodsInfo = async (req, res) => {
     const { restaurant_id } = req.query;

@@ -64,19 +64,24 @@ const SetImageRestaurant = ({ navigation, route }) => {
     };
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.image_container}>
-                <ImageInput
-                    // label={"เพิ่มรูปหน้าร้าน"}
-                    image={banner}
-                    setImage={setBanner}
-                />
-            </View>
-            <View style={styles.header_container}>
-                <Text style={[styles.header]}>มาเพิ่มรูปหน้าร้านกันเถอะ</Text>
-                <Text style={[styles.body]}>
-                    จะทำให้<Text style={{ color: "#FF7A00" }}>ร้านค้าดูดี</Text>
-                    ยิ่งขึ้น
-                </Text>
+            <View style={{ alignItems: "center" }}>
+                <View style={styles.image_container}>
+                    <ImageInput
+                        // label={"เพิ่มรูปหน้าร้าน"}
+                        image={banner}
+                        setImage={setBanner}
+                    />
+                </View>
+                <View style={styles.header_container}>
+                    <Text style={[styles.header]}>
+                        มาเพิ่มรูปหน้าร้านกันเถอะ
+                    </Text>
+                    <Text style={[styles.body]}>
+                        จะทำให้
+                        <Text style={{ color: "#FF7A00" }}>ร้านค้าดูดี</Text>
+                        ยิ่งขึ้น
+                    </Text>
+                </View>
             </View>
             <View style={styles.submitButton}>
                 {!banner ? (
@@ -102,10 +107,8 @@ export default SetImageRestaurant;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: "center",
     },
     header_container: {
-        // flex: 1,
         alignItems: "center",
         marginBottom: 20,
     },
@@ -125,6 +128,7 @@ const styles = StyleSheet.create({
     submitButton: {
         justifyContent: "flex-end",
         flex: 1,
-        marginBottom: "10%",
+        marginBottom: "5%",
+        marginHorizontal: 30,
     },
 });

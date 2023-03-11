@@ -23,7 +23,7 @@ import { IP_ADDRESS } from "@env";
 
 const Chat2 = ({ navigation, route }) => {
     //Initial Data
-    const { itemData, chatroomData } = route.params;
+    const { itemData, chatroomData, customerData } = route.params;
     const { state } = useContext(UserContext);
     const { socket } = useContext(SocketContext);
     //Configs
@@ -37,7 +37,7 @@ const Chat2 = ({ navigation, route }) => {
     //Start-up
     useEffect(() => {
         navigation.setOptions({
-            title: `${itemData.name}`,
+            title: customerData ? `${customerData.name}` : `${itemData.name}` ,
             headerTitleStyle: {
                 fontFamily: "Kanit-Bold",
                 fontSize: 22,

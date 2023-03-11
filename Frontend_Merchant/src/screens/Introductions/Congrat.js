@@ -32,10 +32,12 @@ const Congrat = () => {
     };
     return (
         <View style={styles.container}>
-            <Image
-                source={require("../../assets/icons/happy-face.png")}
-                style={styles.image}
-            />
+            <View style={{ alignItems: "center" }}>
+                <Image
+                    source={require("../../assets/icons/happy-face.png")}
+                    style={styles.image}
+                />
+            </View>
             <View style={styles.text_container}>
                 <Text
                     style={[
@@ -60,9 +62,8 @@ export default Congrat;
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: "column",
         flex: 1,
-        alignItems: "center",
+        // alignItems: "center",
     },
     image: {
         width: 300,
@@ -71,6 +72,7 @@ const styles = StyleSheet.create({
     },
     text_container: {
         marginBottom: 50,
+        marginHorizontal: 30,
     },
     text: {
         fontFamily: "Kanit-Bold",
@@ -78,6 +80,9 @@ const styles = StyleSheet.create({
         textAlign: "left",
     },
     submit: {
-        justifyContent: "center",
+        justifyContent: "flex-end",
+        flex: 1,
+        marginHorizontal: 20,
+        marginBottom: "5%",
     },
 });

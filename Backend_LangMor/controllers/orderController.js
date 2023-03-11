@@ -46,24 +46,23 @@ exports.saveOrder = async (req, res) => {
 exports.getOrder = async (req, res) => {
     const { customer_id, restaurant_id, status } = req.query;
     if (restaurant_id) {
-        const data = [];
         const orders = await Order.find({
             restaurantId: restaurant_id,
             status: status,
         });
+        console.log(orders)
         const metaOrders = await Promise.all(
             orders.map(async (order, index) => {
                 const customer = await Customer.findById(order.customerId);
                 const tamp_data = { order: order, customer: customer };
-                return [...data, tamp_data];
+                return tamp_data;
             })
         );
         res.json({
             message: "Get all Restaurant's orders",
-            orders: metaOrders[0],
+            orders: metaOrders,
         });
     } else if (customer_id) {
-        const data = [];
         const orders = await Order.find({
             customerId: customer_id,
             status: { $nin: ["close", "cancel"] },
@@ -74,12 +73,12 @@ exports.getOrder = async (req, res) => {
                     order.restaurantId
                 );
                 const tamp_data = { order: order, restaurant: restaurant };
-                return [...data, tamp_data];
+                return tamp_data
             })
         );
         res.json({
             message: "Get all Customer's orders",
-            orders: metaOrders[0],
+            orders: metaOrders,
         });
     }
 };

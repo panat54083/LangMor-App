@@ -59,6 +59,10 @@ const DoneOrder = ({ navigation }) => {
                           onPress={() => handleSelectOrder(order)}
                           name={order.customer.name}
                           time={order.order.createdAt}
+                          price={order.order.cart.reduce(
+                              (total, item) => total + item.price,
+                              0
+                          )}
                       />
                   ))
                 : ""}

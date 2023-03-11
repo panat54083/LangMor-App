@@ -12,6 +12,7 @@ app.use("/chatroom", require("./routes/chatroom"));
 app.use("/order", require("./routes/order"));
 app.use("/secondHand", require("./routes/secondHand"))
 app.use("/lostItem", require("./routes/lostItem"))
+app.use("/setting", require("./routes/setting"))
 
 //Setup Error handlers
 const errorHandlers = require("./handler/errorHandler");

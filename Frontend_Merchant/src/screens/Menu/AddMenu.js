@@ -1,5 +1,5 @@
 //Packages
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import axios from "axios";
 import * as LIP from "../../lib/lm-image-picker";
 //Components
@@ -11,6 +11,7 @@ import {
     View,
     Pressable,
     Button,
+    Alert,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import BackScreen from "../../components/buttons/BackScreen";
@@ -18,8 +19,9 @@ import ImageInput from "../../components/Inputs/ImageInput";
 import CustomTextInput from "../../components/Inputs/CustomTextInput";
 import AcceptButton from "../../components/buttons/AcceptButton";
 import CheckboxButton from "../../components/Checkboxes/CheckboxButton";
-//Config
+import Bin from "../../components/buttons/Bin";
 import MiniBtn from "../../components/buttons/MiniBtn";
+//Config
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
 
@@ -37,6 +39,12 @@ const AddMenu = ({ navigation, route }) => {
                     color="#FF7A00"
                 />
             ),
+            headerRight: () =>
+                foodData._id ? (
+                    <Bin onPress={handleDeleteMenu} color="#E61931" />
+                ) : (
+                    ""
+                ),
         });
         // Fetuch Functions
         fetchOptions();
@@ -51,6 +59,7 @@ const AddMenu = ({ navigation, route }) => {
     const [types, setTypes] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
+    const scrollViewRef = useRef(null);
     // Used for Send to backend
     const [image, setImage] = useState(foodData.picture);
     const [name, setName] = useState(foodData.name);
@@ -71,6 +80,7 @@ const AddMenu = ({ navigation, route }) => {
                 console.log(err);
             });
     };
+
     const fetchTypes = () => {
         axios
             .get(
@@ -129,7 +139,40 @@ const AddMenu = ({ navigation, route }) => {
             });
     };
 
+    const api_deleteMenu = () => {
+        axios
+            .delete(`http://${IP_ADDRESS}/restaurant/delete_food`, {
+                data: {
+                    food_id: foodData._id,
+                },
+            })
+            .then((res) => {
+                console.log(res.data.message);
+            })
+            .catch((err) => {
+                if (
+                    err &&
+                    err.response &&
+                    err.response.data &&
+                    err.response.data.message
+                )
+                    console.log("Error", err.response.data.message);
+            });
+    };
+
     const handleSave = () => {
+        if (!name.trim() || !price.trim()) {
+            if (!name.trim()) {
+                Alert.alert("Error", "กรุณาเติมชื่อเมนูอาหาร");
+            } else if (!price.trim()) {
+                Alert.alert("Error", "กรุณาเติมราคาเมนูอาหาร");
+            }
+            scrollViewRef.current?.scrollTo({
+                y: 0,
+                animated: true,
+            });
+            return false;
+        }
         setIsLoaded(true);
         if (image) {
             if (image.type !== "upload") {
@@ -195,8 +238,12 @@ const AddMenu = ({ navigation, route }) => {
         });
     };
     const handleEditOptions = () => {
-        navigation.navigate("MenuTabs",{screen: "OptionsManage"})
+        navigation.navigate("MenuTabs", { screen: "OptionsManage" });
+    };
 
+    const handleDeleteMenu = () => {
+        api_deleteMenu();
+        navigation.goBack();
     };
 
     const handleDebugger = () => {
@@ -204,7 +251,7 @@ const AddMenu = ({ navigation, route }) => {
     };
 
     return (
-        <ScrollView style={{}}>
+        <ScrollView ref={scrollViewRef} style={{}}>
             {/* <Button title="Debugger" onPress={handleDebugger}/> */}
             <View style={styles.container}>
                 <View style={styles.input_components}>
