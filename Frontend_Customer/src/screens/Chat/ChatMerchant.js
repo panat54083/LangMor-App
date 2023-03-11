@@ -20,7 +20,9 @@ const ChatMerchant = ({ navigation }) => {
             apiShowOrder();
         }
     }, [isFocused]);
-
+    useEffect(() => {
+        console.log(orders);
+    }, [orders]);
     const apiShowOrder = () => {
         axios
             .get(
