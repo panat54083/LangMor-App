@@ -25,11 +25,22 @@ import {
 import UserContext from "../hooks/context/UserContext";
 import SocketContext from "../hooks/context/SocketContext";
 
+const debounce = (func, delay) => {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            func(...args);
+        }, delay);
+    };
+};
+
 WebBrowser.maybeCompleteAuthSession();
 
 const Login = () => {
     const image = require("../assets/images/backgrounds/Login.png");
     const [accessToken, setAccessToken] = useState();
+    const [isPressed, setIsPressed] = useState(false);
     const { state, onAction } = useContext(UserContext);
     const { setSocket } = useContext(SocketContext);
     const [request, response, promptAsync] = Google.useAuthRequest({
@@ -92,6 +103,18 @@ const Login = () => {
             useProxy: false,
             showInRecents: true,
         });
+    };
+    const handlePress = debounce(() => {
+        setIsPressed(false);
+        loginWithGoogle();
+    }, 300); // ปรับเวลา Delay ตรงนี้
+    const handlePressIn = () => {
+        setIsPressed(true);
+    };
+    const handlePressOut = () => {
+        if (isPressed) {
+            handlePress();
+        }
     };
     //send Google user's data to Backend server
     const fetchLogin = (userData) => {
@@ -169,7 +192,12 @@ const Login = () => {
                 </View>
                 <Text style={styles.text}>Login{"\n"}Your Account</Text>
                 <View style={{ margin: 20 }}>
-                    <GoogleLogin onPress={loginWithGoogle} />
+                    <GoogleLogin
+                        // onPress={loginWithGoogle}
+                        onPressIn={handlePressIn}
+                        isPressed={isPressed}
+                        onPressOut={handlePressOut}
+                    />
                 </View>
             </ImageBackground>
         </SafeAreaView>

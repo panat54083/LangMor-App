@@ -22,9 +22,19 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { io } from "socket.io-client";
 
+const debounce = (func, delay) => {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            func(...args);
+        }, delay);
+    };
+};
 WebBrowser.maybeCompleteAuthSession();
 const Login = () => {
     const image = require("../assets/images/backgrounds/Login.png");
+    const [isPressed, setIsPressed] = useState(false);
     const [accessToken, setAccessToken] = useState();
     const { onAction } = useContext(UserContext);
     const { setSocket } = useContext(SocketContext);
@@ -86,6 +96,19 @@ const Login = () => {
             showInRecents: true,
         });
     };
+    const handlePress = debounce(() => {
+        setIsPressed(false);
+        loginWithGoogle();
+    }, 300); // ปรับเวลา Delay ตรงนี้
+    const handlePressIn = () => {
+        setIsPressed(true);
+    };
+    const handlePressOut = () => {
+        if (isPressed) {
+            handlePress();
+        }
+    };
+    // return () => clearTimeout(delayDebounceFn);
     //send Google user's data to Backend server
     const fetchLogin = (userData) => {
         axios
@@ -162,7 +185,12 @@ const Login = () => {
                 </View>
                 <Text style={styles.text}>Login{"\n"}Your Account</Text>
                 <View style={{ margin: 20 }}>
-                    <GoogleLogin onPress={loginWithGoogle} />
+                    <GoogleLogin
+                        // onPress={loginWithGoogle}
+                        onPressIn={handlePressIn}
+                        isPressed={isPressed}
+                        onPressOut={handlePressOut}
+                    />
                 </View>
             </ImageBackground>
         </SafeAreaView>

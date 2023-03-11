@@ -1,11 +1,17 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 
-const GoogleLogin = ({ onPress }) => {
+const GoogleLogin = ({ onPress, onPressIn, onPressOut, isPressed }) => {
     return (
         <TouchableOpacity
-            onPress={onPress}
-            style={[styles.container, styles.shadow]}
+            // onPress={onPress}
+            onPressIn={onPressIn}
+            onPressOut={onPressOut}
+            style={[
+                styles.container,
+                styles.shadow,
+                isPressed ? { opacity: 0.2 } : null,
+            ]}
         >
             <Image
                 source={require("../../assets/icons/google.png")}
