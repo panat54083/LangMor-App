@@ -1,7 +1,6 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 const CardRestaurantName = (props) => {
     const { restaurant } = props;
@@ -9,9 +8,7 @@ const CardRestaurantName = (props) => {
         <View style={styles.container}>
             <View style={styles.restName}>
                 <View style={{ flex: 1 }}>
-                    <Text style={styles.textHeader}>
-                        {restaurant.name}
-                    </Text>
+                    <Text style={styles.textHeader}>{restaurant.name}</Text>
                 </View>
                 <View style={{ flex: 1, alignItems: "flex-end" }}>
                     <TouchableOpacity style={{}}>
@@ -27,7 +24,8 @@ const CardRestaurantName = (props) => {
 
             <View style={styles.rating}>
                 <Text style={{ fontFamily: "Kanit-SemiBold" }}>
-                    Rating : {restaurant.rating ? restaurant.rating : "ไม่มี"}{" รอเเก้ไขเป็นรายละเอียดร้านค้า"}
+                    Rating : {restaurant.rating ? restaurant.rating : "ไม่มี"}
+                    {" รอเเก้ไขเป็นรายละเอียดร้านค้า"}
                 </Text>
                 <Ionicons name="star" size={18} color="#FF7A00" />
             </View>
@@ -40,7 +38,7 @@ export default CardRestaurantName;
 const styles = StyleSheet.create({
     container: {
         width: "100%",
-        paddingVertical:12,
+        paddingVertical: 12,
         // height: 100,
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,

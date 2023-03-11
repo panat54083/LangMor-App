@@ -1,13 +1,23 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 const Back = (props) => {
-    const { handlerOnPressBack , reverseColor} = props;
+    const { handlerOnPressBack, reverseColor } = props;
     return (
-        <TouchableOpacity style={reverseColor? styles.orangeBgContainer:styles.whiteBgContainer} onPress={handlerOnPressBack}>
-            <Ionicons name="chevron-back" size={30} color={reverseColor? "white":"#FF7A00"} />
+        <TouchableOpacity
+            style={
+                reverseColor
+                    ? styles.orangeBgContainer
+                    : styles.whiteBgContainer
+            }
+            onPress={handlerOnPressBack}
+        >
+            <Ionicons
+                name="chevron-back"
+                size={30}
+                color={reverseColor ? "white" : "#FF7A00"}
+            />
         </TouchableOpacity>
     );
 };

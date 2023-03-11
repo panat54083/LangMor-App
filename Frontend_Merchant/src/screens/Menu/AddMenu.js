@@ -11,9 +11,9 @@ import {
     View,
     Pressable,
     Button,
+    ScrollView,
     Alert,
 } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 import BackScreen from "../../components/buttons/BackScreen";
 import ImageInput from "../../components/Inputs/ImageInput";
 import CustomTextInput from "../../components/Inputs/CustomTextInput";
