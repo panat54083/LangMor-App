@@ -55,15 +55,7 @@ const ChatSecondHand = ({ navigation }) => {
             {/* <Button title="Debugger" onPress={handleDebugger} /> */}
             {listOfChatrooms.length !== 0 ? (
                 listOfChatrooms.map((item, index) => (
-                    <View
-                        key={index}
-                        style={{
-                            marginTop: "0.75%",
-                            marginBottom: "0.25%",
-                            width: "90%",
-                            alignSelf: "center",
-                        }}
-                    >
+                    <View key={index} style={styles.itemContainer}>
                         <Item
                             itemData={item.itemData}
                             onPress={() => handleChatroom(item)}
@@ -80,4 +72,11 @@ const ChatSecondHand = ({ navigation }) => {
 
 export default ChatSecondHand;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    itemContainer: {
+        marginTop: "0.75%",
+        marginBottom: "0.25%",
+        width: "90%",
+        alignSelf: "center",
+    },
+});
