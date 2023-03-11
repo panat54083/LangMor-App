@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 
-const OrderCard = ({ onPress, name, time, order_number}) => {
+const OrderCard = ({ onPress, name, time, order_number, price}) => {
     const [timestamp, setTimestamp] = useState("");
     useEffect(() => {
         formatTimestamp(time);
@@ -48,7 +48,7 @@ const OrderCard = ({ onPress, name, time, order_number}) => {
                 </View>
             </View>
             <View style={styles.price}>
-                <Text style={styles.font_price}>120</Text>
+                <Text style={styles.font_price}>{price}</Text>
             </View>
         </TouchableOpacity>
     );

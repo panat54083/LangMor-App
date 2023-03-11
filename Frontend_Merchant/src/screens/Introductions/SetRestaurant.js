@@ -10,6 +10,7 @@ import {
     KeyboardAvoidingView,
     ScrollView,
     Pressable,
+    Alert,
 } from "react-native";
 import ImageInput from "../../components/Inputs/ImageInput";
 import CustomTextInput from "../../components/Inputs/CustomTextInput";
@@ -52,6 +53,10 @@ const SetRestaurant = ({ navigation }) => {
         }
     }, [restaurantData]);
     const handleSave = () => {
+        if (restaurantName.trim() === "") {
+            Alert.alert("Error", "กรุณาเติมชื่อณร้านค้า");
+            return false;
+        }
         // console.log(`Restaurant Name: ${restaurantName}`);
         // console.log(`Owner_ID: ${state.userData._id}`);
         // console.log(`Phone: ${phone}`);
@@ -77,45 +82,31 @@ const SetRestaurant = ({ navigation }) => {
             });
     };
     return (
-        <KeyboardAvoidingView>
-            <ScrollView>
-                <SafeAreaView style={styles.container}>
-                    <View style={styles.picture}>
-                        {/* <ImageInput
-                            lable={"เพิ่มรูปหน้าร้าน"}
-                            image={banner}
-                            setImage={setBanner}
-                        /> */}
-                    </View>
-                    <View style={styles.detail}>
-                        <CustomTextInput
-                            placeholder={"ชื่อร้านอาหาร"}
-                            value={restaurantName}
-                            onChangeText={setRestaurantName}
-                        />
-                        <CustomTextInput
-                            placeholder={"เบอร์โทรศัพท์ร้าน/เจ้าของ"}
-                            onChangeText={setPhone}
-                            value={phone}
-                            keyboardType="numeric"
-                        />
-                        <CustomTextInput
-                            placeholder={`สถานที่ตั้ง\nเช่น หน้าวัดน้อย...`}
-                            value={address}
-                            onChangeText={setAddress}
-                            multiline={true}
-                            numberOfLines={2}
-                        />
-                    </View>
-                    <View style={styles.final}>
-                        <AcceptButton
-                            label={"บันทึกข้อมูล"}
-                            onPress={handleSave}
-                        />
-                    </View>
-                </SafeAreaView>
-            </ScrollView>
-        </KeyboardAvoidingView>
+        <SafeAreaView style={styles.container}>
+            <View style={styles.detail}>
+                <CustomTextInput
+                    placeholder={"ชื่อร้านอาหาร"}
+                    value={restaurantName}
+                    onChangeText={setRestaurantName}
+                />
+                <CustomTextInput
+                    placeholder={"เบอร์โทรศัพท์ร้าน/เจ้าของ"}
+                    onChangeText={setPhone}
+                    value={phone}
+                    keyboardType="numeric"
+                />
+                <CustomTextInput
+                    placeholder={`สถานที่ตั้ง\nเช่น หน้าวัดน้อย...`}
+                    value={address}
+                    onChangeText={setAddress}
+                    multiline={true}
+                    numberOfLines={2}
+                />
+            </View>
+            <View style={styles.final}>
+                <AcceptButton label={"บันทึกข้อมูล"} onPress={handleSave} />
+            </View>
+        </SafeAreaView>
     );
 };
 
@@ -124,8 +115,8 @@ export default SetRestaurant;
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#F5F5F5",
-        alignItems: "center",
-        flexDirection: "column",
+        marginHorizontal: 30,
+        marginTop: "5%",
         flex: 1,
     },
     picture: {
@@ -133,9 +124,9 @@ const styles = StyleSheet.create({
     },
     detail: {},
     final: {
-        bottom: 0,
         flex: 1,
         justifyContent: "flex-end",
-        padding: 20,
+        marginHorizontal: 20,
+        marginBottom: "5%",
     },
 });

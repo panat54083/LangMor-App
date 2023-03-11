@@ -51,11 +51,12 @@ const ChatContact = ({ navigation, route }) => {
             });
     };
 
-    const handleChatroom = (room) => {
-        // console.log(room);
+    const handleChatroom = (data) => {
+        // console.log(itemData,data.chatroom, data.customer)
         navigation.navigate("Chat2", {
             itemData: itemData,
-            chatroomData: room,
+            chatroomData: data.chatroom,
+            customerData: data.customer,
         });
     };
     const handleCloseSecondHand = () => {
@@ -72,7 +73,7 @@ const ChatContact = ({ navigation, route }) => {
                 <ContactBtn
                     chatroom={chatroom}
                     onPress={() => {
-                        handleChatroom(chatroom.chatroom);
+                        handleChatroom(chatroom);
                     }}
                 />
             ))}

@@ -9,13 +9,17 @@ import Home from "../screens/Home";
 import SetRestaurant from "../screens/Introductions/SetRestaurant";
 import HomeManage from "../screens/HomeManage";
 import Congrat from "../screens/Introductions/Congrat";
-import Setting from "../screens/settings/Setting";
+import Setting from "../screens/Options/Setting";
 import SelectRestaurant from "../screens/Introductions/SelectRestaurant";
 import AddMenu from "../screens/Menu/AddMenu";
 import AddOptions from "../screens/Menu/AddOptions";
 import Chat from "../screens/Chat/Chat";
 import ShowOrder from "../screens/Orders/ShowOrder";
 import SetImageRestaurant from "../screens/Introductions/SetImageRestaurant";
+import History from "../screens/History";
+import Report from "../screens/Options/Report";
+import EditProfile from "../screens/Options/EditProfile";
+import EditRestaurant from "../screens/Options/EditRestaurant";
 // Taps
 import MenuTabs from "./Tabs/MenuTabs";
 import OrderTabs from "./Tabs/OrderTabs";
@@ -61,6 +65,22 @@ function MyStack({}) {
                             <Stack.Screen
                                 name="ShowOrder"
                                 component={ShowOrder}
+                            />
+                            <Stack.Screen
+                                name="History"
+                                component={History}
+                            />
+                            <Stack.Screen
+                                name="Report"
+                                component={Report}
+                            />
+                            <Stack.Screen
+                                name="EditProfile"
+                                component={EditProfile}
+                            />
+                            <Stack.Screen
+                                name="EditRestaurant"
+                                component={EditRestaurant}
                             />
                         </>
                     ) : (
