@@ -12,10 +12,10 @@ import {
 } from "react-native";
 import Logout from "../../components/buttons/Logout";
 import OptionButton from "../../components/buttons/OptionButton";
+import BackScreen from "../../components/buttons/BackScreen";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
 import SocketContext from "../../hooks/context/SocketContext";
-import BackScreen from "../../components/buttons/BackScreen";
 
 const Setting = ({ navigation }) => {
     const { state, onAction } = useContext(UserContext);
