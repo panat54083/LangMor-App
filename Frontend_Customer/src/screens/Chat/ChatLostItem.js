@@ -4,17 +4,18 @@ import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
 //Components
 import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
+import Item from "../../components/cards/Item";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
 
-const ChatLostItem = ({navigation}) => {
-        //configs
+const ChatLostItem = ({ navigation }) => {
+    //configs
     const isFocused = useIsFocused();
     const { state } = useContext(UserContext);
     //data
     const [listOfChatrooms, setListOfChatrooms] = useState([]);
-    
+
     useEffect(() => {
         if (isFocused) {
             api_getAllChatrooms();
@@ -41,28 +42,41 @@ const ChatLostItem = ({navigation}) => {
     const handleChatroom = (data) => {
         navigation.navigate("Chat2", {
             itemData: data.itemData,
-            chatroomData: data.chatroom
-        })
-    }
+            chatroomData: data.chatroom,
+        });
+    };
 
-        const handleDebugger = () => {
-        console.log(listOfChatrooms)
-    }
+    const handleDebugger = () => {
+        console.log(listOfChatrooms);
+    };
     return (
-            <ScrollView>
-                <Text>ChatLostItem</Text>
-            {/* <Button title="Debugger" onPress={handleDebugger}/> */}
-            {
-                listOfChatrooms[0] ? listOfChatrooms.map((item, index)=>(
-                    <Button
-                    key={index}
-                    title={item.itemData.name}
-                    onPress={()=> handleChatroom(item)}
-                    />
-                )) : (
-                    <Text>คุณยังไม่ได้ทำรายการติดต่อของหาย</Text>
-                )
-            }
+        <ScrollView>
+            {/* <Text>ChatLostItem</Text>
+            <Button title="Debugger" onPress={handleDebugger} /> */}
+            {listOfChatrooms.length !== 0 ? (
+                listOfChatrooms.map((item, index) => (
+                    <View
+                        key={index}
+                        style={{
+                            marginTop: "0.75%",
+                            marginBottom: "0.25%",
+                            marginBottom: 5,
+                            width: "90%",
+                            alignSelf: "center",
+                        }}
+                    >
+                        <Item
+                            itemData={item.itemData}
+                            onPress={() => {
+                                handleChatroom(item);
+                            }}
+                            type={"lost"}
+                        />
+                    </View>
+                ))
+            ) : (
+                <Text>คุณยังไม่ได้ทำรายการติดต่อของหาย</Text>
+            )}
         </ScrollView>
     );
 };
