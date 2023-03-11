@@ -69,8 +69,9 @@ const ChatContact = ({ navigation, route }) => {
 
     const renderRow = (chatrooms) => (
         <View style={styles.row} key={chatrooms[0].chatroom._id}>
-            {chatrooms.map((chatroom) => (
+            {chatrooms.map((chatroom, index) => (
                 <ContactBtn
+                    key={index}
                     chatroom={chatroom}
                     onPress={() => {
                         handleChatroom(chatroom);
@@ -86,9 +87,10 @@ const ChatContact = ({ navigation, route }) => {
         const row = chatroomsData.slice(i, i + BUTTONS_PER_ROW);
         rows.push(renderRow(row));
     }
+
     return (
         <View style={{ flex: 1 }}>
-            <Text>ChatContact</Text>
+            {/* <Text>ChatContact</Text> */}
             {/* <Button title="Debugger" onPress={handleDebugger}/> */}
             {chatroomsData.length !== 0 ? (
                 <ScrollView>
