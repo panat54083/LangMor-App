@@ -6,14 +6,16 @@ import { useIsFocused } from "@react-navigation/native";
 import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import SubmitBtn from "../../components/buttons/SubmitBtn";
-import ContactSet from "../../components/buttons/ContactSet";
+import ContactBtn from "../../components/buttons/ContactBtn";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
 
+const BUTTONS_PER_ROW = 2;
+
 const ChatContact = ({ navigation, route }) => {
     const { itemData, chatroomsData } = route.params;
-    console.log(chatroomsData);
+    // console.log(chatroomsData);
     useEffect(() => {
         navigation.setOptions({
             title: "แชท",
@@ -50,6 +52,7 @@ const ChatContact = ({ navigation, route }) => {
     };
 
     const handleChatroom = (room) => {
+        // console.log(room);
         navigation.navigate("Chat2", {
             itemData: itemData,
             chatroomData: room,
@@ -63,6 +66,25 @@ const ChatContact = ({ navigation, route }) => {
         console.log(itemData, chatroomsData);
     };
 
+    const renderRow = (chatrooms) => (
+        <View style={styles.row} key={chatrooms[0].chatroom._id}>
+            {chatrooms.map((chatroom) => (
+                <ContactBtn
+                    chatroom={chatroom}
+                    onPress={() => {
+                        handleChatroom(chatroom.chatroom);
+                    }}
+                />
+            ))}
+        </View>
+    );
+
+    const rows = [];
+
+    for (let i = 0; i < chatroomsData.length; i += BUTTONS_PER_ROW) {
+        const row = chatroomsData.slice(i, i + BUTTONS_PER_ROW);
+        rows.push(renderRow(row));
+    }
     return (
         <View style={{ flex: 1 }}>
             <Text>ChatContact</Text>
@@ -73,9 +95,11 @@ const ChatContact = ({ navigation, route }) => {
                         style={{
                             paddingBottom: "20%",
                             marginTop: "4%",
+                            alignSelf: "center",
+                            width: "88%",
                         }}
                     >
-                        <ContactSet chatroomsData={chatroomsData} />
+                        {rows}
                     </View>
                 </ScrollView>
             ) : (
@@ -107,5 +131,9 @@ const styles = StyleSheet.create({
         fontFamily: "Kanit-Bold",
         fontSize: 18,
         textAlign: "center",
+    },
+    row: {
+        flexDirection: "row",
+        justifyContent: "space-between",
     },
 });
