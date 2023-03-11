@@ -113,7 +113,7 @@ const HomeManage = ({ navigation }) => {
                                     onPress={handleMenu}
                                 />
                                 <View>
-                                    {state.restaurantData.closed ? (
+                                    {!state.restaurantData.closed ? (
                                         <Small
                                             label="ร้านเปิดอยู่"
                                             image={require("../assets/icons/open.png")}
