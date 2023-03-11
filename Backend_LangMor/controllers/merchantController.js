@@ -53,16 +53,22 @@ exports.userInfo = async (req, res) => {
     }
 };
 
-exports.userUpdate= async (req, res) => {
-    try {
-        const updateUserData = req.body
-        const user = await Merchant.findById(updateUserData._id);
-        console.log(user)
+exports.userUpdate = async (req, res) => {
+    const updateUserData = req.body;
+    console.log(updateUserData);
+    const user = await Merchant.findById(updateUserData._id);
+    if (user) {
+        user.given_name = updateUserData.given_name;
+        user.family_name = updateUserData.family_name;
+        user.name = updateUserData.given_name + " " + updateUserData.family_name;
+        await user.save();
         res.json({
             message: `Updated ${user.name} done..`,
             userData: user,
         });
-    } catch (err) {
-        res.status(401).json({ message: "Unauthorized" });
+    } else {
+        res.json({
+            message: `There is no user.`,
+        });
     }
 };
