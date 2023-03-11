@@ -50,7 +50,7 @@ const Report = ({ navigation }) => {
                 subject: subject,
                 message: message,
                 sender: state.userData.email,
-                app: "Merchant",
+                app: "Customer",
             })
             .then((res) => {
                 console.log(res.data.message);

@@ -52,3 +52,17 @@ exports.userInfo = async (req, res) => {
         res.status(401).json({ message: "Unauthorized" });
     }
 };
+
+exports.userUpdate= async (req, res) => {
+    try {
+        const updateUserData = req.body
+        const user = await Merchant.findById(updateUserData._id);
+        console.log(user)
+        res.json({
+            message: `Updated ${user.name} done..`,
+            userData: user,
+        });
+    } catch (err) {
+        res.status(401).json({ message: "Unauthorized" });
+    }
+};

@@ -18,6 +18,7 @@ import ChatContact from "../screens/Chat/ChatContact";
 import SecondDetail from "../screens/SecondHand/SecondDetail";
 import LostDetail from "../screens/LostItems/LostDetail";
 import Report from "../screens/Options/Report";
+import EditProfile from "../screens/Options/EditProfile";
 //Tabs
 import TapStackRoutes from "./TapStackRoutes";
 import SecondTabs from "./Tabs/SecondTabs";
@@ -77,6 +78,7 @@ const MyStack = ({}) => {
                     />
                     <Stack.Screen name="LostDetail" component={LostDetail} />
                     <Stack.Screen name="Report" component={Report} />
+                    <Stack.Screen name="EditProfile" component={EditProfile} />
                 </>
             ) : (
                 <>

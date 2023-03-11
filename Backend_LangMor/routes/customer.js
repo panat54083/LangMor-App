@@ -4,5 +4,6 @@ const customerContorller = require("../controllers/customerContorller");
 
 router.post("/login", catchErrors(customerContorller.login));
 router.get("/info", catchErrors(customerContorller.userInfo));
+router.post("/update", catchErrors(customerContorller.userUpdate));
 
 module.exports = router;
