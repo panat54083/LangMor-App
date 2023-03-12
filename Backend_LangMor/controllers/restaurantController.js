@@ -48,6 +48,7 @@ exports.restaurantUpdate = async (req, res) => {
         restaurantData: restaurantData,
     });
 };
+
 exports.restaurantInfo = async (req, res) => {
     const { restaurant_id } = req.query;
     const restaurantData = await Restaurant.findById(restaurant_id);

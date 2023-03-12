@@ -81,7 +81,7 @@ const AddSecond = ({ navigation }) => {
 
     return (
         <ScrollView style={{}}>
-            <Button title="Debugger" onPress={handleDebugger} />
+            {/* <Button title="Debugger" onPress={handleDebugger} /> */}
             <View style={styles.container}>
                 <View style={styles.input_container}>
                     <View style={{ marginBottom: 10 }}>

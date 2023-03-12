@@ -155,7 +155,7 @@ const Chat2 = ({ navigation, route }) => {
 
     return (
         <View style={styles.main_container}>
-            <Button title="Debugger" onPress={handleDebugger} />
+            {/* <Button title="Debugger" onPress={handleDebugger} /> */}
             <View style={styles.messages_container}>
                 {listOfMessages[0] ? (
                     <ScrollView ref={scrollViewRef}>
