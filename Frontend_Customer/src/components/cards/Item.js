@@ -20,7 +20,15 @@ const Item = (props) => {
                                 />
                             </View>
                         ) : null}
-                        <View View style={styles.textContainer}>
+                        <View
+                            View
+                            style={[
+                                styles.textContainer,
+                                itemData.picture
+                                    ? { width: "68%" }
+                                    : { width: "88%" },
+                            ]}
+                        >
                             <Text style={styles.textNameStyle}>
                                 {itemData.name}
                             </Text>
@@ -50,7 +58,15 @@ const Item = (props) => {
                                 />
                             </View>
                         ) : null}
-                        <View View style={styles.textContainer}>
+                        <View
+                            View
+                            style={[
+                                styles.textContainer,
+                                itemData.picture
+                                    ? { width: "68%" }
+                                    : { width: "88%" },
+                            ]}
+                        >
                             <Text style={styles.textNameStyle}>
                                 {itemData.name}
                             </Text>
@@ -98,13 +114,14 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.9,
         shadowRadius: 10,
-        backgroundColor:'#FFFFFF'
+        backgroundColor: "#FFFFFF",
+        width: "100%",
     },
     textContainer: {
         marginLeft: "6%",
         justifyContent: "space-around",
+        // backgroundColor: "red",
         // backgroundColor: "blue",
-        // width: "68%",
     },
     textNameStyle: { fontFamily: "Kanit-Bold", fontSize: 22 },
     textPriceStyle: {
@@ -115,7 +132,7 @@ const styles = StyleSheet.create({
     textPriceContainer: {
         flexDirection: "row",
         alignItems: "center",
-        // width: "100%",
+        // width: "86%",
         // backgroundColor: "blue",
     },
 });
