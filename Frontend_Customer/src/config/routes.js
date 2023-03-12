@@ -19,6 +19,7 @@ import SecondDetail from "../screens/SecondHand/SecondDetail";
 import LostDetail from "../screens/LostItems/LostDetail";
 import Report from "../screens/Options/Report";
 import EditProfile from "../screens/Options/EditProfile";
+import EditSecond from "../screens/SecondHand/EditSecond";
 //Tabs
 import TapStackRoutes from "./TapStackRoutes";
 import SecondTabs from "./Tabs/SecondTabs";
@@ -79,6 +80,7 @@ const MyStack = ({}) => {
                     <Stack.Screen name="LostDetail" component={LostDetail} />
                     <Stack.Screen name="Report" component={Report} />
                     <Stack.Screen name="EditProfile" component={EditProfile} />
+                    <Stack.Screen name="EditSecond" component={EditSecond} />
                 </>
             ) : (
                 <>

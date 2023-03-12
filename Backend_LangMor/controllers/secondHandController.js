@@ -65,7 +65,7 @@ exports.secondHandUpdate = async (req, res) => {
         updated_data,
         { new: true }
     );
-    console.log(secondHandData);
+    // console.log(secondHandData);
     res.json({
         message: "SecondHand Information is Updated!",
         secondHandData: secondHandData,

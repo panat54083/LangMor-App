@@ -79,8 +79,8 @@ const SellSecond = ({ navigation }) => {
         navigation.navigate("AddSecond");
     };
 
-    const handleItem = () => {
-        console.log("Item");
+    const handleItem = (data) => {
+        navigation.navigate("EditSecond",{itemData: data.secondHand})
     };
 
     const handleContact = (data) => {
@@ -109,7 +109,7 @@ const SellSecond = ({ navigation }) => {
                         key={index}
                         label={item.secondHand.name}
                         numberOfContact={item.chatrooms.length}
-                        onPressLeft={handleItem}
+                        onPressLeft={()=>handleItem(item)}
                         onPressRight={()=>handleContact(item)}
                     />
                     // <Button title={String(index)} key={index} onPress={()=>console.log(item)}/>
