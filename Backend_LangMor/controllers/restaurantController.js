@@ -37,9 +37,12 @@ exports.register = async (req, res) => {
 
 exports.restaurantUpdate = async (req, res) => {
     const { restaurant_id, updated_data } = req.body;
-    const restaurantData = await Restaurant.findById(restaurant_id);
-    const newRestaurantData = { ...restaurantData.toObject(), ...updated_data };
-    await restaurantData.updateOne(newRestaurantData);
+    const restaurantData = await Restaurant.findByIdAndUpdate(
+        { _id: restaurant_id },
+        updated_data,
+        { new: true }
+    );
+    console.log(restaurantData);
     res.json({
         message: "Restaurant Information is Updated!",
         restaurantData: restaurantData,
@@ -125,8 +128,8 @@ exports.restaurantOptionsDelete = async (req, res) => {
     // console.log(foods[0]);
     await Promise.all(
         foods.map(async (food, index) => {
-            food.options = food.options.filter((option) => 
-                option._id !== option_id
+            food.options = food.options.filter(
+                (option) => option._id !== option_id
             );
             await food.save();
         })
@@ -192,12 +195,12 @@ exports.restaurantFoodSave = async (req, res) => {
 };
 
 exports.restaurantFoodDelete = async (req, res) => {
-    const {food_id} = req.body
-    const food = await Food.findByIdAndDelete(food_id)
+    const { food_id } = req.body;
+    const food = await Food.findByIdAndDelete(food_id);
     res.json({
-        message: `Food ${food.name} delete done..`
-    })
-}
+        message: `Food ${food.name} delete done..`,
+    });
+};
 
 exports.restaurantFoodsInfo = async (req, res) => {
     const { restaurant_id } = req.query;

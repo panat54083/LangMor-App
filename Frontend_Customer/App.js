@@ -15,7 +15,10 @@ export default function App() {
         "Kanit-SemiBold": require("./src/assets/fonts/Kanit-SemiBold.ttf"),
     });
     const [socket, setSocket] = useState(null);
-    const [basketDetail, setBasketDetail] = useState({restaurant:null, foods:[]});
+    const [basketDetail, setBasketDetail] = useState({
+        restaurant: null,
+        foods: [],
+    });
     const reducer = (prevState, action) => {
         switch (action.type) {
             case "SIGN_IN":
@@ -34,6 +37,12 @@ export default function App() {
                     userData: null,
                     token: null,
                 };
+            case "UPDATE_USER_DATA":
+                console.log(`🟡: Data's ${action.user.given_name} is Updated`);
+                return {
+                    ...prevState,
+                    userData: action.user,
+                };
         }
     };
     const [state, dispatch] = useReducer(reducer, {
@@ -49,6 +58,12 @@ export default function App() {
             },
             signOut: () => {
                 return dispatch({ type: "SIGN_OUT" });
+            },
+            updateUserData: ({ user }) => {
+                return dispatch({
+                    type: "UPDATE_USER_DATA",
+                    user: user,
+                });
             },
         }),
         []

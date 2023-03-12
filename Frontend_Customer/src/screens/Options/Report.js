@@ -16,9 +16,9 @@ import {
     Alert,
 } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
-import AcceptButton from "../../components/buttons/AcceptButton";
-import CustomTextInput from "../../components/Inputs/CustomTextInput";
-// Configs
+import SubmitBtn from "../../components/buttons/SubmitBtn";
+import CustomTextInput from "../../components/input/CustomTextInput";
+//Configs
 import { IP_ADDRESS } from "@env";
 import UserContext from "../../hooks/context/UserContext";
 
@@ -50,7 +50,7 @@ const Report = ({ navigation }) => {
                 subject: subject,
                 message: message,
                 sender: state.userData.email,
-                app: "Merchant",
+                app: "Customer",
             })
             .then((res) => {
                 console.log(res.data.message);
@@ -77,7 +77,7 @@ const Report = ({ navigation }) => {
                 Alert.alert("Success", "ส่งรายงานเรียบร้อยแล้ว");
                 setMessage("");
                 setSubject("");
-            }else{
+            } else {
                 Alert.alert("Error", "พบปัญหาการส่งรายงาน");
             }
             setIsLoaded(false);
@@ -108,7 +108,11 @@ const Report = ({ navigation }) => {
                 />
             </View>
             <View style={styles.submit}>
-                <AcceptButton label="ส่งรายงาน" onPress={handleSendEmail} isLoaded={isLoaded} />
+                <SubmitBtn
+                    label="ส่งรายงาน"
+                    onPress={handleSendEmail}
+                    isLoaded={isLoaded}
+                />
             </View>
         </View>
     );

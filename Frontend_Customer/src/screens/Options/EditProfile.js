@@ -12,13 +12,16 @@ import {
     ScrollView,
     SafeAreaView,
     SectionList,
+    TextInput,
+    Alert,
 } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
-import AcceptButton from "../../components/buttons/AcceptButton";
-import EditTextInput from "../../components/Inputs/EditTextInput";
+import SubmitBtn from "../../components/buttons/SubmitBtn";
+import CustomTextInput from "../../components/input/CustomTextInput";
+import EditTextInput from "../../components/input/EditTextInput";
 import Edit from "../../components/buttons/Edit";
 
-// Configs
+//Configs
 import { IP_ADDRESS } from "@env";
 import UserContext from "../../hooks/context/UserContext";
 
@@ -56,7 +59,7 @@ const EditProfile = ({ navigation }) => {
 
     const api_userUpdate = () => {
         axios
-            .post(`http://${IP_ADDRESS}/merchant/update`, {
+            .post(`http://${IP_ADDRESS}/customer/update`, {
                 _id: state.userData._id,
                 family_name: family_name,
                 given_name: given_name,
@@ -79,7 +82,7 @@ const EditProfile = ({ navigation }) => {
     const handleSave = () => {
         // console.log(state.userData);
         api_userUpdate();
-        navigation.navigate("Setting");
+        navigation.navigate("TapStackRoutes", { screen: "Profile" });
     };
 
     return (
@@ -123,7 +126,7 @@ const EditProfile = ({ navigation }) => {
             </View>
             {editable ? (
                 <View style={styles.submit}>
-                    <AcceptButton label={"บันทึกข้อมูล"} onPress={handleSave} />
+                    <SubmitBtn label={"บันทึกข้อมูล"} onPress={handleSave} />
                 </View>
             ) : null}
         </View>
@@ -156,3 +159,18 @@ const styles = StyleSheet.create({
         color: "#FF7A00",
     },
 });
+
+const dum_userData = {
+    __v: 0,
+    _id: "63f46d5f0ee8a09a91096666",
+    address: "",
+    createdAt: "2023-02-21T07:06:07.150Z",
+    email: "panat54083@gmail.com",
+    family_name: "Pine",
+    given_name: "Dipper",
+    name: "Dipper Pine",
+    picture:
+        "https://lh3.googleusercontent.com/a/AEdFTp4gf41HTmLLKrbABIMKNYeOSu7ve6xSm8S-n9uK0w=s96-c",
+    updatedAt: "2023-02-21T07:06:07.150Z",
+    verified_email: true,
+};
