@@ -76,8 +76,8 @@ const MyPost = ({ navigation }) => {
         navigation.navigate("AddLost");
     };
 
-    const handleItem = () => {
-        console.log("Item");
+    const handleItem = (data) => {
+        navigation.navigate("EditPost",{itemData: data})
     };
 
     const handleContact = (data) => {
@@ -99,7 +99,7 @@ const MyPost = ({ navigation }) => {
                         key={index}
                         label={item.lostItem.name}
                         numberOfContact={item.chatrooms.length}
-                        onPressLeft={handleItem}
+                        onPressLeft={()=>handleItem(item.lostItem)}
                         onPressRight={()=>handleContact(item)}
                     />
                 )): null}

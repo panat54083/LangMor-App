@@ -111,7 +111,7 @@ const ChatContact = ({ navigation, route }) => {
 
             <View style={styles.submitBtn}>
                 <SubmitBtn
-                    label={"ปิดการขายสินค้า"}
+                    label={"ปิดโพส"}
                     onPress={handleCloseSecondHand}
                     backgroundColor="#FF0101"
                 />

@@ -67,3 +67,17 @@ exports.getOwnerData = async (req, res) => {
         ownerData: owner,
     });
 };
+
+exports.lostItemUpdate= async (req, res) => {
+    const { item_id, updated_data } = req.body;
+    const lostItemData= await LostItem.findByIdAndUpdate(
+        { _id: item_id},
+        updated_data,
+        { new: true }
+    );
+    // console.log(secondHandData);
+    res.json({
+        message: "LostItem Information is Updated!",
+        lostItemData: lostItemData,
+    });
+};
