@@ -4,6 +4,7 @@ import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
 //Components
 import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
+import Order from "../../components/cards/Order/Order";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
@@ -20,9 +21,9 @@ const ChatMerchant = ({ navigation }) => {
             apiShowOrder();
         }
     }, [isFocused]);
-    useEffect(() => {
-        console.log(orders);
-    }, [orders]);
+    // useEffect(() => {
+    //     console.log(orders);
+    // }, [orders]);
     const apiShowOrder = () => {
         axios
             .get(
@@ -47,11 +48,17 @@ const ChatMerchant = ({ navigation }) => {
         <ScrollView>
             {orders ? (
                 orders.map((order, index) => (
-                    <Button
-                        key={index}
-                        title={order.restaurant.name}
-                        onPress={() => handleChatroom(order)}
-                    />
+                    <View key={index} style={styles.orderContainer}>
+                        {/* <Button
+                            key={index}
+                            title={order.restaurant.name}
+                            onPress={() => handleChatroom(order)}
+                        /> */}
+                        <Order
+                            order={order}
+                            onPress={() => handleChatroom(order)}
+                        />
+                    </View>
                 ))
             ) : (
                 <Text>คุณยังไม่ได้ทำรายการสั่งอาหาร</Text>
@@ -62,4 +69,11 @@ const ChatMerchant = ({ navigation }) => {
 
 export default ChatMerchant;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    orderContainer: {
+        marginTop: "0.75%",
+        marginBottom: "0.25%",
+        width: "90%",
+        alignSelf: "center",
+    },
+});

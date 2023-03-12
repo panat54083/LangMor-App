@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.9,
         shadowRadius: 10,
+        backgroundColor:'#FFFFFF'
     },
     textContainer: {
         marginLeft: "6%",
