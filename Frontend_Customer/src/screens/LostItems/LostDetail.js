@@ -25,6 +25,7 @@ const LostDetail = ({ route, navigation }) => {
     const { state } = useContext(UserContext);
     //data
     const [chatroomData, setChatroomData] = useState(null);
+    const [ownerData, setOwnerData] = useState({});
     const noImgURL =
         "https://static.vecteezy.com/system/resources/previews/004/141/669/original/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg";
     //start-up
@@ -42,6 +43,8 @@ const LostDetail = ({ route, navigation }) => {
                 />
             ),
         });
+        //API
+        api_getOwnerData();
     }, []);
     useEffect(() => {
         if (chatroomData) {
@@ -76,6 +79,18 @@ const LostDetail = ({ route, navigation }) => {
             });
     };
 
+    const api_getOwnerData = () => {
+        axios
+            .get(
+                `http://${IP_ADDRESS}/lostItem/getOwner?owner_id=${lostData.owner_id}`
+            )
+            .then((res) => {
+                setOwnerData(res.data.ownerData);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
     const handleDebugger = () => {
         console.log(lostData);
     };
@@ -103,7 +118,11 @@ const LostDetail = ({ route, navigation }) => {
             </View>
             <View style={styles.bottomContainer}>
                 <View style={styles.detailContainer}>
-                    <ItemDetail item={lostData} type={"lostItem"} />
+                    <ItemDetail
+                        item={lostData}
+                        type={"lostItem"}
+                        owner={ownerData}
+                    />
                 </View>
             </View>
             <View style={styles.submitBtn}>

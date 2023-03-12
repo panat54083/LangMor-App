@@ -3,7 +3,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import React from "react";
 
 const ItemDetail = (props) => {
-    const { item, type } = props;
+    const { item, type, owner } = props;
     return (
         <>
             {type === "second" ? (
@@ -29,7 +29,7 @@ const ItemDetail = (props) => {
                                 { marginBottom: "1%" },
                             ]}
                         >
-                            ชื่อพ่อค้า: รอดึงมาจาก DB นะคับ
+                            ชื่อพ่อค้า: {owner.name} 
                         </Text>
                         <Text style={styles.textDetailStyle}>
                             รายละเอียดเพิ่มเติม: {item.detail}{" "}
@@ -42,7 +42,7 @@ const ItemDetail = (props) => {
                         <Text style={styles.itemName}>{item.name}</Text>
                         <View style={styles.textPriceContainer}>
                             <Text style={styles.textTypeStyle}>
-                                {`ประเภทการประการ: ${
+                                {`ประเภท: ${
                                     item.type === "found"
                                         ? "เเจ้งของหาย"
                                         : "ตามหาของหาย"
@@ -58,7 +58,7 @@ const ItemDetail = (props) => {
                                 { marginBottom: "1%" },
                             ]}
                         >
-                            ชื่อผู้โพส: รอดึงมาจาก DB นะคับ
+                            ชื่อผู้โพส: {owner.name} 
                         </Text>
                         <Text style={styles.textDetailStyle}>
                             {item.type === "found"

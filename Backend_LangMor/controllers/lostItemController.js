@@ -58,3 +58,12 @@ exports.getAllLostItems = async (req, res) => {
         });
     }
 };
+
+exports.getOwnerData = async (req, res) => {
+    const { owner_id } = req.query;
+    const owner = await Customer.findById(owner_id);
+    res.json({
+        message: "Get Owner data.",
+        ownerData: owner,
+    });
+};

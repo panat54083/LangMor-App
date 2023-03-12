@@ -1,5 +1,5 @@
 //Packages
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, useLayoutEffect } from "react";
 import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
 //Components
@@ -26,6 +26,7 @@ const SecondDetail = ({ route, navigation }) => {
     const { state } = useContext(UserContext);
     //data
     const [chatroomData, setChatroomData] = useState(null);
+    const [ownerData, setOwnerData] = useState({});
     //start-up
     useEffect(() => {
         navigation.setOptions({
@@ -41,6 +42,8 @@ const SecondDetail = ({ route, navigation }) => {
                 />
             ),
         });
+        // API
+        api_getOwnerData();
     }, []);
     useEffect(() => {
         if (chatroomData) {
@@ -74,18 +77,29 @@ const SecondDetail = ({ route, navigation }) => {
                     console.log("Error", err.response.data.message);
             });
     };
+    const api_getOwnerData = () => {
+        axios
+            .get(
+                `http://${IP_ADDRESS}/secondHand/getOwner?owner_id=${secondData.owner_id}`
+            )
+            .then((res) => {
+                setOwnerData(res.data.ownerData);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
     const handleDebugger = () => {
-        console.log(secondData);
+        console.log(ownerData);
     };
 
     const handleContact = () => {
         api_createChatroom();
-        // navigation.navigate("Chat2", { itemData: secondData });
     };
     return (
         <View style={{ flex: 1 }}>
             {/* <Text>SecondDetail</Text> */}
-            {/* <Button title="Debugger" onPress={handleDebugger} /> */}
+            <Button title="Debugger" onPress={handleDebugger} />
             <View style={styles.topContatner}>
                 <View style={styles.imgFrame1}>
                     <View style={styles.imgFrame2}>
@@ -102,7 +116,11 @@ const SecondDetail = ({ route, navigation }) => {
             </View>
             <View style={styles.bottomContainer}>
                 <View style={styles.detailContainer}>
-                    <ItemDetail item={secondData} type={"second"} />
+                    <ItemDetail
+                        item={secondData}
+                        owner={ownerData}
+                        type={"second"}
+                    />
                 </View>
             </View>
             <View style={styles.submitBtn}>
@@ -172,3 +190,14 @@ const styles = StyleSheet.create({
         marginBottom: "8%",
     },
 });
+
+const dum_secondData = {
+    __v: 0,
+    _id: "64097be40fddd7ecc55fd3fc",
+    closed: false,
+    detail: "",
+    name: "etet",
+    owner_id: "64084bc09f663ce229c0e44d",
+    picture: null,
+    price: 123,
+};
