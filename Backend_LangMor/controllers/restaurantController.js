@@ -35,6 +35,23 @@ exports.register = async (req, res) => {
     }
 };
 
+exports.registerAsWorker = async (req, res) => {
+    const { worker_id, restaurant_id } = req.body;
+
+    const restaurantData = await Restaurant.findById(restaurant_id);
+    restaurantData.worker = [...restaurantData.worker, worker_id];
+    const workerData = await Merchant.findById(worker_id);
+    workerData.restaurant = restaurantData._id;
+    await restaurantData.save();
+    await workerData.save();
+
+    res.json({
+        message: "Register done..",
+        restaurantData: restaurantData,
+        userData: workerData,
+    });
+};
+
 exports.restaurantUpdate = async (req, res) => {
     const { restaurant_id, updated_data } = req.body;
     const restaurantData = await Restaurant.findByIdAndUpdate(
