@@ -7,7 +7,7 @@ import {
     Image,
 } from "react-native";
 import React, { useState } from "react";
-import { FontAwesome5, Feather, AntDesign, Entypo } from "@expo/vector-icons";
+import { FontAwesome5, Feather, AntDesign, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import * as LIP from "../../lib/lm-image-picker";
 const ImageInput = ({ label, image, setImage }) => {
     const [visible, setVisible] = useState(false);
@@ -43,11 +43,12 @@ const ImageInput = ({ label, image, setImage }) => {
                                     alignItems: "center",
                                 }}
                             >
-                                <FontAwesome5
+                                {/* <FontAwesome5
                                     name="plus"
                                     size={80}
                                     color="#FF7A00"
-                                />
+                                /> */}
+                                <MaterialCommunityIcons name="file-image-plus" size={80} color="#FF4200" />
                                 {label ? (
                                     <Text style={styles.text}>{label}</Text>
                                 ) : (
@@ -142,7 +143,7 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     text: {
-        fontFamily: "Kanit-SemiBold",
+        fontFamily: "Kanit-Bold",
         fontSize: 20,
     },
 });

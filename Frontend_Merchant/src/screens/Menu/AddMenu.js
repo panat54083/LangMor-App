@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import axios from "axios";
 import * as LIP from "../../lib/lm-image-picker";
+import { useIsFocused } from "@react-navigation/native";
 //Components
 import {
     Modal,
@@ -21,6 +22,7 @@ import AcceptButton from "../../components/buttons/AcceptButton";
 import CheckboxButton from "../../components/Checkboxes/CheckboxButton";
 import Bin from "../../components/buttons/Bin";
 import MiniBtn from "../../components/buttons/MiniBtn";
+import { Ionicons } from "@expo/vector-icons";
 //Config
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
@@ -46,12 +48,18 @@ const AddMenu = ({ navigation, route }) => {
                     ""
                 ),
         });
-        // Fetuch Functions
-        fetchOptions();
-        fetchTypes();
     }, []);
 
+    useEffect(() => {
+        if (isFocused) {
+            // Fetuch Functions
+            fetchOptions();
+            fetchTypes();
+        }
+    }, [isFocused]);
+
     // Helping Variable
+    const isFocused = useIsFocused();
     const { state } = useContext(UserContext);
     const { foodData } = route.params;
     const [options, setOptions] = useState([]);
@@ -60,6 +68,7 @@ const AddMenu = ({ navigation, route }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const scrollViewRef = useRef(null);
+    const [editModeOptions, setEditModeOptions] = useState(false);
     // Used for Send to backend
     const [image, setImage] = useState(foodData.picture);
     const [name, setName] = useState(foodData.name);
@@ -159,6 +168,28 @@ const AddMenu = ({ navigation, route }) => {
                     console.log("Error", err.response.data.message);
             });
     };
+    const api_deleteType= (type) => {
+        axios
+            .delete(`http://${IP_ADDRESS}/restaurant/delete_type`, {
+                data: {
+                    type: type,
+                    restaurant_id: state.restaurantData._id
+                },
+            })
+            .then((res) => {
+                console.log(res.data.message);
+                setTypes(res.data.types)
+            })
+            .catch((err) => {
+                if (
+                    err &&
+                    err.response &&
+                    err.response.data &&
+                    err.response.data.message
+                )
+                    console.log("Error", err.response.data.message);
+            });
+    };
 
     const handleSave = () => {
         if (!name.trim() || !price.trim()) {
@@ -224,7 +255,8 @@ const AddMenu = ({ navigation, route }) => {
         setModalVisible(false);
     };
     const handleEditTypes = () => {
-        console.log("Press");
+        setEditModeOptions(!editModeOptions);
+        console.log(editModeOptions);
     };
     const handleAddOptions = () => {
         // console.log("Press");
@@ -241,6 +273,9 @@ const AddMenu = ({ navigation, route }) => {
         navigation.navigate("MenuTabs", { screen: "OptionsManage" });
     };
 
+    const handleDeleteTypes= (type) => {
+        api_deleteType(type)
+    };
     const handleDeleteMenu = () => {
         api_deleteMenu();
         navigation.goBack();
@@ -284,12 +319,43 @@ const AddMenu = ({ navigation, route }) => {
                 <Text style={styles.header}>ประเภทอาหาร</Text>
                 <View style={styles.options}>
                     {types.map((type, index) => (
-                        <CheckboxButton
+                        <View
                             key={index}
-                            label={type}
-                            checked={selectedType.includes(type)}
-                            onPress={() => handleSelectedType(type)}
-                        />
+                            style={{
+                                flexDirection: "row",
+                                borderBottomWidth: editModeOptions ? 0.5 : 0,
+                                borderColor: "#DFDFDF",
+                                borderStyle: 'dashed',  
+                            }}
+                        >
+                            <CheckboxButton
+                                key={index}
+                                label={type}
+                                checked={selectedType.includes(type)}
+                                onPress={() => handleSelectedType(type)}
+                            />
+                            <View
+                                style={{
+                                    justifyContent: "center",
+                                    marginLeft: "auto",
+                                    marginRight: "5%",
+                                }}
+                            >
+                                {editModeOptions ? (
+                                    <Pressable
+                                        onPress={() =>
+                                            handleDeleteTypes(type)
+                                        }
+                                    >
+                                        <Ionicons
+                                            name="trash-bin"
+                                            size={20}
+                                            color="#FF0101"
+                                        />
+                                    </Pressable>
+                                ) : null}
+                            </View>
+                        </View>
                     ))}
                     <View style={styles.add_edit_button}>
                         <MiniBtn

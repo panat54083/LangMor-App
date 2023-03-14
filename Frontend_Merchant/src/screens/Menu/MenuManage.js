@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import AddButton from "../../components/buttons/AddButton";
 import FoodCard from "../../components/Cards/FoodCard";
+import { FontAwesome5 } from "@expo/vector-icons";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
@@ -78,29 +79,50 @@ const MenuManage = ({ navigation }) => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.add_button}>
                 <AddButton onPress={handleAddMenu} />
             </View>
-            <SectionList
-                sections={foodsData}
-                keyExtractor={(item, index) => item + index}
-                renderItem={({ item, index }) => (
-                    <View style={styles.foodCard}>
-                        <FoodCard
-                            key={index}
-                            foodData={item}
-                            onPress={() => {
-                                handleCardFood(item);
-                            }}
+            {foodsData[0] ? (
+                <SectionList
+                    sections={foodsData}
+                    keyExtractor={(item, index) => item + index}
+                    renderItem={({ item, index }) => (
+                        <View style={styles.foodCard}>
+                            <FoodCard
+                                key={index}
+                                foodData={item}
+                                onPress={() => {
+                                    handleCardFood(item);
+                                }}
+                            />
+                        </View>
+                    )}
+                    renderSectionHeader={({ section: { title } }) => (
+                        <Text style={styles.header}>{title}</Text>
+                    )}
+                />
+            ) : (
+                <View
+                    style={{
+                        alignItems: "center",
+                    }}
+                >
+                    <View style={{ marginVertical: "10%" }}>
+                        <FontAwesome5
+                            name="hand-point-up"
+                            size={70}
+                            color="#9D9693"
                         />
                     </View>
-                )}
-                renderSectionHeader={({ section: { title } }) => (
-                    <Text style={styles.header}>{title}</Text>
-                )}
-            />
-        </SafeAreaView>
+                    <Text style={[styles.header, {color: "#9D9693"}]}>
+                        กดปุ่ม <Text style={{ color: "#FF7A00" }}>+</Text>{" "}
+                        ด้านบน
+                    </Text>
+                    <Text style={[styles.header, {color:"#9D9693" }]}>เพื่อเพิ่มเมนูอาหาร</Text>
+                </View>
+            )}
+        </View>
     );
 };
 
@@ -121,6 +143,7 @@ const styles = StyleSheet.create({
         fontFamily: "Kanit-Bold",
         fontSize: 20,
         margin: 10,
+        color: "#1A0700",
     },
 });
 

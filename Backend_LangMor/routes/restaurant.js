@@ -23,6 +23,10 @@ router.post(
     "/save_types",
     catchErrors(restaurantController.restaurantTypesSave)
 );
+router.delete(
+    "/delete_type",
+    catchErrors(restaurantController.restaurantTypesDelete)
+);
 router.get("/types", catchErrors(restaurantController.restaurantTypesInfo));
 
 router.post("/save_food", catchErrors(restaurantController.restaurantFoodSave));

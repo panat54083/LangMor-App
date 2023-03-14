@@ -171,6 +171,20 @@ exports.restaurantTypesSave = async (req, res) => {
     });
 };
 
+exports.restaurantTypesDelete= async (req, res) => {
+    const { type, restaurant_id } = req.body;
+    const restaurant = await Restaurant.findById(restaurant_id);
+    let types = restaurant.types.filter((o_type) => o_type!== type);
+    restaurant.types = types
+    await restaurant.save()
+
+    res.json({
+        message: `Remove ${type} type for ${restaurant.name}`,
+        types: restaurant.types 
+    });
+};
+
+
 exports.restaurantTypesInfo = async (req, res) => {
     const { restaurant_id } = req.query;
     // console.log( restaurant_id)

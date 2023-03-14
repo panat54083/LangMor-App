@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import AddButton from "../../components/buttons/AddButton";
 import ChoiceBtn from "../../components/buttons/ChoiceBtn";
+import { FontAwesome5 } from "@expo/vector-icons";
 //Config
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
@@ -29,16 +30,18 @@ const OptionsManage = ({ navigation }) => {
 
     const handleAddOptions = () => {
         // console.log("Add Options");
-        navigation.navigate("AddOptions", {optionData: {
-            name: "",
-            required: false,
-            maximum: 0,
-            choices: [],
-        }});
+        navigation.navigate("AddOptions", {
+            optionData: {
+                name: "",
+                required: false,
+                maximum: 0,
+                choices: [],
+            },
+        });
     };
     const handleEditOption = (option) => {
         // console.log(option);
-        navigation.navigate("AddOptions",{optionData: option});
+        navigation.navigate("AddOptions", { optionData: option });
     };
     const fetchOptions = () => {
         axios
@@ -54,22 +57,43 @@ const OptionsManage = ({ navigation }) => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.add_button}>
                 <AddButton onPress={handleAddOptions} />
             </View>
-            <ScrollView>
-                <View style={styles.Options}>
-                    {options.map((option, index) => (
-                        <ChoiceBtn
-                            key={index}
-                            label={option.name}
-                            onPress={() => handleEditOption(option)}
+            {options[0] ? (
+                <ScrollView>
+                    <View style={styles.Options}>
+                        {options.map((option, index) => (
+                            <ChoiceBtn
+                                key={index}
+                                label={option.name}
+                                onPress={() => handleEditOption(option)}
+                            />
+                        ))}
+                    </View>
+                </ScrollView>
+            ) : (
+                <View
+                    style={{
+                        alignItems: "center",
+                    }}
+                >
+                    <View style={{ marginVertical: "10%" }}>
+                        <FontAwesome5
+                            name="hand-point-up"
+                            size={70}
+                            color="#9D9693"
                         />
-                    ))}
+                    </View>
+                    <Text style={[styles.header,  {color: "#9D9693"}]}>
+                        กดปุ่ม <Text style={{ color: "#FF7A00" }}>+</Text>{" "}
+                        ด้านบน
+                    </Text>
+                    <Text style={[styles.header, {color: "#9D9693"}]}>เพื่อเพิ่มตัวเลือกสำหรับอาหาร</Text>
                 </View>
-            </ScrollView>
-        </SafeAreaView>
+            )}
+        </View>
     );
 };
 
@@ -85,6 +109,12 @@ const styles = StyleSheet.create({
     },
     Options: {
         marginHorizontal: 20,
+    },
+        header: {
+        fontFamily: "Kanit-Bold",
+        fontSize: 20,
+        margin: 10,
+        color: "#1A0700",
     },
 });
 
