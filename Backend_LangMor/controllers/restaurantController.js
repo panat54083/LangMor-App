@@ -97,13 +97,10 @@ exports.restaurantClosed = async (req, res) => {
 };
 
 exports.restaurantOptionsSave = async (req, res) => {
-    const optionsData = req.body;
-    // console.log(optionsData);
-    const optionsExist = await Option.findOne({
-        restaurant_id: optionsData.restaurant_id,
-        name: optionsData.name,
-    });
-    if (optionsExist) {
+    const { optionsData, option_id } = req.body;
+    console.log(optionsData);
+    if (option_id) {
+        const optionsExist = await Option.findById(option_id);
         const { name, required, maximum, choices } = optionsData;
         optionsExist.name = name;
         optionsExist.required = required;
@@ -171,19 +168,18 @@ exports.restaurantTypesSave = async (req, res) => {
     });
 };
 
-exports.restaurantTypesDelete= async (req, res) => {
+exports.restaurantTypesDelete = async (req, res) => {
     const { type, restaurant_id } = req.body;
     const restaurant = await Restaurant.findById(restaurant_id);
-    let types = restaurant.types.filter((o_type) => o_type!== type);
-    restaurant.types = types
-    await restaurant.save()
+    let types = restaurant.types.filter((o_type) => o_type !== type);
+    restaurant.types = types;
+    await restaurant.save();
 
     res.json({
         message: `Remove ${type} type for ${restaurant.name}`,
-        types: restaurant.types 
+        types: restaurant.types,
     });
 };
-
 
 exports.restaurantTypesInfo = async (req, res) => {
     const { restaurant_id } = req.query;
@@ -197,13 +193,9 @@ exports.restaurantTypesInfo = async (req, res) => {
 };
 
 exports.restaurantFoodSave = async (req, res) => {
-    const foodData = req.body;
-    const foodExist = await Food.findOne({
-        name: foodData.name,
-    });
-    // const foodExist = await Food.findById(foodData._id);
+    const { foodData, food_id } = req.body;
 
-    if (!foodExist) {
+    if (!food_id) {
         const food = new Food({
             restaurant_id: foodData.restaurant_id,
             name: foodData.name,
@@ -218,6 +210,7 @@ exports.restaurantFoodSave = async (req, res) => {
             message: `Save Food successfully`,
         });
     } else {
+        const foodExist = await Food.findById(food_id);
         const updatedFood = { ...foodExist.toObject(), ...foodData };
         await foodExist.updateOne(updatedFood);
         res.json({

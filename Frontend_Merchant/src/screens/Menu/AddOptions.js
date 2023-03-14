@@ -1,6 +1,7 @@
 //Packages
 import React, { useContext, useEffect, useState, useRef } from "react";
 import axios from "axios";
+import { useIsFocused } from "@react-navigation/native";
 //Components
 import {
     ScrollView,
@@ -47,6 +48,8 @@ const AddOptions = ({ navigation, route }) => {
     const { state } = useContext(UserContext);
     const { optionData } = route.params;
     const scrollViewRef = useRef(null);
+    const isFocused = useIsFocused();
+    const [options_id, setOptions_id] = useState(optionData._id);
     const [name, setName] = useState(optionData.name);
     const [required, setRequired] = useState(optionData.required);
     const [maximum, setMaximum] = useState(optionData.maximum);
@@ -59,6 +62,12 @@ const AddOptions = ({ navigation, route }) => {
     useEffect(() => {
         scrollViewRef.current.scrollToEnd({ animated: true });
     }, [choices]);
+
+    useEffect(() => {
+        if (isFocused) {
+            // Fetuch Functions
+        }
+    }, [isFocused]);
 
     useEffect(() => {
         setOptions({
@@ -87,16 +96,20 @@ const AddOptions = ({ navigation, route }) => {
             return false;
         } else if (options.choices.some((obj) => obj.price === "")) {
             Alert.alert("Error", "กรุณาเติมราคา");
+        } else {
+            fetchSaveOptions();
+            navigation.goBack();
         }
 
-        fetchSaveOptions();
-        navigation.goBack();
-        // console.log(options)
+        // // console.log(options)
     };
 
     const fetchSaveOptions = () => {
         axios
-            .post(`http://${IP_ADDRESS}/restaurant/save_options`, options)
+            .post(`http://${IP_ADDRESS}/restaurant/save_options`, {
+                optionsData: options,
+                option_id: options_id
+            })
             .then((res) => {
                 console.log(res.data.message);
             })

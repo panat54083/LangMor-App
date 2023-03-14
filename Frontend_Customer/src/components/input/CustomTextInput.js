@@ -10,6 +10,7 @@ const CustomTextInput = ({
     multiline = false,
     numberOfLines = 1,
     style = null,
+    required = false
 }) => {
     /*
     keyboardType:   default
@@ -32,7 +33,7 @@ const CustomTextInput = ({
                 numberOfLines={numberOfLines}
                 textAlignVertical={"top"}
             />
-            {value ? (
+            {value || !required ? (
                 <Feather name="edit" size={24} color="#C9C5C4" />
             ) : (
                 <Feather name="edit" size={24} color="red" />

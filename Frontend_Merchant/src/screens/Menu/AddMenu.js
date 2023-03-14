@@ -22,7 +22,7 @@ import AcceptButton from "../../components/buttons/AcceptButton";
 import CheckboxButton from "../../components/Checkboxes/CheckboxButton";
 import Bin from "../../components/buttons/Bin";
 import MiniBtn from "../../components/buttons/MiniBtn";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 //Config
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
@@ -69,6 +69,7 @@ const AddMenu = ({ navigation, route }) => {
     const [isLoaded, setIsLoaded] = useState(false);
     const scrollViewRef = useRef(null);
     const [editModeOptions, setEditModeOptions] = useState(false);
+    const [editModeTypes, setEditModeTypes] = useState(false);
     // Used for Send to backend
     const [image, setImage] = useState(foodData.picture);
     const [name, setName] = useState(foodData.name);
@@ -126,13 +127,16 @@ const AddMenu = ({ navigation, route }) => {
     const fetchFoodSave = (url_image) => {
         axios
             .post(`http://${IP_ADDRESS}/restaurant/save_food`, {
-                restaurant_id: state.restaurantData._id,
-                picture: url_image,
-                name: name,
-                price: Number(price),
-                description: description,
-                options: selectOptions,
-                type: selectedType,
+                foodData: {
+                    restaurant_id: state.restaurantData._id,
+                    picture: url_image,
+                    name: name,
+                    price: Number(price),
+                    description: description,
+                    options: selectOptions,
+                    type: selectedType,
+                },
+                food_id: foodData._id,
             })
             .then((res) => {
                 console.log(res.data.message);
@@ -168,17 +172,17 @@ const AddMenu = ({ navigation, route }) => {
                     console.log("Error", err.response.data.message);
             });
     };
-    const api_deleteType= (type) => {
+    const api_deleteType = (type) => {
         axios
             .delete(`http://${IP_ADDRESS}/restaurant/delete_type`, {
                 data: {
                     type: type,
-                    restaurant_id: state.restaurantData._id
+                    restaurant_id: state.restaurantData._id,
                 },
             })
             .then((res) => {
                 console.log(res.data.message);
-                setTypes(res.data.types)
+                setTypes(res.data.types);
             })
             .catch((err) => {
                 if (
@@ -192,7 +196,7 @@ const AddMenu = ({ navigation, route }) => {
     };
 
     const handleSave = () => {
-        if (!name.trim() || !price.trim()) {
+        if (!name.trim() || !String(price).trim()) {
             if (!name.trim()) {
                 Alert.alert("Error", "กรุณาเติมชื่อเมนูอาหาร");
             } else if (!price.trim()) {
@@ -255,8 +259,7 @@ const AddMenu = ({ navigation, route }) => {
         setModalVisible(false);
     };
     const handleEditTypes = () => {
-        setEditModeOptions(!editModeOptions);
-        console.log(editModeOptions);
+        setEditModeTypes(!editModeTypes);
     };
     const handleAddOptions = () => {
         // console.log("Press");
@@ -270,11 +273,24 @@ const AddMenu = ({ navigation, route }) => {
         });
     };
     const handleEditOptions = () => {
-        navigation.navigate("MenuTabs", { screen: "OptionsManage" });
+        setEditModeOptions(!editModeOptions);
+        // navigation.navigate("MenuTabs", { screen: "OptionsManage" });
     };
 
-    const handleDeleteTypes= (type) => {
-        api_deleteType(type)
+    const handleDeleteType = (type) => {
+        Alert.alert("แจ้งเตือน", `ต้องการลบ " ${type} " ใช่หรือไม่`, [
+            {
+                text: "ยกเลิก",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel",
+            },
+            { text: "ใช่", onPress: () => api_deleteType(type) },
+        ]);
+    };
+
+    const handleEditOption = (option) => {
+        // console.log(option);
+        navigation.navigate("AddOptions", { optionData: option });
     };
     const handleDeleteMenu = () => {
         api_deleteMenu();
@@ -301,12 +317,14 @@ const AddMenu = ({ navigation, route }) => {
                         placeholder={"ชื่อรายการอาหาร"}
                         value={name}
                         onChangeText={setName}
+                        required={true}
                     />
                     <CustomTextInput
                         placeholder={"ราคา (บาท)"}
                         value={String(price)}
                         onChangeText={setPrice}
                         keyboardType={"numeric"}
+                        required={true}
                     />
                     <CustomTextInput
                         placeholder={"รายละเอียดเพิ่มเติม"}
@@ -323,13 +341,12 @@ const AddMenu = ({ navigation, route }) => {
                             key={index}
                             style={{
                                 flexDirection: "row",
-                                borderBottomWidth: editModeOptions ? 0.5 : 0,
+                                borderBottomWidth: editModeTypes ? 0.5 : 0,
                                 borderColor: "#DFDFDF",
-                                borderStyle: 'dashed',  
+                                borderStyle: "dashed",
                             }}
                         >
                             <CheckboxButton
-                                key={index}
                                 label={type}
                                 checked={selectedType.includes(type)}
                                 onPress={() => handleSelectedType(type)}
@@ -341,11 +358,9 @@ const AddMenu = ({ navigation, route }) => {
                                     marginRight: "5%",
                                 }}
                             >
-                                {editModeOptions ? (
+                                {editModeTypes ? (
                                     <Pressable
-                                        onPress={() =>
-                                            handleDeleteTypes(type)
-                                        }
+                                        onPress={() => handleDeleteType(type)}
                                     >
                                         <Ionicons
                                             name="trash-bin"
@@ -398,14 +413,42 @@ const AddMenu = ({ navigation, route }) => {
                 <Text style={styles.header}>ตัวเลือกเสริม</Text>
                 <View style={styles.options}>
                     {options.map((option, index) => (
-                        <CheckboxButton
+                        <View
                             key={index}
-                            label={option.name}
-                            checked={selectOptions.some(
-                                (item) => item.name === option.name
-                            )}
-                            onPress={() => handleSelectOptions(option)}
-                        />
+                            style={{
+                                flexDirection: "row",
+                                borderBottomWidth: editModeOptions ? 0.5 : 0,
+                                borderColor: "#DFDFDF",
+                                borderStyle: "dashed",
+                            }}
+                        >
+                            <CheckboxButton
+                                label={option.name}
+                                checked={selectOptions.some(
+                                    (item) => item.name === option.name
+                                )}
+                                onPress={() => handleSelectOptions(option)}
+                            />
+                            <View
+                                style={{
+                                    justifyContent: "center",
+                                    marginLeft: "auto",
+                                    marginRight: "5%",
+                                }}
+                            >
+                                {editModeOptions ? (
+                                    <Pressable
+                                        onPress={() => handleEditOption(option)}
+                                    >
+                                        <MaterialIcons
+                                            name="edit"
+                                            size={20}
+                                            color="#FF0101"
+                                        />
+                                    </Pressable>
+                                ) : null}
+                            </View>
+                        </View>
                     ))}
                     <View style={styles.add_edit_button}>
                         <MiniBtn
