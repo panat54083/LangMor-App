@@ -162,7 +162,16 @@ exports.restaurantTypesSave = async (req, res) => {
     const restaurant = await Restaurant.findById(restaurant_id);
     restaurant.types = types;
     await restaurant.save();
-
+    //Check if type in food doesn't existed
+    const foods = await Food.find({restaurant_id: restaurant_id})
+    await Promise.all(
+        foods.map(async (food, index)=>{
+            if (!restaurant.types.includes(food.type)){
+                food.type = ""
+                await food.save()
+            }
+        })
+    ) 
     res.json({
         message: `Save Types for ${restaurant.name}`,
     });

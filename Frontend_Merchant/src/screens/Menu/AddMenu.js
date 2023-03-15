@@ -51,8 +51,19 @@ const AddMenu = ({ navigation, route }) => {
     }, []);
 
     useEffect(() => {
+        const unsubscribe = navigation.addListener("focus", () => {
+            // console.log("listener")
+            fetchOptions();
+            fetchTypes();
+        });
+
+        return unsubscribe;
+    }, [navigation]);
+
+    useEffect(() => {
         if (isFocused) {
             // Fetuch Functions
+            // console.log("IsFocused")
             fetchOptions();
             fetchTypes();
         }
@@ -284,7 +295,12 @@ const AddMenu = ({ navigation, route }) => {
                 onPress: () => console.log("Cancel Pressed"),
                 style: "cancel",
             },
-            { text: "ใช่", onPress: () => api_deleteType(type) },
+            {
+                text: "ใช่",
+                onPress: () => {
+                    setTypes(types.filter((o_type) => o_type !== type));
+                },
+            },
         ]);
     };
 

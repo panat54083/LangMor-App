@@ -99,7 +99,15 @@ const MenuManage = ({ navigation }) => {
                         </View>
                     )}
                     renderSectionHeader={({ section: { title } }) => (
-                        <Text style={styles.header}>{title}</Text>
+                        <Text style={styles.header}>
+                            {title !== "" ? (
+                                title
+                            ) : (
+                                <Text style={{ color: "#FF0101" }}>
+                                    ไม่ได้จัดหมวดหมู่
+                                </Text>
+                            )}
+                        </Text>
                     )}
                 />
             ) : (
@@ -115,11 +123,13 @@ const MenuManage = ({ navigation }) => {
                             color="#9D9693"
                         />
                     </View>
-                    <Text style={[styles.header, {color: "#9D9693"}]}>
+                    <Text style={[styles.header, { color: "#9D9693" }]}>
                         กดปุ่ม <Text style={{ color: "#FF7A00" }}>+</Text>{" "}
                         ด้านบน
                     </Text>
-                    <Text style={[styles.header, {color:"#9D9693" }]}>เพื่อเพิ่มเมนูอาหาร</Text>
+                    <Text style={[styles.header, { color: "#9D9693" }]}>
+                        เพื่อเพิ่มเมนูอาหาร
+                    </Text>
                 </View>
             )}
         </View>
