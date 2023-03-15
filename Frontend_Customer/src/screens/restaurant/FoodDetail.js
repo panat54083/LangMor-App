@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
 } from "react-native";
 import BasketContext from "../../hooks/context/BasketContext";
+import uuid from "react-native-uuid";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import FoodDetailHeader from "../../components/headers/FoodDetailHeader";
 import RadioSetBtn from "../../components/buttons/RadioSetBtn";
@@ -229,6 +230,9 @@ const FoodDetail = ({ route, navigation }) => {
             if (editOrder) {
                 setBasketDetail((prevDetail) => {
                     const newDetail = { ...prevDetail };
+                    const index = newDetail.foods.findIndex((food) => {
+                        return food.id === editOrder.id;
+                    });
                     if (number !== 0) {
                         const foodData = {
                             id: editOrder.id,
@@ -240,11 +244,15 @@ const FoodDetail = ({ route, navigation }) => {
                             requiredCheckList: requiredCheckList,
                         };
                         newDetail.restaurant = restaurant;
-                        newDetail.foods[editOrder.id - 1] = foodData;
+                        newDetail.foods[index] = foodData;
                         return newDetail;
                     } else {
-                        newDetail.restaurant = restaurant;
-                        newDetail.foods.splice(editOrder.id - 1, 1);
+                        newDetail.foods.splice(index, 1);
+                        if (newDetail.foods.length === 0) {
+                            newDetail.restaurant = null;
+                        } else {
+                            newDetail.restaurant = restaurant;
+                        }
                         // console.log(newDetail.foods);
                         return newDetail;
                     }
@@ -253,7 +261,7 @@ const FoodDetail = ({ route, navigation }) => {
                 setBasketDetail((prevDetail) => {
                     const newDetail = { ...prevDetail };
                     const foodData = {
-                        id: prevDetail.foods.length + 1,
+                        id: uuid.v4(),
                         food: food,
                         options: confirmOption,
                         moreDetail: moreDetail,
@@ -261,6 +269,7 @@ const FoodDetail = ({ route, navigation }) => {
                         price: price,
                         requiredCheckList: requiredCheckList,
                     };
+                    console.log(foodData.id);
                     newDetail.restaurant = restaurant;
                     newDetail.foods.push(foodData);
                     return newDetail;
