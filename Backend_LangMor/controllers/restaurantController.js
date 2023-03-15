@@ -59,7 +59,7 @@ exports.restaurantUpdate = async (req, res) => {
         updated_data,
         { new: true }
     );
-    console.log(restaurantData);
+    // console.log(restaurantData);
     res.json({
         message: "Restaurant Information is Updated!",
         restaurantData: restaurantData,
@@ -97,8 +97,8 @@ exports.restaurantClosed = async (req, res) => {
 };
 
 exports.restaurantOptionsSave = async (req, res) => {
-    const { optionsData, option_id } = req.body;
-    console.log(optionsData);
+    const { optionsData, option_id, restaurant_id } = req.body;
+    // console.log(optionsData);
     if (option_id) {
         const optionsExist = await Option.findById(option_id);
         const { name, required, maximum, choices } = optionsData;
@@ -107,6 +107,25 @@ exports.restaurantOptionsSave = async (req, res) => {
         optionsExist.maximum = maximum;
         optionsExist.choices = choices;
         await optionsExist.save();
+        const foods = await Food.find({
+            restaurant_id: restaurant_id,
+            "options._id": option_id,
+        });
+
+        //Change options in food
+        await Promise.all(
+            foods.map(async (food, index) => {
+                food.options = food.options.map((option, index) => {
+                    if (String(option._id) === option_id) {
+                        return optionsExist;
+                    } else {
+                        return option;
+                    }
+                });
+
+                await food.save();
+            })
+        );
         res.json({
             message: `Update Options ${optionsExist.name}`,
         });
@@ -140,15 +159,27 @@ exports.restaurantOptionsDelete = async (req, res) => {
         restaurant_id: restaurant_id,
         "options._id": option_id,
     });
-    // console.log(foods[0]);
+
+    console.log(foods)
     await Promise.all(
         foods.map(async (food, index) => {
             food.options = food.options.filter(
-                (option) => option._id !== option_id
+                (option) => String(option._id) !== option_id
             );
             await food.save();
         })
     );
+
+    // await Promise.all(
+    //     foods.map(async (food, index) => {
+    //         food.options = food.options.map((option, index) => {
+    //             if (String(option._id) !== option_id) {
+    //                 return option;
+    //             }
+    //         });
+    //         await food.save();
+    //     })
+    // );
 
     const del_option = await Option.findByIdAndDelete(option_id);
 
@@ -163,15 +194,15 @@ exports.restaurantTypesSave = async (req, res) => {
     restaurant.types = types;
     await restaurant.save();
     //Check if type in food doesn't existed
-    const foods = await Food.find({restaurant_id: restaurant_id})
+    const foods = await Food.find({ restaurant_id: restaurant_id });
     await Promise.all(
-        foods.map(async (food, index)=>{
-            if (!restaurant.types.includes(food.type)){
-                food.type = ""
-                await food.save()
+        foods.map(async (food, index) => {
+            if (!restaurant.types.includes(food.type)) {
+                food.type = "";
+                await food.save();
             }
         })
-    ) 
+    );
     res.json({
         message: `Save Types for ${restaurant.name}`,
     });
@@ -283,7 +314,7 @@ exports.restaurantSearch = async (req, res) => {
                 const { foods, ...rest } = res; // destructuring to remove `food`
                 return rest;
             });
-            console.log(results);
+            // console.log(results);
             res.json({
                 message: `Get Results`,
                 results: results,

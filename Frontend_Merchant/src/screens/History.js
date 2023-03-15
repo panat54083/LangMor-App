@@ -88,7 +88,7 @@ const History = ({ navigation }) => {
                 }&&status=${"close"}`
             )
             .then((res) => {
-                console.log(res.data.orders.length);
+                // console.log(res.data.orders.length);
                 setOrders(formatToSectionList(res.data.orders));
             })
             .catch((err) => {
@@ -103,19 +103,7 @@ const History = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            {/* <Text>History</Text> */}
             {/* <Button title="Debugger" onPress={handleDebugger} /> */}
-            {/* {orders
-                ? orders.map((order, index) => (
-                      <OrderCard
-                          key={index}
-                          order_number={order.order.order_number}
-                          onPress={() => handleSelectOrder(order)}
-                          name={order.customer.name}
-                          time={order.order.createdAt}
-                      />
-                  ))
-                : ""} */}
             <SectionList
                 sections={orders}
                 keyExtractor={(item, index) => item + index}
@@ -129,6 +117,7 @@ const History = ({ navigation }) => {
                         name={item.customer.name}
                         time={item.order.createdAt}
                         price={item.order.cart.reduce((total, item) => total + item.price, 0)}
+                        orderStatus={item.order.status}
                     />
                         </View>
                 )}

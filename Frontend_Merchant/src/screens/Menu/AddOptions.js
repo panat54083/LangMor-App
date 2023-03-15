@@ -108,7 +108,8 @@ const AddOptions = ({ navigation, route }) => {
         axios
             .post(`http://${IP_ADDRESS}/restaurant/save_options`, {
                 optionsData: options,
-                option_id: options_id
+                option_id: options_id,
+                restaurant_id: state.restaurantData._id,
             })
             .then((res) => {
                 console.log(res.data.message);
@@ -146,9 +147,23 @@ const AddOptions = ({ navigation, route }) => {
             });
     };
     const handleDeleteOption = () => {
-        // console.log(optionData._id);
-        api_deleteOptions();
-        navigation.goBack();
+        Alert.alert(
+            "แจ้งเตือน",
+            `ต้องการลบ " ${optionData.name} " ใช่หรือไม่`,
+            [
+                {
+                    text: "ยกเลิก",
+                    style: "cancel",
+                },
+                {
+                    text: "ใช่",
+                    onPress: () => {
+                        api_deleteOptions();
+                        navigation.goBack();
+                    },
+                },
+            ]
+        );
     };
 
     const handleDebugger = () => {
@@ -163,6 +178,7 @@ const AddOptions = ({ navigation, route }) => {
                         placeholder={"ชื่อตัวเลือก"}
                         value={name}
                         onChangeText={setName}
+                        required={true}
                     />
                     <View style={{ marginBottom: 4 }}>
                         <AddOptionsCheck

@@ -122,7 +122,7 @@ const Chat = ({ navigation, route }) => {
     }, [listMessages]);
 
     const chatroom_connect = (chatroom_id) => {
-        if (socket) {
+        if (socket && orderData.status !== "close") {
             socket.emit("joinRoom", {
                 chatroom: chatroom_id,
             });

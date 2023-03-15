@@ -10,7 +10,6 @@ const RadioSetBtn = (props) => {
     const [selectedValuePrice, setSelectedValuePrice] = useState(
         selePrice ? selePrice : 0
     );
-
     useEffect(() => {
         const data = {
             name: option.name,
@@ -22,7 +21,9 @@ const RadioSetBtn = (props) => {
 
     const handleOnPress = (choice) => {
         setSelectedValuePrice(
-            choice.method === "increase" ? choice.price : choice.price * -1
+            choice.method === "increase"
+                ? Number(choice.price)
+                : Number(choice.price) * -1
         );
         setSelectedValue(choice.name);
     };
@@ -35,8 +36,8 @@ const RadioSetBtn = (props) => {
                             label={choice.name}
                             price={
                                 choice.method === "increase"
-                                    ? choice.price
-                                    : choice.price * -1
+                                    ? Number(choice.price)
+                                    : Number(choice.price) * -1
                             }
                             value={choice.name}
                             selected={selectedValue === choice.name}

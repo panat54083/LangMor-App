@@ -32,7 +32,7 @@ const CheckBoxSetBtn = (props) => {
         const newCheckedValuesPrice = [...checkedValuesPrice];
         if (currentValueIndex === -1) {
             newCheckedValuesPrice.push(
-                choice.method === "increase" ? choice.price : choice.price * -1
+                choice.method === "increase" ? Number(choice.price) : Number(choice.price) * -1
             );
         } else {
             newCheckedValuesPrice.splice(currentValueIndex, 1);
@@ -56,8 +56,8 @@ const CheckBoxSetBtn = (props) => {
                     label={choice.name}
                     price={
                         choice.method === "increase"
-                            ? choice.price
-                            : choice.price * -1
+                            ? Number(choice.price)
+                            : Number(choice.price) * -1
                     }
                     value={choice.name}
                     checked={checkedValues.includes(choice.name)}

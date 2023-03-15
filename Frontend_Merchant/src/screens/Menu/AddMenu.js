@@ -250,12 +250,16 @@ const AddMenu = ({ navigation, route }) => {
     };
 
     const handleSelectOptions = (option) => {
-        if (selectOptions.includes(option)) {
-            setSelectOptions(selectOptions.filter((o) => o !== option));
+        if (selectOptions.some((item) => item._id === option._id)) {
+            setSelectOptions(selectOptions.filter((o) => o._id !== option._id));
         } else {
             setSelectOptions([...selectOptions, option]);
         }
     };
+    useEffect(()=>{
+        console.log(selectOptions)
+    },[selectOptions])
+
     const handleSelectedType = (type) => {
         if (selectedType === type) {
             setSelectedType("");
@@ -292,7 +296,6 @@ const AddMenu = ({ navigation, route }) => {
         Alert.alert("แจ้งเตือน", `ต้องการลบ " ${type} " ใช่หรือไม่`, [
             {
                 text: "ยกเลิก",
-                onPress: () => console.log("Cancel Pressed"),
                 style: "cancel",
             },
             {
@@ -306,11 +309,24 @@ const AddMenu = ({ navigation, route }) => {
 
     const handleEditOption = (option) => {
         // console.log(option);
+        //uncheck before go to Edit page
+            setSelectOptions(selectOptions.filter((o) => o._id !== option._id));
         navigation.navigate("AddOptions", { optionData: option });
     };
     const handleDeleteMenu = () => {
-        api_deleteMenu();
-        navigation.goBack();
+        Alert.alert("แจ้งเตือน", `ต้องการลบ " ${foodData.name} " ใช่หรือไม่`, [
+            {
+                text: "ยกเลิก",
+                style: "cancel",
+            },
+            {
+                text: "ใช่",
+                onPress: () => {
+                    api_deleteMenu();
+                    navigation.goBack();
+                },
+            },
+        ]);
     };
 
     const handleDebugger = () => {
@@ -441,7 +457,7 @@ const AddMenu = ({ navigation, route }) => {
                             <CheckboxButton
                                 label={option.name}
                                 checked={selectOptions.some(
-                                    (item) => item.name === option.name
+                                    (item) => item._id === option._id
                                 )}
                                 onPress={() => handleSelectOptions(option)}
                             />

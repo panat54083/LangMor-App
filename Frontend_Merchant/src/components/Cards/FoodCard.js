@@ -2,6 +2,7 @@
 import React from "react";
 // Components
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
 
 const FoodCard = ({ foodData, onPress }) => {
     return (
@@ -16,7 +17,9 @@ const FoodCard = ({ foodData, onPress }) => {
                     />
                 </View>
             ) : (
-                <></>
+                <View style={[styles.image_container,{backgroundColor: "#DFDFDF"}]}>
+                    <FontAwesome name="file-image-o" size={50} color="#1A0700"/>
+                </View>
             )}
 
             <View style={styles.data}>
