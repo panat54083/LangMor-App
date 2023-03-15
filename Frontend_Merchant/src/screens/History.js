@@ -85,7 +85,7 @@ const History = ({ navigation }) => {
             .get(
                 `http://${IP_ADDRESS}/order/get?restaurant_id=${
                     state.restaurantData._id
-                }&&status=${"close"}`
+                }&&status=${"close,cancel"}`
             )
             .then((res) => {
                 // console.log(res.data.orders.length);
@@ -107,22 +107,26 @@ const History = ({ navigation }) => {
             <SectionList
                 sections={orders}
                 keyExtractor={(item, index) => item + index}
-                renderItem={({item, index}) => (
-                    <View style={styles.orderCard}>
-
-                    <OrderCard
-                        key={index}
-                        order_number={item.order.order_number}
-                        onPress={() => handleSelectOrder(item)}
-                        name={item.customer.name}
-                        time={item.order.createdAt}
-                        price={item.order.cart.reduce((total, item) => total + item.price, 0)}
-                        orderStatus={item.order.status}
-                    />
-                        </View>
+                renderItem={({ item, index }) => (
+                    <View style={[styles.orderCard, { marginBottom: "2%" }]}>
+                        <OrderCard
+                            key={index}
+                            order_number={item.order.order_number}
+                            onPress={() => handleSelectOrder(item)}
+                            name={item.customer.name}
+                            time={item.order.createdAt}
+                            price={item.order.cart.reduce(
+                                (total, item) => total + item.price,
+                                0
+                            )}
+                            orderStatus={item.order.status}
+                        />
+                    </View>
                 )}
                 renderSectionHeader={({ section: { title } }) => (
-                    <Text style={styles.header}>{title}</Text>
+                    <Text style={[styles.header, { color: "#1A0700" }]}>
+                        {title}
+                    </Text>
                 )}
             />
         </View>
@@ -132,16 +136,16 @@ const History = ({ navigation }) => {
 export default History;
 
 const styles = StyleSheet.create({
-        container: {
+    container: {
         flex: 1,
         backgroundColor: "#F5f5f5",
     },
-        header: {
+    header: {
         fontFamily: "Kanit-Bold",
         fontSize: 20,
         margin: 10,
     },
-        orderCard: {
+    orderCard: {
         marginHorizontal: 10,
     },
 });

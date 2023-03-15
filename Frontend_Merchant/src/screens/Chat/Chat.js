@@ -13,6 +13,7 @@ import {
     ScrollView,
     Image,
     Pressable,
+    Alert,
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import BackScreen from "../../components/buttons/BackScreen";
@@ -20,6 +21,7 @@ import ChatInput from "../../components/Cards/Chat/ChatInput";
 import MessageModel from "../../components/Cards/Chat/MessageModel";
 import AcceptButton from "../../components/buttons/AcceptButton";
 import OrderMessage from "../../components/Cards/Chat/OrderMessage";
+import CancelBtn from "../../components/buttons/CancelBtn";
 //Configs
 import { IP_ADDRESS } from "@env";
 import UserContext from "../../hooks/context/UserContext";
@@ -35,6 +37,13 @@ const Chat = ({ navigation, route }) => {
     const [isLoaded, setIsLoaded] = useState(false);
     const scrollViewRef = useRef(null);
     const [keyboardVisible, setKeyboardVisible] = useState(false);
+    const messageStatus = {
+        doing: "ยืนยันออเดอร์ครับ",
+        deliver: "กำลังไปส่งนะครับ",
+        done: "ขอบคุณสำหรับการสั่งซื้อครับ",
+        close: "ปิดห้องแชทแล้วนะครับ",
+        cancel: "ยกเลิกออเดอร์นะครับ",
+    };
 
     // data variables
     const [message, setMessage] = useState("");
@@ -68,12 +77,22 @@ const Chat = ({ navigation, route }) => {
                             navigation.navigate("OrderTabs", {
                                 screen: "DoneOrder",
                             });
-                        } else if (orderData.status === "close") {
+                        } else  {
                             navigation.goBack();
                         }
                     }}
                     color="#FF7A00"
                 />
+            ),
+            headerRight: () => (
+                <>
+                    {!["close","cancel"].includes(orderData.status) ? (
+                        <CancelBtn onPress={handleCancel} />
+                    ) : (
+                        null
+                        // <CancelBtn onPress={handleCancel} />
+                    )}
+                </>
             ),
         });
         // Functions
@@ -210,7 +229,7 @@ const Chat = ({ navigation, route }) => {
                     console.log(err);
                 });
         } else {
-            sendMessage(message, image);
+            sendMessage(message, null);
             setIsLoaded(false);
         }
         inputRef.current.clear();
@@ -259,21 +278,25 @@ const Chat = ({ navigation, route }) => {
                 newStatus = "doing";
                 setButtonStatusLabel("กำลังไปส่ง");
                 setButtonStatusColor("#FF7A00");
+                sendMessage(messageStatus.doing, null);
                 break;
             case "doing":
                 newStatus = "deliver";
                 setButtonStatusLabel("จัดส่งสำเร็จ");
                 setButtonStatusColor("#FF7A00");
+                sendMessage(messageStatus.deliver, null);
                 break;
             case "deliver":
                 newStatus = "done";
                 setButtonStatusLabel("ปิดการสนทนา");
                 setButtonStatusColor("#FF0101");
+                sendMessage(messageStatus.done, null);
                 break;
             case "done":
                 newStatus = "close";
+                sendMessage(messageStatus.close, null);
                 chatroom_disconnect(orderData._id);
-                navigation.navigate("OrderTabs", { screen: "DoneOrder" });
+                navigation.navigate("OrderTabs");
                 break;
             default:
                 newStatus = "new";
@@ -284,6 +307,22 @@ const Chat = ({ navigation, route }) => {
         apiUpdateOrder(newStatus);
     };
 
+    const handleCancel = () => {
+        Alert.alert("แจ้งเตือน", `ต้องการยกเลิกออเดอร์นี้ใช่หรือไม่`, [
+            {
+                text: "ยกเลิก",
+                style: "cancel",
+            },
+            {
+                text: "ใช่",
+                onPress: () => {
+                    apiUpdateOrder("cancel");
+                    sendMessage(messageStatus.cancel, null);
+                    navigation.navigate("OrderTabs");
+                },
+            },
+        ]);
+    };
     const handleMoreDetail = () => {
         // console.log(orderData.status);
         const order = { order: orderData, customer: customerData };
@@ -337,19 +376,16 @@ const Chat = ({ navigation, route }) => {
             </View>
             {!keyboardVisible && (
                 <View style={styles.button_container}>
-                    {
-                        orderData.status !== "close" ? (
-                    <AcceptButton
-                        label={buttonStatusLabel}
-                        onPress={handleStatusButton}
-                        fontSize={18}
-                        backgroundColor={buttonStatusColor}
-                    />
-
-                        ):(
-                            ""
-                        )
-                    }
+                    {!["close","cancel"].includes(orderData.status) ? (
+                        <AcceptButton
+                            label={buttonStatusLabel}
+                            onPress={handleStatusButton}
+                            fontSize={18}
+                            backgroundColor={buttonStatusColor}
+                        />
+                    ) : (
+                        ""
+                    )}
                 </View>
             )}
             {image && (
@@ -391,7 +427,7 @@ const Chat = ({ navigation, route }) => {
                     </Pressable>
                 </View>
             )}
-            {orderData.status !== "close" ? (
+            {!["close","cancel"].includes(orderData.status) ? (
                 <ChatInput
                     forwardedRef={inputRef}
                     onChangeText={(value) => setMessage(value)}

@@ -4,7 +4,14 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 
-const OrderCard = ({ onPress, name, time, order_number, price, orderStatus}) => {
+const OrderCard = ({
+    onPress,
+    name,
+    time,
+    order_number,
+    price,
+    orderStatus,
+}) => {
     const [timestamp, setTimestamp] = useState("");
     useEffect(() => {
         formatTimestamp(time);
@@ -16,7 +23,7 @@ const OrderCard = ({ onPress, name, time, order_number, price, orderStatus}) => 
                 hour12: true,
                 hourCycle: "h12",
             });
-            const [hour, minute] = times.split(':').slice(0, 2);
+            const [hour, minute] = times.split(":").slice(0, 2);
             const formattedTime = `${hour}.${minute}`;
             setTimestamp(formattedTime);
         } else {
@@ -48,7 +55,20 @@ const OrderCard = ({ onPress, name, time, order_number, price, orderStatus}) => 
                 </View>
             </View>
             <View style={styles.price}>
-                <Text style={styles.font_price}>{orderStatus!=="cancel" ? price : (<Text style={{color: "#FF0101"}}>{orderStatus}</Text>)}</Text>
+                <Text style={styles.font_price}>
+                    {orderStatus !== "cancel" ? (
+                        price
+                    ) : (
+                        <Text
+                            style={{
+                                color: "#FF0101",
+                                textTransform: "capitalize",
+                            }}
+                        >
+                            {orderStatus}
+                        </Text>
+                    )}
+                </Text>
             </View>
         </TouchableOpacity>
     );

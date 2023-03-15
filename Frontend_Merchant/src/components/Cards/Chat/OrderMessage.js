@@ -58,7 +58,7 @@ const OrderMessage = ({ order, onPress, backgroundColor= "#FF7A00" }) => {
                       ))
                     : ""}
             </View>
-            <TouchableOpacity style={{ alignItems: "center" }}>
+            <TouchableOpacity style={{ alignItems: "center", marginHorizontal: "3%",}}>
                 <Text
                     style={[
                         styles.body_font,
@@ -68,6 +68,8 @@ const OrderMessage = ({ order, onPress, backgroundColor= "#FF7A00" }) => {
                             marginVertical: 3,
                         },
                     ]}
+                    adjustsFontSizeToFit={true}
+                    numberOfLines={1}
                     onPress={onPress}
                 >
                     ดูรายละเอียดเพิ่มเติม
