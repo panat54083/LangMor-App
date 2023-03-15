@@ -2,7 +2,7 @@ import { StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useState } from "react";
 import Number from "../input/Number";
 const MoreDetailCard = (props) => {
-    const { number, setNumber, moreDetail, setMoreDetail } = props;
+    const { number, setNumber, moreDetail, setMoreDetail, minNumber } = props;
     const handleChange = (text) => {
         setMoreDetail(text);
     };
@@ -29,7 +29,7 @@ const MoreDetailCard = (props) => {
                 }}
             />
             <View>
-                <Number number={number} setNumber={setNumber} />
+                <Number number={number} setNumber={setNumber} minNumber={minNumber} />
             </View>
         </View>
     );

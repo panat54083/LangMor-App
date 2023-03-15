@@ -15,9 +15,9 @@ import MoreDetailCard from "../../components/cards/MoreDetailCard";
 import SubmitBtn from "../../components/buttons/SubmitBtn";
 import AlertChangeRes from "../../components/cards/AlertChangeRes";
 const FoodDetail = ({ route, navigation }) => {
+    const { food, restaurant, editOrder } = route.params;
     const [modalVisible, setModalVisible] = useState(false);
     const { basketDetail, setBasketDetail } = useContext(BasketContext);
-    const { food, restaurant, editOrder } = route.params;
     const [isAllInputsFilled, setIsAllInputsFilled] = useState(false);
     const [number, setNumber] = useState(editOrder ? editOrder.amount : 1);
     const [moreDetail, setMoreDetail] = useState(
@@ -229,18 +229,25 @@ const FoodDetail = ({ route, navigation }) => {
             if (editOrder) {
                 setBasketDetail((prevDetail) => {
                     const newDetail = { ...prevDetail };
-                    const foodData = {
-                        id: editOrder.id,
-                        food: food,
-                        options: confirmOption,
-                        moreDetail: moreDetail,
-                        amount: number,
-                        price: price,
-                        requiredCheckList: requiredCheckList,
-                    };
-                    newDetail.restaurant = restaurant;
-                    newDetail.foods[editOrder.id - 1] = foodData;
-                    return newDetail;
+                    if (number !== 0) {
+                        const foodData = {
+                            id: editOrder.id,
+                            food: food,
+                            options: confirmOption,
+                            moreDetail: moreDetail,
+                            amount: number,
+                            price: price,
+                            requiredCheckList: requiredCheckList,
+                        };
+                        newDetail.restaurant = restaurant;
+                        newDetail.foods[editOrder.id - 1] = foodData;
+                        return newDetail;
+                    } else {
+                        newDetail.restaurant = restaurant;
+                        newDetail.foods.splice(editOrder.id - 1, 1);
+                        // console.log(newDetail.foods);
+                        return newDetail;
+                    }
                 });
             } else {
                 setBasketDetail((prevDetail) => {
@@ -323,7 +330,10 @@ const FoodDetail = ({ route, navigation }) => {
                                                   {"  "}*
                                               </Text>
                                           ) : null}
-                                          {option.maximum > 1 ? (
+                                          {!(
+                                              option.required &&
+                                              option.maximum === 1
+                                          ) ? (
                                               <Text
                                                   style={
                                                       styles.subOptionNameText
@@ -396,6 +406,7 @@ const FoodDetail = ({ route, navigation }) => {
                         }}
                     ></View>
                     <MoreDetailCard
+                        minNumber={editOrder ? 0 : 1}
                         number={number}
                         setNumber={setNumber}
                         moreDetail={moreDetail}
@@ -404,13 +415,25 @@ const FoodDetail = ({ route, navigation }) => {
                 </View>
             </ScrollView>
 
-            <View style={styles.addItemBtn}>
-                <SubmitBtn
-                    label={editOrder ? "อัปเดต" : "เพิ่มลงตะกร้า"}
-                    disable={!isAllInputsFilled}
-                    onPress={handleOnPressSubmit}
-                />
-            </View>
+            {number !== 0 ? (
+                <View style={styles.addItemBtn}>
+                    <SubmitBtn
+                        label={editOrder ? "อัปเดต" : "เพิ่มลงตะกร้า"}
+                        disable={!isAllInputsFilled}
+                        onPress={handleOnPressSubmit}
+                    />
+                </View>
+            ) : (
+                <View style={styles.addItemBtn}>
+                    <SubmitBtn
+                        label={"ลบรายการ"}
+                        disable={!isAllInputsFilled}
+                        onPress={handleOnPressSubmit}
+                        backgroundColor={"red"}
+                    />
+                </View>
+            )}
+
             <AlertChangeRes
                 modalVisible={modalVisible}
                 toggleModalVisible={() => {
