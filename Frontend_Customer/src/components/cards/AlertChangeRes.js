@@ -27,24 +27,9 @@ const AlertChangeRes = (props) => {
                     toggleModalVisible();
                 }}
                 activeOpacity={1}
-                style={{
-                    flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: "rgba(0, 0, 0, 0.2)",
-                }}
+                style={styles.background}
             ></TouchableOpacity>
-            <View
-                style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}
-            >
+            <View style={styles.container}>
                 <View
                     style={{
                         backgroundColor: "white",
@@ -54,7 +39,6 @@ const AlertChangeRes = (props) => {
                 >
                     <View
                         style={{
-                            // backgroundColor: "white",
                             width: "95%",
                             alignSelf: "center",
                             paddingVertical: "4%",
@@ -125,4 +109,20 @@ const AlertChangeRes = (props) => {
 
 export default AlertChangeRes;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    background: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(0, 0, 0, 0.2)",
+    },
+    container: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+});

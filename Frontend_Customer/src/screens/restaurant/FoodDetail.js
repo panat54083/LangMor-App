@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
 } from "react-native";
 import BasketContext from "../../hooks/context/BasketContext";
+import uuid from "react-native-uuid";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import FoodDetailHeader from "../../components/headers/FoodDetailHeader";
 import RadioSetBtn from "../../components/buttons/RadioSetBtn";
@@ -15,9 +16,9 @@ import MoreDetailCard from "../../components/cards/MoreDetailCard";
 import SubmitBtn from "../../components/buttons/SubmitBtn";
 import AlertChangeRes from "../../components/cards/AlertChangeRes";
 const FoodDetail = ({ route, navigation }) => {
+    const { food, restaurant, editOrder } = route.params;
     const [modalVisible, setModalVisible] = useState(false);
     const { basketDetail, setBasketDetail } = useContext(BasketContext);
-    const { food, restaurant, editOrder } = route.params;
     const [isAllInputsFilled, setIsAllInputsFilled] = useState(false);
     const [number, setNumber] = useState(editOrder ? editOrder.amount : 1);
     const [moreDetail, setMoreDetail] = useState(
@@ -229,24 +230,38 @@ const FoodDetail = ({ route, navigation }) => {
             if (editOrder) {
                 setBasketDetail((prevDetail) => {
                     const newDetail = { ...prevDetail };
-                    const foodData = {
-                        id: editOrder.id,
-                        food: food,
-                        options: confirmOption,
-                        moreDetail: moreDetail,
-                        amount: number,
-                        price: price,
-                        requiredCheckList: requiredCheckList,
-                    };
-                    newDetail.restaurant = restaurant;
-                    newDetail.foods[editOrder.id - 1] = foodData;
-                    return newDetail;
+                    const index = newDetail.foods.findIndex((food) => {
+                        return food.id === editOrder.id;
+                    });
+                    if (number !== 0) {
+                        const foodData = {
+                            id: editOrder.id,
+                            food: food,
+                            options: confirmOption,
+                            moreDetail: moreDetail,
+                            amount: number,
+                            price: price,
+                            requiredCheckList: requiredCheckList,
+                        };
+                        newDetail.restaurant = restaurant;
+                        newDetail.foods[index] = foodData;
+                        return newDetail;
+                    } else {
+                        newDetail.foods.splice(index, 1);
+                        if (newDetail.foods.length === 0) {
+                            newDetail.restaurant = null;
+                        } else {
+                            newDetail.restaurant = restaurant;
+                        }
+                        // console.log(newDetail.foods);
+                        return newDetail;
+                    }
                 });
             } else {
                 setBasketDetail((prevDetail) => {
                     const newDetail = { ...prevDetail };
                     const foodData = {
-                        id: prevDetail.foods.length + 1,
+                        id: uuid.v4(),
                         food: food,
                         options: confirmOption,
                         moreDetail: moreDetail,
@@ -254,6 +269,7 @@ const FoodDetail = ({ route, navigation }) => {
                         price: price,
                         requiredCheckList: requiredCheckList,
                     };
+                    console.log(foodData.id);
                     newDetail.restaurant = restaurant;
                     newDetail.foods.push(foodData);
                     return newDetail;
@@ -323,7 +339,10 @@ const FoodDetail = ({ route, navigation }) => {
                                                   {"  "}*
                                               </Text>
                                           ) : null}
-                                          {option.maximum > 1 ? (
+                                          {!(
+                                              option.required &&
+                                              option.maximum === 1
+                                          ) ? (
                                               <Text
                                                   style={
                                                       styles.subOptionNameText
@@ -396,6 +415,7 @@ const FoodDetail = ({ route, navigation }) => {
                         }}
                     ></View>
                     <MoreDetailCard
+                        minNumber={editOrder ? 0 : 1}
                         number={number}
                         setNumber={setNumber}
                         moreDetail={moreDetail}
@@ -404,13 +424,25 @@ const FoodDetail = ({ route, navigation }) => {
                 </View>
             </ScrollView>
 
-            <View style={styles.addItemBtn}>
-                <SubmitBtn
-                    label={editOrder ? "อัปเดต" : "เพิ่มลงตะกร้า"}
-                    disable={!isAllInputsFilled}
-                    onPress={handleOnPressSubmit}
-                />
-            </View>
+            {number !== 0 ? (
+                <View style={styles.addItemBtn}>
+                    <SubmitBtn
+                        label={editOrder ? "อัปเดต" : "เพิ่มลงตะกร้า"}
+                        disable={!isAllInputsFilled}
+                        onPress={handleOnPressSubmit}
+                    />
+                </View>
+            ) : (
+                <View style={styles.addItemBtn}>
+                    <SubmitBtn
+                        label={"ลบรายการ"}
+                        disable={!isAllInputsFilled}
+                        onPress={handleOnPressSubmit}
+                        backgroundColor={"red"}
+                    />
+                </View>
+            )}
+
             <AlertChangeRes
                 modalVisible={modalVisible}
                 toggleModalVisible={() => {

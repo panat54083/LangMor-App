@@ -205,6 +205,32 @@ const FoodList = ({ route, navigation }) => {
     const handlerOnPressBtnToBasketDetail = () => {
         navigation.navigate("Cart");
     };
+    const addNewMenu = (food) => {
+        setModalVisible(false);
+        navigationToFoodDetail(food);
+    };
+    const handleOnPressEditOrder = (food, editOrder) => {
+        setModalVisible(false);
+        navigationToFoodDetail(food, editOrder);
+    };
+    const handleOnPressDeleteOrder = (order) => {
+        // console.log("order", order.id);
+        setModalVisible(false);
+        setBasketDetail((prevDetail) => {
+            const newDetail = { ...prevDetail };
+            const index = newDetail.foods.findIndex((food) => {
+                return food.id === order.id;
+            });
+            newDetail.foods.splice(index, 1);
+            if (newDetail.foods.length === 0) {
+                newDetail.restaurant = null;
+            } else {
+                newDetail.restaurant = restaurant;
+            }
+            // console.log(newDetail.foods);
+            return newDetail;
+        });
+    };
     return (
         <View style={{ flex: 1 }}>
             <FoodListHeader
@@ -287,6 +313,9 @@ const FoodList = ({ route, navigation }) => {
                             setModalVisible={(bool) => setModalVisible(bool)}
                             sameFood={sameFoodInBasket}
                             navigationToFoodDetail={navigationToFoodDetail}
+                            addNewMenu={addNewMenu}
+                            handleOnPressEditOrder={handleOnPressEditOrder}
+                            handleOnPressDeleteOrder={handleOnPressDeleteOrder}
                         />
                     ) : null}
                 </View>
