@@ -9,6 +9,8 @@ import {
     ActivityIndicator,
     Image,
     Pressable,
+    SafeAreaView,
+    Dimensions
 } from "react-native";
 import Logout from "../components/buttons/Logout";
 import OptionButton from "../components/buttons/OptionButton";
@@ -16,8 +18,7 @@ import OptionButton from "../components/buttons/OptionButton";
 import UserContext from "../hooks/context/UserContext";
 import SocketContext from "../hooks/context/SocketContext";
 
-const Profile = ({navigation}) => {
-
+const Profile = ({ navigation }) => {
     const { state, onAction } = useContext(UserContext);
     const { socket } = useContext(SocketContext);
 
@@ -27,13 +28,13 @@ const Profile = ({navigation}) => {
         await AsyncStorage.removeItem("C_Token");
     };
     const handleEditProfile = () => {
-        navigation.navigate("EditProfile")
+        navigation.navigate("EditProfile");
     };
-    const handleReport= () => {
-        navigation.navigate("Report")
+    const handleReport = () => {
+        navigation.navigate("Report");
     };
     return (
-                <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             {state.userData ? (
                 <View>
                     <View
@@ -49,7 +50,11 @@ const Profile = ({navigation}) => {
                             />
                         </View>
                         <View style={{ marginLeft: "5%" }}>
-                            <Text style={styles.textHeader}>
+                            <Text
+                                style={styles.textHeader}
+                                adjustsFontSizeToFit={true}
+                                numberOfLines={2}
+                            >
                                 {state.userData.name}
                             </Text>
                             <Pressable onPress={handleEditProfile}>
@@ -81,8 +86,7 @@ const Profile = ({navigation}) => {
             ) : (
                 <ActivityIndicator size={"large"} color="#FF4200" />
             )}
-        </View>
-        
+        </SafeAreaView>
     );
 };
 

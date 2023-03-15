@@ -10,6 +10,7 @@ import {
     FlatList,
     TouchableOpacity,
     ActivityIndicator,
+    ScrollView,
 } from "react-native";
 import Searchbar from "../../components/searchs/Searchbar";
 import Fav from "../../components/buttons/Fav";
@@ -191,27 +192,28 @@ const MarketList = ({ navigation }) => {
                     />
                 </View>
             </View> */}
-            <View style={styles.tick}></View>
+            <View style={[styles.tick, { marginVertical: "2%" }]}></View>
             {isLoading ? (
-                <ActivityIndicator />
+                <ActivityIndicator size="large" color="#FF7A00" />
             ) : (
                 <View style={{ flex: 1 }}>
                     {restaurants ? (
                         <View>
                             <FlatList
-                                style={{ paddingTop: 10 }}
                                 data={restaurants}
                                 renderItem={({ item }) => (
-                                    <CardMarket
-                                        restaurant={item}
-                                        onPressCard={onPressCardMarket}
-                                    />
+                                    <View style={{ marginHorizontal: "3%" }}>
+                                        <CardMarket
+                                            restaurant={item}
+                                            onPressCard={onPressCardMarket}
+                                        />
+                                    </View>
                                 )}
                             />
                         </View>
                     ) : (
                         <View>
-                            <Text>Now Loadding</Text>
+                            <ActivityIndicator size="large" color="#FF7A00" />
                         </View>
                     )}
                 </View>

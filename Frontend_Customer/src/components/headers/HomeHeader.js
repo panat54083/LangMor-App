@@ -5,11 +5,21 @@ const HomeHeader = (props) => {
     const { user } = props;
     // console.log(user);
     return (
-        <View style={{ flexDirection: "row" }}>
-            <View style={{ flex: 0.65 }}>
+        <View
+            style={{
+                flexDirection: "row",
+                borderBottomRightRadius: 13,
+                borderBottomLeftRadius: 13,
+                flex: 1,
+                position:"absolute",
+                paddingBottom:"25%",
+
+            }}
+        >
+            <View style={{ flex: 0.65, marginTop: "3%" }}>
                 <View
                     style={{
-                        marginLeft: "6%",
+                        marginLeft: "10%",
                         justifyContent: "space-evenly",
                         flex: 1,
                     }}
@@ -21,9 +31,10 @@ const HomeHeader = (props) => {
                         style={{
                             fontFamily: "Kanit-Bold",
                             fontSize: 32,
+                            color: "white",
                         }}
                     >
-                        {user.name}
+                        {user.given_name}
                     </Text>
                 </View>
             </View>
@@ -31,25 +42,25 @@ const HomeHeader = (props) => {
                 style={{
                     flex: 0.35,
                     alignItems: "center",
-                    // backgroundColor: "red",
                     justifyContent: "center",
+                    // backgroundColor: "red",
                 }}
             >
                 <Image
                     style={{
-                        width: 50,
-                        height: 50,
+                        width: 70,
+                        height: 70,
                         borderRadius: 50,
                         borderWidth: 0.4,
                         borderColor: "black",
                         marginBottom: "16%",
+                        overlayColor: "#FF7A00",
                     }}
                     source={{
                         uri: `${user.picture ? user.picture : loadingGif}`,
                     }}
                 />
-
-                <Fav />
+                {/* <Fav /> */}
             </View>
         </View>
     );

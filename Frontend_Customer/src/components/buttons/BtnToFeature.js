@@ -5,16 +5,20 @@ const BtnToFeature = (props) => {
     const { name, imgSrc, navigateToFeature } = props;
 
     return (
-        <TouchableOpacity onPress={navigateToFeature}>
-            <View style={styles.container}>
+            <TouchableOpacity style={[styles.container, styles.shadow]} onPress={navigateToFeature}>
                 <View style={styles.textContainer}>
-                    <Text style={styles.text}>{name}</Text>
+                    <Text
+                        style={styles.text}
+                        adjustsFontSizeToFit={true}
+                        numberOfLines={1}
+                    >
+                        {name}
+                    </Text>
                 </View>
                 <View style={styles.picContainer}>
                     <Image source={imgSrc} style={{ width: 80, height: 80 }} />
                 </View>
-            </View>
-        </TouchableOpacity>
+            </TouchableOpacity>
     );
 };
 
@@ -24,7 +28,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         justifyContent: "space-around",
-        borderWidth: 1,
+        // borderWidth: 1,
         borderRadius: 5,
         borderColor: "#ddd",
         shadowColor: "#000000",
@@ -42,6 +46,22 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontSize: 38,
     },
-    textContainer: { flex: 2, justifyContent: "center", alignItems: "center" },
+    textContainer: {
+        flex: 2,
+        justifyContent: "center",
+        alignItems: "flex-start",
+        marginLeft: "3%",
+    },
     picContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
+    shadow: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+
+        elevation: 3,
+    },
 });

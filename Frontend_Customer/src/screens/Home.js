@@ -13,6 +13,7 @@ import {
     Button,
     Pressable,
     ScrollView,
+    ImageBackground,
 } from "react-native";
 import Logout from "../components/buttons/Logout";
 import Fav from "../components/buttons/Fav";
@@ -73,13 +74,19 @@ const Home = ({ navigation }) => {
     return (
         <View style={styles.mainContainer}>
             {/* <Button title="Debugger" onPress={handleDebugger}/> */}
-            {state.isSignin ? (
-                <View>
-                    <View style={{ marginTop: "4%", marginBottom: "2%" }}>
+            <ImageBackground
+                source={require("../assets/images/backgrounds/DropWater.png")}
+                // resizeMode="cover"
+                style={styles.image}
+            >
+                <View style={{ flex: 1 }}>
+                    {state.isSignin ? (
                         <HomeHeader user={state.userData} />
-                    </View>
+                    ) : null}
+                </View>
+                <View style={{ flex: 4, marginTop: "1%" }}>
                     <ScrollView>
-                        <View style={{ alignItems: "center" }}>
+                        <View style={{ alignItems: "center", marginTop: "1%" }}>
                             <BtnToFeature
                                 name="สั่งอาหาร"
                                 imgSrc={require("../assets/icons/hamburger.png")}
@@ -98,8 +105,7 @@ const Home = ({ navigation }) => {
                         </View>
                     </ScrollView>
                 </View>
-            ) : null}
-            {visible ? <Logout onPress={handleLogOut} /> : null}
+            </ImageBackground>
         </View>
     );
 };
@@ -110,9 +116,16 @@ const styles = StyleSheet.create({
     btn: {
         margin: 15,
     },
+    image: {
+        flex: 1,
+        // justifyContent: "flex-start",
+            width: null,
+    height: null,
+    },
     mainContainer: {
         flex: 1,
-        backgroundColor: "#f5f5f5",
+        // backgroundColor: "red",
+        // paddingTop: "10%"
     },
     itemheader: {
         flexDirection: "row",
