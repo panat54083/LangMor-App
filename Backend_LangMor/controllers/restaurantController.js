@@ -28,6 +28,9 @@ exports.register = async (req, res) => {
             restaurantData: restaurant,
         });
     } else {
+
+        const updatedRestaurant= { ...restaurantExists.toObject(), ...restaurantData};
+        await restaurantExists.updateOne(updatedRestaurant);
         res.json({
             message: "Restaurant existed. ❌",
             restaurantData: restaurantExists,

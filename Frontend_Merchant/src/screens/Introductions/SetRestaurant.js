@@ -11,6 +11,7 @@ import {
     ScrollView,
     Pressable,
     Alert,
+    Image,
 } from "react-native";
 import ImageInput from "../../components/Inputs/ImageInput";
 import CustomTextInput from "../../components/Inputs/CustomTextInput";
@@ -54,7 +55,7 @@ const SetRestaurant = ({ navigation }) => {
     }, [restaurantData]);
     const handleSave = () => {
         if (restaurantName.trim() === "") {
-            Alert.alert("Error", "กรุณาเติมชื่อณร้านค้า");
+            Alert.alert("Error", "กรุณาเติมชื่อร้านค้า");
             return false;
         }
         // console.log(`Restaurant Name: ${restaurantName}`);
@@ -83,11 +84,19 @@ const SetRestaurant = ({ navigation }) => {
     };
     return (
         <SafeAreaView style={styles.container}>
+            <View style={styles.picture}>
+
+                <Image
+                    source={require("../../assets/icons/cafe.png")}
+                    style={styles.image}
+                />
+            </View>
             <View style={styles.detail}>
                 <CustomTextInput
                     placeholder={"ชื่อร้านอาหาร"}
                     value={restaurantName}
                     onChangeText={setRestaurantName}
+                    required={true}
                 />
                 <CustomTextInput
                     placeholder={"เบอร์โทรศัพท์ร้าน/เจ้าของ"}
@@ -100,7 +109,7 @@ const SetRestaurant = ({ navigation }) => {
                     value={address}
                     onChangeText={setAddress}
                     multiline={true}
-                    numberOfLines={2}
+                    numberOfLines={3}
                 />
             </View>
             <View style={styles.final}>
@@ -115,18 +124,27 @@ export default SetRestaurant;
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#F5F5F5",
-        marginHorizontal: 30,
+        marginHorizontal: "10%",
         marginTop: "5%",
         flex: 1,
+        justifyContent: "center",
+        // alignItems: "center",
     },
     picture: {
-        margin: 20,
+        flex: 1,
+        alignItems: "center"
     },
-    detail: {},
+    image: {
+        width: "80%",
+        flex: 2,
+        resizeMode: "contain",
+        // marginTop: 36,
+    },
+    detail: {flex: 1,marginTop: "5%"},
     final: {
         flex: 1,
         justifyContent: "flex-end",
-        marginHorizontal: 20,
+        marginHorizontal: "5%",
         marginBottom: "5%",
     },
 });

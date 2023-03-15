@@ -72,16 +72,30 @@ const Report = ({ navigation }) => {
     };
     const handleSendEmail = () => {
         setIsLoaded(true);
-        api_sendEmail().then((s) => {
-            if (s) {
-                Alert.alert("Success", "ส่งรายงานเรียบร้อยแล้ว");
-                setMessage("");
-                setSubject("");
-            }else{
-                Alert.alert("Error", "พบปัญหาการส่งรายงาน");
-            }
-            setIsLoaded(false);
-        });
+        Alert.alert("แจ้งเตือน", `ต้องการออกจากระบบใช่หรือไม่`, [
+            {
+                text: "ยกเลิก",
+                style: "cancel",
+                onPress: () => {
+                    setIsLoaded(false);
+                },
+            },
+            {
+                text: "ใช่",
+                onPress: () => {
+                    api_sendEmail().then((s) => {
+                        if (s) {
+                            Alert.alert("Success", "ส่งรายงานเรียบร้อยแล้ว");
+                            setMessage("");
+                            setSubject("");
+                        } else {
+                            Alert.alert("Error", "พบปัญหาการส่งรายงาน");
+                        }
+                        setIsLoaded(false);
+                    });
+                },
+            },
+        ]);
     };
     const handleDebugger = () => {
         console.log(state.userData);
@@ -96,6 +110,7 @@ const Report = ({ navigation }) => {
                     placeholder={"กรอกรายละเอียด"}
                     value={subject}
                     onChangeText={setSubject}
+                    required={true}
                 />
 
                 <Text style={styles.header}>รายละเอียด</Text>
@@ -105,10 +120,15 @@ const Report = ({ navigation }) => {
                     onChangeText={setMessage}
                     multiline={true}
                     numberOfLines={5}
+                    required={true}
                 />
             </View>
             <View style={styles.submit}>
-                <AcceptButton label="ส่งรายงาน" onPress={handleSendEmail} isLoaded={isLoaded} />
+                <AcceptButton
+                    label="ส่งรายงาน"
+                    onPress={handleSendEmail}
+                    isLoaded={isLoaded}
+                />
             </View>
         </View>
     );

@@ -9,6 +9,7 @@ import {
     ActivityIndicator,
     Image,
     Pressable,
+    Alert,
 } from "react-native";
 import Logout from "../../components/buttons/Logout";
 import OptionButton from "../../components/buttons/OptionButton";
@@ -40,18 +41,35 @@ const Setting = ({ navigation }) => {
         setIsLoaded(false);
     }, []);
     const handleLogOut = async () => {
-        onAction.signOut();
-        socket.disconnect();
-        await AsyncStorage.removeItem("M_Token");
+        Alert.alert("แจ้งเตือน", `ต้องการออกจากระบบใช่หรือไม่`, [
+            {
+                text: "ยกเลิก",
+                style: "cancel",
+            },
+            {
+                text: "ใช่",
+                onPress: () => {
+                    const logout = async () => {
+                        await AsyncStorage.removeItem("M_Token");
+                        socket.disconnect();
+                        onAction.signOut();
+                    };
+                    logout();
+                },
+            },
+        ]);
+        // onAction.signOut();
+        // socket.disconnect();
+        // await AsyncStorage.removeItem("M_Token");
     };
     const handleEditProfile = () => {
-        navigation.navigate("EditProfile")
+        navigation.navigate("EditProfile");
     };
-    const handleReport= () => {
-        navigation.navigate("Report")
+    const handleReport = () => {
+        navigation.navigate("Report");
     };
     const handleEditRestaurant = () => {
-        navigation.navigate("EditRestaurant")
+        navigation.navigate("EditRestaurant");
     };
     return (
         <View style={styles.container}>

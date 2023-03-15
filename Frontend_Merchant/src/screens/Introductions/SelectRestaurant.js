@@ -2,8 +2,9 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 //Components
-import { Alert, Button, StyleSheet, Text, View } from "react-native";
+import { Alert, Button, StyleSheet, Text, View , ScrollView} from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
+import CardMarket from "../../components/Cards/CardMarket";
 //Config
 import { IP_ADDRESS } from "@env";
 import UserContext from "../../hooks/context/UserContext";
@@ -44,7 +45,7 @@ const SelectRestaurant = ({ navigation }) => {
                 console.log(err.response.data.message);
             });
     };
-    
+
     const handleDebugger = () => {
         api_restaurantGetALL();
     };
@@ -62,37 +63,39 @@ const SelectRestaurant = ({ navigation }) => {
     };
 
     const api_registerRestaurantAsWorker = (restaurant) => {
-        axios.post(`http://${IP_ADDRESS}/restaurant/registerAsWorker`,{
-            restaurant_id: restaurant._id,
-            worker_id: state.userData._id,
-        }).then((res)=>{
-            console.log(res.data.message)
-            onAction.updateUserData({
-                user: res.data.userData,
+        axios
+            .post(`http://${IP_ADDRESS}/restaurant/registerAsWorker`, {
+                restaurant_id: restaurant._id,
+                worker_id: state.userData._id,
             })
-        }).catch((err)=>{
-            console.log(err)
-        })
-        
+            .then((res) => {
+                console.log(res.data.message);
+                onAction.updateUserData({
+                    user: res.data.userData,
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
 
     const handlePressOK = (data) => {
-        api_registerRestaurantAsWorker(data)
-    }
+        api_registerRestaurantAsWorker(data);
+    };
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             {/* <Button title="Debugger" onPress={handleDebugger} /> */}
-            <Text>SelectRestaurant</Text>
+            {/* <Text>SelectRestaurant</Text> */}
             <View style={styles.selected_restaurants}>
                 {restaurants.map((restaurant, index) => (
-                    <Button
+                    <CardMarket
                         key={index}
-                        title={restaurant.name}
-                        onPress={() => handleSelectRestaurant(restaurant)}
+                        restaurant={restaurant}
+                        onPressCard={() => handleSelectRestaurant(restaurant)}
                     />
                 ))}
             </View>
-        </View>
+        </ScrollView>
     );
 };
 
@@ -103,6 +106,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     selected_restaurants: {
-        marginHorizontal: 20,
+        marginTop: "5%",
+        marginHorizontal: "5%",
     },
 });
