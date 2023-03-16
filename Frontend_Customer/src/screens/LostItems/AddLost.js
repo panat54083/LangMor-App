@@ -106,6 +106,7 @@ const AddLost = ({ navigation }) => {
                             label={item.name}
                             backgroundColor={null}
                             fontFamily={"Kanit-Medium"}
+                            fontSize={15}
                             selected={selectedType === item.value}
                             onPress={() => handleSelectedTypes(item.value)}
                         />

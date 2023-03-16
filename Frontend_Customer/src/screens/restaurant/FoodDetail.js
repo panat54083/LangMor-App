@@ -1,3 +1,7 @@
+//Packages
+import uuid from "react-native-uuid";
+import React, { useContext, useEffect, useMemo, useState } from "react";
+//Components
 import {
     ScrollView,
     StyleSheet,
@@ -6,15 +10,15 @@ import {
     Modal,
     TouchableOpacity,
 } from "react-native";
-import BasketContext from "../../hooks/context/BasketContext";
-import uuid from "react-native-uuid";
-import React, { useContext, useEffect, useMemo, useState } from "react";
 import FoodDetailHeader from "../../components/headers/FoodDetailHeader";
 import RadioSetBtn from "../../components/buttons/RadioSetBtn";
 import CheckBoxSetBtn from "../../components/buttons/CheckBoxSetBtn";
 import MoreDetailCard from "../../components/cards/MoreDetailCard";
 import SubmitBtn from "../../components/buttons/SubmitBtn";
 import AlertChangeRes from "../../components/cards/AlertChangeRes";
+//Configs
+import BasketContext from "../../hooks/context/BasketContext";
+
 const FoodDetail = ({ route, navigation }) => {
     const { food, restaurant, editOrder } = route.params;
     const [modalVisible, setModalVisible] = useState(false);
@@ -28,6 +32,7 @@ const FoodDetail = ({ route, navigation }) => {
         editOrder ? editOrder.price : food.price
     );
     const [requiredCheckList, setrequiredCheckList] = useState([]);
+
     const findOldOptionsVal = (optionName) => {
         const index = editOrder.options.findIndex((option) => {
             return option.name === optionName;
@@ -40,58 +45,7 @@ const FoodDetail = ({ route, navigation }) => {
         });
         return editOrder.options[index].price;
     };
-    const foodOption = [
-        {
-            name: "ความหวาน",
-            option: [
-                { optName: "หวานน้อย", price: 0 },
-                { optName: "หวานมาก", price: 10 },
-                { optName: "หวานปกติ", price: 20 },
-            ],
-            requireFill: true,
-            IsRadio: true,
-        },
-        {
-            name: "ความเผ็ด",
-            option: [
-                { optName: "เผ็ดน้อย", price: 0 },
-                { optName: "เผ็ดมาก", price: 10 },
-                { optName: "เผ็ดปกติ", price: 20 },
-            ],
-            requireFill: true,
-            IsRadio: true,
-        },
-        {
-            name: "ความร้อน",
-            option: [
-                { optName: "ร้อนน้อย", price: 0 },
-                { optName: "ร้อนมาก", price: 10 },
-                { optName: "ร้อนปกติ", price: 20 },
-            ],
-            requireFill: false,
-            IsRadio: true,
-        },
-        {
-            name: "ความเปรี้ยว",
-            option: [
-                { optName: "เปรี้ยวน้อย", price: 0 },
-                { optName: "เปรี้ยวมาก", price: 10 },
-                { optName: "เปรี้ยวปกติ", price: 20 },
-            ],
-            requireFill: false,
-            IsRadio: false,
-        },
-        {
-            name: "ความขม",
-            option: [
-                { optName: "ขมน้อย", price: 0 },
-                { optName: "ขมมาก", price: 10 },
-                { optName: "ขมปกติ", price: 20 },
-            ],
-            requireFill: true,
-            IsRadio: false,
-        },
-    ];
+
     const [confirmOption, setConfirmOption] = useState(() => {
         if (editOrder) {
             setrequiredCheckList(editOrder.requiredCheckList);
@@ -292,19 +246,22 @@ const FoodDetail = ({ route, navigation }) => {
                 imgSrc={food.picture ? `${food.picture.url}` : null}
                 handlerOnPressBack={handlerOnPressBack}
             />
-            <View style={{ backgroundColor: "#FFFFFF", flexDirection: "row" }}>
+            <View style={{ backgroundColor: "#FFFFFF", flexDirection: "row",  }}>
                 <View style={{ marginLeft: "5.33%", marginTop: 14 }}>
                     <Text style={styles.foodNameText}>{food.name}</Text>
-                    <View style={{ marginBottom: 11, marginTop: 10 }}>
-                        <Text style={styles.detailText}>
+                    <View style={{ marginBottom: 11, marginTop: 10 ,}}>
+                        <Text
+                            style={styles.detailText}
+                            adjustsFontSizeToFit={true}
+                            numberOfLines={4}
+                        >
                             {food.description}
                         </Text>
                     </View>
                 </View>
 
-                <Text style={styles.foodPrice}>{price * number} B.</Text>
+                {/* <Text style={styles.foodPrice}>฿ {price * number} </Text> */}
             </View>
-
             <ScrollView>
                 <View
                     style={{
@@ -314,12 +271,9 @@ const FoodDetail = ({ route, navigation }) => {
                 >
                     {/* Check this food have option */}
                     {food.options.length !== 0
-                        ? food.options.map((option) => {
+                        ? food.options.map((option, index) => {
                               return (
-                                  <View
-                                      style={styles.cardRadioSet}
-                                      key={option.name}
-                                  >
+                                  <View style={styles.cardRadioSet} key={index}>
                                       <View
                                           style={{
                                               height: 7,
@@ -349,8 +303,9 @@ const FoodDetail = ({ route, navigation }) => {
                                                   }
                                               >
                                                   {"  "}
-                                                  (เลือกได้สูงสุด{" "}
-                                                  {option.maximum})
+                                                  {option.maximum === 0
+                                                      ? "(สามารถเลือกได้ทั้งหมด)"
+                                                      : `(เลือกได้สูงสุด ${option.maximum} ช้อยส์)`}
                                               </Text>
                                           ) : null}
                                       </View>
@@ -427,7 +382,11 @@ const FoodDetail = ({ route, navigation }) => {
             {number !== 0 ? (
                 <View style={styles.addItemBtn}>
                     <SubmitBtn
-                        label={editOrder ? "อัปเดต" : "เพิ่มลงตะกร้า"}
+                        label={
+                            editOrder
+                                ? "อัปเดต"
+                                : `เพิ่มลงตะกร้า | ฿ ${price * number}`
+                        }
                         disable={!isAllInputsFilled}
                         onPress={handleOnPressSubmit}
                     />

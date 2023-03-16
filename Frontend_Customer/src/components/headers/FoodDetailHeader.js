@@ -8,7 +8,7 @@ const FoodDetailHeader = (props) => {
     const imgLink =
         "https://bk.asia-city.com/sites/default/files/u142691/burger_fb.jpg";
     return (
-        <View style={{ width: "100%", height: 158 }}>
+        <View style={{ width: "100%", height: imgSrc ? "20%": "10%" }}>
             <ImageBackground
                 source={{ uri: imgSrc? (imgSrc):(null) }}
                 resizeMode="cover"

@@ -41,6 +41,7 @@ const RadioSetBtn = (props) => {
                             }
                             value={choice.name}
                             selected={selectedValue === choice.name}
+                            borderBottomWidth={1}
                             onPress={() => handleOnPress(choice)}
                         />
                     </View>

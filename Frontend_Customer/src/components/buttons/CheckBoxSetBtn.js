@@ -63,6 +63,7 @@ const CheckBoxSetBtn = (props) => {
                     checked={checkedValues.includes(choice.name)}
                     onPress={() => handleOnPress(choice)}
                     disable={disable}
+                    borderBottomWidth={1}
                 />
             </View>
         );

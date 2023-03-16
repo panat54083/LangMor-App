@@ -15,9 +15,11 @@ const Checkbox = (props) => {
         checked,
         label,
         price,
-        fontFamily = "Kanit-SemiBold",
-        backgroundColor = "#FFE8E0",
+        fontFamily = "Kanit-Medium",
+        backgroundColor = null,
         disable = false,
+        borderBottomWidth = 0,
+        fontSize = 14,
     } = props;
     const scaleValue = useRef(new Animated.Value(0)).current;
     useEffect(() => {
@@ -43,7 +45,7 @@ const Checkbox = (props) => {
         <TouchableOpacity
             style={[
                 styles.checkboxContainer,
-                { backgroundColor: backgroundColor },
+                { backgroundColor: backgroundColor, borderBottomWidth: borderBottomWidth },
                 disable ? { backgroundColor: "#F3F3F3", opacity: 0.5} : null,
             ]}
             onPress={onPress}
@@ -56,17 +58,17 @@ const Checkbox = (props) => {
                     />
                 ) : null}
             </View>
-            <Text style={[styles.checkboxLabel, { fontFamily: fontFamily }]}>
+            <Text style={[styles.checkboxLabel, { fontFamily: fontFamily, fontSize: fontSize }]}>
                 {label}
             </Text>
             {price ? (
                 <Text
                     style={[
                         styles.checkboxLabel,
-                        { marginLeft: "auto", marginRight: "12.33%" },
+                        { marginLeft: "auto", marginRight: "12.33%", fontSize: fontSize, fontFamily:fontFamily },
                     ]}
                 >
-                    {price} ฿
+                    {price}
                 </Text>
             ) : (
                 ""
@@ -84,12 +86,13 @@ const styles = StyleSheet.create({
         height: 40,
         marginBottom: 6,
         borderRadius: 20,
+        borderColor: "#F6F6F6"
     },
     checkbox: {
         height: 20,
         width: 20,
         borderWidth: 1,
-        borderColor: "#ACACAC",
+        borderColor: "#1A0700",
         alignItems: "center",
         justifyContent: "center",
         marginLeft: "3.33%",
@@ -99,7 +102,7 @@ const styles = StyleSheet.create({
     checkedCheckbox: {
         height: 12,
         width: 12,
-        backgroundColor: "#000000",
+        backgroundColor: "#FF4200",
         justifyContent: "center",
         alignItems: "center",
     },

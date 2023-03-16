@@ -15,8 +15,10 @@ const RadioButton = (props) => {
         selected,
         price = null,
         label,
-        fontFamily = "Kanit-SemiBold",
-        backgroundColor = "#FFE8E0",
+        fontFamily = "Kanit-Medium",
+        backgroundColor = null,
+        fontSize= 14,
+        borderBottomWidth = 0
     } = props;
     const scaleValue = useRef(new Animated.Value(0)).current;
     useEffect(() => {
@@ -43,7 +45,7 @@ const RadioButton = (props) => {
             <View
                 style={[
                     styles.radioButtonContainer,
-                    { backgroundColor: backgroundColor },
+                    { backgroundColor: backgroundColor, borderBottomWidth: borderBottomWidth },
                 ]}
             >
                 <View style={styles.radioButtonCircle}>
@@ -59,7 +61,7 @@ const RadioButton = (props) => {
                 <Text
                     style={[
                         styles.radioButtonLabel,
-                        { fontFamily: fontFamily },
+                        { fontFamily: fontFamily, fontSize: fontSize },
                     ]}
                 >
                     {label}
@@ -71,7 +73,7 @@ const RadioButton = (props) => {
                             { marginLeft: "auto", marginRight: "12.33%" },
                         ]}
                     >
-                        {price} ฿
+                        {price} 
                     </Text>
                 ) : (
                     ""
@@ -89,14 +91,14 @@ const styles = StyleSheet.create({
         alignItems: "center",
         height: 40,
         marginBottom: 6,
-        borderRadius: 20,
+        borderColor: "#F6F6F6"
     },
     radioButtonCircle: {
         height: 20,
         width: 20,
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: "#ACACAC",
+        borderColor: "#1A0700",
         alignItems: "center",
         justifyContent: "center",
         marginLeft: "3.33%",
@@ -107,13 +109,12 @@ const styles = StyleSheet.create({
         height: 12,
         width: 12,
         borderRadius: 10,
-        backgroundColor: "black",
+        backgroundColor: "#FF4200",
         justifyContent: "center",
         alignItems: "center",
     },
     radioButtonLabel: {
         marginLeft: 10,
-        fontSize: 16,
-        fontFamily: "Kanit-SemiBold",
+        fontFamily: "Kanit-Medium",
     },
 });
