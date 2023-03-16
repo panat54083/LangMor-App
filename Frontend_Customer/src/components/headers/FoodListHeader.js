@@ -13,10 +13,10 @@ const FoodListHeader = (props) => {
                 source={{
                     uri: imgSrc
                         ? `${imgSrc.url}`
-                        : imgLink,
+                        : null,
                 }}
                 resizeMode="cover"
-                style={{ flex: 1, flexDirection: "row" }}
+                style={{ flex: 1, flexDirection: "row" ,backgroundColor:"#FF7A00"}}
             >
                 <View style={{ marginTop: 6, marginLeft: "2.2%" }}>
                     <Back handlerOnPressBack={handlerOnPressBack} />

@@ -5,6 +5,7 @@ import { useIsFocused } from "@react-navigation/native";
 //Components
 import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
 import Order from "../../components/cards/Order/Order";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
@@ -35,7 +36,7 @@ const ChatMerchant = ({ navigation }) => {
                 setOrders(res.data.orders);
             })
             .catch((err) => {
-                console.log(err);
+                console.log(err.response.data.message);
             });
     };
     const handleChatroom = (order) => {
@@ -45,25 +46,36 @@ const ChatMerchant = ({ navigation }) => {
         });
     };
     return (
-        <ScrollView>
-            {orders ? (
+        <>
+            {orders[0] ? (
                 orders.map((order, index) => (
+                    <ScrollView key={index}>
                     <View key={index} style={styles.orderContainer}>
-                        {/* <Button
-                            key={index}
-                            title={order.restaurant.name}
-                            onPress={() => handleChatroom(order)}
-                        /> */}
                         <Order
                             order={order}
                             onPress={() => handleChatroom(order)}
                         />
                     </View>
+                </ScrollView>
                 ))
             ) : (
-                <Text>คุณยังไม่ได้ทำรายการสั่งอาหาร</Text>
+                <View
+                    style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flex: 1,
+                    }}
+                >
+                                 <MaterialCommunityIcons
+                        name="chat-question"
+                        size={100}
+                        color="#C9C5C4"
+                    />
+                    <Text style={styles.font}>คุณยังไม่ได้ทำรายการ</Text>
+                    <Text style={styles.font}>ติดต่อซื้อของร้านค้า</Text>
+                </View>
             )}
-        </ScrollView>
+        </>
     );
 };
 
@@ -75,5 +87,10 @@ const styles = StyleSheet.create({
         marginBottom: "0.25%",
         width: "90%",
         alignSelf: "center",
+    },
+    font: {
+        fontFamily: "Kanit-Bold",
+        fontSize: 25,
+        color: "#C9C5C4",
     },
 });
