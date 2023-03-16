@@ -2,15 +2,10 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-
-const Fav = () => {
-    const [fav, setFav] = useState(false);
-    const handlerOnPressFav = () => {
-        console.log(fav);
-        setFav((prevState) => !prevState);
-    };
+const Fav = (props) => {
+    const { fav = false } = props;
     return (
-        <TouchableOpacity onPress={handlerOnPressFav}>
+        <TouchableOpacity onPress={() => {}}>
             <View style={styles.container}>
                 <Ionicons
                     name={fav ? "heart" : "heart-outline"}
