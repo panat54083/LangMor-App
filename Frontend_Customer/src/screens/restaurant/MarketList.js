@@ -70,6 +70,7 @@ const MarketList = ({ navigation }) => {
             return () => clearTimeout(delayDebounceFn);
         } else {
             fetchRestaurants();
+            // setIsLoading(false);
         }
     }, [searchQuery]);
 

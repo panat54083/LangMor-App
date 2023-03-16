@@ -28,8 +28,10 @@ exports.register = async (req, res) => {
             restaurantData: restaurant,
         });
     } else {
-
-        const updatedRestaurant= { ...restaurantExists.toObject(), ...restaurantData};
+        const updatedRestaurant = {
+            ...restaurantExists.toObject(),
+            ...restaurantData,
+        };
         await restaurantExists.updateOne(updatedRestaurant);
         res.json({
             message: "Restaurant existed. ❌",
@@ -163,7 +165,7 @@ exports.restaurantOptionsDelete = async (req, res) => {
         "options._id": option_id,
     });
 
-    console.log(foods)
+    console.log(foods);
     await Promise.all(
         foods.map(async (food, index) => {
             food.options = food.options.filter(
@@ -323,5 +325,17 @@ exports.restaurantSearch = async (req, res) => {
                 results: results,
             });
         }
+    });
+};
+
+exports.restaurantSearchMerchant = async (req, res) => {
+    const { keyword } = req.query;
+    console.log(keyword);
+    const restaurants = await Restaurant.find({
+        name: { $regex: `${keyword}`, $options: "i" },
+    });
+    res.json({
+        message: `Get ฑestaurants`,
+        restaurantsData: restaurants,
     });
 };

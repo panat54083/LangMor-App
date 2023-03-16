@@ -3,7 +3,10 @@ const { catchErrors } = require("../handler/errorHandler");
 const restaurantController = require("../controllers/restaurantController");
 
 router.post("/register", catchErrors(restaurantController.register));
-router.post("/registerAsWorker", catchErrors(restaurantController.registerAsWorker));
+router.post(
+    "/registerAsWorker",
+    catchErrors(restaurantController.registerAsWorker)
+);
 router.get("/info", catchErrors(restaurantController.restaurantInfo));
 router.post("/closed", catchErrors(restaurantController.restaurantClosed));
 router.get(
@@ -17,7 +20,10 @@ router.post(
     catchErrors(restaurantController.restaurantOptionsSave)
 );
 router.get("/options", catchErrors(restaurantController.restaurantOptionsInfo));
-router.delete("/delete_option", catchErrors(restaurantController.restaurantOptionsDelete));
+router.delete(
+    "/delete_option",
+    catchErrors(restaurantController.restaurantOptionsDelete)
+);
 
 router.post(
     "/save_types",
@@ -30,7 +36,10 @@ router.delete(
 router.get("/types", catchErrors(restaurantController.restaurantTypesInfo));
 
 router.post("/save_food", catchErrors(restaurantController.restaurantFoodSave));
-router.delete("/delete_food", catchErrors(restaurantController.restaurantFoodDelete));
+router.delete(
+    "/delete_food",
+    catchErrors(restaurantController.restaurantFoodDelete)
+);
 router.get("/foods", catchErrors(restaurantController.restaurantFoodsInfo));
 
 router.get(
@@ -39,4 +48,8 @@ router.get(
 );
 
 router.get("/search_foods", catchErrors(restaurantController.foodsSearch));
+router.get(
+    "/search_merchant_restaurant",
+    catchErrors(restaurantController.restaurantSearchMerchant)
+);
 module.exports = router;
