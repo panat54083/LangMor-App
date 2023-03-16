@@ -269,7 +269,7 @@ const FoodDetail = ({ route, navigation }) => {
                         price: price,
                         requiredCheckList: requiredCheckList,
                     };
-                    console.log(foodData.id);
+                    // console.log(foodData.id);
                     newDetail.restaurant = restaurant;
                     newDetail.foods.push(foodData);
                     return newDetail;

@@ -31,7 +31,7 @@ const FoodList = ({ route, navigation }) => {
             setIsLoading(true);
             const delayDebounceFn = setTimeout(async () => {
                 try {
-                    console.log(restaurant._id, searchQuery);
+                    // console.log(restaurant._id, searchQuery);
                     const response = await axios.get(
                         `http://${IP_ADDRESS}/restaurant/search_foods?restaurant_id=${restaurant._id}&keyword=${searchQuery}`
                     );

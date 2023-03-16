@@ -3,8 +3,16 @@ import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
 //Components
-import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
+import {
+    StyleSheet,
+    Text,
+    View,
+    ScrollView,
+    Button,
+    ActivityIndicator,
+} from "react-native";
 import Item from "../../components/cards/Item";
+import Searchbar from "../../components/searchs/Searchbar";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
@@ -15,6 +23,8 @@ const FindLost = ({ navigation }) => {
     const isFocused = useIsFocused();
     //Variables
     const [listOfLostItems, setListOfLostItems] = useState([]);
+    const [searchQuery, setSearchQuery] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     //Start up
     useEffect(() => {
         if (isFocused) {
@@ -29,7 +39,7 @@ const FindLost = ({ navigation }) => {
                 }`
             )
             .then((res) => {
-                console.log(res.data.message);
+                // console.log(res.data.message);
                 setListOfLostItems(res.data.listOfLostItems);
             })
             .catch((err) => {
@@ -40,10 +50,47 @@ const FindLost = ({ navigation }) => {
         // console.log(data);
         navigation.navigate("LostDetail", { lostData: data });
     };
+
+    //search
+    useEffect(() => {
+        if (searchQuery) {
+            setIsLoading(true);
+            const delayDebounceFn = setTimeout(async () => {
+                try {
+                    const response = await axios.get(
+                        `http://${IP_ADDRESS}/lostItem/search?keyword=${searchQuery}&owner_id=${state.userData._id}&type=find`
+                    );
+                    const data = response.data.lostItemsData;
+                    setListOfLostItems(data);
+                    setIsLoading(false);
+                } catch (error) {
+                    console.error(error);
+                    setIsLoading(false);
+                }
+            }, 1000);
+
+            return () => clearTimeout(delayDebounceFn);
+        } else {
+            api_getAllLostItems();
+            setIsLoading(false);
+        }
+    }, [searchQuery]);
+
+    const onSearchBoxChange = (text) => {
+        setSearchQuery(text);
+    };
     return (
         <ScrollView>
             {/* <Text>FindLost screen</Text> */}
-            {listOfLostItems.length !== 0 ? (
+            <View style={{ alignItems: "center", marginBottom: "4%" }}>
+                <Searchbar
+                    onSearchBoxChange={onSearchBoxChange}
+                    searchText={searchQuery}
+                />
+            </View>
+            {isLoading ? (
+                <ActivityIndicator size="large" color="#FF7A00" />
+            ) : listOfLostItems.length !== 0 ? (
                 listOfLostItems.map((item, index) => (
                     <View
                         key={index}
@@ -63,15 +110,7 @@ const FindLost = ({ navigation }) => {
                     </View>
                 ))
             ) : (
-                <Text
-                    style={{
-                        fontFamily: "Kanit-Bold",
-                        fontSize: 22,
-                        textAlign: "center",
-                    }}
-                >
-                    ไม่มีรายการสินค้า
-                </Text>
+                <Text style={styles.notFoundStyle}>ไม่มีรายการสินค้า</Text>
             )}
         </ScrollView>
     );
@@ -79,4 +118,10 @@ const FindLost = ({ navigation }) => {
 
 export default FindLost;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    notFoundStyle: {
+        fontFamily: "Kanit-Bold",
+        fontSize: 22,
+        textAlign: "center",
+    },
+});

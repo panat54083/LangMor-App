@@ -32,7 +32,7 @@ exports.getMyLostItemsPosts = async (req, res) => {
 
 exports.getAllLostItems = async (req, res) => {
     const { type, owner_id } = req.query;
-    console.log(owner_id)
+    // console.log(owner_id);
     if (type === "find" || type === "found") {
         if (owner_id) {
             const lostItems = await LostItem.find({
@@ -68,10 +68,10 @@ exports.getOwnerData = async (req, res) => {
     });
 };
 
-exports.lostItemUpdate= async (req, res) => {
+exports.lostItemUpdate = async (req, res) => {
     const { item_id, updated_data } = req.body;
-    const lostItemData= await LostItem.findByIdAndUpdate(
-        { _id: item_id},
+    const lostItemData = await LostItem.findByIdAndUpdate(
+        { _id: item_id },
         updated_data,
         { new: true }
     );
@@ -80,4 +80,31 @@ exports.lostItemUpdate= async (req, res) => {
         message: "LostItem Information is Updated!",
         lostItemData: lostItemData,
     });
+};
+
+exports.lostItemSearch = async (req, res) => {
+    const { keyword, owner_id, type } = req.query;
+    // console.log(keyword, owner_id);
+    if (type) {
+        const lostItems = await LostItem.find({
+            name: { $regex: `${keyword}`, $options: "i" },
+            owner_id: { $nin: [owner_id] },
+            type: type,
+            closed: false,
+        });
+        res.json({
+            message: `Get lostItems`,
+            lostItemsData: lostItems,
+        });
+    } else {
+        const lostItems = await LostItem.find({
+            name: { $regex: `${keyword}`, $options: "i" },
+            owner_id: { $nin: [owner_id] },
+            closed: false,
+        });
+        res.json({
+            message: `Get lostItems`,
+            lostItemsData: lostItems,
+        });
+    }
 };

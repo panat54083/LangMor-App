@@ -73,14 +73,14 @@ const MarketList = ({ navigation }) => {
             // setIsLoading(false);
         }
     }, [searchQuery]);
-
+    const onSearchBoxChange = (text) => {
+        setSearchQuery(text);
+    };
+    
     const onPressCardMarket = (restaurant) => {
         navigation.navigate("FoodList", { restaurant: restaurant });
     };
-    const onSearchBoxChange = (text) => {
-        // console.log(text);
-        setSearchQuery(text);
-    };
+
     const fetchRestaurants = () => {
         setIsLoading(true);
         axios
@@ -173,7 +173,11 @@ const MarketList = ({ navigation }) => {
                     marginVertical: 10,
                 }}
             >
-                <Searchbar height="55" onSearchBoxChange={onSearchBoxChange} />
+                <Searchbar
+                    height="55"
+                    onSearchBoxChange={onSearchBoxChange}
+                    searchText={searchQuery}
+                />
             </View>
 
             {/* <View>
