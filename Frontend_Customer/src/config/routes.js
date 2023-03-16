@@ -20,7 +20,8 @@ import LostDetail from "../screens/LostItems/LostDetail";
 import Report from "../screens/Options/Report";
 import EditProfile from "../screens/Options/EditProfile";
 import EditSecond from "../screens/SecondHand/EditSecond";
-import EditPost from "../screens/LostItems/EditPost"; 
+import EditPost from "../screens/LostItems/EditPost";
+import FavRestaurants from "../screens/restaurant/FavRestaurants";
 //Tabs
 import TapStackRoutes from "./TapStackRoutes";
 import SecondTabs from "./Tabs/SecondTabs";
@@ -83,6 +84,10 @@ const MyStack = ({}) => {
                     <Stack.Screen name="EditProfile" component={EditProfile} />
                     <Stack.Screen name="EditSecond" component={EditSecond} />
                     <Stack.Screen name="EditPost" component={EditPost} />
+                    <Stack.Screen
+                        name="FavRestaurants"
+                        component={FavRestaurants}
+                    />
                 </>
             ) : (
                 <>

@@ -43,13 +43,15 @@ const MarketList = ({ navigation }) => {
             ),
             headerRight: () => (
                 <View style={{ marginRight: "20%" }}>
-                    {/* <Fav /> */}
+                    <Fav onPress={onPressFav} />
                 </View>
             ),
         });
         fetchRestaurants();
     }, []);
-
+    const onPressFav = () => {
+        navigation.navigate("FavRestaurants");
+    };
     useEffect(() => {
         if (searchQuery) {
             setIsLoading(true);
@@ -76,7 +78,7 @@ const MarketList = ({ navigation }) => {
     const onSearchBoxChange = (text) => {
         setSearchQuery(text);
     };
-    
+
     const onPressCardMarket = (restaurant) => {
         navigation.navigate("FoodList", { restaurant: restaurant });
     };
@@ -94,7 +96,6 @@ const MarketList = ({ navigation }) => {
                 console.log(err);
             });
     };
-
 
     return (
         <View style={{ flex: 1 }}>
