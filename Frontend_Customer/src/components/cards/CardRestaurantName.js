@@ -1,16 +1,22 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 
 const CardRestaurantName = (props) => {
     const { restaurant } = props;
     return (
         <View style={styles.container}>
             <View style={styles.restName}>
-                <View style={{ flex: 1 }}>
-                    <Text style={styles.textHeader}>{restaurant.name}</Text>
+                <View style={{ flex: 0, alignItems: "flex-start" , }}>
+                    <Text
+                        style={styles.textHeader}
+                        adjustsFontSizeToFit={true}
+                        numberOfLines={1}
+                    >
+                        {restaurant.name}
+                    </Text>
                 </View>
-                <View style={{ flex: 1, alignItems: "flex-end" }}>
+                {/* <View style={{ flex: 1, alignItems: "flex-end" }}>
                     <TouchableOpacity style={{}}>
                         <Ionicons
                             name="chevron-forward"
@@ -19,15 +25,49 @@ const CardRestaurantName = (props) => {
                             style={{ marginRight: "10.1%" }}
                         />
                     </TouchableOpacity>
-                </View>
+                </View> */}
             </View>
-
-            <View style={styles.rating}>
-                <Text style={{ fontFamily: "Kanit-SemiBold" }}>
-                    Rating : {restaurant.rating ? restaurant.rating : "ไม่มี"}
-                    {" รอเเก้ไขเป็นรายละเอียดร้านค้า"}
+            <View
+                style={{
+                    flexDirection: "row",
+                    alignItems: "baseline",
+                    justifyContent: "space-evenly",
+                }}
+            >
+                <Ionicons name="location-outline" size={24} color="#FF7A00" />
+                <Text style={{ fontFamily: "Kanit-SemiBold", fontSize: 14, color:"#9D9693"}}>
+                    {restaurant.address ? restaurant.address : "ไม่ได้ระบุ"}
                 </Text>
-                <Ionicons name="star" size={18} color="#FF7A00" />
+                <Feather name="phone" size={20} color="#FF7A00" />
+                <Text style={{ fontFamily: "Kanit-SemiBold" ,fontSize:14, color:"#9D9693"}}>
+                    {restaurant.phone ? restaurant.phone : "ไม่มี"}
+                </Text>
+                {/* <View style={[styles.rating, {}]}>
+                    <View style={{ flex: 0 }}>
+                        <Ionicons
+                            name="location-outline"
+                            size={24}
+                            color="#FF7A00"
+                        />
+                    </View>
+                    <View style={{ flex: 0 }}>
+                        <Text style={{ fontFamily: "Kanit-SemiBold" }}>
+                            {restaurant.address
+                                ? restaurant.address
+                                : "ไม่ได้ระบุ"}
+                        </Text>
+                    </View>
+                </View>
+                <View style={styles.rating}>
+                    <View style={{ flex: 0 }}>
+                        <Feather name="phone" size={20} color="#FF7A00" />
+                    </View>
+                    <View style={{ flex: 0 }}>
+                        <Text style={{ fontFamily: "Kanit-SemiBold" }}>
+                            {restaurant.phone ? restaurant.phone : "ไม่มี"}
+                        </Text>
+                    </View>
+                </View> */}
             </View>
         </View>
     );
@@ -54,13 +94,14 @@ const styles = StyleSheet.create({
     },
     restName: {
         flexDirection: "row",
-        justifyContent: "flex-end",
+        // justifyContent: "flex-end",
         marginBottom: 10,
     },
     rating: {
         flexDirection: "row",
         justifyContent: "flex-start",
         marginLeft: "12.5%",
+        alignItems: "baseline",
     },
     textHeader: {
         marginLeft: "25%",

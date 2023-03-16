@@ -5,6 +5,7 @@ import { useIsFocused } from "@react-navigation/native";
 //Components
 import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
 import Item from "../../components/cards/Item";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
@@ -50,37 +51,58 @@ const ChatLostItem = ({ navigation }) => {
         console.log(listOfChatrooms);
     };
     return (
-        <ScrollView>
+        <>
             {/* <Text>ChatLostItem</Text>
-            <Button title="Debugger" onPress={handleDebugger} /> */}
+    <Button title="Debugger" onPress={handleDebugger} /> */}
             {listOfChatrooms.length !== 0 ? (
                 listOfChatrooms.map((item, index) => (
-                    <View
-                        key={index}
-                        style={{
-                            marginTop: "0.75%",
-                            marginBottom: "0.25%",
-                            marginBottom: 5,
-                            width: "90%",
-                            alignSelf: "center",
-                        }}
-                    >
-                        <Item
-                            itemData={item.itemData}
-                            onPress={() => {
-                                handleChatroom(item);
+                    <ScrollView key={index}>
+                        <View
+                            style={{
+                                marginTop: "0.75%",
+                                marginBottom: "0.25%",
+                                marginBottom: 5,
+                                width: "90%",
+                                alignSelf: "center",
                             }}
-                            type={"lost"}
-                        />
-                    </View>
+                        >
+                            <Item
+                                itemData={item.itemData}
+                                onPress={() => {
+                                    handleChatroom(item);
+                                }}
+                                type={"lost"}
+                            />
+                        </View>
+                    </ScrollView>
                 ))
             ) : (
-                <Text>คุณยังไม่ได้ทำรายการติดต่อของหาย</Text>
+                <View
+                    style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flex: 1,
+                    }}
+                >
+                    <MaterialCommunityIcons
+                        name="chat-question"
+                        size={100}
+                        color="#C9C5C4"
+                    />
+                    <Text style={styles.font}>คุณยังไม่ได้ทำรายการ</Text>
+                    <Text style={styles.font}>ติดต่อของหาย</Text>
+                </View>
             )}
-        </ScrollView>
+        </>
     );
 };
 
 export default ChatLostItem;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    font: {
+        fontFamily: "Kanit-Bold",
+        fontSize: 25,
+        color: "#C9C5C4",
+    },
+});

@@ -82,67 +82,6 @@ const FoodList = ({ route, navigation }) => {
 
         return result;
     };
-    // ของจริง fecth จาก restaurant (fake)
-    const foodData = [
-        {
-            title: "อาหารคาว",
-            data: [
-                {
-                    name: "ข้าวผัด",
-                    imgLink:
-                        "https://www.ajinomoto.co.th//storage/photos/shares/our-story/tips/friedrice/62ff47ff5a301.jpg",
-                    detail: "ข้าวผัดสุดอร่อย",
-                    price: 60,
-                },
-                {
-                    name: "ข้าวกะเพราหมูกรอบ",
-                    imgLink:
-                        "https://i.ytimg.com/vi/cFciXuCdG_o/maxresdefault.jpg",
-                    detail: "ข้าวกะเพราหมูกรอบสุดอร่อย",
-                    price: 65,
-                },
-            ],
-        },
-        {
-            title: "อาหารหวาน",
-            data: [
-                {
-                    name: "ไอติม",
-                    imgLink:
-                        "https://sites.google.com/site/icecreamtimtim56/_/rsrc/1430359844681/15-khwam-lab-khxng-xi-ti-m-thi-khun-mi-khey-ru-ma-kxn/ice20cream00%5B1%5D.jpg?height=398&width=479",
-                    detail: "ไอติมสุดอร่อย",
-                    price: 25,
-                },
-                {
-                    name: "เค้กส้ม",
-                    imgLink:
-                        "https://www.smeleader.com/wp-content/uploads/2022/02/%E0%B8%A3%E0%B8%A7%E0%B8%A1%E0%B8%AA%E0%B8%B9%E0%B8%95%E0%B8%A3%E0%B8%A7%E0%B8%B4%E0%B8%98%E0%B8%B5%E0%B8%97%E0%B8%B3%E0%B9%80%E0%B8%84%E0%B9%89%E0%B8%81%E0%B8%AA%E0%B9%89%E0%B8%A1-%E0%B9%80%E0%B8%84%E0%B9%89%E0%B8%81%E0%B8%A5%E0%B8%B9%E0%B8%81%E0%B8%AA%E0%B9%89%E0%B8%A1%E0%B8%AB%E0%B8%99%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%B4%E0%B9%88%E0%B8%A1-%E0%B9%80%E0%B8%84%E0%B9%89%E0%B8%81%E0%B8%8A%E0%B8%B4%E0%B8%9F%E0%B8%9F%E0%B9%88%E0%B8%AD%E0%B8%99%E0%B8%AA%E0%B9%89%E0%B8%A1-%E0%B9%80%E0%B8%84%E0%B9%89%E0%B8%81%E0%B9%82%E0%B8%A3%E0%B8%A5%E0%B8%AA%E0%B9%89%E0%B8%A1-12-scaled.jpg",
-                    detail: "เค้กส้มสุดอร่อย",
-                    price: 45,
-                },
-            ],
-        },
-        {
-            title: "เครื่องดื่ม",
-            data: [
-                {
-                    name: "น้ำเปล่า",
-                    imgLink:
-                        "https://ocs-k8s-prod.s3.ap-southeast-1.amazonaws.com/MENU_1603791069395.jpeg",
-                    detail: "น้ำเปล่าสุดอร่อย",
-                    price: 10,
-                },
-                {
-                    name: "โคล่า",
-                    imgLink:
-                        "https://cf.shopee.co.th/file/bfe464167ee3affed2884a861e0e4baa",
-                    detail: "โคล่าสุดอร่อย",
-                    price: 30,
-                },
-            ],
-        },
-    ];
-
     const findAmountOfOrder = () => {
         //Find Amount Of Order In Basket
         let amountOfOrder = 0;
@@ -237,7 +176,7 @@ const FoodList = ({ route, navigation }) => {
                 handlerOnPressBack={handlerOnPressBack}
                 imgSrc={restaurant.picture}
             />
-            <View style={{ marginTop: -50 }}>
+            <View style={{ marginTop: "-28%" }}>
                 <CardRestaurantName restaurant={restaurant} />
             </View>
             <View style={styles.searchbar}>
@@ -256,11 +195,27 @@ const FoodList = ({ route, navigation }) => {
                         keyExtractor={(item, index) => item + index}
                         renderSectionHeader={({ section: { title } }) => (
                             <View style={styles.headerSection}>
-                                <Text style={styles.header}>{title}</Text>
+                                {/* <View
+                                    style={[
+                                        styles.tick,
+                                        { marginVertical: "2%" },
+                                    ]}
+                                ></View> */}
+                                <View style={{ marginLeft: "2.1%" , marginVertical: "2%"}}>
+                                    <Text style={styles.header}>
+                                        {title ? title : "อื่นๆ"}
+                                    </Text>
+                                </View>
+                                {/* <View
+                                    style={[
+                                        styles.tick,
+                                        { marginVertical: "2%" },
+                                    ]}
+                                ></View> */}
                             </View>
                         )}
                         renderItem={({ item, index }) => (
-                            <View style={styles.item}>
+                            <View style={[styles.item]}>
                                 <CardFood
                                     food={item}
                                     handlerOnPressCard={handlerOnPressCard}
@@ -328,11 +283,12 @@ export default FoodList;
 
 const styles = StyleSheet.create({
     item: {
-        marginBottom: 7,
+        marginBottom: 0,
     },
     header: {
-        fontSize: 22,
+        fontSize: 14,
         fontFamily: "Kanit-Bold",
+        color: "black",
     },
     title: {
         fontSize: 24,
@@ -356,7 +312,7 @@ const styles = StyleSheet.create({
         paddingBottom: "20%",
         // marginBottom:'20%'
     },
-    headerSection: { marginBottom: 3, marginLeft: "2.1%" },
+    headerSection: { marginBottom: 3 },
     confirmOrderBtn: {
         // backgroundColor: "red",
         position: "absolute",
@@ -373,4 +329,5 @@ const styles = StyleSheet.create({
         shadowRadius: 4.65,
         elevation: 8,
     },
+    tick: { height: 4, backgroundColor: "#F5F5F5" },
 });

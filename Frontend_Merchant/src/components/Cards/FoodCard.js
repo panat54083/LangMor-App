@@ -17,14 +17,33 @@ const FoodCard = ({ foodData, onPress }) => {
                     />
                 </View>
             ) : (
-                <View style={[styles.image_container,{backgroundColor: "#DFDFDF"}]}>
-                    <FontAwesome name="file-image-o" size={50} color="#1A0700"/>
+                <View
+                    style={[
+                        styles.image_container,
+                        { backgroundColor: "#DFDFDF" },
+                    ]}
+                >
+                    <FontAwesome
+                        name="file-image-o"
+                        size={50}
+                        color="#1A0700"
+                    />
                 </View>
             )}
 
             <View style={styles.data}>
                 <Text style={styles.text}>{foodData.name}</Text>
-                <Text style={styles.description}>{foodData.description}</Text>
+                <View style={{ width: undefined, maxWidth: 180}}>
+
+                <Text
+                    style={[styles.description ]}
+                    // adjustsFontSizeToFit={true}
+                    numberOfLines={2}
+                    ellipsizeMode="tail"
+                >
+                    {foodData.description}
+                </Text>
+                </View>
                 <Text style={styles.price}>{foodData.price}</Text>
             </View>
         </TouchableOpacity>
@@ -62,12 +81,12 @@ const styles = StyleSheet.create({
     },
     text: {
         fontFamily: "Kanit-SemiBold",
-        fontSize: 20,
+        fontSize: 16,
         color: "#1A0700",
     },
     description: {
         fontFamily: "Kanit-Medium",
-        fontSize: 10,
+        fontSize: 14,
         color: "#1A0700",
     },
     price: {

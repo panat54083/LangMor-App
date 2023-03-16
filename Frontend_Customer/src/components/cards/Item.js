@@ -33,11 +33,12 @@ const Item = (props) => {
                                 {itemData.name}
                             </Text>
                             <View style={styles.textPriceContainer}>
-                                <FontAwesome5
+                                <FontAwesome5 name="money-bill-alt" size={16} color="#148F12" />
+                                {/* <FontAwesome5
                                     name="money-bill-wave"
                                     size={16}
-                                    color="green"
-                                />
+                                    color="#148F12"
+                                /> */}
                                 <Text style={styles.textPriceStyle}>
                                     {`  ${itemData.price}`} บาท
                                 </Text>
@@ -78,7 +79,7 @@ const Item = (props) => {
                                     <Text
                                         style={{
                                             color: "black",
-                                            fontFamily: "Kanit-Bold",
+                                            fontFamily: "Kanit-SemiBold",
                                         }}
                                     >
                                         {itemData.type === "found"
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         borderWidth: 1,
-        paddingVertical: "2%",
+        paddingVertical: "3%",
         borderRadius: 10,
         borderColor: "#ddd",
         shadowColor: "#000000",
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
         // backgroundColor: "red",
         // backgroundColor: "blue",
     },
-    textNameStyle: { fontFamily: "Kanit-Bold", fontSize: 22 },
+    textNameStyle: { fontFamily: "Kanit-SemiBold", fontSize: 22 },
     textPriceStyle: {
         color: "#9D9693",
         fontFamily: "Kanit-Medium",

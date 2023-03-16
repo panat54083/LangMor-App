@@ -45,7 +45,8 @@ exports.saveOrder = async (req, res) => {
 
 exports.getOrder = async (req, res) => {
     const { customer_id, restaurant_id, status } = req.query;
-    const list_status = status.split(",")
+
+    const list_status = status?.split(",")
     if (restaurant_id) {
         const orders = await Order.find({
             restaurantId: restaurant_id,

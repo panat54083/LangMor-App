@@ -43,7 +43,7 @@ const MarketList = ({ navigation }) => {
             ),
             headerRight: () => (
                 <View style={{ marginRight: "20%" }}>
-                    <Fav />
+                    {/* <Fav /> */}
                 </View>
             ),
         });
@@ -95,71 +95,6 @@ const MarketList = ({ navigation }) => {
             });
     };
 
-    //ของจริงใช้ fetch ข้อมูลจาก backend
-    const exampleData = [
-        {
-            id: 1,
-            restaurantName: "ร้านป้านิด",
-            description: "ร้านป้านิดสุดอร่อย",
-            tags: ["ตามสั่ง"],
-            address: "address01",
-            rating: 4,
-            owner: "testuser01@gmail.com",
-        },
-        {
-            id: 2,
-            restaurantName: "ร้านป้าหน่อย",
-            description: "ร้านป้านิดสุดอร่อย",
-            tags: ["ตามสั่ง"],
-            address: "address01",
-            rating: 4,
-            owner: "testuser01@gmail.com",
-        },
-        {
-            id: 3,
-            restaurantName: "ร้านป้าไหน",
-            description: "ร้านป้านิดสุดอร่อย",
-            tags: ["ตามสั่ง"],
-            address: "address01",
-            rating: 4,
-            owner: "testuser01@gmail.com",
-        },
-        {
-            id: 4,
-            restaurantName: "ร้านป้านิด",
-            description: "ร้านป้านิดสุดอร่อย",
-            tags: ["ตามสั่ง"],
-            address: "address01",
-            rating: 4,
-            owner: "testuser01@gmail.com",
-        },
-        {
-            id: 5,
-            restaurantName: "ร้านป้านิด",
-            description: "ร้านป้านิดสุดอร่อย",
-            tags: ["ตามสั่ง"],
-            address: "address01",
-            rating: 4,
-            owner: "testuser01@gmail.com",
-        },
-        {
-            id: 6,
-            restaurantName: "ร้านป้านิด",
-            description: "ร้านป้านิดสุดอร่อย",
-            tags: ["ตามสั่ง", "ของหวาน"],
-            address: "address01",
-            rating: 4,
-            owner: "testuser01@gmail.com",
-        },
-    ];
-    let allTags = [
-        { tag: "ของคาว", source: require("../../assets/icons/fast-food.png") },
-        {
-            tag: "้เครื่องดื่ม",
-            source: require("../../assets/icons/drink.png"),
-        },
-        { tag: "ของหวาน", source: require("../../assets/icons/dessert.png") },
-    ];
 
     return (
         <View style={{ flex: 1 }}>
