@@ -25,6 +25,10 @@ const customerSchema = new mongoose.Schema(
             type: Boolean,
             required: true,
         },
+        favorite_restaurants:{
+            type: [],
+            default: []
+        }
     },
     {
         timestamps: true,

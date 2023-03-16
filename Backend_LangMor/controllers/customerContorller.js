@@ -58,10 +58,37 @@ exports.userUpdate = async (req, res) => {
     if (user) {
         user.given_name = updateUserData.given_name;
         user.family_name = updateUserData.family_name;
-        user.name = updateUserData.given_name + " " + updateUserData.family_name;
+        user.name =
+            updateUserData.given_name + " " + updateUserData.family_name;
         await user.save();
         res.json({
             message: `Updated ${user.name} done..`,
+            userData: user,
+        });
+    } else {
+        res.json({
+            message: `There is no user.`,
+        });
+    }
+};
+
+exports.favoriteRestaurantsUpdate = async (req, res) => {
+    const { restaurant_id, customer_id } = req.body;
+    const user = await Customer.findById(customer_id);
+    if (user) {
+        if (user.favorite_restaurants.includes(restaurant_id)) {
+            user.favorite_restaurants = user.favorite_restaurants.filter(
+                (id) => id !== restaurant_id
+            );
+        } else {
+            user.favorite_restaurants = [
+                ...user.favorite_restaurants,
+                restaurant_id,
+            ];
+        }
+        await user.save();
+        res.json({
+            message: `Updated Favorite Restaurants of ${user.name} done..`,
             userData: user,
         });
     } else {

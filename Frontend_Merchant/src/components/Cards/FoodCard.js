@@ -36,7 +36,7 @@ const FoodCard = ({ foodData, onPress }) => {
                 <View style={{ width: undefined, maxWidth: 180}}>
 
                 <Text
-                    style={[styles.description ]}
+                    style={[styles.description, {color: "#9D9693"} ]}
                     // adjustsFontSizeToFit={true}
                     numberOfLines={2}
                     ellipsizeMode="tail"
