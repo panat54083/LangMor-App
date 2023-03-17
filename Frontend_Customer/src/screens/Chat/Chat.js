@@ -1,5 +1,11 @@
 //packages
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+    useCallback,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import axios from "axios";
 import * as LIP from "../../lib/lm-image-picker";
 //components
@@ -62,9 +68,28 @@ const Chat = ({ navigation, route }) => {
     }, [socket]);
 
     useEffect(() => {
+        // if (socket) {
+        //     socket.on("newMessage", (data) => {
+        //         const { id, user, message, timestamp, picture } = data;
+        //         console.log("recieve message: ", message);
+        //         const renew_message = {
+        //             id,
+        //             user,
+        //             message,
+        //             timestamp,
+        //             picture,
+        //         };
+        //         setListMessages([...listMessages, renew_message]);
+        //     });
+        // }
+        scrollViewRef.current?.scrollToEnd({ animated: true });
+    }, [listMessages]);
+
+    useEffect(() => {
         if (socket) {
             socket.on("newMessage", (data) => {
                 const { id, user, message, timestamp, picture } = data;
+                // console.log("recieve message: ", message);
                 const renew_message = {
                     id,
                     user,
@@ -72,11 +97,13 @@ const Chat = ({ navigation, route }) => {
                     timestamp,
                     picture,
                 };
-                setListMessages([...listMessages, renew_message]);
+                setListMessages((prevMessages) => [
+                    ...prevMessages,
+                    renew_message,
+                ]);
             });
         }
-        scrollViewRef.current?.scrollToEnd({ animated: true });
-    }, [listMessages]);
+    }, [socket]);
 
     const chatroom_connect = (chatroom_id) => {
         if (socket) {
@@ -107,30 +134,54 @@ const Chat = ({ navigation, route }) => {
             });
     };
 
-    const sendMessage = (message, picture) => {
-        if (socket) {
-            socket.emit("chatroomMessage", {
-                chatroomId: orderData._id,
-                message: message,
-                picture: picture,
-            });
-        }
-        setMessage("");
-    };
-
-    const fetchInitialMessages = () => {
+    // const sendMessage = (message, picture) => {
+    //     if (socket) {
+    //         socket.emit("chatroomMessage", {
+    //             chatroomId: orderData._id,
+    //             message: message,
+    //             picture: picture,
+    //         });
+    //     }
+    //     setMessage("");
+    // };
+    const sendMessage = useCallback(
+        (message, picture) => {
+            if (socket) {
+                socket.emit("chatroomMessage", {
+                    chatroomId: orderData._id,
+                    message: message,
+                    picture: picture,
+                });
+            }
+            setMessage("");
+        },
+        [socket, orderData]
+    );
+    // const fetchInitialMessages = () => {
+    //     axios
+    //         .get(
+    //             `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${orderData._id}`
+    //         )
+    //         .then((res) => {
+    //             // console.log(res.data.messages)
+    //             setListMessages(res.data.messages);
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //         });
+    // };
+    const fetchInitialMessages = useCallback(() => {
         axios
             .get(
                 `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${orderData._id}`
             )
             .then((res) => {
-                // console.log(res.data.messages)
                 setListMessages(res.data.messages);
             })
             .catch((err) => {
                 console.log(err);
             });
-    };
+    }, [orderData]);
 
     const handleSendMessage = () => {
         setIsLoaded(true);

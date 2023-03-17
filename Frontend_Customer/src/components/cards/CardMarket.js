@@ -33,9 +33,13 @@ const CardMarket = (props) => {
                 >
                     {restaurant.name}
                 </Text>
-                <View style={styles.types}>
+                <View style={[styles.types,{width: "90%"}]}>
                     {restaurant.types ? (
-                        <Text style={styles.body}>
+                        <Text
+                            style={styles.body}
+                            numberOfLines={1}
+                            ellipsizeMode="tail"
+                        >
                             หมวดหมู่ :{" "}
                             {restaurant.types[0]
                                 ? restaurant.types.join()

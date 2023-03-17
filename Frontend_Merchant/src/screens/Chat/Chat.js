@@ -1,5 +1,11 @@
 //Packages
-import React, { useEffect, useState, useContext, useRef } from "react";
+import React, {
+    useEffect,
+    useState,
+    useContext,
+    useRef,
+    useCallback,
+} from "react";
 import axios from "axios";
 import * as LIP from "../../lib/lm-image-picker";
 //Components
@@ -77,7 +83,7 @@ const Chat = ({ navigation, route }) => {
                             navigation.navigate("OrderTabs", {
                                 screen: "DoneOrder",
                             });
-                        } else  {
+                        } else {
                             navigation.goBack();
                         }
                     }}
@@ -86,12 +92,12 @@ const Chat = ({ navigation, route }) => {
             ),
             headerRight: () => (
                 <>
-                    {!["close","cancel"].includes(orderData.status) ? (
-                        <CancelBtn onPress={handleCancel} />
-                    ) : (
-                        null
+                    {
+                        !["close", "cancel"].includes(orderData.status) ? (
+                            <CancelBtn onPress={handleCancel} />
+                        ) : null
                         // <CancelBtn onPress={handleCancel} />
-                    )}
+                    }
                 </>
             ),
         });
@@ -123,9 +129,28 @@ const Chat = ({ navigation, route }) => {
     }, []);
 
     useEffect(() => {
+        // if (socket) {
+        //     socket.on("newMessage", (data) => {
+        //         const { id, user, message, timestamp, picture } = data;
+        //         const renew_message = {
+        //             id,
+        //             user,
+        //             message,
+        //             timestamp,
+        //             picture,
+        //         };
+        //         setListMessages([...listMessages, renew_message]);
+        //     });
+        // }
+
+        scrollViewRef.current?.scrollToEnd({ animated: true });
+    }, [listMessages]);
+
+    useEffect(() => {
         if (socket) {
             socket.on("newMessage", (data) => {
                 const { id, user, message, timestamp, picture } = data;
+                // console.log("recieve message: ", message);
                 const renew_message = {
                     id,
                     user,
@@ -133,12 +158,13 @@ const Chat = ({ navigation, route }) => {
                     timestamp,
                     picture,
                 };
-                setListMessages([...listMessages, renew_message]);
+                setListMessages((prevMessages) => [
+                    ...prevMessages,
+                    renew_message,
+                ]);
             });
         }
-
-        scrollViewRef.current?.scrollToEnd({ animated: true });
-    }, [listMessages]);
+    }, [socket]);
 
     const chatroom_connect = (chatroom_id) => {
         if (socket && orderData.status !== "close") {
@@ -169,30 +195,55 @@ const Chat = ({ navigation, route }) => {
             });
     };
 
-    const sendMessage = (message, picture) => {
-        if (socket) {
-            socket.emit("chatroomMessage", {
-                chatroomId: orderData._id,
-                message: message,
-                picture: picture,
-            });
-        }
-        setMessage("");
-    };
+    // const sendMessage = (message, picture) => {
+    //     if (socket) {
+    //         socket.emit("chatroomMessage", {
+    //             chatroomId: orderData._id,
+    //             message: message,
+    //             picture: picture,
+    //         });
+    //     }
+    //     setMessage("");
+    // };
 
-    const fetchInitialMessages = () => {
+    const sendMessage = useCallback(
+        (message, picture) => {
+            if (socket) {
+                socket.emit("chatroomMessage", {
+                    chatroomId: orderData._id,
+                    message: message,
+                    picture: picture,
+                });
+            }
+            setMessage("");
+        },
+        [socket, orderData]
+    );
+    // const fetchInitialMessages = () => {
+    //     axios
+    //         .get(
+    //             `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${orderData._id}`
+    //         )
+    //         .then((res) => {
+    //             // console.log(res.data.messages)
+    //             setListMessages(res.data.messages);
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //         });
+    // };
+    const fetchInitialMessages = useCallback(() => {
         axios
             .get(
                 `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${orderData._id}`
             )
             .then((res) => {
-                // console.log(res.data.messages)
                 setListMessages(res.data.messages);
             })
             .catch((err) => {
                 console.log(err);
             });
-    };
+    }, [orderData]);
 
     const apiUpdateOrder = (status) => {
         axios
@@ -376,7 +427,7 @@ const Chat = ({ navigation, route }) => {
             </View>
             {!keyboardVisible && (
                 <View style={styles.button_container}>
-                    {!["close","cancel"].includes(orderData.status) ? (
+                    {!["close", "cancel"].includes(orderData.status) ? (
                         <AcceptButton
                             label={buttonStatusLabel}
                             onPress={handleStatusButton}
@@ -427,7 +478,7 @@ const Chat = ({ navigation, route }) => {
                     </Pressable>
                 </View>
             )}
-            {!["close","cancel"].includes(orderData.status) ? (
+            {!["close", "cancel"].includes(orderData.status) ? (
                 <ChatInput
                     forwardedRef={inputRef}
                     onChangeText={(value) => setMessage(value)}

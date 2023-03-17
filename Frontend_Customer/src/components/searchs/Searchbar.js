@@ -10,7 +10,7 @@ const Searchbar = (props) => {
             <Ionicons name="search" size={20} style={styles.icon} />
             <TextInput
                 style={styles.input}
-                placeholder="Search..."
+                placeholder="ค้นหา..."
                 onChangeText={(text) => onSearchBoxChange(text)}
                 value={searchText}
             />
@@ -37,6 +37,6 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         fontSize: 16,
-        fontFamily: "Kanit-Bold",
+        fontFamily: "Kanit-SemiBold",
     },
 });

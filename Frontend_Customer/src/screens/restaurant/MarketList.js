@@ -143,7 +143,7 @@ const MarketList = ({ navigation }) => {
                             <FlatList
                                 data={restaurants}
                                 renderItem={({ item }) => (
-                                    <View style={{ marginHorizontal: "3%" }}>
+                                    <View style={{ marginHorizontal: "0%" }}>
                                         <CardMarket
                                             restaurant={item}
                                             onPressCard={onPressCardMarket}
