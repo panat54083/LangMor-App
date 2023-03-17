@@ -86,9 +86,22 @@ const MarketList = ({ navigation }) => {
     };
 
     const handleRandomRestaurants = () => {
-        console.log("eiei");
+        api_getRandomRestaurants()
     };
 
+    const api_getRandomRestaurants = () => {
+        const number = 3
+        axios
+            .get(`http://${IP_ADDRESS}/restaurant/random_restaurants?number=${number}`)
+            .then((res) => {
+                console.log(res.data.message)
+                console.log(res.data.restaurantsData);
+            })
+            .catch((err) => {
+                console.log(err.response.data.message);
+            });
+
+    }
     const fetchRestaurants = () => {
         setIsLoading(true);
         axios

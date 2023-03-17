@@ -56,4 +56,5 @@ router.get(
     "/get_fav_restaurants",
     catchErrors(restaurantController.getFavRestaurants)
 );
+router.get("/random_restaurants", catchErrors(restaurantController.randomRestaurants))
 module.exports = router;

@@ -349,3 +349,19 @@ exports.getFavRestaurants = async (req, res) => {
         restaurantsData: restaurants,
     });
 };
+
+exports.randomRestaurants = async (req, res) => {
+    const { number } = req.query;
+    Restaurant.aggregate([{ $sample: { size: Number(number) } }])
+        .then((restaurants) => {
+            console.log(restaurants)
+            res.json({
+                message: `Get Restaurants`,
+                restaurantsData: restaurants,
+            });
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).json({ error: "Internal server error" });
+        });
+};
