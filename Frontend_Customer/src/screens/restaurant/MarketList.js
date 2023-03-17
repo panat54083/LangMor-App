@@ -18,6 +18,8 @@ import AddressBox from "../../components/buttons/AddressBox";
 import CardMarket from "../../components/cards/CardMarket";
 import CardRestaurantTag from "../../components/cards/CardRestaurantTag";
 import BackScreen from "../../components/buttons/BackScreen";
+import RandomBtn from "../../components/buttons/RandomBtn";
+//Configs
 import BasketContext from "../../hooks/context/BasketContext";
 
 const MarketList = ({ navigation }) => {
@@ -83,6 +85,10 @@ const MarketList = ({ navigation }) => {
         navigation.navigate("FoodList", { restaurant: restaurant });
     };
 
+    const handleRandomRestaurants = () => {
+        console.log("eiei");
+    };
+
     const fetchRestaurants = () => {
         setIsLoading(true);
         axios
@@ -104,15 +110,36 @@ const MarketList = ({ navigation }) => {
             </View> */}
             <View
                 style={{
-                    width: "100%",
+                    // width: "100%",
                     alignItems: "center",
                     marginVertical: 10,
+                    flexDirection: "row",
+                    marginHorizontal: "4%",
                 }}
             >
-                <Searchbar
-                    height="55"
-                    onSearchBoxChange={onSearchBoxChange}
-                    searchText={searchQuery}
+                <View style={{ width: "83%", marginRight: "0%" }}>
+                    <Searchbar
+                        height="55"
+                        style={{
+                            width: "100%",
+                            borderTopRightRadius: 0,
+                            borderBottomRightRadius: 0,
+                            borderRightWidth: 0.1,
+                            borderColor: "#DFDFDF",
+                        }}
+                        onSearchBoxChange={onSearchBoxChange}
+                        searchText={searchQuery}
+                    />
+                </View>
+                <RandomBtn
+                    onPress={handleRandomRestaurants}
+                    color={"#FF7A00"}
+                    style={{
+                        borderTopLeftRadius: 0,
+                        borderBottomLeftRadius: 0,
+                        borderLeftWidth: 0.1,
+                        borderColor: "#DFDFDF",
+                    }}
                 />
             </View>
 
@@ -143,7 +170,7 @@ const MarketList = ({ navigation }) => {
                             <FlatList
                                 data={restaurants}
                                 renderItem={({ item }) => (
-                                    <View style={{ marginHorizontal: "0%" }}>
+                                    <View style={{ marginHorizontal: "3%" }}>
                                         <CardMarket
                                             restaurant={item}
                                             onPressCard={onPressCardMarket}

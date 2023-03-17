@@ -92,5 +92,6 @@ const styles = StyleSheet.create({
         fontFamily: "Kanit-SemiBold",
         fontSize: 22,
         textAlign: "center",
+        color: "#C9C5C4",
     },
 });
