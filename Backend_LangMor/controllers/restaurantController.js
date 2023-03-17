@@ -335,7 +335,17 @@ exports.restaurantSearchMerchant = async (req, res) => {
         name: { $regex: `${keyword}`, $options: "i" },
     });
     res.json({
-        message: `Get ฑestaurants`,
+        message: `Get Restaurants`,
+        restaurantsData: restaurants,
+    });
+};
+
+exports.getFavRestaurants = async (req, res) => {
+    const { idList } = req.query;
+
+    const restaurants = await Restaurant.find({ _id: { $in: idList } });
+    res.json({
+        message: `Get Restaurants`,
         restaurantsData: restaurants,
     });
 };

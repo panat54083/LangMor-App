@@ -60,8 +60,8 @@ exports.getOwnerData = async (req, res) => {
 
 exports.secondHandUpdate = async (req, res) => {
     const { item_id, updated_data } = req.body;
-    const secondHandData= await SecondHand.findByIdAndUpdate(
-        { _id: item_id},
+    const secondHandData = await SecondHand.findByIdAndUpdate(
+        { _id: item_id },
         updated_data,
         { new: true }
     );
@@ -69,5 +69,19 @@ exports.secondHandUpdate = async (req, res) => {
     res.json({
         message: "SecondHand Information is Updated!",
         secondHandData: secondHandData,
+    });
+};
+
+exports.secondHandSearch = async (req, res) => {
+    const { keyword, owner_id } = req.query;
+    // console.log(keyword, owner_id);
+    const secondHands = await SecondHand.find({
+        name: { $regex: `${keyword}`, $options: "i" },
+        owner_id: { $nin: [owner_id] },
+        closed: false,
+    });
+    res.json({
+        message: `Get secondHands`,
+        secondHandsData: secondHands,
     });
 };

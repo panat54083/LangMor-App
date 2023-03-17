@@ -52,4 +52,8 @@ router.get(
     "/search_merchant_restaurant",
     catchErrors(restaurantController.restaurantSearchMerchant)
 );
+router.get(
+    "/get_fav_restaurants",
+    catchErrors(restaurantController.getFavRestaurants)
+);
 module.exports = router;

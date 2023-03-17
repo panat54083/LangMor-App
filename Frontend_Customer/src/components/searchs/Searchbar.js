@@ -3,21 +3,16 @@ import React, { useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 const Searchbar = (props) => {
-    const { height, onSearchBoxChange } = props;
-    const [text, setText] = useState("");
+    const { height = 50, onSearchBoxChange, searchText } = props;
 
-    const handleOnChange = (text) => {
-        setText(text);
-        onSearchBoxChange(text);
-    };
     return (
         <View style={[styles.inputContainer, { height: Number(height) }]}>
             <Ionicons name="search" size={20} style={styles.icon} />
             <TextInput
                 style={styles.input}
                 placeholder="Search..."
-                onChangeText={(text) => handleOnChange(text)}
-                value={text}
+                onChangeText={(text) => onSearchBoxChange(text)}
+                value={searchText}
             />
         </View>
     );

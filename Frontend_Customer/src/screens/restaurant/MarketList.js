@@ -43,13 +43,15 @@ const MarketList = ({ navigation }) => {
             ),
             headerRight: () => (
                 <View style={{ marginRight: "20%" }}>
-                    {/* <Fav /> */}
+                    <Fav onPress={onPressFav} />
                 </View>
             ),
         });
         fetchRestaurants();
     }, []);
-
+    const onPressFav = () => {
+        navigation.navigate("FavRestaurants");
+    };
     useEffect(() => {
         if (searchQuery) {
             setIsLoading(true);
@@ -73,14 +75,14 @@ const MarketList = ({ navigation }) => {
             // setIsLoading(false);
         }
     }, [searchQuery]);
+    const onSearchBoxChange = (text) => {
+        setSearchQuery(text);
+    };
 
     const onPressCardMarket = (restaurant) => {
         navigation.navigate("FoodList", { restaurant: restaurant });
     };
-    const onSearchBoxChange = (text) => {
-        // console.log(text);
-        setSearchQuery(text);
-    };
+
     const fetchRestaurants = () => {
         setIsLoading(true);
         axios
@@ -95,7 +97,6 @@ const MarketList = ({ navigation }) => {
             });
     };
 
-
     return (
         <View style={{ flex: 1 }}>
             {/* <View style={{ marginTop: 18, marginLeft: "7%" }}>
@@ -108,7 +109,11 @@ const MarketList = ({ navigation }) => {
                     marginVertical: 10,
                 }}
             >
-                <Searchbar height="55" onSearchBoxChange={onSearchBoxChange} />
+                <Searchbar
+                    height="55"
+                    onSearchBoxChange={onSearchBoxChange}
+                    searchText={searchQuery}
+                />
             </View>
 
             {/* <View>

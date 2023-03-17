@@ -17,21 +17,25 @@ import CardFood from "../../components/cards/CardFood";
 import BasketContext from "../../hooks/context/BasketContext";
 import BtnToBasketDetail from "../../components/buttons/BtnToBasketDetail";
 import UpdateOrAddFood from "../../components/cards/UpdateOrAddFood";
+import UserContext from "../../hooks/context/UserContext";
 
 const FoodList = ({ route, navigation }) => {
     const { basketDetail, setBasketDetail } = useContext(BasketContext);
+    const { onAction, state } = useContext(UserContext);
     const { restaurant } = route.params;
     const [modalVisible, setModalVisible] = useState(false);
     const [foodsData, setfoodsData] = useState();
     const [sameFoodInBasket, setSameFoodInbasket] = useState();
     const [searchQuery, setSearchQuery] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [isOnFav, setIsOnFav] = useState(false);
+
     useEffect(() => {
         if (searchQuery) {
             setIsLoading(true);
             const delayDebounceFn = setTimeout(async () => {
                 try {
-                    console.log(restaurant._id, searchQuery);
+                    // console.log(restaurant._id, searchQuery);
                     const response = await axios.get(
                         `http://${IP_ADDRESS}/restaurant/search_foods?restaurant_id=${restaurant._id}&keyword=${searchQuery}`
                     );
@@ -64,7 +68,30 @@ const FoodList = ({ route, navigation }) => {
                 console.log(err);
             });
     };
-
+    const api_updateFavorite = () => {
+        setIsOnFav(true);
+        axios
+            .post(`http://${IP_ADDRESS}/customer/update_fav`, {
+                restaurant_id: restaurant._id,
+                customer_id: state.userData._id,
+            })
+            .then((res) => {
+                // console.log(res.data.message);
+                // console.log(res.data.userData.favorite_restaurants);
+                onAction.updateUserData({
+                    user: res.data.userData,
+                });
+                setIsOnFav(false);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+    const onPressFav = () => {
+        if (!isOnFav) {
+            api_updateFavorite();
+        }
+    };
     const formatToSectionList = (data) => {
         const result = [];
         const types = new Set();
@@ -173,6 +200,11 @@ const FoodList = ({ route, navigation }) => {
     return (
         <View style={{ flex: 1 }}>
             <FoodListHeader
+                isFav={state.userData.favorite_restaurants.includes(
+                    restaurant._id
+                )}
+                disableFav={isOnFav}
+                onPressFav={onPressFav}
                 handlerOnPressBack={handlerOnPressBack}
                 imgSrc={restaurant.picture}
             />
@@ -201,7 +233,12 @@ const FoodList = ({ route, navigation }) => {
                                         { marginVertical: "2%" },
                                     ]}
                                 ></View> */}
-                                <View style={{ marginLeft: "2.1%" , marginVertical: "2%"}}>
+                                <View
+                                    style={{
+                                        marginLeft: "2.1%",
+                                        marginVertical: "2%",
+                                    }}
+                                >
                                     <Text style={styles.header}>
                                         {title ? title : "อื่นๆ"}
                                     </Text>
