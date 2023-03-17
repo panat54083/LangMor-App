@@ -6,6 +6,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
 import AddButton from "../../components/buttons/AddButton";
 import CardTwoSide from "../../components/cards/CardTwoSide";
+import { FontAwesome5 } from "@expo/vector-icons";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
@@ -26,11 +27,11 @@ const SellSecond = ({ navigation }) => {
         }
     }, [isFocused]);
 
-    useEffect(()=>{
+    useEffect(() => {
         if (listOfChatrooms && listSecondHands) {
-            concat_listOfSecondChat()
+            concat_listOfSecondChat();
         }
-    },[listOfChatrooms, listSecondHands])
+    }, [listOfChatrooms, listSecondHands]);
 
     const concat_listOfSecondChat = () => {
         const tempData = [];
@@ -80,11 +81,14 @@ const SellSecond = ({ navigation }) => {
     };
 
     const handleItem = (data) => {
-        navigation.navigate("EditSecond",{itemData: data.secondHand})
+        navigation.navigate("EditSecond", { itemData: data.secondHand });
     };
 
     const handleContact = (data) => {
-        navigation.navigate("ChatContact",{chatroomsData: data.chatrooms, itemData: data.secondHand});
+        navigation.navigate("ChatContact", {
+            chatroomsData: data.chatrooms,
+            itemData: data.secondHand,
+        });
     };
 
     const handleDebugger = () => {
@@ -96,24 +100,42 @@ const SellSecond = ({ navigation }) => {
     return (
         <ScrollView style={styles.scrollView_container}>
             {/* <Button title="Debugger" onPress={handleDebugger} /> */}
-            {/* <Button
-                title="Debugger"
-                onPress={() => console.log(listOfSecondChats)}
-            /> */}
             <View style={styles.add_container}>
                 <AddButton onPress={handleAddSecond} />
             </View>
             <View style={{ marginHorizontal: 16 }}>
-                {listOfSecondChats.length !== 0 ? listOfSecondChats.map((item, index) => (
-                    <CardTwoSide
-                        key={index}
-                        label={item.secondHand.name}
-                        numberOfContact={item.chatrooms.length}
-                        onPressLeft={()=>handleItem(item)}
-                        onPressRight={()=>handleContact(item)}
-                    />
-                    // <Button title={String(index)} key={index} onPress={()=>console.log(item)}/>
-                )) : null}
+                {listOfSecondChats.length !== 0 ? (
+                    listOfSecondChats.map((item, index) => (
+                        <CardTwoSide
+                            key={index}
+                            label={item.secondHand.name}
+                            numberOfContact={item.chatrooms.length}
+                            onPressLeft={() => handleItem(item)}
+                            onPressRight={() => handleContact(item)}
+                        />
+                    ))
+                ) : (
+                    <View
+                        style={{
+                            alignItems: "center",
+                        }}
+                    >
+                        <View style={{ marginVertical: "10%" }}>
+                            <FontAwesome5
+                                name="hand-point-up"
+                                size={70}
+                                color="#9D9693"
+                            />
+                        </View>
+                        <Text style={[styles.header, { color: "#9D9693" }]}>
+                            กดปุ่ม <Text style={{ color: "#FF7A00" }}>+</Text>{" "}
+                            ด้านบน
+                        </Text>
+                        <Text style={[styles.header, { color: "#9D9693" }]}>
+                            เพื่อเพิ่มรายการสินค้ามือสอง
+                        </Text>
+                    </View>
+                )}
             </View>
         </ScrollView>
     );
@@ -127,6 +149,12 @@ const styles = StyleSheet.create({
     },
     add_container: {
         marginHorizontal: 15,
+    },
+    header: {
+        fontFamily: "Kanit-Bold",
+        fontSize: 20,
+        margin: 10,
+        color: "#1A0700",
     },
 });
 

@@ -38,6 +38,7 @@ exports.getAllLostItems = async (req, res) => {
             const lostItems = await LostItem.find({
                 type: type,
                 owner_id: { $nin: [owner_id] },
+                closed: false,
             });
             res.json({
                 message: `Get All ${type} Lost items without Owner one done...`,

@@ -41,12 +41,12 @@ const FindLost = ({ navigation }) => {
         navigation.navigate("LostDetail", { lostData: data });
     };
     return (
-        <ScrollView>
-            {/* <Text>FindLost screen</Text> */}
+        <>
+        {/* <Text>FindLost screen</Text> */}
             {listOfLostItems.length !== 0 ? (
                 listOfLostItems.map((item, index) => (
+                    <ScrollView key={index}>
                     <View
-                        key={index}
                         style={{
                             marginBottom: 5,
                             width: "90%",
@@ -61,19 +61,30 @@ const FindLost = ({ navigation }) => {
                             type={"lost"}
                         />
                     </View>
+                </ScrollView>
                 ))
             ) : (
+                <View
+                  style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flex: 1,
+                    }}
+                >
                 <Text
                     style={{
                         fontFamily: "Kanit-Bold",
                         fontSize: 22,
                         textAlign: "center",
+                        color:"#C9C5C4"
                     }}
                 >
-                    ไม่มีรายการสินค้า
+                    ไม่มีรายการตามหาของหาย
                 </Text>
+
+                </View>
             )}
-        </ScrollView>
+        </>
     );
 };
 

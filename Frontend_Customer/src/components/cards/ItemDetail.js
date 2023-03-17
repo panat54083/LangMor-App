@@ -11,11 +11,7 @@ const ItemDetail = (props) => {
                     <View style={{ marginBottom: "8%" }}>
                         <Text style={styles.itemName}>{item.name}</Text>
                         <View style={styles.textPriceContainer}>
-                            <FontAwesome5
-                                name="money-bill-wave"
-                                size={16}
-                                color="green"
-                            />
+                                <FontAwesome5 name="money-bill-alt" size={16} color="#148F12" />
                             <Text style={styles.textPriceStyle}>
                                 {`  ${item.price}`} บาท
                             </Text>
@@ -29,7 +25,7 @@ const ItemDetail = (props) => {
                                 { marginBottom: "1%" },
                             ]}
                         >
-                            ชื่อพ่อค้า: {owner.name} 
+                            ชื่อผู้โพส: {owner.name} 
                         </Text>
                         <Text style={styles.textDetailStyle}>
                             รายละเอียดเพิ่มเติม: {item.detail}{" "}
@@ -63,7 +59,7 @@ const ItemDetail = (props) => {
                         <Text style={styles.textDetailStyle}>
                             {item.type === "found"
                                 ? "พบที่: "
-                                : "สถานที่ที่ทำหาย: "}
+                                : "รายละเอียด: "}
                             {item.detail}
                         </Text>
                     </View>
@@ -83,26 +79,26 @@ const styles = StyleSheet.create({
     textPriceStyle: {
         color: "#9D9693",
         fontFamily: "Kanit-Medium",
-        fontSize: 18,
+        fontSize: 16,
     },
     textDetailStyle: {
         color: "#9D9693",
         fontFamily: "Kanit-Medium",
-        fontSize: 18,
+        fontSize: 16,
     },
     itemName: {
-        fontFamily: "Kanit-Bold",
-        fontSize: 32,
+        fontFamily: "Kanit-SemiBold",
+        fontSize: 24,
         marginBottom: "2%",
     },
     detailTextStyle: {
         fontFamily: "Kanit-SemiBold",
-        fontSize: 32,
+        fontSize: 24,
         marginBottom: "2%",
     },
     textTypeStyle: {
         color: "#9D9693",
         fontFamily: "Kanit-Medium",
-        fontSize: 18,
+        fontSize: 16,
     },
 });

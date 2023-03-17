@@ -83,8 +83,8 @@ const Item = (props) => {
                                         }}
                                     >
                                         {itemData.type === "found"
-                                            ? "พบที่: "
-                                            : "สถานที่ที่ทำหาย: "}
+                                            ? "รายละเอียด: "
+                                            : "รายละเอียด: "}
                                     </Text>{" "}
                                     {`${itemData.detail}`}
                                 </Text>

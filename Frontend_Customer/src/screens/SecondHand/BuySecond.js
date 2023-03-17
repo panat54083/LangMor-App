@@ -40,17 +40,11 @@ const BuySecond = ({ navigation }) => {
         navigation.navigate("SecondDetail", { secondData: data });
     };
     return (
-        <ScrollView>
+        <>
             {/* <Text>BuySecond screen</Text> */}
             {listSecondHands.length !== 0 ? (
-                <>
-                    {listSecondHands.map((item, index) => (
-                        // <View key={index} style={{ marginBottom: "1%" }}>
-                        //     <Button
-                        //         title={item.name}
-                        //         onPress={() => handleSecondDetail(item)}
-                        //     />
-                        // </View>
+                listSecondHands.map((item, index) => (
+                    <ScrollView key={index}>
                         <View
                             key={index}
                             style={{
@@ -65,20 +59,29 @@ const BuySecond = ({ navigation }) => {
                                 type={"second"}
                             />
                         </View>
-                    ))}
-                </>
+                    </ScrollView>
+                ))
             ) : (
-                <Text
+                <View
                     style={{
-                        fontFamily: "Kanit-Bold",
-                        fontSize: 22,
-                        textAlign: "center",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flex: 1,
                     }}
                 >
-                    ไม่พบรายการสินค้า
-                </Text>
+                    <Text
+                        style={{
+                            fontFamily: "Kanit-Bold",
+                            fontSize: 22,
+                            textAlign: "center",
+                            color: "#C9C5C4",
+                        }}
+                    >
+                        ไม่พบรายการสินค้า
+                    </Text>
+                </View>
             )}
-        </ScrollView>
+        </>
     );
 };
 
