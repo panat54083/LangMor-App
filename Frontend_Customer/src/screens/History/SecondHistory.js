@@ -14,6 +14,7 @@ import {
 } from "react-native";
 //Components
 import Item from "../../components/cards/Item";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 // Configs
 import { IP_ADDRESS } from "@env";
 import UserContext from "../../hooks/context/UserContext";
@@ -71,7 +72,23 @@ const SecondHistory = ({ navigation }) => {
                     </ScrollView>
                 ))
             ) : (
-            null
+                <View
+                    style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flex: 1,
+                        alignSelf:"center",
+                        position:"absolute",
+                    }}
+                >
+                    <MaterialCommunityIcons
+                        name="chat-question"
+                        size={100}
+                        color="#C9C5C4"
+                    />
+                    <Text style={styles.font}>ไม่พบประวัติ</Text>
+                    <Text style={styles.font}>ติดต่อของมือสอง</Text>
+                </View>
             )}
         </View>
     );
