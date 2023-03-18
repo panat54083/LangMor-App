@@ -16,7 +16,13 @@ import {
 import { IP_ADDRESS } from "@env";
 import UserContext from "../../hooks/context/UserContext";
 
-const SecondHistory = () => {
+const SecondHistory = ({navigation}) => {
+
+    //Configs
+    const isFocused = useIsFocused();
+    //Variables
+    const { state } = useContext(UserContext);
+    const [orders, setOrders] = useState([]);
   return (
     <View>
       <Text>SecondHistory</Text>

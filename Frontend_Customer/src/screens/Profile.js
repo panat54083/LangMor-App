@@ -10,7 +10,8 @@ import {
     Image,
     Pressable,
     SafeAreaView,
-    Dimensions
+    Dimensions,
+    Alert,
 } from "react-native";
 import Logout from "../components/buttons/Logout";
 import OptionButton from "../components/buttons/OptionButton";
@@ -23,14 +24,31 @@ const Profile = ({ navigation }) => {
     const { socket } = useContext(SocketContext);
 
     const handleLogOut = async () => {
-        onAction.signOut();
-        socket.disconnect();
-        await AsyncStorage.removeItem("C_Token");
+        Alert.alert("แจ้งเตือน", `ต้องการออกจากระบบใช่หรือไม่`, [
+            {
+                text: "ยกเลิก",
+                style: "cancel",
+            },
+            {
+                text: "ใช่",
+                onPress: () => {
+                    const logout = async () => {
+                        await AsyncStorage.removeItem("C_Token");
+                        socket.disconnect();
+                        onAction.signOut();
+                    };
+                    logout();
+                },
+            },
+        ]);
+        // onAction.signOut();
+        // socket.disconnect();
+        // await AsyncStorage.removeItem("M_Token");
     };
     const handleEditProfile = () => {
         navigation.navigate("EditProfile");
     };
-    const handleHistory= () => {
+    const handleHistory = () => {
         navigation.navigate("HistoryTabs");
     };
     const handleReport = () => {
