@@ -48,13 +48,14 @@ const AddMenu = ({ navigation, route }) => {
                     ""
                 ),
         });
+            fetchTypes();
     }, []);
 
     useEffect(() => {
         const unsubscribe = navigation.addListener("focus", () => {
-            // console.log("listener")
+            console.log("listener")
             fetchOptions();
-            fetchTypes();
+            // fetchTypes();
         });
 
         return unsubscribe;
@@ -63,9 +64,9 @@ const AddMenu = ({ navigation, route }) => {
     useEffect(() => {
         if (isFocused) {
             // Fetuch Functions
-            // console.log("IsFocused")
+            console.log("IsFocused")
             fetchOptions();
-            fetchTypes();
+            // fetchTypes();
         }
     }, [isFocused]);
 
@@ -217,7 +218,7 @@ const AddMenu = ({ navigation, route }) => {
                 y: 0,
                 animated: true,
             });
-            return false;
+            return ;
         }
         setIsLoaded(true);
         if (image) {
@@ -256,9 +257,10 @@ const AddMenu = ({ navigation, route }) => {
             setSelectOptions([...selectOptions, option]);
         }
     };
+
     useEffect(()=>{
-        console.log(selectOptions)
-    },[selectOptions])
+        console.log("types:", types)
+    },[types])
 
     const handleSelectedType = (type) => {
         if (selectedType === type) {

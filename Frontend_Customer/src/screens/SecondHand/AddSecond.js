@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import * as LIP from "../../lib/lm-image-picker";
 //Components
-import { ScrollView, StyleSheet, Text, View, Button } from "react-native";
+import { ScrollView, StyleSheet, Text, View, Button,Alert } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import CustomTextInput from "../../components/input/CustomTextInput";
 import ImageInput from "../../components/input/ImageInput";
@@ -55,8 +55,16 @@ const AddSecond = ({ navigation }) => {
                 console.log(err);
             });
     };
-    
+
     const handleSave = () => {
+        if (!name.trim() || !String(price).trim()) {
+            if (!name.trim()) {
+                Alert.alert("Error", "กรุณาเติมชื่อสินค้า");
+            } else if (!price.trim()) {
+                Alert.alert("Error", "กรุณาเติมราคาสินค้า");
+            }
+            return;
+        }
         setIsLoaded(true);
         if (image) {
             LIP.handleUpload(image, state.userData._id)
@@ -76,8 +84,7 @@ const AddSecond = ({ navigation }) => {
         }
     };
 
-    const handleDebugger = () => {
-    };
+    const handleDebugger = () => {};
 
     return (
         <ScrollView style={{}}>
@@ -95,11 +102,13 @@ const AddSecond = ({ navigation }) => {
                         placeholder={"ชื่อสินค้ามือสอง"}
                         value={name}
                         onChangeText={setName}
+                        required={true}
                     />
                     <CustomTextInput
                         placeholder={"ราคา (บาท)"}
                         value={price}
                         onChangeText={setPrice}
+                        required={true}
                     />
                     <CustomTextInput
                         placeholder={"รายละเอียดสินค้า"}

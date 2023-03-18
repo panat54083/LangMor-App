@@ -106,7 +106,7 @@ const ChatContact = ({ navigation, route }) => {
                     </View>
                 </ScrollView>
             ) : (
-                <Text style={styles.alert_font}>No one contacted.</Text>
+                <Text style={styles.alert_font}>ยังไม่มีผู้ติดต่อ...</Text>
             )}
 
             <View style={styles.submitBtn}>
@@ -134,6 +134,10 @@ const styles = StyleSheet.create({
         fontFamily: "Kanit-Bold",
         fontSize: 18,
         textAlign: "center",
+        color: "#C9C5C4",
+        position: "absolute",
+        alignSelf: "center",
+        bottom:"60%",
     },
     row: {
         flexDirection: "row",
