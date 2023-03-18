@@ -48,7 +48,7 @@ const ChatMerchant = ({ navigation }) => {
         });
     };
     return (
-        <>
+        <View>
             {orders[0] ? (
                 orders.map((order, index) => (
                     <ScrollView key={index}>
@@ -66,6 +66,8 @@ const ChatMerchant = ({ navigation }) => {
                         justifyContent: "center",
                         alignItems: "center",
                         flex: 1,
+                        alignSelf:"center",
+                        position:"absolute",
                     }}
                 >
                     <MaterialCommunityIcons
@@ -77,7 +79,7 @@ const ChatMerchant = ({ navigation }) => {
                     <Text style={styles.font}>ติดต่อซื้อของร้านค้า</Text>
                 </View>
             )}
-        </>
+        </View>
     );
 };
 

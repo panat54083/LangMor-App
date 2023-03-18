@@ -202,7 +202,7 @@ const Chat2 = ({ navigation, route }) => {
         setImage(null);
     };
     const handleDebugger = () => {
-        console.log(chatroomData);
+        console.log(itemData);
     };
 
     return (
@@ -262,14 +262,18 @@ const Chat2 = ({ navigation, route }) => {
                     </Pressable>
                 </View>
             )}
-            <ChatInput
-                forwardedRef={inputRef}
-                onChangeText={(value) => setMessage(value)}
-                sendOnPress={handleSendMessage}
-                pictureOnPress={handleImagePick}
-                cameraOnPress={handleCamera}
-                isLoaded={isLoaded}
-            />
+            {!itemData.closed? (
+                <ChatInput
+                    forwardedRef={inputRef}
+                    onChangeText={(value) => setMessage(value)}
+                    sendOnPress={handleSendMessage}
+                    pictureOnPress={handleImagePick}
+                    cameraOnPress={handleCamera}
+                    isLoaded={isLoaded}
+                />
+            ) : (
+                ""
+            )}
         </View>
     );
 };

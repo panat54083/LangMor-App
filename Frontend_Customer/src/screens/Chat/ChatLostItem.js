@@ -28,7 +28,7 @@ const ChatLostItem = ({ navigation }) => {
             .get(
                 `http://${IP_ADDRESS}/chatroom/chatrooms?customerId=${
                     state.userData._id
-                }&type=${"LostItem"}`
+                }&type=${"LostItem"}&closed=${"false"}`
             )
             .then((res) => {
                 console.log(res.data.message);
@@ -51,7 +51,7 @@ const ChatLostItem = ({ navigation }) => {
         console.log(listOfChatrooms);
     };
     return (
-        <>
+        <View>
             {/* <Text>ChatLostItem</Text>
     <Button title="Debugger" onPress={handleDebugger} /> */}
             {listOfChatrooms.length !== 0 ? (
@@ -82,6 +82,8 @@ const ChatLostItem = ({ navigation }) => {
                         justifyContent: "center",
                         alignItems: "center",
                         flex: 1,
+                        alignSelf:"center",
+                        position:"absolute",
                     }}
                 >
                     <MaterialCommunityIcons
@@ -93,7 +95,7 @@ const ChatLostItem = ({ navigation }) => {
                     <Text style={styles.font}>ติดต่อของหาย</Text>
                 </View>
             )}
-        </>
+        </View>
     );
 };
 

@@ -47,12 +47,14 @@ exports.closeChatroom = async (req, res) => {
 };
 
 exports.getChatrooms = async (req, res) => {
-    const { customerId, merchantId, type } = req.query;
+    const { customerId, merchantId, type, closed} = req.query;
+    const closed_bool = closed === "true" ? true : false
+    // console.log(closed_bool)
     if (customerId) {
         const chatrooms = await Chatroom.find({
             customerId: customerId,
             type: type,
-            closed: false,
+            closed: closed_bool,
         });
 
         const extraChatrooms = await Promise.all(
@@ -85,7 +87,7 @@ exports.getChatrooms = async (req, res) => {
         const chatrooms = await Chatroom.find({
             merchantId: merchantId,
             type: type,
-            closed: false,
+            closed: closed_bool,
         });
         const extraChatrooms = await Promise.all(
             chatrooms.map(async (room, index) => {

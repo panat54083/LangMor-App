@@ -28,7 +28,7 @@ const ChatSecondHand = ({ navigation }) => {
             .get(
                 `http://${IP_ADDRESS}/chatroom/chatrooms?customerId=${
                     state.userData._id
-                }&type=${"SecondHand"}`
+                }&&type=${"SecondHand"}&&closed=${"false"}`
             )
             .then((res) => {
                 console.log(res.data.message);
@@ -48,10 +48,10 @@ const ChatSecondHand = ({ navigation }) => {
     };
 
     const handleDebugger = () => {
-        console.log(listOfChatrooms);
+        console.log(listOfChatrooms.length);
     };
     return (
-        <>
+        <View>
             {/* <Button title="Debugger" onPress={handleDebugger} /> */}
             {listOfChatrooms.length !== 0 ? (
                 listOfChatrooms.map((item, index) => (
@@ -70,10 +70,12 @@ const ChatSecondHand = ({ navigation }) => {
                     style={{
                         justifyContent: "center",
                         alignItems: "center",
+                        alignSelf:"center",
                         flex: 1,
+                        position:"absolute",
                     }}
                 >
-                     <MaterialCommunityIcons
+                    <MaterialCommunityIcons
                         name="chat-question"
                         size={100}
                         color="#C9C5C4"
@@ -82,7 +84,7 @@ const ChatSecondHand = ({ navigation }) => {
                     <Text style={styles.font}>ติดต่อของมือสอง</Text>
                 </View>
             )}
-        </>
+        </View>
     );
 };
 

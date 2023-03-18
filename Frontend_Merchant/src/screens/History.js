@@ -124,7 +124,7 @@ const History = ({ navigation }) => {
                     </View>
                 )}
                 renderSectionHeader={({ section: { title } }) => (
-                    <Text style={[styles.header, { color: "#1A0700" }]}>
+                    <Text style={[styles.header, { color: "#9D9693", fontFamily: "Kanit-Medium", fontSize: 16 }]}>
                         {title}
                     </Text>
                 )}
