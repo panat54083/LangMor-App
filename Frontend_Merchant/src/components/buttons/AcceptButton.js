@@ -12,9 +12,11 @@ import {
 const AcceptButton = ({
     label,
     onPress,
+    icon,
     backgroundColor = "#FF7A00",
     isLoaded = false,
-    fontSize= 20,
+    fontSize = 20,
+    disable = false,
 }) => {
     return (
         <>
@@ -24,20 +26,40 @@ const AcceptButton = ({
                     style={[
                         styles.button,
                         styles.shadow,
-                        { backgroundColor: backgroundColor },
+                        {
+                            backgroundColor: backgroundColor,
+                            flexDirection: "row",
+                            justifyContent: "center",
+                        },
+                        disable ? { backgroundColor: "#F6F6F6" } : null,
                     ]}
+                    disabled={disable}
                 >
-                    <Text style={[styles.text, {fontSize: fontSize} ]}>{label}</Text>
+                    {icon}
+                    {label ? (
+                        <Text
+                            style={[
+                                styles.text,
+                                {
+                                    fontSize: fontSize,
+                                    marginLeft: icon ? 10 : 0,
+                                },
+                                disable ? { color: "#CCCCCC" } : null,
+                            ]}
+                        >
+                            {label}
+                        </Text>
+                    ) : null}
                 </TouchableOpacity>
             ) : (
                 <View
                     style={[
                         styles.button,
                         styles.shadow,
-                        { backgroundColor: "#DFDFDF"},
+                        { backgroundColor: "#D3D3D3" },
                     ]}
                 >
-                    <View style={{ marginVertical: 5 ,flexDirection:"row"}}>
+                    <View style={{ marginVertical: 5, flexDirection: "row" }}>
                         <ActivityIndicator size={"small"} color="white" />
                     </View>
                 </View>

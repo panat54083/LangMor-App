@@ -2,8 +2,10 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { IP_ADDRESS } from "@env";
+import { AntDesign } from '@expo/vector-icons';
 //Components
 import {
+    Modal,
     StyleSheet,
     Text,
     View,
@@ -19,6 +21,8 @@ import CardMarket from "../../components/cards/CardMarket";
 import CardRestaurantTag from "../../components/cards/CardRestaurantTag";
 import BackScreen from "../../components/buttons/BackScreen";
 import RandomBtn from "../../components/buttons/RandomBtn";
+import FavRestaurants from "../../components/cards/Restaurant/FavRestaurants";
+import SubmitBtn from "../../components/buttons/SubmitBtn";
 //Configs
 import BasketContext from "../../hooks/context/BasketContext";
 
@@ -27,6 +31,8 @@ const MarketList = ({ navigation }) => {
     const [searchQuery, setSearchQuery] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const { basketDetail, setBasketDetail } = useContext(BasketContext);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [favRestaurants, setFavRestaurants] = useState();
     useEffect(() => {
         // setHeader
         navigation.setOptions({
@@ -83,25 +89,39 @@ const MarketList = ({ navigation }) => {
 
     const onPressCardMarket = (restaurant) => {
         navigation.navigate("FoodList", { restaurant: restaurant });
+        setModalVisible(false);
     };
-
+    //TODO:
     const handleRandomRestaurants = () => {
         api_getRandomRestaurants()
+            .then((data) => {
+                // console.log(data);
+                setFavRestaurants(data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        if (!modalVisible) {
+            setModalVisible(true);
+        }
     };
 
-    const api_getRandomRestaurants = () => {
-        const number = 3
-        axios
-            .get(`http://${IP_ADDRESS}/restaurant/random_restaurants?number=${number}`)
+    const api_getRandomRestaurants = async () => {
+        const number = 1;
+        return axios
+            .get(
+                `http://${IP_ADDRESS}/restaurant/random_restaurants?number=${number}`
+            )
             .then((res) => {
-                console.log(res.data.message)
-                console.log(res.data.restaurantsData);
+                console.log(res.data.message);
+                // console.log(res.data.restaurantsData);
+                return res.data.restaurantsData;
             })
             .catch((err) => {
                 console.log(err.response.data.message);
+                throw err;
             });
-
-    }
+    };
     const fetchRestaurants = () => {
         setIsLoading(true);
         axios
@@ -199,6 +219,54 @@ const MarketList = ({ navigation }) => {
                     )}
                 </View>
             )}
+            <Modal
+                transparent={true}
+                animationType="fade"
+                visible={modalVisible}
+                nRequestClose={() => setModalVisible(false)}
+            >
+                <TouchableOpacity
+                    onPress={() => setModalVisible(false)}
+                    activeOpacity={1}
+                    style={{
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "rgba(0, 0, 0, 0.2)",
+                    }}
+                >
+                    <View
+                        style={{
+                            position: "absolute",
+                            flex: 1,
+                            width: "100%",
+                            // alignSelf: "center",
+                            // justifyContent: "center",
+                            // alignItems: "center",
+                            // backgroundColor: "orange"
+                        }}
+                    >
+                        <FavRestaurants
+                            restaurantsData={favRestaurants}
+                            onPressCardMarket={onPressCardMarket}
+                        />
+                        <View
+                            style={{
+                                width: "50%",
+                                justifyContent: "center",
+                                alignSelf: "center",
+                            }}
+                        >
+                            <SubmitBtn
+                                label={"สุ่มใหม่"}
+                                icon={<AntDesign name="reload1" size={24} color="white" />}
+                                onPress={handleRandomRestaurants}
+                                backgroundColor={"#63BE00"}
+                            />
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            </Modal>
         </View>
     );
 };

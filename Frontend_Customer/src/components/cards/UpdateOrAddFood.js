@@ -21,7 +21,8 @@ const UpdateOrAddFood = (props) => {
             style={{
                 backgroundColor: "#FFFFFF",
                 paddingVertical: "3%",
-                borderRadius: 20,
+                borderTopRightRadius: 20,
+                borderTopLeftRadius: 20,
                 flex: 1,
             }}
         >

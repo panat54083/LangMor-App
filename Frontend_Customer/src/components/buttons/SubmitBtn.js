@@ -12,6 +12,7 @@ import {
 const SubmitBtn = ({
     label,
     onPress,
+    icon,
     backgroundColor = "#FF7A00",
     isLoaded = false,
     fontSize = 20,
@@ -25,14 +26,30 @@ const SubmitBtn = ({
                     style={[
                         styles.button,
                         styles.shadow,
-                        { backgroundColor: backgroundColor },
-                        disable ? { backgroundColor: "#F6F6F6"} : null,
+                        {
+                            backgroundColor: backgroundColor,
+                            flexDirection: "row",
+                            justifyContent: "center",
+                        },
+                        disable ? { backgroundColor: "#F6F6F6" } : null,
                     ]}
                     disabled={disable}
                 >
-                    <Text style={[styles.text, { fontSize: fontSize }, disable ? {color: "#CCCCCC"}: null]}>
-                        {label}
-                    </Text>
+                    {icon}
+                    {label ? (
+                        <Text
+                            style={[
+                                styles.text,
+                                {
+                                    fontSize: fontSize,
+                                    marginLeft: icon ? 10 : 0,
+                                },
+                                disable ? { color: "#CCCCCC" } : null,
+                            ]}
+                        >
+                            {label}
+                        </Text>
+                    ) : null}
                 </TouchableOpacity>
             ) : (
                 <View
