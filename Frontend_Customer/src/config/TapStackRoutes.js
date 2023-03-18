@@ -8,11 +8,13 @@ import {
     MaterialCommunityIcons,
     FontAwesome5,
     AntDesign,
+    Octicons,
 } from "@expo/vector-icons";
 //Screens
 import Home from "../screens/Home";
 import Profile from "../screens/Profile";
 import ChatTabs from "./Tabs/ChatTabs";
+import HistoryTabs from "./Tabs/HistoryTabs";
 //Configs
 const TabStack = createMaterialBottomTabNavigator();
 
@@ -70,6 +72,22 @@ const TapStackRoutes = () => {
                     },
                 }}
             />
+            {/* <TabStack.Screen
+                name="HistoryTabs"
+                component={HistoryTabs}
+                options={{
+                    tabBarLabel: (
+                        <Text style={{ fontFamily: "Kanit-Bold" }}>
+                            History
+                        </Text>
+                    ),
+                    tabBarIcon: ({ color }) => {
+                        return (
+                            <Octicons name="history" size={24} color={color} />
+                        );
+                    },
+                }}
+            /> */}
             <TabStack.Screen
                 name="Profile"
                 component={Profile}

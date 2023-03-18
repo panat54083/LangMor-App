@@ -30,6 +30,9 @@ const Profile = ({ navigation }) => {
     const handleEditProfile = () => {
         navigation.navigate("EditProfile");
     };
+    const handleHistory= () => {
+        navigation.navigate("HistoryTabs");
+    };
     const handleReport = () => {
         navigation.navigate("Report");
     };
@@ -71,6 +74,10 @@ const Profile = ({ navigation }) => {
                         </View>
                     </View>
                     <View>
+                        <OptionButton
+                            label={"ประวัติการทำรายการ"}
+                            onPress={handleHistory}
+                        />
                         <OptionButton
                             label={"รายงานปัญหา"}
                             onPress={handleReport}

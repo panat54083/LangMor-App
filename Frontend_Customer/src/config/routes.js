@@ -27,6 +27,7 @@ import TapStackRoutes from "./TapStackRoutes";
 import SecondTabs from "./Tabs/SecondTabs";
 import LostTabs from "./Tabs/LostTabs";
 import ChatTabs from "./Tabs/ChatTabs";
+import HistoryTabs from "./Tabs/HistoryTabs";
 //config
 const Stack = createStackNavigator();
 
@@ -88,6 +89,7 @@ const MyStack = ({}) => {
                         name="FavRestaurants"
                         component={FavRestaurants}
                     />
+                    <Stack.Screen name="HistoryTabs" component={HistoryTabs} />
                 </>
             ) : (
                 <>
