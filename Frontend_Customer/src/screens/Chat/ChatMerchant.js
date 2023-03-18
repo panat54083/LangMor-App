@@ -28,7 +28,9 @@ const ChatMerchant = ({ navigation }) => {
     const apiShowOrder = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/order/get?customer_id=${state.userData._id}`
+                `http://${IP_ADDRESS}/order/get?customer_id=${
+                    state.userData._id
+                }&&status=${"new,doing,deliver,done"}`
             )
             .then((res) => {
                 // console.log(res.data.message);
@@ -50,13 +52,13 @@ const ChatMerchant = ({ navigation }) => {
             {orders[0] ? (
                 orders.map((order, index) => (
                     <ScrollView key={index}>
-                    <View key={index} style={styles.orderContainer}>
-                        <Order
-                            order={order}
-                            onPress={() => handleChatroom(order)}
-                        />
-                    </View>
-                </ScrollView>
+                        <View key={index} style={styles.orderContainer}>
+                            <Order
+                                order={order}
+                                onPress={() => handleChatroom(order)}
+                            />
+                        </View>
+                    </ScrollView>
                 ))
             ) : (
                 <View
@@ -66,7 +68,7 @@ const ChatMerchant = ({ navigation }) => {
                         flex: 1,
                     }}
                 >
-                                 <MaterialCommunityIcons
+                    <MaterialCommunityIcons
                         name="chat-question"
                         size={100}
                         color="#C9C5C4"

@@ -310,14 +310,18 @@ const Chat = ({ navigation, route }) => {
                     </Pressable>
                 </View>
             )}
-            <ChatInput
-                forwardedRef={inputRef}
-                onChangeText={(value) => setMessage(value)}
-                sendOnPress={handleSendMessage}
-                pictureOnPress={handleImagePick}
-                cameraOnPress={handleCamera}
-                isLoaded={isLoaded}
-            />
+            {!["close", "cancel"].includes(orderData.status) ? (
+                <ChatInput
+                    forwardedRef={inputRef}
+                    onChangeText={(value) => setMessage(value)}
+                    sendOnPress={handleSendMessage}
+                    pictureOnPress={handleImagePick}
+                    cameraOnPress={handleCamera}
+                    isLoaded={isLoaded}
+                />
+            ) : (
+                ""
+            )}
         </View>
     );
 };

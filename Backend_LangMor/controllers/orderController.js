@@ -67,7 +67,7 @@ exports.getOrder = async (req, res) => {
     } else if (customer_id) {
         const orders = await Order.find({
             customerId: customer_id,
-            status: { $nin: ["close", "cancel"] },
+            status: { $in:  list_status},
         });
         const metaOrders = await Promise.all(
             orders.map(async (order, index) => {

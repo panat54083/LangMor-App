@@ -29,6 +29,13 @@ const ShowOrder = ({ navigation, route }) => {
         navigation.goBack();
     };
 
+    const handleGotoChat = () => {
+        navigation.navigate("Chat", {
+            orderData: order.order,
+            restaurantData: order.restaurant,
+        });
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.detail}>
@@ -38,7 +45,7 @@ const ShowOrder = ({ navigation, route }) => {
                 </ScrollView>
             </View>
             <View style={styles.submit}>
-                <SubmitBtn label={"เข้าสู่หน้าแชท"} onPress={handleGoBack} />
+                <SubmitBtn label={"เข้าสู่หน้าแชท"} onPress={handleGotoChat} />
             </View>
         </View>
     );
