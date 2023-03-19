@@ -267,7 +267,8 @@ const FoodList = ({ route, navigation }) => {
                 </View>
             )}
 
-            {basketDetail.foods.length !== 0 ? (
+            {basketDetail.foods.length !== 0 &&
+            basketDetail.restaurant._id === restaurant._id ? (
                 <View style={styles.confirmOrderBtn}>
                     <BtnToBasketDetail
                         amount={amount}

@@ -88,12 +88,13 @@ const InformLost = ({ navigation }) => {
                     searchText={searchQuery}
                 />
             </View>
-            {isLoading ? (
-                <ActivityIndicator size="large" color="#FF7A00" />
-            ) : listOfLostItems.length !== 0 ? (
-                listOfLostItems.map((item, index) => (
-                    <ScrollView key={index}>
+            <ScrollView>
+                {isLoading ? (
+                    <ActivityIndicator size="large" color="#FF7A00" />
+                ) : listOfLostItems.length !== 0 ? (
+                    listOfLostItems.map((item, index) => (
                         <View
+                            key={index}
                             style={{
                                 marginBottom: 5,
                                 width: "90%",
@@ -108,28 +109,28 @@ const InformLost = ({ navigation }) => {
                                 type={"lost"}
                             />
                         </View>
-                    </ScrollView>
-                ))
-            ) : (
-                <View
-                    style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flex: 1,
-                    }}
-                >
-                    <Text
+                    ))
+                ) : (
+                    <View
                         style={{
-                            fontFamily: "Kanit-Bold",
-                            fontSize: 22,
-                            textAlign: "center",
-                            color: "#C9C5C4",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            flex: 1,
                         }}
                     >
-                        ไม่มีรายการแจ้งของหาย
-                    </Text>
-                </View>
-            )}
+                        <Text
+                            style={{
+                                fontFamily: "Kanit-Bold",
+                                fontSize: 22,
+                                textAlign: "center",
+                                color: "#C9C5C4",
+                            }}
+                        >
+                            ไม่มีรายการแจ้งของหาย
+                        </Text>
+                    </View>
+                )}
+            </ScrollView>
         </>
     );
 };

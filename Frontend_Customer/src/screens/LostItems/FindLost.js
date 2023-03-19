@@ -89,11 +89,11 @@ const FindLost = ({ navigation }) => {
                     searchText={searchQuery}
                 />
             </View>
-            {isLoading ? (
-                <ActivityIndicator size="large" color="#FF7A00" />
-            ) : listOfLostItems.length !== 0 ? (
-                listOfLostItems.map((item, index) => (
-                    <ScrollView key={index}>
+            <ScrollView>
+                {isLoading ? (
+                    <ActivityIndicator size="large" color="#FF7A00" />
+                ) : listOfLostItems.length !== 0 ? (
+                    listOfLostItems.map((item, index) => (
                         <View
                             style={{
                                 marginBottom: 5,
@@ -109,28 +109,28 @@ const FindLost = ({ navigation }) => {
                                 type={"lost"}
                             />
                         </View>
-                    </ScrollView>
-                ))
-            ) : (
-                <View
-                    style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flex: 1,
-                    }}
-                >
-                    <Text
+                    ))
+                ) : (
+                    <View
                         style={{
-                            fontFamily: "Kanit-Bold",
-                            fontSize: 22,
-                            textAlign: "center",
-                            color: "#C9C5C4",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            flex: 1,
                         }}
                     >
-                        ไม่มีรายการตามหาของหาย
-                    </Text>
-                </View>
-            )}
+                        <Text
+                            style={{
+                                fontFamily: "Kanit-Bold",
+                                fontSize: 22,
+                                textAlign: "center",
+                                color: "#C9C5C4",
+                            }}
+                        >
+                            ไม่มีรายการตามหาของหาย
+                        </Text>
+                    </View>
+                )}
+            </ScrollView>
         </>
     );
 };
