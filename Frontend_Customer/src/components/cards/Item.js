@@ -121,8 +121,6 @@ const styles = StyleSheet.create({
     textContainer: {
         marginLeft: "6%",
         justifyContent: "space-around",
-        // backgroundColor: "red",
-        // backgroundColor: "blue",
     },
     textNameStyle: { fontFamily: "Kanit-SemiBold", fontSize: 22 },
     textPriceStyle: {

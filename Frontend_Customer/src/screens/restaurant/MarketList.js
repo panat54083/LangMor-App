@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { IP_ADDRESS } from "@env";
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign } from "@expo/vector-icons";
 //Components
 import {
     Modal,
@@ -13,6 +13,7 @@ import {
     TouchableOpacity,
     ActivityIndicator,
     ScrollView,
+    Button,
 } from "react-native";
 import Searchbar from "../../components/searchs/Searchbar";
 import Fav from "../../components/buttons/Fav";
@@ -23,6 +24,7 @@ import BackScreen from "../../components/buttons/BackScreen";
 import RandomBtn from "../../components/buttons/RandomBtn";
 import FavRestaurants from "../../components/cards/Restaurant/FavRestaurants";
 import SubmitBtn from "../../components/buttons/SubmitBtn";
+import Basket from "../../components/buttons/Basket";
 //Configs
 import BasketContext from "../../hooks/context/BasketContext";
 
@@ -135,7 +137,15 @@ const MarketList = ({ navigation }) => {
                 console.log(err);
             });
     };
-
+    const findAmountOfOrder = (order) => {
+        let amountOfOrder = 0;
+        if (order.length !== 0) {
+            order.forEach((food) => {
+                amountOfOrder = amountOfOrder + food.amount;
+            });
+        }
+        return amountOfOrder;
+    };
     return (
         <View style={{ flex: 1 }}>
             {/* <View style={{ marginTop: 18, marginLeft: "7%" }}>
@@ -219,6 +229,17 @@ const MarketList = ({ navigation }) => {
                     )}
                 </View>
             )}
+            {basketDetail.restaurant ? (
+                <View style={styles.basket}>
+                    <Basket
+                        number={findAmountOfOrder(basketDetail.foods)}
+                        onPress={() =>
+                            onPressCardMarket(basketDetail.restaurant)
+                        }
+                    />
+                </View>
+            ) : null}
+
             <Modal
                 transparent={true}
                 animationType="fade"
@@ -259,7 +280,13 @@ const MarketList = ({ navigation }) => {
                         >
                             <SubmitBtn
                                 label={"สุ่มใหม่"}
-                                icon={<AntDesign name="reload1" size={24} color="white" />}
+                                icon={
+                                    <AntDesign
+                                        name="reload1"
+                                        size={24}
+                                        color="white"
+                                    />
+                                }
                                 onPress={handleRandomRestaurants}
                                 backgroundColor={"#63BE00"}
                             />
@@ -305,4 +332,9 @@ const styles = StyleSheet.create({
         borderRadius: 20,
     },
     tick: { height: 4, backgroundColor: "#DFDFDF" },
+    basket: {
+        position: "absolute",
+        bottom: "4%",
+        right: "4%",
+    },
 });

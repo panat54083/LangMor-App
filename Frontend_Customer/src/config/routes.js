@@ -45,15 +45,6 @@ const MyStack = ({}) => {
                         name="TapStackRoutes"
                         component={TapStackRoutes}
                         options={{ headerShown: false }}
-                        // options={{
-                        //     title: `สวัสดีคุณ ${
-                        //         state.isSignin ? state.userData.name : "Loading"
-                        //     }`,
-                        //     headerRight: () => <HomePageHeader />,
-                        //     headerTitleStyle: {
-                        //         fontFamily: "Kanit-Bold",
-                        //     },
-                        // }}
                     />
                     <Stack.Screen name="MarketList" component={MarketList} />
                     <Stack.Screen

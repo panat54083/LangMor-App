@@ -87,17 +87,11 @@ const BuySecond = ({ navigation }) => {
                     searchText={searchQuery}
                 />
             </View>
-            {isLoading ? (
-                <ActivityIndicator size="large" color="#FF7A00" />
-            ) : listSecondHands.length !== 0 ? (
-                listSecondHands.map((item, index) => (
-                    // <View key={index} style={{ marginBottom: "1%" }}>
-                    //     <Button
-                    //         title={item.name}
-                    //         onPress={() => handleSecondDetail(item)}
-                    //     />
-                    // </View>
-                    <ScrollView key={index}>
+            <ScrollView style={{}}>
+                {isLoading ? (
+                    <ActivityIndicator size="large" color="#FF7A00" />
+                ) : listSecondHands.length !== 0 ? (
+                    listSecondHands.map((item, index) => (
                         <View
                             key={index}
                             style={{
@@ -112,28 +106,28 @@ const BuySecond = ({ navigation }) => {
                                 type={"second"}
                             />
                         </View>
-                    </ScrollView>
-                ))
-            ) : (
-                <View
-                    style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flex: 1,
-                    }}
-                >
-                    <Text
+                    ))
+                ) : (
+                    <View
                         style={{
-                            fontFamily: "Kanit-Bold",
-                            fontSize: 22,
-                            textAlign: "center",
-                            color: "#C9C5C4",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            flex: 1,
                         }}
                     >
-                        ไม่พบรายการสินค้า
-                    </Text>
-                </View>
-            )}
+                        <Text
+                            style={{
+                                fontFamily: "Kanit-Bold",
+                                fontSize: 22,
+                                textAlign: "center",
+                                color: "#C9C5C4",
+                            }}
+                        >
+                            ไม่พบรายการสินค้า
+                        </Text>
+                    </View>
+                )}
+            </ScrollView>
         </>
     );
 };
