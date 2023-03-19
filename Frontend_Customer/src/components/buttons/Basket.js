@@ -37,6 +37,8 @@ const Basket = (props) => {
                             color: "#FF7A00",
                             fontFamily: "Kanit-Bold",
                         }}
+                        numberOfLines={1}
+                        adjustsFontSizeToFit={true}
                     >
                         {number}
                     </Text>
