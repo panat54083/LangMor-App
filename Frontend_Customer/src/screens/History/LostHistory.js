@@ -144,7 +144,7 @@ const LostHistory = ({ navigation }) => {
                             />
                         </View>
                     ))}
-                {listLostItems.length !== 0 &&
+                {listOfLostChats.length !== 0 &&
                     !status &&
                     listOfLostChats.map((item, index) => (
                         <View
@@ -167,26 +167,26 @@ const LostHistory = ({ navigation }) => {
                         </View>
                     ))}
 
-                {orders.length === 0 ||
-                    (listOfLostChats === 0 && (
-                        <View
-                            style={{
-                                justifyContent: "center",
-                                alignItems: "center",
-                                flex: 1,
-                                alignSelf: "center",
-                                position: "absolute",
-                            }}
-                        >
-                            <MaterialCommunityIcons
-                                name="chat-question"
-                                size={100}
-                                color="#C9C5C4"
-                            />
-                            <Text style={styles.font}>ไม่พบประวัติ</Text>
-                            <Text style={styles.font}>ติดต่อของหาย</Text>
-                        </View>
-                    ))}
+                {((orders.length === 0 && status) ||
+                    (listOfLostChats.length === 0 && !status)) && (
+                    <View
+                        style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            flex: 1,
+                            alignSelf: "center",
+                            // position: "absolute",
+                        }}
+                    >
+                        <MaterialCommunityIcons
+                            name="chat-question"
+                            size={100}
+                            color="#C9C5C4"
+                        />
+                        <Text style={styles.font}>ไม่พบประวัติ</Text>
+                        <Text style={styles.font}>ติดต่อของหาย</Text>
+                    </View>
+                )}
             </ScrollView>
             <View style={styles.changeButton}>
                 <StateBtn

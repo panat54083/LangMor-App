@@ -145,15 +145,14 @@ const SecondHistory = ({ navigation }) => {
                             />
                         </View>
                     ))}
-                {orders.length === 0 ||
-                    (listOfSecondChats === 0 && (
+                {((orders.length === 0 && status) || (listOfSecondChats.length === 0 && !status)) && (
                         <View
                             style={{
                                 justifyContent: "center",
                                 alignItems: "center",
                                 flex: 1,
                                 alignSelf: "center",
-                                position: "absolute",
+                                // position: "absolute",
                             }}
                         >
                             <MaterialCommunityIcons
@@ -164,7 +163,7 @@ const SecondHistory = ({ navigation }) => {
                             <Text style={styles.font}>ไม่พบประวัติ</Text>
                             <Text style={styles.font}>ติดต่อของมือสอง</Text>
                         </View>
-                    ))}
+                    )}
             </ScrollView>
             <View style={styles.changeButton}>
                 <StateBtn
