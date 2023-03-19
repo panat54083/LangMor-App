@@ -19,10 +19,10 @@ exports.createLostItem = async (req, res) => {
 
 exports.getMyLostItemsPosts = async (req, res) => {
     const { owner_id,closed } = req.query;
-    const cloesed_bool = closed === "true" ? true : false
+    const closed_bool = closed === "true" ? true : false
     const lostItems = await LostItem.find({
         owner_id: owner_id,
-        closed: cloesed_bool,
+        closed: closed_bool,
     });
 
     res.json({

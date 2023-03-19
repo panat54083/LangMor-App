@@ -124,10 +124,12 @@ const SecondDetail = ({ route, navigation }) => {
                 </View>
             </View>
             <View style={styles.submitBtn}>
-                <SubmitBtn
-                    label={"เริ่มแชทกับผู้ขาย"}
-                    onPress={handleContact}
-                />
+                {secondData.closed === false && (
+                    <SubmitBtn
+                        label={"เริ่มแชทกับผู้ขาย"}
+                        onPress={handleContact}
+                    />
+                )}
             </View>
         </View>
     );

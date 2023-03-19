@@ -34,7 +34,6 @@ const SellSecond = ({ navigation }) => {
     }, [listOfChatrooms, listSecondHands]);
 
     const concat_listOfSecondChat = () => {
-        const tempData = [];
         const tempSecondHand = listSecondHands.map((item, index) => {
             const tempList = listOfChatrooms.filter(
                 (data) => data.chatroom.itemId === item._id
@@ -48,7 +47,9 @@ const SellSecond = ({ navigation }) => {
     const api_getMyPosts = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/secondHand/getMyPosts?owner_id=${state.userData._id}`
+                `http://${IP_ADDRESS}/secondHand/getMyPosts?owner_id=${
+                    state.userData._id
+                }&closed=${false}`
             )
             .then((res) => {
                 console.log(res.data.message);

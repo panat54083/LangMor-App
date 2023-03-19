@@ -16,6 +16,7 @@ import {
 import Item from "../../components/cards/Item";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import StateBtn from "../../components/buttons/StateBtn";
+import CardTwoSide from "../../components/cards/CardTwoSide";
 // Configs
 import { IP_ADDRESS } from "@env";
 import UserContext from "../../hooks/context/UserContext";
@@ -27,6 +28,9 @@ const SecondHistory = ({ navigation }) => {
     //Variables
     const { state } = useContext(UserContext);
     const [orders, setOrders] = useState([]);
+    const [listSecondHands, setListSecondHands] = useState([]);
+    const [listOfChatrooms, setListOfChatrooms] = useState([]);
+    const [listOfSecondChats, setListOfSecondChats] = useState([]);
 
     useEffect(() => {
         if (isFocused) {
@@ -34,10 +38,43 @@ const SecondHistory = ({ navigation }) => {
                 api_getAllChatrooms("customerId");
             } else {
                 api_getAllChatrooms("merchantId");
+                api_getMyPosts();
             }
         }
     }, [isFocused, status]);
 
+    useEffect(() => {
+        if (!status && listOfChatrooms && listSecondHands) {
+            concat_listOfSecondChat();
+        }
+    }, [status]);
+
+    const concat_listOfSecondChat = () => {
+        const tempSecondHand = listSecondHands.map((item, index) => {
+            const tempList = listOfChatrooms.filter(
+                (data) => data.chatroom.itemId === item._id
+            );
+            // console.log(index, tempList.length);
+            return { secondHand: item, chatrooms: tempList };
+        });
+        setListOfSecondChats(tempSecondHand);
+    };
+
+    const api_getMyPosts = () => {
+        axios
+            .get(
+                `http://${IP_ADDRESS}/secondHand/getMyPosts?owner_id=${
+                    state.userData._id
+                }&closed=${true}`
+            )
+            .then((res) => {
+                console.log(res.data.message);
+                setListSecondHands(res.data.listSecondHands);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
     const api_getAllChatrooms = (role) => {
         axios
             .get(
@@ -48,7 +85,11 @@ const SecondHistory = ({ navigation }) => {
             .then((res) => {
                 console.log(res.data.message);
                 // console.log(res.data.chatrooms)
-                setOrders(res.data.chatrooms);
+                if (role === "customerId") {
+                    setOrders(res.data.chatrooms);
+                } else if (role === "merchantId") {
+                    setListOfChatrooms(res.data.chatrooms);
+                }
             })
             .catch((err) => {
                 console.log(err);
@@ -65,11 +106,23 @@ const SecondHistory = ({ navigation }) => {
         setStatus(!status);
     };
 
+    const handleItem = (data) => {
+        navigation.navigate("SecondDetail", { secondData: data });
+    };
+
+    const handleContact = (data) => {
+        navigation.navigate("ChatContact", {
+            chatroomsData: data.chatrooms,
+            itemData: data.secondHand,
+        });
+    };
+
     return (
         <View style={{ flex: 1 }}>
             <ScrollView style={{ flex: 1 }}>
                 {/* <Button title="Debugger" onPress={handleDebugger} /> */}
-                {orders.length !== 0 ? (
+                {orders.length !== 0 &&
+                    status &&
                     orders.map((item, index) => (
                         <View key={index} style={styles.itemContainer}>
                             <Item
@@ -78,26 +131,40 @@ const SecondHistory = ({ navigation }) => {
                                 type={"second"}
                             />
                         </View>
-                    ))
-                ) : (
-                    <View
-                        style={{
-                            justifyContent: "center",
-                            alignItems: "center",
-                            flex: 1,
-                            alignSelf: "center",
-                            position: "absolute",
-                        }}
-                    >
-                        <MaterialCommunityIcons
-                            name="chat-question"
-                            size={100}
-                            color="#C9C5C4"
-                        />
-                        <Text style={styles.font}>ไม่พบประวัติ</Text>
-                        <Text style={styles.font}>ติดต่อของมือสอง</Text>
-                    </View>
-                )}
+                    ))}
+                {listOfSecondChats.length !== 0 &&
+                    !status &&
+                    listOfSecondChats.map((item, index) => (
+                        <View key={index} style={styles.itemContainer}>
+                            <CardTwoSide
+                                key={index}
+                                label={item.secondHand.name}
+                                numberOfContact={item.chatrooms.length}
+                                onPressLeft={() => handleItem(item.secondHand)}
+                                onPressRight={() => handleContact(item)}
+                            />
+                        </View>
+                    ))}
+                {orders.length === 0 ||
+                    (listOfSecondChats === 0 && (
+                        <View
+                            style={{
+                                justifyContent: "center",
+                                alignItems: "center",
+                                flex: 1,
+                                alignSelf: "center",
+                                position: "absolute",
+                            }}
+                        >
+                            <MaterialCommunityIcons
+                                name="chat-question"
+                                size={100}
+                                color="#C9C5C4"
+                            />
+                            <Text style={styles.font}>ไม่พบประวัติ</Text>
+                            <Text style={styles.font}>ติดต่อของมือสอง</Text>
+                        </View>
+                    ))}
             </ScrollView>
             <View style={styles.changeButton}>
                 <StateBtn

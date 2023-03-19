@@ -29,6 +29,7 @@ const LostHistory = ({ navigation }) => {
     const { state } = useContext(UserContext);
     const [orders, setOrders] = useState([]);
     const [listLostItems, setListLostItems] = useState([]);
+    const [listOfChatrooms, setListOfChatrooms] = useState([]);
     const [listOfLostChats, setListOfLostChats] = useState([]);
 
     useEffect(() => {
@@ -43,14 +44,14 @@ const LostHistory = ({ navigation }) => {
     }, [isFocused, status]);
 
     useEffect(() => {
-        if (!status && orders && listLostItems) {
+        if (!status && listOfChatrooms && listLostItems) {
             concat_listOfSecondChat();
         }
-    }, [status, orders, listLostItems]);
+    }, [status]);
 
     const concat_listOfSecondChat = () => {
         const tempLostItem = listLostItems.map((item, index) => {
-            const tempList = orders.filter(
+            const tempList = listOfChatrooms.filter(
                 (data) => data.chatroom.itemId === item._id
             );
             // console.log(index, tempList.length);
@@ -85,7 +86,11 @@ const LostHistory = ({ navigation }) => {
             .then((res) => {
                 console.log(res.data.message);
                 // console.log(res.data.chatrooms)
-                setOrders(res.data.chatrooms);
+                if (role === "customerId") {
+                    setOrders(res.data.chatrooms);
+                } else if (role === "merchantId") {
+                    setListOfChatrooms(res.data.chatrooms);
+                }
             })
             .catch((err) => {
                 console.log(err);
@@ -102,8 +107,8 @@ const LostHistory = ({ navigation }) => {
     };
 
     const handleItem = (data) => {
-        console.log(data)
-        navigation.navigate("LostDetail", { lostData: data});
+        console.log(data);
+        navigation.navigate("LostDetail", { lostData: data });
     };
 
     const handleContact = (data) => {
@@ -152,18 +157,18 @@ const LostHistory = ({ navigation }) => {
                                 alignSelf: "center",
                             }}
                         >
-                        <CardTwoSide
-                            key={index}
-                            label={item.lostItem.name}
-                            numberOfContact={item.chatrooms.length}
-                            onPressLeft={() => handleItem(item.lostItem)}
-                            onPressRight={() => handleContact(item)}
-                        />
+                            <CardTwoSide
+                                key={index}
+                                label={item.lostItem.name}
+                                numberOfContact={item.chatrooms.length}
+                                onPressLeft={() => handleItem(item.lostItem)}
+                                onPressRight={() => handleContact(item)}
+                            />
                         </View>
                     ))}
 
                 {orders.length === 0 ||
-                    (listLostItems === 0 && (
+                    (listOfLostChats === 0 && (
                         <View
                             style={{
                                 justifyContent: "center",

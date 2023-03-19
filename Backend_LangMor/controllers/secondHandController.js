@@ -18,10 +18,11 @@ exports.createSecondHand = async (req, res) => {
 };
 
 exports.getMySecondHandsPosts = async (req, res) => {
-    const { owner_id } = req.query;
+    const { owner_id, closed } = req.query;
+    const closed_bool = closed === "true" ? true : false
     const secondHands = await SecondHand.find({
         owner_id: owner_id,
-        closed: false,
+        closed: closed_bool,
     });
     res.json({
         message: "Get Second Hands done...",
