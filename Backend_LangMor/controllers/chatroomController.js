@@ -92,8 +92,23 @@ exports.getChatrooms = async (req, res) => {
         const extraChatrooms = await Promise.all(
             chatrooms.map(async (room, index) => {
                 const customer = await Customer.findById(room.customerId);
-                const tamp_data = { chatroom: room, customer: customer };
-                return tamp_data;
+                if (room.type === "SecondHand"){
+                    const secondHand = await SecondHand.findById(room.itemId)
+                    const tamp_data = {
+                        chatroom: room,
+                        customer: customer,
+                        itemData: secondHand,
+                    } 
+                    return tamp_data
+                } else if ( room.type === "LostItem") {
+                    const lostItem = await LostItem.findById(room.itemId)
+                    const tamp_data = {
+                        chatroom: room,
+                        customer: customer,
+                        itemData: lostItem,
+                    } 
+                    return tamp_data
+                }
             })
         );
         res.json({

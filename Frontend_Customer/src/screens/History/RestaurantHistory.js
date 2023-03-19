@@ -14,6 +14,7 @@ import {
 } from "react-native";
 //Components
 import OrderCard from "../../components/cards/Order/OrderCard";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 // Configs
 import { IP_ADDRESS } from "@env";
 import UserContext from "../../hooks/context/UserContext";
@@ -86,31 +87,62 @@ const RestaurantHistory = ({ navigation }) => {
     return (
         <View style={styles.container}>
             {/* <Button title="Debugger" onPress={handleDebugger} /> */}
-            <SectionList
-                sections={orders}
-                keyExtractor={(item, index) => item + index}
-                renderItem={({ item, index }) => (
-                    <View style={[styles.orderCard, { marginBottom: "2%" }]}>
-                        <OrderCard
-                            key={index}
-                            order_number={item.order.order_number}
-                            onPress={() => handleSelectOrder(item)}
-                            name={item.restaurant.name}
-                            time={item.order.createdAt}
-                            price={item.order.cart.reduce(
-                                (total, item) => total + item.price,
-                                0
-                            )}
-                            orderStatus={item.order.status}
-                        />
-                    </View>
-                )}
-                renderSectionHeader={({ section: { title } }) => (
-                    <Text style={[styles.header, { color: "#9D9693", fontFamily: "Kanit-Medium", fontSize: 16 }]}>
-                        {title}
-                    </Text>
-                )}
-            />
+            {orders.length !== 0 ? (
+                <SectionList
+                    sections={orders}
+                    keyExtractor={(item, index) => item + index}
+                    renderItem={({ item, index }) => (
+                        <View
+                            style={[styles.orderCard, { marginBottom: "2%" }]}
+                        >
+                            <OrderCard
+                                key={index}
+                                order_number={item.order.order_number}
+                                onPress={() => handleSelectOrder(item)}
+                                name={item.restaurant.name}
+                                time={item.order.createdAt}
+                                price={item.order.cart.reduce(
+                                    (total, item) => total + item.price,
+                                    0
+                                )}
+                                orderStatus={item.order.status}
+                            />
+                        </View>
+                    )}
+                    renderSectionHeader={({ section: { title } }) => (
+                        <Text
+                            style={[
+                                styles.header,
+                                {
+                                    color: "#9D9693",
+                                    fontFamily: "Kanit-Medium",
+                                    fontSize: 16,
+                                },
+                            ]}
+                        >
+                            {title}
+                        </Text>
+                    )}
+                />
+            ) : (
+                <View
+                    style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flex: 1,
+                        alignSelf: "center",
+                        position: "absolute",
+                    }}
+                >
+                    <MaterialCommunityIcons
+                        name="chat-question"
+                        size={100}
+                        color="#C9C5C4"
+                    />
+                    <Text style={styles.font}>ไม่พบประวัติ</Text>
+                    <Text style={styles.font}>ทำรายการร้านค้า</Text>
+                </View>
+            )}
         </View>
     );
 };
@@ -130,4 +162,9 @@ const styles = StyleSheet.create({
     orderCard: {
         marginHorizontal: 10,
     },
+    font:{
+        fontFamily: "Kanit-Bold",
+        fontSize: 25,
+        color: "#C9C5C4"
+    }
 });
