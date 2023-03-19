@@ -46,7 +46,9 @@ const MyPost = ({ navigation }) => {
     const api_getMyPosts = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/lostItem/getMyPosts?owner_id=${state.userData._id}`
+                `http://${IP_ADDRESS}/lostItem/getMyPosts?owner_id=${
+                    state.userData._id
+                }&closed=${false}`
             )
             .then((res) => {
                 console.log(res.data.message);

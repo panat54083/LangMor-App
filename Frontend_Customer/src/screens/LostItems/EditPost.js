@@ -30,7 +30,7 @@ const EditPost = ({ navigation, route }) => {
 
     const [name, setName] = useState(itemData.name);
     const [detail, setDetail] = useState(itemData.detail);
-    const [editable, setEditable] = useState(true);
+    const [editable, setEditable] = useState(itemData.closed !== true ?true:false);
 
     //Start-up
     useEffect(() => {
@@ -46,16 +46,16 @@ const EditPost = ({ navigation, route }) => {
                     color="#FF7A00"
                 />
             ),
-            headerRight: () => (
-                <View>
-                    {!editable ? (
-                        <Edit
-                            onPress={() => setEditable(true)}
-                            color={"#E61931"}
-                        />
-                    ) : null}
-                </View>
-            ),
+            // headerRight: () => (
+            //     <View>
+            //         {!editable ? (
+            //             <Edit
+            //                 onPress={() => setEditable(true)}
+            //                 color={"#E61931"}
+            //             />
+            //         ) : null}
+            //     </View>
+            // ),
         });
     }, [editable]);
 

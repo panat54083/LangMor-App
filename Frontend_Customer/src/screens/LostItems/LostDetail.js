@@ -126,10 +126,15 @@ const LostDetail = ({ route, navigation }) => {
                 </View>
             </View>
             <View style={styles.submitBtn}>
+                {
+                    lostData.closed === false ? (
                 <SubmitBtn
                     label={"เริ่มแชทกับผู้โพส"}
                     onPress={handleContact}
                 />
+
+                    ):(null)
+                }
             </View>
         </View>
     );

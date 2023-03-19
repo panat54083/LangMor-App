@@ -110,11 +110,13 @@ const ChatContact = ({ navigation, route }) => {
             )}
 
             <View style={styles.submitBtn}>
-                <SubmitBtn
-                    label={"ปิดโพส"}
-                    onPress={handleCloseSecondHand}
-                    backgroundColor="#FF0101"
-                />
+                {itemData.closed !== true ? (
+                    <SubmitBtn
+                        label={"ปิดโพส"}
+                        onPress={handleCloseSecondHand}
+                        backgroundColor="#FF0101"
+                    />
+                ) : null}
             </View>
         </View>
     );
@@ -137,7 +139,7 @@ const styles = StyleSheet.create({
         color: "#C9C5C4",
         position: "absolute",
         alignSelf: "center",
-        bottom:"60%",
+        bottom: "60%",
     },
     row: {
         flexDirection: "row",

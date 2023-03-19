@@ -16,6 +16,7 @@ import {
 import Item from "../../components/cards/Item";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import StateBtn from "../../components/buttons/StateBtn";
+import CardTwoSide from "../../components/cards/CardTwoSide";
 // Configs
 import { IP_ADDRESS } from "@env";
 import UserContext from "../../hooks/context/UserContext";
@@ -27,6 +28,8 @@ const LostHistory = ({ navigation }) => {
     //Variables
     const { state } = useContext(UserContext);
     const [orders, setOrders] = useState([]);
+    const [listLostItems, setListLostItems] = useState([]);
+    const [listOfLostChats, setListOfLostChats] = useState([]);
 
     useEffect(() => {
         if (isFocused) {
@@ -34,9 +37,43 @@ const LostHistory = ({ navigation }) => {
                 api_getAllChatrooms("customerId");
             } else {
                 api_getAllChatrooms("merchantId");
+                api_getMyPosts();
             }
         }
     }, [isFocused, status]);
+
+    useEffect(() => {
+        if (!status && orders && listLostItems) {
+            concat_listOfSecondChat();
+        }
+    }, [status, orders, listLostItems]);
+
+    const concat_listOfSecondChat = () => {
+        const tempLostItem = listLostItems.map((item, index) => {
+            const tempList = orders.filter(
+                (data) => data.chatroom.itemId === item._id
+            );
+            // console.log(index, tempList.length);
+            return { lostItem: item, chatrooms: tempList };
+        });
+        setListOfLostChats(tempLostItem);
+    };
+
+    const api_getMyPosts = () => {
+        axios
+            .get(
+                `http://${IP_ADDRESS}/lostItem/getMyPosts?owner_id=${
+                    state.userData._id
+                }&closed=${true}`
+            )
+            .then((res) => {
+                console.log(res.data.message);
+                setListLostItems(res.data.listOfLostItems);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
 
     const api_getAllChatrooms = (role) => {
         axios
@@ -64,11 +101,24 @@ const LostHistory = ({ navigation }) => {
         setStatus(!status);
     };
 
+    const handleItem = (data) => {
+        console.log(data)
+        navigation.navigate("LostDetail", { lostData: data});
+    };
+
+    const handleContact = (data) => {
+        navigation.navigate("ChatContact", {
+            chatroomsData: data.chatrooms,
+            itemData: data.lostItem,
+        });
+    };
+
     return (
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
             {/* <Button title="Debugger" onPress={handleDebugger} />  */}
-            <ScrollView style={{flex: 1}}>
-                {orders.length !== 0 ? (
+            <ScrollView style={{ flex: 1 }}>
+                {orders.length !== 0 &&
+                    status &&
                     orders.map((item, index) => (
                         <View
                             key={index}
@@ -88,26 +138,50 @@ const LostHistory = ({ navigation }) => {
                                 type={"lost"}
                             />
                         </View>
-                    ))
-                ) : (
-                    <View
-                        style={{
-                            justifyContent: "center",
-                            alignItems: "center",
-                            flex: 1,
-                            alignSelf: "center",
-                            position: "absolute",
-                        }}
-                    >
-                        <MaterialCommunityIcons
-                            name="chat-question"
-                            size={100}
-                            color="#C9C5C4"
+                    ))}
+                {listLostItems.length !== 0 &&
+                    !status &&
+                    listOfLostChats.map((item, index) => (
+                        <View
+                            key={index}
+                            style={{
+                                marginTop: "0.75%",
+                                marginBottom: "0.25%",
+                                marginBottom: 5,
+                                width: "90%",
+                                alignSelf: "center",
+                            }}
+                        >
+                        <CardTwoSide
+                            key={index}
+                            label={item.lostItem.name}
+                            numberOfContact={item.chatrooms.length}
+                            onPressLeft={() => handleItem(item.lostItem)}
+                            onPressRight={() => handleContact(item)}
                         />
-                        <Text style={styles.font}>ไม่พบประวัติ</Text>
-                        <Text style={styles.font}>ติดต่อของหาย</Text>
-                    </View>
-                )}
+                        </View>
+                    ))}
+
+                {orders.length === 0 ||
+                    (listLostItems === 0 && (
+                        <View
+                            style={{
+                                justifyContent: "center",
+                                alignItems: "center",
+                                flex: 1,
+                                alignSelf: "center",
+                                position: "absolute",
+                            }}
+                        >
+                            <MaterialCommunityIcons
+                                name="chat-question"
+                                size={100}
+                                color="#C9C5C4"
+                            />
+                            <Text style={styles.font}>ไม่พบประวัติ</Text>
+                            <Text style={styles.font}>ติดต่อของหาย</Text>
+                        </View>
+                    ))}
             </ScrollView>
             <View style={styles.changeButton}>
                 <StateBtn
