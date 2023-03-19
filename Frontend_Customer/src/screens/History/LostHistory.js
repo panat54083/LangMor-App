@@ -15,6 +15,7 @@ import {
 //Components
 import Item from "../../components/cards/Item";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import StateBtn from "../../components/buttons/StateBtn";
 // Configs
 import { IP_ADDRESS } from "@env";
 import UserContext from "../../hooks/context/UserContext";
@@ -22,20 +23,25 @@ import UserContext from "../../hooks/context/UserContext";
 const LostHistory = ({ navigation }) => {
     //Configs
     const isFocused = useIsFocused();
+    const [status, setStatus] = useState(true);
     //Variables
     const { state } = useContext(UserContext);
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {
         if (isFocused) {
-            api_getAllChatrooms();
+            if (status) {
+                api_getAllChatrooms("customerId");
+            } else {
+                api_getAllChatrooms("merchantId");
+            }
         }
-    }, [isFocused]);
+    }, [isFocused, status]);
 
-    const api_getAllChatrooms = () => {
+    const api_getAllChatrooms = (role) => {
         axios
             .get(
-                `http://${IP_ADDRESS}/chatroom/chatrooms?customerId=${
+                `http://${IP_ADDRESS}/chatroom/chatrooms?${role}=${
                     state.userData._id
                 }&type=${"LostItem"}&closed=${"true"}`
             )
@@ -48,21 +54,24 @@ const LostHistory = ({ navigation }) => {
                 console.log(err);
             });
     };
-        const handleChatroom = (data) => {
+    const handleChatroom = (data) => {
         navigation.navigate("Chat2", {
             itemData: data.itemData,
             chatroomData: data.chatroom,
         });
     };
+    const handleChangeStatus = () => {
+        setStatus(!status);
+    };
 
     return (
-        <View>
-            {/* <Text>ChatLostItem</Text>
-    <Button title="Debugger" onPress={handleDebugger} /> */}
-            {orders.length !== 0 ? (
-                orders.map((item, index) => (
-                    <ScrollView key={index}>
+        <View style={{flex: 1}}>
+            {/* <Button title="Debugger" onPress={handleDebugger} />  */}
+            <ScrollView style={{flex: 1}}>
+                {orders.length !== 0 ? (
+                    orders.map((item, index) => (
                         <View
+                            key={index}
                             style={{
                                 marginTop: "0.75%",
                                 marginBottom: "0.25%",
@@ -79,27 +88,35 @@ const LostHistory = ({ navigation }) => {
                                 type={"lost"}
                             />
                         </View>
-                    </ScrollView>
-                ))
-            ) : (
-                <View
-                    style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flex: 1,
-                        alignSelf:"center",
-                        position:"absolute",
-                    }}
-                >
-                    <MaterialCommunityIcons
-                        name="chat-question"
-                        size={100}
-                        color="#C9C5C4"
-                    />
-                    <Text style={styles.font}>ไม่พบประวัติ</Text>
-                    <Text style={styles.font}>ติดต่อของหาย</Text>
-                </View>
-            )}
+                    ))
+                ) : (
+                    <View
+                        style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            flex: 1,
+                            alignSelf: "center",
+                            position: "absolute",
+                        }}
+                    >
+                        <MaterialCommunityIcons
+                            name="chat-question"
+                            size={100}
+                            color="#C9C5C4"
+                        />
+                        <Text style={styles.font}>ไม่พบประวัติ</Text>
+                        <Text style={styles.font}>ติดต่อของหาย</Text>
+                    </View>
+                )}
+            </ScrollView>
+            <View style={styles.changeButton}>
+                <StateBtn
+                    label1={"โพสติดต่อ"}
+                    label2={"โพสของฉัน"}
+                    status={status}
+                    onPress={handleChangeStatus}
+                />
+            </View>
         </View>
     );
 };
@@ -111,5 +128,11 @@ const styles = StyleSheet.create({
         fontFamily: "Kanit-Bold",
         fontSize: 25,
         color: "#C9C5C4",
+    },
+    changeButton: {
+        position: "absolute",
+        width: "100%",
+        bottom: "5%",
+        left: "68%",
     },
 });

@@ -79,6 +79,7 @@ exports.getChatrooms = async (req, res) => {
                 }
             })
         );
+        console.log(extraChatrooms.length)
         res.json({
             message: `Get All Chatroom [Customer] ${type}`,
             chatrooms: extraChatrooms,
@@ -111,6 +112,7 @@ exports.getChatrooms = async (req, res) => {
                 }
             })
         );
+        console.log(extraChatrooms.length)
         res.json({
             message: "Get All Chatroom [Merchant]",
             chatrooms: extraChatrooms,

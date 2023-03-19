@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import * as LIP from "../../lib/lm-image-picker";
 //Components
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View ,Alert} from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import CustomTextInput from "../../components/input/CustomTextInput";
 import ImageInput from "../../components/input/ImageInput";
@@ -70,6 +70,14 @@ const AddLost = ({ navigation }) => {
     };
 
     const handleSave = () => {
+        if (!name.trim() || !String(detail).trim()) {
+            if (!name.trim()) {
+                Alert.alert("Error", "กรุณาเติมชื่อโพส");
+            } else if (!detail.trim()) {
+                Alert.alert("Error", "กรุณาเติมรายละเอียด");
+            }
+            return;
+        }
         setIsLoaded(true);
         if (image) {
             LIP.handleUpload(image, state.userData._id)
@@ -116,6 +124,7 @@ const AddLost = ({ navigation }) => {
                     placeholder={"ชื่อของหาย"}
                     value={name}
                     onChangeText={setName}
+                    required={true}
                 />
                 <CustomTextInput
                     placeholder={
@@ -125,6 +134,7 @@ const AddLost = ({ navigation }) => {
                     numberOfLines={5}
                     value={detail}
                     onChangeText={setDetail}
+                    required={true}
                 />
             </View>
             <View style={styles.submit_container}>

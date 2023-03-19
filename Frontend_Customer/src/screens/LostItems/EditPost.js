@@ -76,6 +76,14 @@ const EditPost = ({ navigation, route }) => {
             });
     };
     const handleSave = () => {
+                if (!name.trim() || !String(detail).trim()) {
+            if (!name.trim()) {
+                Alert.alert("Error", "กรุณาเติมชื่อโพส");
+            } else if (!detail.trim()) {
+                Alert.alert("Error", "กรุณาเติมรายละเอียด");
+            }
+            return;
+        }
         api_LostItemUpdate();
         navigation.goBack();
     };
