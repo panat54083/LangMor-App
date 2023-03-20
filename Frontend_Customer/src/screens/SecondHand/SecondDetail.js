@@ -105,8 +105,8 @@ const SecondDetail = ({ route, navigation }) => {
         });
     };
     return (
+        
         <View style={{ flex: 1 }}>
-            {/* <Text>SecondDetail</Text> */}
             {/* <Button title="Debugger" onPress={handleDebugger} /> */}
             <View style={styles.topContatner}>
                 <View style={styles.imgFrame1}>

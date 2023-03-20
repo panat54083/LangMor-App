@@ -147,7 +147,7 @@ const SelectRestaurant = ({ navigation }) => {
                     ))
                 ) : (
                     <Text style={styles.notFoundTextStyle}>
-                        ไม่พบร้านค้าที่ค้นหา
+                        ไม่พบร้านค้า
                     </Text>
                 )}
             </View>
@@ -166,9 +166,10 @@ const styles = StyleSheet.create({
         marginHorizontal: "5%",
     },
     notFoundTextStyle: {
-        fontSize: 16,
+        fontSize: 24,
         fontFamily: "Kanit-Bold",
         textAlign: "center",
+        color: "#C9C5C4"
     },
     searchContainer: { alignItems: "center", marginTop: "4%" },
 });

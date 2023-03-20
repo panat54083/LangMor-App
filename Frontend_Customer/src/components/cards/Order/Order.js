@@ -38,7 +38,11 @@ const Order = (props) => {
             style={[styles.container, styles.shadow]}
         >
             <View View style={styles.textContainer}>
-                <Text style={styles.textNameStyle}>
+                <Text
+                    style={styles.textNameStyle}
+                    numberOfLines={1}
+                    adjustsFontSizeToFit={true}
+                >
                     {order.restaurant.name}
                 </Text>
                 {/* <View style={styles.textAddressContainer}>
@@ -80,7 +84,7 @@ const styles = StyleSheet.create({
         borderColor: "#ddd",
     },
     textContainer: {
-        flex: 0.50,
+        flex: 0.5,
         marginLeft: "6%",
         justifyContent: "space-around",
     },
@@ -96,9 +100,9 @@ const styles = StyleSheet.create({
     },
     textPriceContainer: {
         alignSelf: "center",
-        flex: 0.50,
+        flex: 0.5,
         alignItems: "flex-end",
-        marginRight: "4%"
+        marginRight: "4%",
     },
     textPriceStyle: { fontFamily: "Kanit-Bold", fontSize: 18 },
     shadow: {

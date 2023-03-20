@@ -29,7 +29,7 @@ import Basket from "../../components/buttons/Basket";
 import BasketContext from "../../hooks/context/BasketContext";
 
 const MarketList = ({ navigation }) => {
-    const [restaurants, setRestaurants] = useState();
+    const [restaurants, setRestaurants] = useState([]);
     const [searchQuery, setSearchQuery] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const { basketDetail, setBasketDetail } = useContext(BasketContext);
@@ -57,7 +57,7 @@ const MarketList = ({ navigation }) => {
                 </View>
             ),
         });
-        fetchRestaurants();
+        // fetchRestaurants();
     }, []);
     const onPressFav = () => {
         navigation.navigate("FavRestaurants");
@@ -145,8 +145,12 @@ const MarketList = ({ navigation }) => {
         }
         return amountOfOrder;
     };
+    const handleDebugger = ()  => {
+        console.log(restaurants)
+    }
     return (
         <View style={{ flex: 1 }}>
+            {/* <Button title="Debugger" onPress={handleDebugger}/> */}
             {/* <View style={{ marginTop: 18, marginLeft: "7%" }}>
                 <AddressBox />
             </View> */}
@@ -207,7 +211,7 @@ const MarketList = ({ navigation }) => {
                 <ActivityIndicator size="large" color="#FF7A00" />
             ) : (
                 <View style={{ flex: 1 }}>
-                    {restaurants > 0 ? (
+                    {restaurants[0] ? (
                         <View>
                             <FlatList
                                 data={restaurants}

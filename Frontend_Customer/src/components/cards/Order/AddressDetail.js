@@ -10,7 +10,7 @@ const AddressDetail = ({ address }) => {
             <Ionicons name="location-outline" size={30} color="#FF4200" />
             <View style={styles.detail}>
                 <Text style={styles.textHeader}>ที่อยู่จัดส่ง</Text>
-                <Text style={styles.textBody}>{address}</Text>
+                <Text style={[styles.textBody, {fontSize: 16, fontFamily: "Kanit-SemiBold"}]}>{address}</Text>
             </View>
         </View>
     );

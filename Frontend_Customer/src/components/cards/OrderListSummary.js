@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import BasketContext from "../../hooks/context/BasketContext";
 const OrderListSummary = (props) => {
     const { basketDetail } = useContext(BasketContext);
-    const { allprice, handleOnPressEdit } = props;
+    const { allprice, handleOnPressEdit, onPressAddFoods } = props;
 
     return (
         <View style={styles.container}>
@@ -11,7 +11,7 @@ const OrderListSummary = (props) => {
                 <View>
                     <Text style={styles.textSummary}>สรุปรายการคำสั่งซื้อ</Text>
                 </View>
-                <TouchableOpacity style={[styles.addItemBtn, styles.shadow]}>
+                <TouchableOpacity style={[styles.addItemBtn, styles.shadow]} onPress={onPressAddFoods}>
                     <Text style={styles.btnText}>สั่งอาหารเพิ่ม</Text>
                 </TouchableOpacity>
             </View>

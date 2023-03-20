@@ -3,12 +3,13 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import * as LIP from "../../lib/lm-image-picker";
 //Components
-import { ScrollView, StyleSheet, Text, View ,Alert} from "react-native";
+import { ScrollView, StyleSheet, Text, View, Alert } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import CustomTextInput from "../../components/input/CustomTextInput";
 import ImageInput from "../../components/input/ImageInput";
 import SubmitBtn from "../../components/buttons/SubmitBtn";
 import RadioButton from "../../components/buttons/RadioButton";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
 import { IP_ADDRESS } from "@env";
@@ -98,53 +99,57 @@ const AddLost = ({ navigation }) => {
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.input_container}>
-                <View style={{ marginBottom: 10 }}>
-                    <ImageInput
-                        label={"เพิ่มรูปของหาย"}
-                        image={image}
-                        setImage={setImage}
+        <ScrollView
+            contentContainerStyle={{ flexGrow: 1 }}
+        >
+            <View style={styles.container}>
+                <View style={styles.input_container}>
+                    <View style={{ marginBottom: 10 }}>
+                        <ImageInput
+                            label={"เพิ่มรูปของหาย"}
+                            image={image}
+                            setImage={setImage}
+                        />
+                    </View>
+                    <View style={styles.radio_container}>
+                        {types.map((item, index) => (
+                            <RadioButton
+                                key={index}
+                                label={item.name}
+                                backgroundColor={null}
+                                fontFamily={"Kanit-Medium"}
+                                fontSize={15}
+                                selected={selectedType === item.value}
+                                onPress={() => handleSelectedTypes(item.value)}
+                            />
+                        ))}
+                    </View>
+                    <CustomTextInput
+                        placeholder={"ชื่อของหาย"}
+                        value={name}
+                        onChangeText={setName}
+                        required={true}
+                    />
+                    <CustomTextInput
+                        placeholder={
+                            "รายละเอียดของหาย\n- สถานที่ที่คาดว่าทำหาย\n- เวลาที่ทำหาย"
+                        }
+                        multiline={true}
+                        numberOfLines={5}
+                        value={detail}
+                        onChangeText={setDetail}
+                        required={true}
                     />
                 </View>
-                <View style={styles.radio_container}>
-                    {types.map((item, index) => (
-                        <RadioButton
-                            key={index}
-                            label={item.name}
-                            backgroundColor={null}
-                            fontFamily={"Kanit-Medium"}
-                            fontSize={15}
-                            selected={selectedType === item.value}
-                            onPress={() => handleSelectedTypes(item.value)}
-                        />
-                    ))}
+                <View style={styles.submit_container}>
+                    <SubmitBtn
+                        label={"เพิ่มของหาย"}
+                        onPress={handleSave}
+                        isLoaded={isLoaded}
+                    />
                 </View>
-                <CustomTextInput
-                    placeholder={"ชื่อของหาย"}
-                    value={name}
-                    onChangeText={setName}
-                    required={true}
-                />
-                <CustomTextInput
-                    placeholder={
-                        "รายละเอียดของหาย\n- สถานที่ที่คาดว่าทำหาย\n- เวลาที่ทำหาย"
-                    }
-                    multiline={true}
-                    numberOfLines={5}
-                    value={detail}
-                    onChangeText={setDetail}
-                    required={true}
-                />
             </View>
-            <View style={styles.submit_container}>
-                <SubmitBtn
-                    label={"เพิ่มของหาย"}
-                    onPress={handleSave}
-                    isLoaded={isLoaded}
-                />
-            </View>
-        </View>
+        </ScrollView>
     );
 };
 
@@ -153,6 +158,7 @@ export default AddLost;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        // backgroundColor: "red",
     },
     radio_container: {
         flexDirection: "row",
@@ -165,10 +171,10 @@ const styles = StyleSheet.create({
     },
     submit_container: {
         width: "89.33%",
-        justifyContent:'flex-end',
+        justifyContent: "flex-end",
         flex: 1,
         alignSelf: "center",
         marginBottom: "4%",
-        // marginTop: "auto",
+        // marginTop: "10%",
     },
 });

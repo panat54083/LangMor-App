@@ -81,7 +81,8 @@ exports.restaurantInfo = async (req, res) => {
 };
 
 exports.getAllRestaurant = async (req, res) => {
-    const restaurantDatas = await Restaurant.find({});
+    const restaurantDatas = await Restaurant.find({ closed: false });
+    console.log(restaurantDatas);
     res.json({
         message: "Get All Restaurant",
         restaurantData: restaurantDatas,
@@ -352,9 +353,12 @@ exports.getFavRestaurants = async (req, res) => {
 
 exports.randomRestaurants = async (req, res) => {
     const { number } = req.query;
-    Restaurant.aggregate([{ $sample: { size: Number(number) } }])
+    Restaurant.aggregate([
+        { $match: { closed: false } },
+        { $sample: { size: Number(number) } },
+    ])
         .then((restaurants) => {
-            console.log(restaurants)
+            console.log(restaurants);
             res.json({
                 message: `Get Restaurants`,
                 restaurantsData: restaurants,
