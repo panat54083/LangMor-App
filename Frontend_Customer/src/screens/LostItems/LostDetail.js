@@ -20,7 +20,7 @@ import { IP_ADDRESS } from "@env";
 
 const LostDetail = ({ route, navigation }) => {
     //Configs
-    const { lostData } = route.params;
+    const { lostData, historyChatroomData } = route.params;
     console.log(lostData);
     const { state } = useContext(UserContext);
     //data
@@ -98,6 +98,12 @@ const LostDetail = ({ route, navigation }) => {
         api_createChatroom();
         // navigation.navigate("Chat2", { itemData: secondData });
     };
+    const handleHistoryContact = () => {
+        navigation.navigate("Chat2", {
+            itemData: lostData,
+            chatroomData: historyChatroomData,
+        });
+    };
     return (
         <View style={{ flex: 1 }}>
             {/* <Text>LostDetail</Text> */}
@@ -126,15 +132,19 @@ const LostDetail = ({ route, navigation }) => {
                 </View>
             </View>
             <View style={styles.submitBtn}>
-                {
-                    lostData.closed === false ? (
-                <SubmitBtn
-                    label={"เริ่มแชทกับผู้โพส"}
-                    onPress={handleContact}
-                />
-
-                    ):(null)
-                }
+                {lostData.closed === false && (
+                    <SubmitBtn
+                        label={"เริ่มแชทกับผู้โพส"}
+                        onPress={handleContact}
+                    />
+                )}
+                {lostData.closed === true &&
+                    lostData.owner_id !== state.userData._id && (
+                        <SubmitBtn
+                            label={"ตรวจสอบแชท"}
+                            onPress={handleHistoryContact}
+                        />
+                    )}
             </View>
         </View>
     );

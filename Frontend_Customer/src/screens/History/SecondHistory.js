@@ -97,10 +97,11 @@ const SecondHistory = ({ navigation }) => {
     };
 
     const handleChatroom = (data) => {
-        navigation.navigate("Chat2", {
-            itemData: data.itemData,
-            chatroomData: data.chatroom,
-        });
+        // navigation.navigate("Chat2", {
+        //     itemData: data.itemData,
+        //     chatroomData: data.chatroom,
+        // });
+        navigation.navigate("SecondDetail", { secondData: data.itemData, historyChatroomData: data.chatroom });
     };
     const handleChangeStatus = () => {
         setStatus(!status);
@@ -167,8 +168,8 @@ const SecondHistory = ({ navigation }) => {
             </ScrollView>
             <View style={styles.changeButton}>
                 <StateBtn
-                    label1={"ฝ่ายซื้อ"}
-                    label2={"ฝ่ายขาย"}
+                    label1={"การซื้อ"}
+                    label2={"โพสของฉัน"}
                     status={status}
                     onPress={handleChangeStatus}
                 />

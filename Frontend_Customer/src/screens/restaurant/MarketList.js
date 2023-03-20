@@ -93,7 +93,6 @@ const MarketList = ({ navigation }) => {
         navigation.navigate("FoodList", { restaurant: restaurant });
         setModalVisible(false);
     };
-    //TODO:
     const handleRandomRestaurants = () => {
         api_getRandomRestaurants()
             .then((data) => {
@@ -208,7 +207,7 @@ const MarketList = ({ navigation }) => {
                 <ActivityIndicator size="large" color="#FF7A00" />
             ) : (
                 <View style={{ flex: 1 }}>
-                    {restaurants ? (
+                    {restaurants > 0 ? (
                         <View>
                             <FlatList
                                 data={restaurants}
@@ -223,8 +222,23 @@ const MarketList = ({ navigation }) => {
                             />
                         </View>
                     ) : (
-                        <View>
-                            <ActivityIndicator size="large" color="#FF7A00" />
+                        <View
+                            style={{
+                                justifyContent: "center",
+                                alignItems: "center",
+                                marginTop: "5%",
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontFamily: "Kanit-Bold",
+                                    fontSize: 22,
+                                    textAlign: "center",
+                                    color: "#C9C5C4",
+                                }}
+                            >
+                                ไม่พบร้านค้า
+                            </Text>
                         </View>
                     )}
                 </View>

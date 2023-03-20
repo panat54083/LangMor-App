@@ -177,14 +177,15 @@ const Login = () => {
                 resizeMode="cover"
                 style={styles.image}
             >
-                <View style={{ alignItems: "center" }}>
+                <View style={{ alignItems: "center" , marginBottom: "5%"}}>
                     <Image
                         source={require("../assets/icons/LangMor.png")}
                         style={{ width: 280, height: 250 }}
                     />
                 </View>
-                <Text style={styles.text}>Login{"\n"}Your Account</Text>
-                <View style={{ margin: 20 }}>
+                {/* <Text style={[styles.text, {fontSize: 10}]}>Login{"\n"}Your Account</Text> */}
+                <Text style={[styles.text, {fontSize: 20, fontFamily:"Kanit-Medium"}]}>Login Your Account</Text>
+                <View style={{ marginHorizontal: 20 }}>
                     <GoogleLogin
                         // onPress={loginWithGoogle}
                         onPressIn={handlePressIn}

@@ -97,9 +97,14 @@ const LostHistory = ({ navigation }) => {
             });
     };
     const handleChatroom = (data) => {
-        navigation.navigate("Chat2", {
-            itemData: data.itemData,
-            chatroomData: data.chatroom,
+        // navigation.navigate("Chat2", {
+        //     itemData: data.itemData,
+        //     chatroomData: data.chatroom,
+        // });
+
+        navigation.navigate("LostDetail", {
+            lostData: data.itemData,
+            historyChatroomData: data.chatroom,
         });
     };
     const handleChangeStatus = () => {

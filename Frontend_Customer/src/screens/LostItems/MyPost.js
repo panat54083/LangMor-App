@@ -64,7 +64,7 @@ const MyPost = ({ navigation }) => {
             .get(
                 `http://${IP_ADDRESS}/chatroom/chatrooms?merchantId=${
                     state.userData._id
-                }&type=${"LostItem"}`
+                }&type=${"LostItem"}&closed=${false}`
             )
             .then((res) => {
                 console.log(res.data.message);

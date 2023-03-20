@@ -20,7 +20,8 @@ import { IP_ADDRESS } from "@env";
 
 const SecondDetail = ({ route, navigation }) => {
     //Config
-    const { secondData } = route.params;
+    const { secondData, historyChatroomData } = route.params;
+
     const noImgURL =
         "https://static.vecteezy.com/system/resources/previews/004/141/669/original/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg";
     const { state } = useContext(UserContext);
@@ -64,7 +65,7 @@ const SecondDetail = ({ route, navigation }) => {
             })
             .then((res) => {
                 console.log(res.data.message);
-                // console.log(res.data.chatroomData);
+                console.log(res.data.chatroomData);
                 setChatroomData(res.data.chatroomData);
             })
             .catch((err) => {
@@ -95,6 +96,13 @@ const SecondDetail = ({ route, navigation }) => {
 
     const handleContact = () => {
         api_createChatroom();
+    };
+
+    const handleHistoryContact = () => {
+        navigation.navigate("Chat2", {
+            itemData: secondData,
+            chatroomData: historyChatroomData,
+        });
     };
     return (
         <View style={{ flex: 1 }}>
@@ -130,6 +138,13 @@ const SecondDetail = ({ route, navigation }) => {
                         onPress={handleContact}
                     />
                 )}
+                {secondData.closed === true &&
+                    secondData.owner_id !== state.userData._id && (
+                        <SubmitBtn
+                            label={"ตรวจสอบแชท"}
+                            onPress={handleHistoryContact}
+                        />
+                    )}
             </View>
         </View>
     );

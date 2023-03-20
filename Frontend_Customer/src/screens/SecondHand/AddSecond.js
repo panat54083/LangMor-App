@@ -109,6 +109,7 @@ const AddSecond = ({ navigation }) => {
                         value={price}
                         onChangeText={setPrice}
                         required={true}
+                        keyboardType={"numeric"}
                     />
                     <CustomTextInput
                         placeholder={"รายละเอียดสินค้า"}

@@ -161,12 +161,14 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginHorizontal: 30,
         alignItems: "center",
-        flex: 1,
+        // flex: 1,
     },
     submit_container: {
         width: "89.33%",
-        position: "absolute",
+        justifyContent:'flex-end',
+        flex: 1,
         alignSelf: "center",
-        bottom: 20,
+        marginBottom: "4%",
+        // marginTop: "auto",
     },
 });
