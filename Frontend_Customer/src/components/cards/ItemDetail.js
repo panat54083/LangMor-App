@@ -22,13 +22,24 @@ const ItemDetail = (props) => {
                         <Text
                             style={[
                                 styles.textDetailStyle,
+                                {textDecorationLine: 'underline'}
+                            ]}
+                            >
+                            ชื่อผู้โพส
+                        </Text>
+                        <Text
+                            style={[
+                                styles.textDetailStyle,
                                 { marginBottom: "1%" },
                             ]}
                         >
-                            ชื่อผู้โพส: {owner.name} 
+                            {owner.name} 
+                        </Text>
+                        <Text style={[styles.textDetailStyle, {textDecorationLine: 'underline'}]}>
+                            รายละเอียดเพิ่มเติม 
                         </Text>
                         <Text style={styles.textDetailStyle}>
-                            รายละเอียดเพิ่มเติม: {item.detail}{" "}
+                            {item.detail}
                         </Text>
                     </View>
                 </View>
@@ -51,15 +62,26 @@ const ItemDetail = (props) => {
                         <Text
                             style={[
                                 styles.textDetailStyle,
+                                {textDecorationLine: 'underline'}
+                            ]}
+                        >
+                            ชื่อผู้โพส 
+                        </Text>
+                        <Text
+                            style={[
+                                styles.textDetailStyle,
                                 { marginBottom: "1%" },
                             ]}
                         >
-                            ชื่อผู้โพส: {owner.name} 
+                            {owner.name} 
+                        </Text>
+                        <Text style={[styles.textDetailStyle,{textDecorationLine: 'underline'}]}>
+                            {item.type === "found"
+                                ? "พบที่ "
+                                : "รายละเอียด "}
+                            {item.detail}
                         </Text>
                         <Text style={styles.textDetailStyle}>
-                            {item.type === "found"
-                                ? "พบที่: "
-                                : "รายละเอียด: "}
                             {item.detail}
                         </Text>
                     </View>

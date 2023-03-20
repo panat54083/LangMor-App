@@ -40,13 +40,14 @@ const HomeManage = ({ navigation }) => {
             });
     };
     //Turn the restaurant off or open
-    const fetchRestaurantOpenClose = () => {
-        axios
+    const fetchRestaurantOpenClose = async () => {
+        return axios
             .post(`http://${IP_ADDRESS}/restaurant/closed`, {
                 restaurant_id: state.restaurantData._id,
             })
             .then((res) => {
                 console.log(res.data.message);
+                return true;
             })
             .catch((err) => {
                 console.log(err);
@@ -56,8 +57,11 @@ const HomeManage = ({ navigation }) => {
         navigation.navigate("Setting");
     };
     const handleOpenClose = () => {
-        fetchRestaurantOpenClose();
-        fetchRestaurantInfo();
+        fetchRestaurantOpenClose()
+            .then((data) => {
+                fetchRestaurantInfo();
+            })
+            .catch((err) => console.log(err));
     };
     const handleMenu = () => {
         navigation.navigate("MenuTabs");
@@ -65,7 +69,7 @@ const HomeManage = ({ navigation }) => {
     const handleOrder = () => {
         navigation.navigate("OrderTabs");
     };
-    const handleHistory= () => {
+    const handleHistory = () => {
         navigation.navigate("History");
     };
     const handleDebugger = () => {
@@ -90,11 +94,17 @@ const HomeManage = ({ navigation }) => {
                             </View>
                         </ImageBackground>
                     ) : (
-                            <View style={styles.overlay}>
-                                <Text style={[styles.header_text, styles.text, {color: "white" }]}>
-                                    {state.restaurantData.name}
-                                </Text>
-                            </View>
+                        <View style={styles.overlay}>
+                            <Text
+                                style={[
+                                    styles.header_text,
+                                    styles.text,
+                                    { color: "white" },
+                                ]}
+                            >
+                                {state.restaurantData.name}
+                            </Text>
+                        </View>
                     )}
                     <View style={styles.scrollView}>
                         <ScrollView>

@@ -5,11 +5,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import CustomTextInput from "../input/CustomTextInput";
 
-const AddressBoxDetail = ({ setValue }) => {
-    const [address, setAddress] = useState();
-    useEffect(() => {
-        setValue(address);
-    }, [address]);
+const AddressBoxDetail = ({ address, setAddress}) => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -31,6 +27,7 @@ const AddressBoxDetail = ({ setValue }) => {
                     placeholder={"เช่น ประตูรั้วหลังมจพ."}
                     value={address}
                     onChangeText={setAddress}
+                    required={true}
                     style={{borderWidth: 0.5, borderColor: "#DFDFDF"}}
                 />
             </View>

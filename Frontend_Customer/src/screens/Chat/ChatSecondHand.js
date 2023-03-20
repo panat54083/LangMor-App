@@ -28,7 +28,7 @@ const ChatSecondHand = ({ navigation }) => {
             .get(
                 `http://${IP_ADDRESS}/chatroom/chatrooms?customerId=${
                     state.userData._id
-                }&&type=${"SecondHand"}&&closed=${"false"}`
+                }&&type=${"SecondHand"}&&closed=${false}`
             )
             .then((res) => {
                 console.log(res.data.message);
@@ -70,9 +70,9 @@ const ChatSecondHand = ({ navigation }) => {
                     style={{
                         justifyContent: "center",
                         alignItems: "center",
-                        alignSelf:"center",
+                        alignSelf: "center",
                         flex: 1,
-                        position:"absolute",
+                        position: "absolute",
                     }}
                 >
                     <MaterialCommunityIcons

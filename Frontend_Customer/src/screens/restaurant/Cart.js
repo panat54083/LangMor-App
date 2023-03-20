@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 //Components
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View, Alert } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import AddressBoxDetail from "../../components/cards/AddressBoxDetail";
 import OrderListSummary from "../../components/cards/OrderListSummary";
@@ -19,7 +19,6 @@ const Cart = ({ route, navigation }) => {
     const [orderData, setOrderData] = useState(null);
     const [address, setAddress] = useState("");
 
-
     useEffect(() => {
         navigation.setOptions({
             title: basketDetail.restaurant.name,
@@ -35,7 +34,7 @@ const Cart = ({ route, navigation }) => {
                 orderData: orderData,
                 restaurantData: basketDetail.restaurant,
             });
-            setBasketDetail({restaurant:null, foods:[]})
+            setBasketDetail({ restaurant: null, foods: [] });
         }
     }, [orderData]);
 
@@ -101,16 +100,16 @@ const Cart = ({ route, navigation }) => {
     };
 
     const handleSubmit = () => {
-        // console.log(basketDetail.foods)
-        // console.log(basketDetail.restaurant)
-        // console.log(state.userData._id)
+        if (!address.trim()) {
+            Alert.alert("Error", "กรุณากรอกที่อยู่จัดส่ง");
+            return;
+        }
         apiSaveOrder();
-        // apiCreateChatroom();
     };
-
+    const handleAddFoods = () => {
+        navigation.goBack()
+    }
     const handleOnPressEdit = (order) => {
-        // console.log(order.food);
-
         navigation.navigate("FoodDetail", {
             food: order.food,
             restaurant: basketDetail.restaurant,
@@ -128,12 +127,14 @@ const Cart = ({ route, navigation }) => {
                             width: "92.53%",
                         }}
                     >
-                        <AddressBoxDetail setValue={setAddress} />
+                        <AddressBoxDetail setAddress={setAddress} value={address}/>
                     </View>
                     <View style={{ marginTop: 8, width: "92.53%" }}>
                         <OrderListSummary
                             allprice={findPriceOfOrder()}
                             handleOnPressEdit={handleOnPressEdit}
+                            onPressAddFoods={handleAddFoods}
+                        
                         />
                     </View>
                 </View>
@@ -147,7 +148,11 @@ const Cart = ({ route, navigation }) => {
                     bottom: 0,
                 }}
             >
-                <SubmitBtn label={"สั่งซื้อ"} onPress={handleSubmit} disable={false}/>
+                <SubmitBtn
+                    label={"สั่งซื้อ"}
+                    onPress={handleSubmit}
+                    disable={false}
+                />
             </View>
         </View>
     );

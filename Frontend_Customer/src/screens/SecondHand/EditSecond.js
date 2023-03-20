@@ -78,6 +78,14 @@ const EditSecond = ({ navigation, route }) => {
             });
     };
     const handleSave = () => {
+        if (!name.trim() || !String(price).trim()) {
+            if (!name.trim()) {
+                Alert.alert("Error", "กรุณาเติมชื่อสินค้า");
+            } else if (!price.trim()) {
+                Alert.alert("Error", "กรุณาเติมราคาสินค้า");
+            }
+            return;
+        }
         api_secondHandUpdate();
         navigation.goBack();
     };

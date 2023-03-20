@@ -100,6 +100,7 @@ const FindLost = ({ navigation }) => {
                                 width: "90%",
                                 alignSelf: "center",
                             }}
+                            key={index}
                         >
                             <Item
                                 itemData={item}

@@ -58,7 +58,7 @@ const Home = ({ navigation }) => {
                             >
                                 สวัสดี
                             </Text>
-                            <Text style={styles.textHeader}>
+                            <Text style={styles.textHeader} adjustsFontSizeToFit={true} numberOfLines={1}>
                                 คุณ {state.userData.given_name}
                             </Text>
                         </View>

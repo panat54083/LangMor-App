@@ -17,6 +17,7 @@ import ImageInput from "../../components/Inputs/ImageInput";
 import CustomTextInput from "../../components/Inputs/CustomTextInput";
 import AcceptButton from "../../components/buttons/AcceptButton";
 import BackScreen from "../../components/buttons/BackScreen";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 // Config
 import { IP_ADDRESS } from "@env";
 import UserContext from "../../hooks/context/UserContext";
@@ -83,9 +84,10 @@ const SetRestaurant = ({ navigation }) => {
             });
     };
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.picture}>
+        <KeyboardAwareScrollView>
 
+        <View style={styles.container}>
+            <View style={styles.picture}>
                 <Image
                     source={require("../../assets/icons/cafe.png")}
                     style={styles.image}
@@ -115,7 +117,8 @@ const SetRestaurant = ({ navigation }) => {
             <View style={styles.final}>
                 <AcceptButton label={"บันทึกข้อมูล"} onPress={handleSave} />
             </View>
-        </SafeAreaView>
+        </View>
+        </KeyboardAwareScrollView>
     );
 };
 
@@ -123,24 +126,30 @@ export default SetRestaurant;
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "#F5F5F5",
-        marginHorizontal: "10%",
+        // backgroundColor: "#F5F5F5",
+        // backgroundColor: "red",
+        // marginHorizontal: "10%",
         marginTop: "5%",
         flex: 1,
-        justifyContent: "center",
+        // justifyContent: "center",
         // alignItems: "center",
     },
     picture: {
-        flex: 1,
-        alignItems: "center"
+        // flex: 1,
+        alignItems: "center",
     },
     image: {
         width: "80%",
-        flex: 2,
+        height: 200,
+        // flex: 1,
         resizeMode: "contain",
         // marginTop: 36,
     },
-    detail: {flex: 1,marginTop: "5%"},
+    detail: {
+        // flex: 1,
+        marginTop: "5%",
+        marginHorizontal: "10%",
+    },
     final: {
         flex: 1,
         justifyContent: "flex-end",
