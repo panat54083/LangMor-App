@@ -64,17 +64,17 @@ const Profile = ({ navigation }) => {
                             flexDirection: "row",
                         }}
                     >
-                        <View style={{}}>
+                        <View style={{flex: 1,}}>
                             <Image
                                 source={{ uri: state.userData.picture }}
                                 style={[styles.profile, {}]}
                             />
                         </View>
-                        <View style={{ marginLeft: "5%" }}>
+                        <View style={{ marginLeft: "5%" ,flex: 5 }}>
                             <Text
                                 style={styles.textHeader}
-                                adjustsFontSizeToFit={true}
-                                numberOfLines={2}
+                                // adjustsFontSizeToFit={true}
+                                numberOfLines={1}
                             >
                                 {state.userData.name}
                             </Text>

@@ -12,6 +12,7 @@ import {
     ScrollView,
     SafeAreaView,
     SectionList,
+    Alert,
 } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import AcceptButton from "../../components/buttons/AcceptButton";
@@ -86,7 +87,10 @@ const EditRestaurant = ({ navigation }) => {
         console.log(state.restaurantData);
     };
     const handleSave = () => {
-        // console.log(state.userData);
+        if (!restaurant_name.trim() ){
+                Alert.alert("Error", "กรุณาเติมชื่อร้านค้า");
+                return;
+            }
         api_restaurantUpdate();
         navigation.navigate("Setting");
     };
@@ -95,7 +99,7 @@ const EditRestaurant = ({ navigation }) => {
             {/* <Button title="Debugger" onPress={handleDebugger} />  */}
             <View style={styles.textinput}>
                 <Text style={styles.font}>
-                    ชื่อร้านค้า{"  "}
+                    ชื่อร้านค้า<Text style={{color:"red"}}>*</Text>{"  "}
                     {editable ? (
                         <Text style={styles.fontOptions}>
                             ปัจจุบัน: {state.restaurantData.name}

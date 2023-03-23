@@ -17,7 +17,7 @@ import ImageInput from "../../components/Inputs/ImageInput";
 import CustomTextInput from "../../components/Inputs/CustomTextInput";
 import AcceptButton from "../../components/buttons/AcceptButton";
 import BackScreen from "../../components/buttons/BackScreen";
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 // Config
 import { IP_ADDRESS } from "@env";
 import UserContext from "../../hooks/context/UserContext";
@@ -84,40 +84,39 @@ const SetRestaurant = ({ navigation }) => {
             });
     };
     return (
-        <KeyboardAwareScrollView>
-
-        <View style={styles.container}>
-            <View style={styles.picture}>
-                <Image
-                    source={require("../../assets/icons/cafe.png")}
-                    style={styles.image}
-                />
+        <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }}>
+            <View style={styles.container}>
+                <View style={styles.picture}>
+                    <Image
+                        source={require("../../assets/icons/cafe.png")}
+                        style={styles.image}
+                    />
+                </View>
+                <View style={styles.detail}>
+                    <CustomTextInput
+                        placeholder={"ชื่อร้านอาหาร"}
+                        value={restaurantName}
+                        onChangeText={setRestaurantName}
+                        required={true}
+                    />
+                    <CustomTextInput
+                        placeholder={"เบอร์โทรศัพท์ร้าน/เจ้าของ"}
+                        onChangeText={setPhone}
+                        value={phone}
+                        keyboardType="numeric"
+                    />
+                    <CustomTextInput
+                        placeholder={`สถานที่ตั้ง`}
+                        value={address}
+                        onChangeText={setAddress}
+                        multiline={true}
+                        numberOfLines={3}
+                    />
+                </View>
+                <View style={styles.final}>
+                    <AcceptButton label={"บันทึกข้อมูล"} onPress={handleSave} />
+                </View>
             </View>
-            <View style={styles.detail}>
-                <CustomTextInput
-                    placeholder={"ชื่อร้านอาหาร"}
-                    value={restaurantName}
-                    onChangeText={setRestaurantName}
-                    required={true}
-                />
-                <CustomTextInput
-                    placeholder={"เบอร์โทรศัพท์ร้าน/เจ้าของ"}
-                    onChangeText={setPhone}
-                    value={phone}
-                    keyboardType="numeric"
-                />
-                <CustomTextInput
-                    placeholder={`สถานที่ตั้ง\nเช่น หน้าวัดน้อย...`}
-                    value={address}
-                    onChangeText={setAddress}
-                    multiline={true}
-                    numberOfLines={3}
-                />
-            </View>
-            <View style={styles.final}>
-                <AcceptButton label={"บันทึกข้อมูล"} onPress={handleSave} />
-            </View>
-        </View>
         </KeyboardAwareScrollView>
     );
 };

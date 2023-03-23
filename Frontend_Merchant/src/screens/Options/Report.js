@@ -71,6 +71,14 @@ const Report = ({ navigation }) => {
             });
     };
     const handleSendEmail = () => {
+        if (!subject.trim() || !message.trim()) {
+            if (!subject.trim()) {
+                Alert.alert("Error", "กรุณาเติมหัวข้อเรื่อง");
+            } else if (message.trim()) {
+                Alert.alert("Error", "กรุณาเติมรายละเอียด");
+            }
+            return;
+        }
         setIsLoaded(true);
         Alert.alert("แจ้งเตือน", `ต้องการออกจากระบบใช่หรือไม่`, [
             {
@@ -105,17 +113,17 @@ const Report = ({ navigation }) => {
             {/* <Button title="Debugger" onPress={handleDebugger} /> */}
 
             <View style={styles.textinput}>
-                <Text style={styles.header}>หัวข้อเรื่อง</Text>
+                {/* <Text style={styles.header}>หัวข้อเรื่อง</Text> */}
                 <CustomTextInput
-                    placeholder={"กรอกรายละเอียด"}
+                    placeholder={"หัวข้อเรื่อง"}
                     value={subject}
                     onChangeText={setSubject}
                     required={true}
                 />
 
-                <Text style={styles.header}>รายละเอียด</Text>
+                {/* <Text style={styles.header}>รายละเอียด</Text> */}
                 <CustomTextInput
-                    placeholder={"กรอกรายละเอียด"}
+                    placeholder={"รายละเอียด"}
                     value={message}
                     onChangeText={setMessage}
                     multiline={true}

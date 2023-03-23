@@ -11,8 +11,21 @@ const OrderListSummary = (props) => {
                 <View>
                     <Text style={styles.textSummary}>สรุปรายการคำสั่งซื้อ</Text>
                 </View>
-                <TouchableOpacity style={[styles.addItemBtn, styles.shadow]} onPress={onPressAddFoods}>
-                    <Text style={styles.btnText}>สั่งอาหารเพิ่ม</Text>
+                <TouchableOpacity
+                    style={[styles.addItemBtn]}
+                    onPress={onPressAddFoods}
+                >
+                    <Text
+                        style={[
+                            styles.btnText,
+                            {
+                                textDecorationLine: "underline",
+                                color: "#FF7A00",
+                            },
+                        ]}
+                    >
+                        สั่งอาหารเพิ่ม
+                    </Text>
                 </TouchableOpacity>
             </View>
             {basketDetail.foods.map((order) => {
@@ -129,7 +142,6 @@ const styles = StyleSheet.create({
     addItemBtn: {
         marginLeft: "auto",
         marginRight: "2.3%",
-        backgroundColor: "#FFE8E0",
         padding: 4,
         paddingHorizontal: 8,
         borderRadius: 20,

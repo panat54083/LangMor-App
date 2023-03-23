@@ -71,6 +71,14 @@ const Report = ({ navigation }) => {
             });
     };
     const handleSendEmail = () => {
+        if (!subject.trim() || !message.trim()) {
+            if (!subject.trim()) {
+                Alert.alert("Error", "กรุณาเติมหัวข้อเรื่อง");
+            } else if (message.trim()) {
+                Alert.alert("Error", "กรุณาเติมรายละเอียด");
+            }
+            return;
+        }
         setIsLoaded(true);
         api_sendEmail().then((s) => {
             if (s) {
@@ -91,20 +99,22 @@ const Report = ({ navigation }) => {
             {/* <Button title="Debugger" onPress={handleDebugger} /> */}
 
             <View style={styles.textinput}>
-                <Text style={styles.header}>หัวข้อเรื่อง</Text>
+                {/* <Text style={styles.header}></Text> */}
                 <CustomTextInput
-                    placeholder={"กรอกรายละเอียด"}
+                    placeholder={"หัวข้อเรื่อง"}
                     value={subject}
                     onChangeText={setSubject}
+                    required={true}
                 />
 
-                <Text style={styles.header}>รายละเอียด</Text>
+                {/* <Text style={styles.header}></Text> */}
                 <CustomTextInput
-                    placeholder={"กรอกรายละเอียด"}
+                    placeholder={"กรายละเอียด"}
                     value={message}
                     onChangeText={setMessage}
                     multiline={true}
                     numberOfLines={5}
+                    required={true}
                 />
             </View>
             <View style={styles.submit}>

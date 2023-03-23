@@ -132,7 +132,7 @@ const AddLost = ({ navigation }) => {
                     />
                     <CustomTextInput
                         placeholder={
-                            "รายละเอียดของหาย\n- สถานที่ที่คาดว่าทำหาย\n- เวลาที่ทำหาย"
+                            "รายละเอียดของหาย"
                         }
                         multiline={true}
                         numberOfLines={5}

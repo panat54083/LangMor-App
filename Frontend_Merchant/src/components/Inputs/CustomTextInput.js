@@ -1,4 +1,4 @@
-import { StyleSheet, View, TextInput } from "react-native";
+import { StyleSheet, View, TextInput, Text } from "react-native";
 import React from "react";
 import { Feather } from "@expo/vector-icons";
 
@@ -10,7 +10,9 @@ const CustomTextInput = ({
     multiline = false,
     numberOfLines = 1,
     style = null,
-    required = false
+    required = false,
+    maxLength = 300,
+    header = true,
 }) => {
     /*
     keyboardType:   default
@@ -22,22 +24,31 @@ const CustomTextInput = ({
                     url 
     */
     return (
-        <View style={[styles.container, style]}>
-            <TextInput
-                value={value}
-                placeholder={placeholder}
-                style={styles.input}
-                keyboardType={keyboardType}
-                onChangeText={onChangeText}
-                multiline={multiline}
-                numberOfLines={numberOfLines}
-                textAlignVertical={"top"}
-            />
-            {value || !required ? (
-                <Feather name="edit" size={24} color="#C9C5C4" />
-            ) : (
-                <Feather name="edit" size={24} color="red" />
+        <View style={{ width: "100%" }}>
+            {header && (
+                <Text
+                    style={[
+                        styles.font,
+                        { fontSize: 18, fontFamily: "Kanit-Bold" },
+                    ]}
+                >
+                    {placeholder}
+                    {required ? <Text style={{ color: "red" }}>*</Text> : null}
+                </Text>
             )}
+            <View style={[styles.container, style]}>
+                <TextInput
+                    value={value}
+                    placeholder={placeholder}
+                    style={[styles.input, styles.font]}
+                    keyboardType={keyboardType}
+                    onChangeText={onChangeText}
+                    multiline={multiline}
+                    numberOfLines={numberOfLines}
+                    textAlignVertical={"top"}
+                    maxLength={maxLength}
+                />
+            </View>
         </View>
     );
 };
@@ -56,6 +67,8 @@ const styles = StyleSheet.create({
     input: {
         paddingLeft: 10,
         width: 250,
+    },
+    font: {
         fontFamily: "Kanit-Medium",
         fontSize: 16,
     },

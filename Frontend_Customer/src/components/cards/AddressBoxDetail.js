@@ -22,13 +22,14 @@ const AddressBoxDetail = ({ address, setAddress}) => {
                     </View>
                 </View>
             </View>
-            <View style={styles.textInput}>
+            <View style={[styles.textInput, {width: "90%", alignSelf:"center"}]}>
                 <CustomTextInput
                     placeholder={"เช่น ประตูรั้วหลังมจพ."}
                     value={address}
                     onChangeText={setAddress}
                     required={true}
                     style={{borderWidth: 0.5, borderColor: "#DFDFDF"}}
+                    header={false}
                 />
             </View>
         </View>

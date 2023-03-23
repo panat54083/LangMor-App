@@ -88,7 +88,7 @@ const Setting = ({ navigation }) => {
                             />
                         </View>
                         <View style={{ marginLeft: "5%" }}>
-                            <Text style={styles.textHeader}>
+                            <Text style={styles.textHeader} numberOfLines={1} adjustsFontSizeToFit={true}>
                                 {state.userData.name}
                             </Text>
                             <Pressable onPress={handleEditProfile}>
