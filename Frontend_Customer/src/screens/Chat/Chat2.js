@@ -1,5 +1,11 @@
 //packages
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, {
+    useCallback,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import axios from "axios";
 import * as LIP from "../../lib/lm-image-picker";
 //components
@@ -204,6 +210,10 @@ const Chat2 = ({ navigation, route }) => {
     const handleDebugger = () => {
         console.log(itemData);
     };
+    const handleImage = (imageData) => {
+        console.log(imageData);
+        // navigation.navigate("ShowImage", {imageData: imageData})
+    };
 
     return (
         <View style={styles.main_container}>
@@ -216,6 +226,7 @@ const Chat2 = ({ navigation, route }) => {
                                 key={index}
                                 message={item}
                                 userId={state.userData._id}
+                                onPressImage={(item)=> handleImage(item)}
                             />
                         ))}
                     </ScrollView>
@@ -262,7 +273,7 @@ const Chat2 = ({ navigation, route }) => {
                     </Pressable>
                 </View>
             )}
-            {!itemData.closed? (
+            {!itemData.closed ? (
                 <ChatInput
                     forwardedRef={inputRef}
                     onChangeText={(value) => setMessage(value)}

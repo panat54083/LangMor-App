@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import axios from "axios";
 import * as LIP from "../../lib/lm-image-picker";
+import ImageView from "react-native-image-viewing";
 //components
 import {
     ScrollView,
@@ -38,6 +39,7 @@ const Chat = ({ navigation, route }) => {
     const inputRef = useRef(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const scrollViewRef = useRef(null);
+    const [visible, setIsVisible] = useState(false);
     //data
     const { orderData, restaurantData } = route.params;
     //messages
@@ -234,6 +236,11 @@ const Chat = ({ navigation, route }) => {
     const handleDebugger = () => {
         console.log(orderData);
     };
+    const handleImage = (imageData) => {
+        console.log(imageData);
+        
+        // navigation.navigate("ShowImage", {imageData: imageData})
+    };
 
     return (
         <View style={styles.main_container}>
@@ -259,6 +266,7 @@ const Chat = ({ navigation, route }) => {
                                 key={index}
                                 message={item}
                                 userId={state.userData._id}
+                                onPressImage={(item)=> handleImage(item)}
                             />
                         ))}
                     </ScrollView>

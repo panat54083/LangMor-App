@@ -22,6 +22,7 @@ import EditProfile from "../screens/Options/EditProfile";
 import EditSecond from "../screens/SecondHand/EditSecond";
 import EditPost from "../screens/LostItems/EditPost";
 import FavRestaurants from "../screens/restaurant/FavRestaurants";
+import ShowImage from "../screens/Options/ShowImage";
 //Tabs
 import TapStackRoutes from "./TapStackRoutes";
 import SecondTabs from "./Tabs/SecondTabs";
@@ -81,6 +82,7 @@ const MyStack = ({}) => {
                         component={FavRestaurants}
                     />
                     <Stack.Screen name="HistoryTabs" component={HistoryTabs} />
+                    <Stack.Screen name="ShowImage" component={ShowImage} />
                 </>
             ) : (
                 <>
