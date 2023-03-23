@@ -37,6 +37,41 @@ exports.login = async (req, res) => {
     }
 };
 
+exports.loginWithTester = async (req, res) => {
+    const testerData = req.body;
+    console.log(testerData);
+    const userExists = await Merchant.findOne({
+        name: testerData.name,
+    });
+    if (!userExists) {
+        const user = new Merchant({
+            email: `${testerData.name}@email.com`,
+            name: testerData.name,
+            given_name: testerData.name,
+            family_name: testerData.name,
+            picture: `https://source.unsplash.com/random/800x800/`,
+            verified_email: true,
+        });
+        await user.save();
+        //create token
+        const token = jwt.sign({ id: user._id }, process.env.SECRET);
+
+        res.json({
+            message: `User [${testerData.name}] registered successfully.✅`,
+            token: token,
+            userData: user,
+        });
+    } else {
+        const token = jwt.sign({ id: userExists.id }, process.env.SECRET);
+
+        res.json({
+            message: "User existed.",
+            token: token,
+            userData: userExists,
+        });
+    }
+};
+
 exports.userInfo = async (req, res) => {
     try {
         const token = req.headers.authorization;
@@ -60,7 +95,8 @@ exports.userUpdate = async (req, res) => {
     if (user) {
         user.given_name = updateUserData.given_name;
         user.family_name = updateUserData.family_name;
-        user.name = updateUserData.given_name + " " + updateUserData.family_name;
+        user.name =
+            updateUserData.given_name + " " + updateUserData.family_name;
         await user.save();
         res.json({
             message: `Updated ${user.name} done..`,
