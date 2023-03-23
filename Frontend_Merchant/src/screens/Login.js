@@ -13,8 +13,12 @@ import {
     SafeAreaView,
     ImageBackground,
     StyleSheet,
+    KeyboardAvoidingView,
+    TouchableOpacity,
 } from "react-native";
 import GoogleLogin from "../components/buttons/GoogleLogin";
+import EditTextInput from "../components/Inputs/CustomTextInput";
+import AcceptButton from "../components/buttons/AcceptButton";
 // Configs
 import {
     ANDROID_CLIENT_ID,
@@ -41,6 +45,8 @@ const Login = () => {
     const image = require("../assets/images/backgrounds/Login.png");
     const [accessToken, setAccessToken] = useState();
     const [isPressed, setIsPressed] = useState(false);
+    const [testerName, setTesterName] = useState("");
+    const [visible, setVisible] = useState(false);
     const { state, onAction } = useContext(UserContext);
     const { setSocket } = useContext(SocketContext);
     const [request, response, promptAsync] = Google.useAuthRequest({
@@ -92,7 +98,7 @@ const Login = () => {
                 headers: { Authorization: `Bearer ${accessToken}` },
             }).then((googleUserData) => {
                 googleUserData.json().then((data) => {
-                    fetchLogin(data);
+                    fetchLogin(data, "google");
                 });
             });
         }
@@ -117,9 +123,14 @@ const Login = () => {
         }
     };
     //send Google user's data to Backend server
-    const fetchLogin = (userData) => {
+    const fetchLogin = (userData, type) => {
         axios
-            .post(`http://${IP_ADDRESS}/merchant/login`, userData)
+            .post(
+                type === "gooogle"
+                    ? `http://${IP_ADDRESS}/merchant/login`
+                    : `http://${IP_ADDRESS}/merchant/logintester`,
+                userData
+            )
             .then(async (res) => {
                 // console.log("Fetch Login: ", res.data.message);
                 // console.log("Token: ", res.data.token);
@@ -177,8 +188,14 @@ const Login = () => {
             setSocket(null);
         });
     };
+    //handle with tester login
+    const handlePressTesterLogin = () => {
+        const body = { name: testerName };
+        fetchLogin(body, "tester");
+    };
+
     return (
-        <SafeAreaView style={styles.container}>
+        <KeyboardAvoidingView behavior="padding" style={styles.container}>
             <ImageBackground
                 source={image}
                 resizeMode="cover"
@@ -191,7 +208,13 @@ const Login = () => {
                     />
                 </View>
                 <Text style={styles.text}>Login{"\n"}Your Account</Text>
-                <View style={{ margin: 20 }}>
+                <View
+                    style={{
+                        width: "90%",
+                        alignSelf: "center",
+                        marginBottom: "4%",
+                    }}
+                >
                     <GoogleLogin
                         // onPress={loginWithGoogle}
                         onPressIn={handlePressIn}
@@ -199,8 +222,38 @@ const Login = () => {
                         onPressOut={handlePressOut}
                     />
                 </View>
+                <TouchableOpacity
+                    style={{ alignSelf: "center", marginBottom: "2%" }}
+                    onPress={() => {
+                        setVisible(!visible);
+                    }}
+                >
+                    <Text
+                        style={{
+                            fontFamily: "Kanit-Medium",
+                            fontSize: 13,
+                            color: "gray",
+                            textDecorationLine: "underline",
+                        }}
+                    >
+                        {visible ? `Hide Login as Tester` : `Login as Tester`}
+                    </Text>
+                </TouchableOpacity>
+                {visible ? (
+                    <View style={{ width: "80%", alignSelf: "center" }}>
+                        <EditTextInput
+                            placeholder={"Enter Your Tester Name"}
+                            value={testerName}
+                            onChangeText={(text) => setTesterName(text)}
+                        />
+                        <AcceptButton
+                            label={"Login as Tester"}
+                            onPress={handlePressTesterLogin}
+                        />
+                    </View>
+                ) : null}
             </ImageBackground>
-        </SafeAreaView>
+        </KeyboardAvoidingView>
     );
 };
 

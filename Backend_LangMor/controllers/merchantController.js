@@ -39,7 +39,7 @@ exports.login = async (req, res) => {
 
 exports.loginWithTester = async (req, res) => {
     const testerData = req.body;
-    console.log(testerData);
+    // console.log(testerData)
     const userExists = await Merchant.findOne({
         name: testerData.name,
     });
@@ -49,7 +49,7 @@ exports.loginWithTester = async (req, res) => {
             name: testerData.name,
             given_name: testerData.name,
             family_name: testerData.name,
-            picture: `https://source.unsplash.com/random/800x800/`,
+            picture: `https://cdn-icons-png.flaticon.com/512/149/149071.png`,
             verified_email: true,
         });
         await user.save();
