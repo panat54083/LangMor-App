@@ -2,6 +2,7 @@
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
+import * as LIP from "../../lib/lm-image-picker";
 // Components
 import {
     StyleSheet,
@@ -20,6 +21,7 @@ import SubmitBtn from "../../components/buttons/SubmitBtn";
 import CustomTextInput from "../../components/input/CustomTextInput";
 import EditTextInput from "../../components/input/EditTextInput";
 import Edit from "../../components/buttons/Edit";
+import ImageInput from "../../components/input/ImageInput";
 
 //Configs
 import { IP_ADDRESS } from "@env";
@@ -27,10 +29,14 @@ import UserContext from "../../hooks/context/UserContext";
 
 const EditSecond = ({ navigation, route }) => {
     const { itemData } = route.params;
+    const { state } = useContext(UserContext);
 
     const [name, setName] = useState(itemData.name);
     const [detail, setDetail] = useState(itemData.detail);
     const [price, setPrice] = useState(itemData.price);
+    const [image, setImage] = useState(itemData.picture);
+
+    const [isLoaded, setIsLoaded] = useState(false);
     const [editable, setEditable] = useState(true);
     //Start-up
     useEffect(() => {
@@ -59,7 +65,7 @@ const EditSecond = ({ navigation, route }) => {
         });
     }, [editable]);
 
-    const api_secondHandUpdate = () => {
+    const api_secondHandUpdate = (picture) => {
         axios
             .post(`http://${IP_ADDRESS}/secondHand/update`, {
                 item_id: itemData._id,
@@ -67,6 +73,7 @@ const EditSecond = ({ navigation, route }) => {
                     name: name,
                     detail: detail,
                     price: price,
+                    picture: picture,
                 },
             })
             .then((res) => {
@@ -86,20 +93,45 @@ const EditSecond = ({ navigation, route }) => {
             }
             return;
         }
-        api_secondHandUpdate();
-        navigation.goBack();
+        setIsLoaded(true);
+        if (image) {
+            if (image.type !== "upload") {
+                LIP.handleUpload(image, state.userData._id)
+                    .then((data) => {
+                        api_secondHandUpdate(data);
+                        setIsLoaded(false);
+                        navigation.goBack();
+                    })
+                    .catch((err) => console.log(err));
+            } else {
+                api_secondHandUpdate(restaurant_picture);
+                setIsLoaded(false);
+                navigation.goBack();
+            }
+        } else {
+            api_secondHandUpdate(null);
+            setIsLoaded(false);
+            navigation.goBack();
+        }
     };
     const handleDebugger = () => {
         console.log(itemData);
     };
     return (
-        <View style={styles.container}>
+        <ScrollView
+            style={styles.container}
+            contentContainerStyle={{ flexGrow: 1 }}
+        >
             {/* {/* <Text>EditProfile</Text> */}
             {/* <Button title="Debugger" onPress={handleDebugger} /> */}
+            <View style={{ alignItems: "center", margin: "5%" }}>
+                <ImageInput image={image} setImage={setImage} />
+            </View>
 
             <View style={styles.textinput}>
                 <Text style={styles.font}>
-                    ชื่อ{"  "}
+                    ชื่อ<Text style={{ color: "red" }}>*</Text>
+                    {"  "}
                     {editable ? (
                         <Text style={styles.fontOptions}>
                             ปัจจุบัน: {itemData.name}
@@ -115,7 +147,8 @@ const EditSecond = ({ navigation, route }) => {
                     editable={editable}
                 />
                 <Text style={styles.font}>
-                    ราคา {"(บาท)"} {"  "}
+                    ราคา {"(บาท)"}
+                    <Text style={{ color: "red" }}>*</Text> {"  "}
                     {editable ? (
                         <Text style={styles.fontOptions}>
                             ปัจจุบัน: {itemData.price} บาท
@@ -150,10 +183,14 @@ const EditSecond = ({ navigation, route }) => {
             </View>
             {editable ? (
                 <View style={styles.submit}>
-                    <SubmitBtn label={"บันทึกข้อมูล"} onPress={handleSave} />
+                    <SubmitBtn
+                        label={"บันทึกข้อมูล"}
+                        onPress={handleSave}
+                        isLoaded={isLoaded}
+                    />
                 </View>
             ) : null}
-        </View>
+        </ScrollView>
     );
 };
 
@@ -171,7 +208,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "flex-end",
         marginHorizontal: 20,
-        marginBottom: "10%",
+        marginVertical: "5%",
     },
     font: {
         fontFamily: "Kanit-Bold",

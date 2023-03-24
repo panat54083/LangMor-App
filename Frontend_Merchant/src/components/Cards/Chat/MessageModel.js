@@ -1,5 +1,5 @@
 //packages
-import React from "react";
+import React,{useState} from "react";
 //components
 import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 import ImageView from "react-native-image-viewing";

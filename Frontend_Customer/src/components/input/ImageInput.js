@@ -7,12 +7,20 @@ import {
     Image,
 } from "react-native";
 import React, { useState } from "react";
-import { FontAwesome5, Feather, AntDesign, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+    FontAwesome5,
+    Feather,
+    AntDesign,
+    Entypo,
+    MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import * as LIP from "../../lib/lm-image-picker";
-const ImageInput = ({ label, image, setImage }) => {
+const ImageInput = ({ label, image, setImage, disable = false }) => {
     const [visible, setVisible] = useState(false);
     const handleImageInput = () => {
-        setVisible(!visible);
+        if (!disable) {
+            setVisible(!visible);
+        }
     };
 
     async function handleSelectPicture() {
@@ -48,7 +56,11 @@ const ImageInput = ({ label, image, setImage }) => {
                                     size={80}
                                     color="#FF7A00"
                                 /> */}
-                                <MaterialCommunityIcons name="file-image-plus" size={80} color="#FF4200" />
+                                <MaterialCommunityIcons
+                                    name="file-image-plus"
+                                    size={80}
+                                    color="#FF4200"
+                                />
                                 {label ? (
                                     <Text style={styles.text}>{label}</Text>
                                 ) : (
@@ -73,16 +85,18 @@ const ImageInput = ({ label, image, setImage }) => {
                                     style={styles.container}
                                 />
                             )}
-                            <Pressable
-                                onPress={handleClosedImage}
-                                style={styles.cross}
-                            >
-                                <Entypo
-                                    name="circle-with-cross"
-                                    size={24}
-                                    color="#FF0101"
-                                />
-                            </Pressable>
+                            {!disable && (
+                                <Pressable
+                                    onPress={handleClosedImage}
+                                    style={styles.cross}
+                                >
+                                    <Entypo
+                                        name="circle-with-cross"
+                                        size={24}
+                                        color="#FF0101"
+                                    />
+                                </Pressable>
+                            )}
                         </View>
                     )}
                 </View>
