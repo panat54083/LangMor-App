@@ -2,9 +2,9 @@
 import React, { useState } from "react";
 //components
 import { StyleSheet, Text, View, Image, Pressable } from "react-native";
-// import ImageView from "react-native-image-viewing";
+import ImageView from "react-native-image-viewing";
 
-const MessageModel = ({ message, userId, onPressImage }) => {
+const MessageModel = ({ message, userId }) => {
     const status = message.user === userId;
     const [visible, setIsVisible] = useState(false);
 
@@ -56,12 +56,13 @@ const MessageModel = ({ message, userId, onPressImage }) => {
                                     },
                                 ]}
                             />
-                            {/* <ImageView
-                                images={message.picture.url}
+                            <ImageView
+                                key={message.picture.url}
+                                images={[{ uri: message.picture.url }]}
                                 imageIndex={0}
                                 visible={visible}
                                 onRequestClose={() => setIsVisible(false)}
-                            /> */}
+                            />
                         </Pressable>
                     ) : (
                         ""
