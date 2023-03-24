@@ -33,7 +33,7 @@ const CardMarket = (props) => {
                 >
                     {restaurant.name}
                 </Text>
-                <View style={[styles.types,{width: "90%"}]}>
+                <View style={[styles.types,{width: "100%"}]}>
                     {restaurant.types ? (
                         <Text
                             style={styles.body}

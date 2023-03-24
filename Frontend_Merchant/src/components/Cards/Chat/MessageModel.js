@@ -1,10 +1,12 @@
 //packages
-import React from "react";
+import React,{useState} from "react";
 //components
 import { StyleSheet, Text, View, Image, Pressable } from "react-native";
+import ImageView from "react-native-image-viewing";
 
 const MessageModel = ({ message, userId }) => {
     const status = message.user === userId;
+    const [visible, setIsVisible] = useState(false);
 
     const changeTimeFormat = (timestamp) => {
         let date = new Date(timestamp);
@@ -39,7 +41,7 @@ const MessageModel = ({ message, userId }) => {
                     )}
                     {message.picture ? (
                         <Pressable
-                            onPress={() => console.log("Image Pressed..")}
+                            onPress={() => setIsVisible(true)}
                             style={{ width: "70%" }}
                         >
                             <Image
@@ -53,6 +55,13 @@ const MessageModel = ({ message, userId }) => {
                                             message.picture.height,
                                     },
                                 ]}
+                            />
+                            <ImageView
+                                key={message.picture.url}
+                                images={[{ uri: message.picture.url }]}
+                                imageIndex={0}
+                                visible={visible}
+                                onRequestClose={() => setIsVisible(false)}
                             />
                         </Pressable>
                     ) : (

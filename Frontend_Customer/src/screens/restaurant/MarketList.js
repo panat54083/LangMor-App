@@ -145,9 +145,9 @@ const MarketList = ({ navigation }) => {
         }
         return amountOfOrder;
     };
-    const handleDebugger = ()  => {
-        console.log(restaurants)
-    }
+    const handleDebugger = () => {
+        console.log(restaurants);
+    };
     return (
         <View style={{ flex: 1 }}>
             {/* <Button title="Debugger" onPress={handleDebugger}/> */}

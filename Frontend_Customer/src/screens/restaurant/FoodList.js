@@ -1,4 +1,5 @@
 import {
+    ActivityIndicator,
     Button,
     Modal,
     SectionList,
@@ -262,8 +263,8 @@ const FoodList = ({ route, navigation }) => {
                     />
                 </View>
             ) : (
-                <View>
-                    <Text>Now loadding</Text>
+                <View style={{ margin: "10%" }}>
+                    <ActivityIndicator size="large" color={"#FF7A00"} />
                 </View>
             )}
 

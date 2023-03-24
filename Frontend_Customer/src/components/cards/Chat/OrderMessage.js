@@ -3,10 +3,16 @@ import React from "react";
 //components
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
-const OrderMessage = ({ order, onPress, backgroundColor= "#FF7A00" }) => {
+const OrderMessage = ({ order, onPress, backgroundColor = "#FF7A00" }) => {
     return (
         <View style={[styles.container]}>
-            <View style={[styles.orderDetail, styles.shadow, {backgroundColor: backgroundColor}]}>
+            <View
+                style={[
+                    styles.orderDetail,
+                    styles.shadow,
+                    { backgroundColor: backgroundColor },
+                ]}
+            >
                 {order.cart
                     ? order.cart.map((food, index) => (
                           <View style={styles.body_container} key={index}>
@@ -51,14 +57,18 @@ const OrderMessage = ({ order, onPress, backgroundColor= "#FF7A00" }) => {
                                       }
                                   }
                               })}
-                              <Text style={[styles.body_font]}>
-                                  {food.moreDetail}
-                              </Text>
+                              {food.moreDetail && (
+                                  <Text style={[styles.body_font]}>
+                                      {food.moreDetail}
+                                  </Text>
+                              )}
                           </View>
                       ))
-                    : ""}
+                    : null}
             </View>
-            <TouchableOpacity style={{ alignItems: "center", marginHorizontal: "3%",}}>
+            <TouchableOpacity
+                style={{ alignItems: "center", marginHorizontal: "3%" }}
+            >
                 <Text
                     style={[
                         styles.body_font,

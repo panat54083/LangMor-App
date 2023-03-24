@@ -25,21 +25,33 @@ const BuySecond = ({ navigation }) => {
     const [listSecondHands, setListSecondHands] = useState([]);
     const [searchQuery, setSearchQuery] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingScrool, setIsLoadingScroll] = useState(false);
+    const [skip, setSkip] = useState(0);
+    const [isSearch, setIsSearch] = useState(false);
     //Start up
     useEffect(() => {
-        if (isFocused) {
+        setSkip(0);
+    }, [isFocused]);
+    useEffect(() => {
+        if (!isSearch) {
             api_getAllSecondHands();
         }
-    }, [isFocused]);
+    }, [skip, isSearch]);
 
     const api_getAllSecondHands = () => {
+        setIsLoading(skip ? false : true);
+        setIsLoadingScroll(true);
         axios
             .get(
-                `http://${IP_ADDRESS}/secondHand/getAll?owner_id=${state.userData._id}`
+                `http://${IP_ADDRESS}/secondHand/getLimit?owner_id=${state.userData._id}&skip=${skip}&limit=10`
             )
             .then((res) => {
-                // console.log(res.data.message);
-                setListSecondHands(res.data.listSecondHands);
+                setListSecondHands([
+                    ...listSecondHands,
+                    ...res.data.listSecondHands,
+                ]);
+                setIsLoading(false);
+                setIsLoadingScroll(false);
             })
             .catch((err) => {
                 console.log(err);
@@ -53,6 +65,9 @@ const BuySecond = ({ navigation }) => {
     // search
     useEffect(() => {
         if (searchQuery) {
+            setSkip(0);
+            setIsSearch(true);
+            // console.log("Hello searchQuery");
             setIsLoading(true);
             const delayDebounceFn = setTimeout(async () => {
                 try {
@@ -70,13 +85,26 @@ const BuySecond = ({ navigation }) => {
 
             return () => clearTimeout(delayDebounceFn);
         } else {
-            api_getAllSecondHands();
-            setIsLoading(false);
+            setListSecondHands([]);
+            setIsSearch(false);
         }
     }, [searchQuery]);
 
     const onSearchBoxChange = (text) => {
         setSearchQuery(text);
+    };
+    const handleScroll = (event) => {
+        const { contentOffset, layoutMeasurement, contentSize } =
+            event.nativeEvent;
+        const paddingToBottom = 1;
+        const isEndReached =
+            layoutMeasurement.height + contentOffset.y >=
+            contentSize.height - paddingToBottom;
+
+        if (isEndReached) {
+            setSkip(skip + 10);
+            // console.log("end");
+        }
     };
     return (
         <>
@@ -87,7 +115,11 @@ const BuySecond = ({ navigation }) => {
                     searchText={searchQuery}
                 />
             </View>
-            <ScrollView style={{}}>
+            <ScrollView
+                style={{ flex: 1 }}
+                onScroll={handleScroll}
+                scrollEventThrottle={16}
+            >
                 {isLoading ? (
                     <ActivityIndicator size="large" color="#FF7A00" />
                 ) : listSecondHands.length !== 0 ? (
@@ -127,6 +159,7 @@ const BuySecond = ({ navigation }) => {
                         </Text>
                     </View>
                 )}
+                {/* {isLoadingScrool && <ActivityIndicator />} */}
             </ScrollView>
         </>
     );

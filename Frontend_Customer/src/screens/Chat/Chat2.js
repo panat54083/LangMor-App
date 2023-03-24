@@ -1,7 +1,14 @@
 //packages
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, {
+    useCallback,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import axios from "axios";
 import * as LIP from "../../lib/lm-image-picker";
+import ImageView from "react-native-image-viewing";
 //components
 import {
     ScrollView,
@@ -16,6 +23,7 @@ import { Entypo } from "@expo/vector-icons";
 import BackScreen from "../../components/buttons/BackScreen";
 import ChatInput from "../../components/cards/Chat/ChatInput";
 import MessageModel from "../../components/cards/Chat/MessageModel";
+import DetailRgint from "../../components/buttons/DetailRgint";
 //configs
 import UserContext from "../../hooks/context/UserContext";
 import SocketContext from "../../hooks/context/SocketContext";
@@ -31,6 +39,7 @@ const Chat2 = ({ navigation, route }) => {
     const scrollViewRef = useRef(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const inputRef = useRef(null);
+    const [showImage, setShowImage] = useState(false);
     //Data
     const [message, setMessage] = useState("");
     const [image, setImage] = useState(null);
@@ -47,6 +56,30 @@ const Chat2 = ({ navigation, route }) => {
                     onPress={() => navigation.goBack()}
                     color="#FF7A00"
                 />
+            ),
+            headerRight: () => (
+                <>
+                    {(chatroomData.type === "SecondHand" && chatroomData.closed === false) && (
+                        <DetailRgint
+                            onPress={() => {
+                                navigation.navigate("SecondDetail", {
+                                    secondData: itemData,
+                                });
+                            }}
+                            color="#FF7A00"
+                        />
+                    )}
+                    {(chatroomData.type === "LostItem" && chatroomData.closed === false) && (
+                        <DetailRgint
+                            onPress={() => {
+                                navigation.navigate("LostDetail", {
+                                    lostData: itemData,
+                                });
+                            }}
+                            color="#FF7A00"
+                        />
+                    )}
+                </>
             ),
         });
         // Functions
@@ -204,6 +237,10 @@ const Chat2 = ({ navigation, route }) => {
     const handleDebugger = () => {
         console.log(itemData);
     };
+    const handleImage = (imageData) => {
+        console.log(imageData);
+        // navigation.navigate("ShowImage", {imageData: imageData})
+    };
 
     return (
         <View style={styles.main_container}>
@@ -216,6 +253,7 @@ const Chat2 = ({ navigation, route }) => {
                                 key={index}
                                 message={item}
                                 userId={state.userData._id}
+                                onPressImage={(item) => handleImage(item)}
                             />
                         ))}
                     </ScrollView>
@@ -237,12 +275,24 @@ const Chat2 = ({ navigation, route }) => {
                         bottom: 100,
                     }}
                 >
-                    <Image
-                        source={{
-                            uri: `data:${image.type}/jpg;base64,${image.base64}`,
-                        }}
-                        style={{ width: 100, height: 100 }}
-                    />
+                    <Pressable onPress={() => setShowImage(true)}>
+                        <Image
+                            source={{
+                                uri: `data:${image.type}/jpg;base64,${image.base64}`,
+                            }}
+                            style={{ width: 100, height: 100 }}
+                        />
+                        <ImageView
+                            images={[
+                                {
+                                    uri: `data:${image.type}/jpg;base64,${image.base64}`,
+                                },
+                            ]}
+                            imageIndex={0}
+                            visible={showImage}
+                            onRequestClose={() => setShowImage(false)}
+                        />
+                    </Pressable>
                     <Pressable
                         onPress={handleClosedImage}
                         style={{
@@ -262,7 +312,7 @@ const Chat2 = ({ navigation, route }) => {
                     </Pressable>
                 </View>
             )}
-            {!itemData.closed? (
+            {!itemData.closed ? (
                 <ChatInput
                     forwardedRef={inputRef}
                     onChangeText={(value) => setMessage(value)}

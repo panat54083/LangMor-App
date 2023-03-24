@@ -2,6 +2,7 @@
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
+import * as LIP from "../../lib/lm-image-picker";
 // Components
 import {
     StyleSheet,
@@ -12,17 +13,21 @@ import {
     ScrollView,
     SafeAreaView,
     SectionList,
+    Alert,
 } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import AcceptButton from "../../components/buttons/AcceptButton";
 import EditTextInput from "../../components/Inputs/EditTextInput";
 import Edit from "../../components/buttons/Edit";
+import ImageInput from "../../components/Inputs/ImageInput";
 // Configs
 import { IP_ADDRESS } from "@env";
 import UserContext from "../../hooks/context/UserContext";
 
 const EditRestaurant = ({ navigation }) => {
     const { state, onAction } = useContext(UserContext);
+    const [editable, setEditable] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
     const [restaurant_name, setRestaurant_name] = useState(
         state.restaurantData.name
     );
@@ -32,8 +37,9 @@ const EditRestaurant = ({ navigation }) => {
     const [restaurant_phone, setRestaurant_phone] = useState(
         state.restaurantData.phone
     );
-
-    const [editable, setEditable] = useState(false);
+    const [restaurant_picture, setRestaurant_picture] = useState(
+        state.restaurantData.picture
+    );
     //Start-up
     useEffect(() => {
         navigation.setOptions({
@@ -61,7 +67,7 @@ const EditRestaurant = ({ navigation }) => {
         });
     }, [editable]);
 
-    const api_restaurantUpdate = () => {
+    const api_restaurantUpdate = (image) => {
         axios
             .post(`http://${IP_ADDRESS}/restaurant/updated`, {
                 restaurant_id: state.restaurantData._id,
@@ -69,6 +75,7 @@ const EditRestaurant = ({ navigation }) => {
                     name: restaurant_name,
                     phone: restaurant_phone,
                     address: restaurant_address,
+                    picture: image,
                 },
             })
             .then((res) => {
@@ -83,19 +90,54 @@ const EditRestaurant = ({ navigation }) => {
             });
     };
     const handleDebugger = () => {
-        console.log(state.restaurantData);
+        console.log(state.restaurantData.picture);
     };
     const handleSave = () => {
-        // console.log(state.userData);
-        api_restaurantUpdate();
-        navigation.navigate("Setting");
+        if (!restaurant_name.trim()) {
+            Alert.alert("Error", "กรุณาเติมชื่อร้านค้า");
+            return;
+        }
+        setIsLoaded(true);
+        if (restaurant_picture) {
+            if (restaurant_picture.type !== "upload") {
+                LIP.handleUpload(restaurant_picture, state.restaurantData._id)
+                    .then((data) => {
+                        api_restaurantUpdate(data);
+                        setIsLoaded(false);
+                        navigation.navigate("Setting");
+                    })
+                    .catch((err) => console.log(err));
+            } else {
+                api_restaurantUpdate(restaurant_picture);
+                setIsLoaded(false);
+                navigation.navigate("Setting");
+            }
+        } else {
+            api_restaurantUpdate(null);
+            setIsLoaded(false);
+            navigation.navigate("Setting");
+        }
     };
     return (
-        <View style={styles.container}>
-            {/* <Button title="Debugger" onPress={handleDebugger} />  */}
+        <ScrollView style={styles.container}>
+            {/* <Button title="Debugger" onPress={handleDebugger} /> */}
+            <View
+                style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginTop: "2%",
+                }}
+            >
+                <ImageInput
+                    image={restaurant_picture}
+                    setImage={setRestaurant_picture}
+                    disable={!editable}
+                />
+            </View>
             <View style={styles.textinput}>
                 <Text style={styles.font}>
-                    ชื่อร้านค้า{"  "}
+                    ชื่อร้านค้า<Text style={{ color: "red" }}>*</Text>
+                    {"  "}
                     {editable ? (
                         <Text style={styles.fontOptions}>
                             ปัจจุบัน: {state.restaurantData.name}
@@ -145,10 +187,10 @@ const EditRestaurant = ({ navigation }) => {
             </View>
             {editable ? (
                 <View style={styles.submit}>
-                    <AcceptButton label={"บันทึกข้อมูล"} onPress={handleSave} />
+                    <AcceptButton label={"บันทึกข้อมูล"} onPress={handleSave} isLoaded={isLoaded}/>
                 </View>
             ) : null}
-        </View>
+        </ScrollView>
     );
 };
 

@@ -78,6 +78,14 @@ const EditProfile = ({ navigation }) => {
     };
     const handleSave = () => {
         // console.log(state.userData);
+        if (!family_name.trim() || !given_name.trim()) {
+            if (!family_name.trim()) {
+                Alert.alert("Error", "กรุณาเติมชื่อ");
+            } else if (!given_name.trim()) {
+                Alert.alert("Error", "กรุณาเติมนามสกุล");
+            }
+            return;
+        }
         api_userUpdate();
         navigation.navigate("Setting");
     };
@@ -89,7 +97,7 @@ const EditProfile = ({ navigation }) => {
 
             <View style={styles.textinput}>
                 <Text style={styles.font}>
-                    ชื่อ{"  "}
+                    ชื่อ<Text style={{color: "red"}}>*</Text>{"  "}
                     {editable ? (
                         <Text style={styles.fontOptions}>
                             ปัจจุบัน: {state.userData.given_name}
@@ -105,7 +113,7 @@ const EditProfile = ({ navigation }) => {
                     editable={editable}
                 />
                 <Text style={styles.font}>
-                    นามสกุล{"  "}
+                    นามสกุล<Text style={{color: "red"}}>*</Text>{"  "}
                     {editable ? (
                         <Text style={styles.fontOptions}>
                             ปัจจุบัน: {state.userData.family_name}

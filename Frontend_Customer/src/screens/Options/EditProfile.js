@@ -92,7 +92,7 @@ const EditProfile = ({ navigation }) => {
 
             <View style={styles.textinput}>
                 <Text style={styles.font}>
-                    ชื่อ{"  "}
+                    ชื่อ<Text style={{color: "red"}}>*</Text>{"  "}
                     {editable ? (
                         <Text style={styles.fontOptions}>
                             ปัจจุบัน: {state.userData.given_name}
@@ -108,7 +108,7 @@ const EditProfile = ({ navigation }) => {
                     editable={editable}
                 />
                 <Text style={styles.font}>
-                    นามสกุล{"  "}
+                    นามสกุล<Text style={{color: "red"}}>*</Text>{"  "}
                     {editable ? (
                         <Text style={styles.fontOptions}>
                             ปัจจุบัน: {state.userData.family_name}

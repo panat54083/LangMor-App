@@ -25,8 +25,8 @@ const OrderSummary = ({ order }) => {
                               <View style={styles.body_container} key={index}>
                                   <View style={styles.body_amount}>
                                       <View style={styles.box_price}>
-                                          <Text style={styles.body_font_amount}>
-                                              {food.amount}x
+                                          <Text style={[styles.body_font_amount, ]} numberOfLines={1} adjustsFontSizeToFit={true}>
+                                              {food.amount} <Text style={{color:"#FF7A00"}}>x</Text>
                                           </Text>
                                       </View>
                                   </View>

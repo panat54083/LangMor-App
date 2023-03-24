@@ -1,3 +1,8 @@
+//Packages
+import React, { useState } from "react";
+import ImageView from "react-native-image-viewing";
+import * as LIP from "../../lib/lm-image-picker";
+//Components
 import {
     StyleSheet,
     View,
@@ -6,13 +11,22 @@ import {
     TouchableOpacity,
     Image,
 } from "react-native";
-import React, { useState } from "react";
-import { FontAwesome5, Feather, AntDesign, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
-import * as LIP from "../../lib/lm-image-picker";
-const ImageInput = ({ label, image, setImage }) => {
+import {
+    FontAwesome5,
+    Feather,
+    AntDesign,
+    Entypo,
+    MaterialCommunityIcons,
+} from "@expo/vector-icons";
+
+const ImageInput = ({ label, image, setImage, disable = false }) => {
     const [visible, setVisible] = useState(false);
+    const [showImage, setShowImage] = useState(false);
+
     const handleImageInput = () => {
-        setVisible(!visible);
+        if (!disable) {
+            setVisible(!visible);
+        }
     };
 
     async function handleSelectPicture() {
@@ -48,7 +62,11 @@ const ImageInput = ({ label, image, setImage }) => {
                                     size={80}
                                     color="#FF7A00"
                                 /> */}
-                                <MaterialCommunityIcons name="file-image-plus" size={80} color="#FF4200" />
+                                <MaterialCommunityIcons
+                                    name="file-image-plus"
+                                    size={80}
+                                    color="#FF4200"
+                                />
                                 {label ? (
                                     <Text style={styles.text}>{label}</Text>
                                 ) : (
@@ -57,33 +75,59 @@ const ImageInput = ({ label, image, setImage }) => {
                             </View>
                         </Pressable>
                     ) : (
-                        <View>
+                        <Pressable onPress={() => setShowImage(true)}>
                             {image.type === "upload" ? (
-                                <Image
-                                    source={{
-                                        uri: `${image.url}`,
-                                    }}
-                                    style={styles.container}
-                                />
+                                <View>
+                                    <Image
+                                        source={{
+                                            uri: `${image.url}`,
+                                        }}
+                                        style={styles.container}
+                                    />
+                                    <ImageView
+                                        images={[{ uri: `${image.url}` }]}
+                                        imageIndex={0}
+                                        visible={showImage}
+                                        onRequestClose={() =>
+                                            setShowImage(false)
+                                        }
+                                    />
+                                </View>
                             ) : (
-                                <Image
-                                    source={{
-                                        uri: `data:${image.type}/jpg;base64,${image.base64}`,
-                                    }}
-                                    style={styles.container}
-                                />
+                                <View>
+                                    <Image
+                                        source={{
+                                            uri: `data:${image.type}/jpg;base64,${image.base64}`,
+                                        }}
+                                        style={styles.container}
+                                    />
+                                    <ImageView
+                                        images={[
+                                            {
+                                                uri: `data:${image.type}/jpg;base64,${image.base64}`,
+                                            },
+                                        ]}
+                                        imageIndex={0}
+                                        visible={showImage}
+                                        onRequestClose={() =>
+                                            setShowImage(false)
+                                        }
+                                    />
+                                </View>
                             )}
-                            <Pressable
-                                onPress={handleClosedImage}
-                                style={styles.cross}
-                            >
-                                <Entypo
-                                    name="circle-with-cross"
-                                    size={24}
-                                    color="#FF0101"
-                                />
-                            </Pressable>
-                        </View>
+                            {!disable && (
+                                <Pressable
+                                    onPress={handleClosedImage}
+                                    style={styles.cross}
+                                >
+                                    <Entypo
+                                        name="circle-with-cross"
+                                        size={24}
+                                        color="#FF0101"
+                                    />
+                                </Pressable>
+                            )}
+                        </Pressable>
                     )}
                 </View>
             ) : (

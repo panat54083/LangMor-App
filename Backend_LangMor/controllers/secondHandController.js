@@ -19,7 +19,7 @@ exports.createSecondHand = async (req, res) => {
 
 exports.getMySecondHandsPosts = async (req, res) => {
     const { owner_id, closed } = req.query;
-    const closed_bool = closed === "true" ? true : false
+    const closed_bool = closed === "true" ? true : false;
     const secondHands = await SecondHand.find({
         owner_id: owner_id,
         closed: closed_bool,
@@ -36,13 +36,38 @@ exports.getAllSecondHands = async (req, res) => {
         const secondHands = await SecondHand.find({
             owner_id: { $nin: [owner_id] },
             closed: false,
-        });
+        })
         res.json({
             message: "Get All Second Hands except owner done...",
             listSecondHands: secondHands,
         });
     } else {
-        const secondHands = await SecondHand.find({});
+        const secondHands = await SecondHand.find({})
+        res.json({
+            message: "Get All Second Hands done...",
+            listSecondHands: secondHands,
+        });
+    }
+};
+
+exports.getLimitSecondHands = async (req, res) => {
+    const { owner_id } = req.query;
+    const skip = parseInt(req.query.skip) || 0;
+    const limit = parseInt(req.query.limit) || 10;
+    // console.log(req.query.skip, limit);
+    if (owner_id) {
+        const secondHands = await SecondHand.find({
+            owner_id: { $nin: [owner_id] },
+            closed: false,
+        })
+            .skip(skip)
+            .limit(limit);
+        res.json({
+            message: "Get All Second Hands except owner done...",
+            listSecondHands: secondHands,
+        });
+    } else {
+        const secondHands = await SecondHand.find({}).skip(skip).limit(limit);
         res.json({
             message: "Get All Second Hands done...",
             listSecondHands: secondHands,
