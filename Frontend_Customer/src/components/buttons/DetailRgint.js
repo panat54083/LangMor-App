@@ -1,25 +1,23 @@
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import React from "react";
-import { Feather } from "@expo/vector-icons";
 
-const Edit = ({ onPress, color = "black" }) => {
+const DetailRgint = ({ onPress, color = "black" }) => {
     return (
         <Pressable onPress={onPress} style={styles.container}>
-            <Text style={[styles.font, { color: color }]}>แก้ไข</Text>
+            <Text style={[styles.font, { color: color }]}>ดูรายละเอียด</Text>
         </Pressable>
     );
 };
 
-export default Edit;
+export default DetailRgint;
 
 const styles = StyleSheet.create({
     container: {
         paddingVertical: 10,
         paddingHorizontal: 14,
     },
-        font: {
+    font: {
         fontFamily: "Kanit-SemiBold",
         fontSize: 16,
     },
 });
-

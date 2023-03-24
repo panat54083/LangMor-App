@@ -23,6 +23,7 @@ import { Entypo } from "@expo/vector-icons";
 import BackScreen from "../../components/buttons/BackScreen";
 import ChatInput from "../../components/cards/Chat/ChatInput";
 import MessageModel from "../../components/cards/Chat/MessageModel";
+import DetailRgint from "../../components/buttons/DetailRgint";
 //configs
 import UserContext from "../../hooks/context/UserContext";
 import SocketContext from "../../hooks/context/SocketContext";
@@ -55,6 +56,30 @@ const Chat2 = ({ navigation, route }) => {
                     onPress={() => navigation.goBack()}
                     color="#FF7A00"
                 />
+            ),
+            headerRight: () => (
+                <>
+                    {(chatroomData.type === "SecondHand" && chatroomData.closed === false) && (
+                        <DetailRgint
+                            onPress={() => {
+                                navigation.navigate("SecondDetail", {
+                                    secondData: itemData,
+                                });
+                            }}
+                            color="#FF7A00"
+                        />
+                    )}
+                    {(chatroomData.type === "LostItem" && chatroomData.closed === false) && (
+                        <DetailRgint
+                            onPress={() => {
+                                navigation.navigate("LostDetail", {
+                                    lostData: itemData,
+                                });
+                            }}
+                            color="#FF7A00"
+                        />
+                    )}
+                </>
             ),
         });
         // Functions
