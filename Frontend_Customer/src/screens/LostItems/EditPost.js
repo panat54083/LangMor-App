@@ -2,6 +2,7 @@
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
+import * as LIP from "../../lib/lm-image-picker";
 // Components
 import {
     StyleSheet,
@@ -20,6 +21,7 @@ import SubmitBtn from "../../components/buttons/SubmitBtn";
 import CustomTextInput from "../../components/input/CustomTextInput";
 import EditTextInput from "../../components/input/EditTextInput";
 import Edit from "../../components/buttons/Edit";
+import ImageInput from "../../components/input/ImageInput";
 
 //Configs
 import { IP_ADDRESS } from "@env";
@@ -27,10 +29,16 @@ import UserContext from "../../hooks/context/UserContext";
 
 const EditPost = ({ navigation, route }) => {
     const { itemData } = route.params;
+    const { state } = useContext(UserContext);
 
     const [name, setName] = useState(itemData.name);
     const [detail, setDetail] = useState(itemData.detail);
-    const [editable, setEditable] = useState(itemData.closed !== true ?true:false);
+    const [image, setImage] = useState(itemData.picture);
+
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [editable, setEditable] = useState(
+        itemData.closed !== true ? true : false
+    );
 
     //Start-up
     useEffect(() => {
@@ -59,13 +67,14 @@ const EditPost = ({ navigation, route }) => {
         });
     }, [editable]);
 
-    const api_LostItemUpdate = () => {
+    const api_LostItemUpdate = (picture) => {
         axios
             .post(`http://${IP_ADDRESS}/lostItem/update`, {
                 item_id: itemData._id,
                 updated_data: {
                     name: name,
                     detail: detail,
+                    picture: picture,
                 },
             })
             .then((res) => {
@@ -76,7 +85,7 @@ const EditPost = ({ navigation, route }) => {
             });
     };
     const handleSave = () => {
-                if (!name.trim() || !String(detail).trim()) {
+        if (!name.trim() || !String(detail).trim()) {
             if (!name.trim()) {
                 Alert.alert("Error", "กรุณาเติมชื่อโพส");
             } else if (!detail.trim()) {
@@ -84,20 +93,44 @@ const EditPost = ({ navigation, route }) => {
             }
             return;
         }
-        api_LostItemUpdate();
-        navigation.goBack();
+        setIsLoaded(true);
+        if (image) {
+            if (image.type !== "upload") {
+                LIP.handleUpload(image, state.userData._id)
+                    .then((data) => {
+                        api_LostItemUpdate(data);
+                        setIsLoaded(false);
+                        navigation.goBack();
+                    })
+                    .catch((err) => console.log(err));
+            } else {
+                api_LostItemUpdate(restaurant_picture);
+                setIsLoaded(false);
+                navigation.goBack();
+            }
+        } else {
+            api_LostItemUpdate(null);
+            setIsLoaded(false);
+            navigation.goBack();
+        }
     };
     const handleDebugger = () => {
         console.log(itemData);
     };
     return (
-        <View style={styles.container}>
+        <ScrollView
+            style={styles.container}
+            contentContainerStyle={{ flexGrow: 1 }}
+        >
             {/* {/* <Text>EditProfile</Text> */}
             {/* <Button title="Debugger" onPress={handleDebugger} /> */}
-
+            <View style={{ alignItems: "center", margin: "5%" }}>
+                <ImageInput image={image} setImage={setImage} />
+            </View>
             <View style={styles.textinput}>
                 <Text style={styles.font}>
-                    ชื่อ{"  "}
+                    ชื่อ<Text style={{ color: "red" }}>*</Text>
+                    {"  "}
                     {editable ? (
                         <Text style={styles.fontOptions}>
                             ปัจจุบัน: {itemData.name}
@@ -113,7 +146,8 @@ const EditPost = ({ navigation, route }) => {
                     editable={editable}
                 />
                 <Text style={styles.font}>
-                    รายละเอียด{"  "}
+                    รายละเอียด<Text style={{ color: "red" }}>*</Text>
+                    {"  "}
                     {editable
                         ? // <Text style={styles.fontOptions}>
                           //     ปัจจุบัน: {itemData.detail}
@@ -132,10 +166,14 @@ const EditPost = ({ navigation, route }) => {
             </View>
             {editable ? (
                 <View style={styles.submit}>
-                    <SubmitBtn label={"บันทึกข้อมูล"} onPress={handleSave} />
+                    <SubmitBtn
+                        label={"บันทึกข้อมูล"}
+                        onPress={handleSave}
+                        isLoaded={isLoaded}
+                    />
                 </View>
             ) : null}
-        </View>
+        </ScrollView>
     );
 };
 
@@ -153,7 +191,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "flex-end",
         marginHorizontal: 20,
-        marginBottom: "10%",
+        marginVertical: "5%",
     },
     font: {
         fontFamily: "Kanit-Bold",
