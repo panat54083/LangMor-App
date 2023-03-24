@@ -29,8 +29,12 @@ const FindLost = ({ navigation }) => {
     const [isSearch, setIsSearch] = useState(false);
     //Start up
     useEffect(() => {
-        setSkip(0);
+        setListOfLostItems([])
+        if (isFocused){
+            setSkip(0);
+        }
     }, [isFocused]);
+    
     useEffect(() => {
         if (!isSearch) {
             api_getAllLostItems();

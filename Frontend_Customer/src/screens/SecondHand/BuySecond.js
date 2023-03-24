@@ -23,35 +23,54 @@ const BuySecond = ({ navigation }) => {
     const isFocused = useIsFocused();
     //Variables
     const [listSecondHands, setListSecondHands] = useState([]);
+    console.log("initail list: ", listSecondHands.length);
     const [searchQuery, setSearchQuery] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [isLoadingScrool, setIsLoadingScroll] = useState(false);
+    const [isLoadingScroll, setIsLoadingScroll] = useState(false);
     const [skip, setSkip] = useState(0);
     const [isSearch, setIsSearch] = useState(false);
     //Start up
     useEffect(() => {
-        setSkip(0);
+        setListSecondHands([])
+        if (isFocused) {
+            setSkip(0);
+            // console.log("initial skip: ", skip)
+            console.log("length :", listSecondHands.length);
+        }
+        console.log("isFocused");
     }, [isFocused]);
+
+    // useEffect(() => {
+    //     const unsubscribe = navigation.addListener("focus", () => {
+    //         console.log("listener");
+    //     });
+
+    //     return unsubscribe;
+    // }, [navigation]);
+
     useEffect(() => {
         if (!isSearch) {
-            api_getAllSecondHands();
+            console.log("skip", skip);
+            setIsLoading(skip ? false : true);
+            setIsLoadingScroll(true);
+
+            api_getAllSecondHands()
+                .then((data) => {
+                    setListSecondHands((prevList) => [...prevList, ...data]);
+                    setIsLoading(false);
+                    setIsLoadingScroll(false);
+                })
+                .catch((err) => console.log(err));
         }
     }, [skip, isSearch]);
 
-    const api_getAllSecondHands = () => {
-        setIsLoading(skip ? false : true);
-        setIsLoadingScroll(true);
-        axios
+    const api_getAllSecondHands = async () => {
+        return axios
             .get(
                 `http://${IP_ADDRESS}/secondHand/getLimit?owner_id=${state.userData._id}&skip=${skip}&limit=10`
             )
             .then((res) => {
-                setListSecondHands([
-                    ...listSecondHands,
-                    ...res.data.listSecondHands,
-                ]);
-                setIsLoading(false);
-                setIsLoadingScroll(false);
+                return res.data.listSecondHands;
             })
             .catch((err) => {
                 console.log(err);
@@ -102,7 +121,9 @@ const BuySecond = ({ navigation }) => {
             contentSize.height - paddingToBottom;
 
         if (isEndReached) {
-            setSkip(skip + 10);
+            if (skip < listSecondHands.length) {
+                setSkip(skip + 10);
+            }
             // console.log("end");
         }
     };

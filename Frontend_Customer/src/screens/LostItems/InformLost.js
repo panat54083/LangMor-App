@@ -29,8 +29,12 @@ const InformLost = ({ navigation }) => {
     //Start up
 
     useEffect(() => {
-        setSkip(0);
+        setListOfLostItems([]);
+        if (isFocused) {
+            setSkip(0);
+        }
     }, [isFocused]);
+
     useEffect(() => {
         if (!isSearch) {
             api_getAllLostItems();
