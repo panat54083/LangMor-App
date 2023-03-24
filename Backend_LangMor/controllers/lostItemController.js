@@ -18,8 +18,8 @@ exports.createLostItem = async (req, res) => {
 };
 
 exports.getMyLostItemsPosts = async (req, res) => {
-    const { owner_id,closed } = req.query;
-    const closed_bool = closed === "true" ? true : false
+    const { owner_id, closed } = req.query;
+    const closed_bool = closed === "true" ? true : false;
     const lostItems = await LostItem.find({
         owner_id: owner_id,
         closed: closed_bool,
@@ -33,27 +33,26 @@ exports.getMyLostItemsPosts = async (req, res) => {
 
 exports.getAllLostItems = async (req, res) => {
     const { type, owner_id } = req.query;
-    // console.log(owner_id);
     if (type === "find" || type === "found") {
         if (owner_id) {
             const lostItems = await LostItem.find({
                 type: type,
                 owner_id: { $nin: [owner_id] },
                 closed: false,
-            });
+            })
             res.json({
                 message: `Get All ${type} Lost items without Owner one done...`,
                 listOfLostItems: lostItems,
             });
         } else {
-            const lostItems = await LostItem.find({ type: type });
+            const lostItems = await LostItem.find({ type: type })
             res.json({
                 message: `Get All ${type} Lost items done...`,
                 listOfLostItems: lostItems,
             });
         }
     } else {
-        const lostItems = await LostItem.find({});
+        const lostItems = await LostItem.find({})
         res.json({
             message: "Get All Lost items done...",
             listOfLostItems: lostItems,
@@ -61,6 +60,41 @@ exports.getAllLostItems = async (req, res) => {
     }
 };
 
+exports.getLimitLostItems = async (req, res) => {
+    const { type, owner_id } = req.query;
+    const skip = parseInt(req.query.skip) || 0;
+    const limit = parseInt(req.query.limit) || 10;
+    // console.log(owner_id);
+    if (type === "find" || type === "found") {
+        if (owner_id) {
+            const lostItems = await LostItem.find({
+                type: type,
+                owner_id: { $nin: [owner_id] },
+                closed: false,
+            })
+                .skip(skip)
+                .limit(limit);
+            res.json({
+                message: `Get All ${type} Lost items without Owner one done...`,
+                listOfLostItems: lostItems,
+            });
+        } else {
+            const lostItems = await LostItem.find({ type: type })
+                .skip(skip)
+                .limit(limit);
+            res.json({
+                message: `Get All ${type} Lost items done...`,
+                listOfLostItems: lostItems,
+            });
+        }
+    } else {
+        const lostItems = await LostItem.find({}).skip(skip).limit(limit);
+        res.json({
+            message: "Get All Lost items done...",
+            listOfLostItems: lostItems,
+        });
+    }
+};
 exports.getOwnerData = async (req, res) => {
     const { owner_id } = req.query;
     const owner = await Customer.findById(owner_id);

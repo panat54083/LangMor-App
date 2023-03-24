@@ -25,22 +25,33 @@ const FindLost = ({ navigation }) => {
     const [listOfLostItems, setListOfLostItems] = useState([]);
     const [searchQuery, setSearchQuery] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [skip, setSkip] = useState(0);
+    const [isSearch, setIsSearch] = useState(false);
     //Start up
     useEffect(() => {
-        if (isFocused) {
+        setSkip(0);
+    }, [isFocused]);
+    useEffect(() => {
+        if (!isSearch) {
             api_getAllLostItems();
         }
-    }, [isFocused]);
+    }, [skip, isSearch]);
+
     const api_getAllLostItems = () => {
+        setIsLoading(skip ? false : true);
         axios
             .get(
-                `http://${IP_ADDRESS}/lostItem/getAll?type=${"find"}&owner_id=${
+                `http://${IP_ADDRESS}/lostItem/getLimit?type=${"find"}&owner_id=${
                     state.userData._id
-                }`
+                }&skip=${skip}&limit=10`
             )
             .then((res) => {
                 // console.log(res.data.message);
-                setListOfLostItems(res.data.listOfLostItems);
+                setListOfLostItems([
+                    ...listOfLostItems,
+                    ...res.data.listOfLostItems,
+                ]);
+                setIsLoading(false);
             })
             .catch((err) => {
                 console.log(err);
@@ -55,10 +66,12 @@ const FindLost = ({ navigation }) => {
     useEffect(() => {
         if (searchQuery) {
             setIsLoading(true);
+            setSkip(0);
+            setIsSearch(true);
             const delayDebounceFn = setTimeout(async () => {
                 try {
                     const response = await axios.get(
-                        `http://${IP_ADDRESS}/lostItem/search?keyword=${searchQuery}&owner_id=${state.userData._id}&type=find`
+                        `http://${IP_ADDRESS}/lostItem/search?keyword=${searchQuery}&owner_id=${state.userData._id}&type=find&skip=${skip}&limit=10`
                     );
                     const data = response.data.lostItemsData;
                     setListOfLostItems(data);
@@ -71,13 +84,27 @@ const FindLost = ({ navigation }) => {
 
             return () => clearTimeout(delayDebounceFn);
         } else {
-            api_getAllLostItems();
-            setIsLoading(false);
+            setListOfLostItems([]);
+            setIsSearch(false);
         }
     }, [searchQuery]);
 
     const onSearchBoxChange = (text) => {
         setSearchQuery(text);
+    };
+
+    const handleScroll = (event) => {
+        const { contentOffset, layoutMeasurement, contentSize } =
+            event.nativeEvent;
+        const paddingToBottom = 1;
+        const isEndReached =
+            layoutMeasurement.height + contentOffset.y >=
+            contentSize.height - paddingToBottom;
+
+        if (isEndReached) {
+            setSkip(skip + 10);
+            // console.log("end");
+        }
     };
     return (
         <>
@@ -89,7 +116,7 @@ const FindLost = ({ navigation }) => {
                     searchText={searchQuery}
                 />
             </View>
-            <ScrollView>
+            <ScrollView onScroll={handleScroll} scrollEventThrottle={16}>
                 {isLoading ? (
                     <ActivityIndicator size="large" color="#FF7A00" />
                 ) : listOfLostItems.length !== 0 ? (
