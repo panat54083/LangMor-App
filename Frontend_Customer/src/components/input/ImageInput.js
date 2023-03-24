@@ -1,3 +1,8 @@
+//Packages
+import React, { useState } from "react";
+import ImageView from "react-native-image-viewing";
+import * as LIP from "../../lib/lm-image-picker";
+//Components
 import {
     StyleSheet,
     View,
@@ -6,7 +11,6 @@ import {
     TouchableOpacity,
     Image,
 } from "react-native";
-import React, { useState } from "react";
 import {
     FontAwesome5,
     Feather,
@@ -14,9 +18,11 @@ import {
     Entypo,
     MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import * as LIP from "../../lib/lm-image-picker";
+
 const ImageInput = ({ label, image, setImage, disable = false }) => {
     const [visible, setVisible] = useState(false);
+    const [showImage, setShowImage] = useState(false);
+
     const handleImageInput = () => {
         if (!disable) {
             setVisible(!visible);
@@ -69,21 +75,45 @@ const ImageInput = ({ label, image, setImage, disable = false }) => {
                             </View>
                         </Pressable>
                     ) : (
-                        <View>
+                        <Pressable onPress={() => setShowImage(true)}>
                             {image.type === "upload" ? (
-                                <Image
-                                    source={{
-                                        uri: `${image.url}`,
-                                    }}
-                                    style={styles.container}
-                                />
+                                <View>
+                                    <Image
+                                        source={{
+                                            uri: `${image.url}`,
+                                        }}
+                                        style={styles.container}
+                                    />
+                                    <ImageView
+                                        images={[{ uri: `${image.url}` }]}
+                                        imageIndex={0}
+                                        visible={showImage}
+                                        onRequestClose={() =>
+                                            setShowImage(false)
+                                        }
+                                    />
+                                </View>
                             ) : (
-                                <Image
-                                    source={{
-                                        uri: `data:${image.type}/jpg;base64,${image.base64}`,
-                                    }}
-                                    style={styles.container}
-                                />
+                                <View>
+                                    <Image
+                                        source={{
+                                            uri: `data:${image.type}/jpg;base64,${image.base64}`,
+                                        }}
+                                        style={styles.container}
+                                    />
+                                    <ImageView
+                                        images={[
+                                            {
+                                                uri: `data:${image.type}/jpg;base64,${image.base64}`,
+                                            },
+                                        ]}
+                                        imageIndex={0}
+                                        visible={showImage}
+                                        onRequestClose={() =>
+                                            setShowImage(false)
+                                        }
+                                    />
+                                </View>
                             )}
                             {!disable && (
                                 <Pressable
@@ -97,7 +127,7 @@ const ImageInput = ({ label, image, setImage, disable = false }) => {
                                     />
                                 </Pressable>
                             )}
-                        </View>
+                        </Pressable>
                     )}
                 </View>
             ) : (

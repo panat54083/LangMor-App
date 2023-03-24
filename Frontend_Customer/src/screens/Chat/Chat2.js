@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import axios from "axios";
 import * as LIP from "../../lib/lm-image-picker";
+import ImageView from "react-native-image-viewing";
 //components
 import {
     ScrollView,
@@ -37,6 +38,7 @@ const Chat2 = ({ navigation, route }) => {
     const scrollViewRef = useRef(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const inputRef = useRef(null);
+    const [showImage, setShowImage] = useState(false);
     //Data
     const [message, setMessage] = useState("");
     const [image, setImage] = useState(null);
@@ -226,7 +228,7 @@ const Chat2 = ({ navigation, route }) => {
                                 key={index}
                                 message={item}
                                 userId={state.userData._id}
-                                onPressImage={(item)=> handleImage(item)}
+                                onPressImage={(item) => handleImage(item)}
                             />
                         ))}
                     </ScrollView>
@@ -248,12 +250,24 @@ const Chat2 = ({ navigation, route }) => {
                         bottom: 100,
                     }}
                 >
-                    <Image
-                        source={{
-                            uri: `data:${image.type}/jpg;base64,${image.base64}`,
-                        }}
-                        style={{ width: 100, height: 100 }}
-                    />
+                    <Pressable onPress={() => setShowImage(true)}>
+                        <Image
+                            source={{
+                                uri: `data:${image.type}/jpg;base64,${image.base64}`,
+                            }}
+                            style={{ width: 100, height: 100 }}
+                        />
+                        <ImageView
+                            images={[
+                                {
+                                    uri: `data:${image.type}/jpg;base64,${image.base64}`,
+                                },
+                            ]}
+                            imageIndex={0}
+                            visible={showImage}
+                            onRequestClose={() => setShowImage(false)}
+                        />
+                    </Pressable>
                     <Pressable
                         onPress={handleClosedImage}
                         style={{

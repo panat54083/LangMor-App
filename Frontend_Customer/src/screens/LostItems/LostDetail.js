@@ -1,6 +1,7 @@
 //Packages
 import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
+import ImageView from "react-native-image-viewing";
 import { useIsFocused } from "@react-navigation/native";
 //Components
 import {
@@ -10,6 +11,7 @@ import {
     ScrollView,
     Button,
     Image,
+    Pressable,
 } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import SubmitBtn from "../../components/buttons/SubmitBtn";
@@ -21,8 +23,9 @@ import { IP_ADDRESS } from "@env";
 const LostDetail = ({ route, navigation }) => {
     //Configs
     const { lostData, historyChatroomData } = route.params;
-    console.log(lostData);
+    // console.log(lostData);
     const { state } = useContext(UserContext);
+    const [showImage, setShowImage] = useState(false);
     //data
     const [chatroomData, setChatroomData] = useState(null);
     const [ownerData, setOwnerData] = useState({});
@@ -110,7 +113,7 @@ const LostDetail = ({ route, navigation }) => {
             {/* <Button title="Debugger" onPress={handleDebugger} /> */}
             <View style={styles.topContatner}>
                 <View style={styles.imgFrame1}>
-                    <View style={styles.imgFrame2}>
+                    <Pressable style={styles.imgFrame2} onPress={()=>setShowImage(true)}>
                         <Image
                             source={{
                                 uri: lostData.picture
@@ -119,7 +122,19 @@ const LostDetail = ({ route, navigation }) => {
                             }}
                             style={styles.imgStyle}
                         />
-                    </View>
+                        <ImageView
+                            images={[
+                                {
+                                    uri: lostData.picture
+                                        ? `${lostData.picture.url}`
+                                        : noImgURL,
+                                },
+                            ]}
+                            imageIndex={0}
+                            visible={showImage}
+                            onRequestClose={() => setShowImage(false)}
+                        />
+                    </Pressable>
                 </View>
             </View>
             <View style={styles.bottomContainer}>

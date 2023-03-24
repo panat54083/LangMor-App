@@ -1,6 +1,7 @@
 //Packages
 import React, { useEffect, useContext, useState, useLayoutEffect } from "react";
 import axios from "axios";
+import ImageView from "react-native-image-viewing";
 import { useIsFocused } from "@react-navigation/native";
 //Components
 import {
@@ -10,6 +11,7 @@ import {
     ScrollView,
     Button,
     Image,
+    Pressable,
 } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import SubmitBtn from "../../components/buttons/SubmitBtn";
@@ -22,12 +24,14 @@ const SecondDetail = ({ route, navigation }) => {
     //Config
     const { secondData, historyChatroomData } = route.params;
 
-    const noImgURL =
-        "https://static.vecteezy.com/system/resources/previews/004/141/669/original/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg";
     const { state } = useContext(UserContext);
     //data
     const [chatroomData, setChatroomData] = useState(null);
     const [ownerData, setOwnerData] = useState({});
+    const noImgURL =
+        "https://static.vecteezy.com/system/resources/previews/004/141/669/original/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg";
+
+    const [showImage, setShowImage] = useState(false);
     //start-up
     useEffect(() => {
         navigation.setOptions({
@@ -105,12 +109,14 @@ const SecondDetail = ({ route, navigation }) => {
         });
     };
     return (
-        
         <View style={{ flex: 1 }}>
             {/* <Button title="Debugger" onPress={handleDebugger} /> */}
             <View style={styles.topContatner}>
                 <View style={styles.imgFrame1}>
-                    <View style={styles.imgFrame2}>
+                    <Pressable
+                        style={styles.imgFrame2}
+                        onPress={() => setShowImage(true)}
+                    >
                         <Image
                             source={{
                                 uri: secondData.picture
@@ -119,7 +125,19 @@ const SecondDetail = ({ route, navigation }) => {
                             }}
                             style={styles.imgStyle}
                         />
-                    </View>
+                        <ImageView
+                            images={[
+                                {
+                                    uri: secondData.picture
+                                        ? `${secondData.picture.url}`
+                                        : noImgURL,
+                                },
+                            ]}
+                            imageIndex={0}
+                            visible={showImage}
+                            onRequestClose={() => setShowImage(false)}
+                        />
+                    </Pressable>
                 </View>
             </View>
             <View style={styles.bottomContainer}>

@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import axios from "axios";
 import * as LIP from "../../lib/lm-image-picker";
+import ImageView from "react-native-image-viewing";
 //Components
 import {
     StyleSheet,
@@ -42,6 +43,7 @@ const Chat = ({ navigation, route }) => {
     const { socket } = useContext(SocketContext);
     const [isLoaded, setIsLoaded] = useState(false);
     const scrollViewRef = useRef(null);
+    const [showImage, setShowImage] = useState(false);
     const [keyboardVisible, setKeyboardVisible] = useState(false);
     const messageStatus = {
         doing: "ยืนยันออเดอร์ครับ",
@@ -453,12 +455,24 @@ const Chat = ({ navigation, route }) => {
                         bottom: 100,
                     }}
                 >
-                    <Image
-                        source={{
-                            uri: `data:${image.type}/jpg;base64,${image.base64}`,
-                        }}
-                        style={{ width: 100, height: 100 }}
-                    />
+                    <Pressable onPress={() => setShowImage(true)}>
+                        <Image
+                            source={{
+                                uri: `data:${image.type}/jpg;base64,${image.base64}`,
+                            }}
+                            style={{ width: 100, height: 100 }}
+                        />
+                        <ImageView
+                            images={[
+                                {
+                                    uri: `data:${image.type}/jpg;base64,${image.base64}`,
+                                },
+                            ]}
+                            imageIndex={0}
+                            visible={showImage}
+                            onRequestClose={() => setShowImage(false)}
+                        />
+                    </Pressable>
                     <Pressable
                         onPress={handleClosedImage}
                         style={{
