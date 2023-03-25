@@ -50,11 +50,9 @@ const InformLost = ({ navigation }) => {
                 }&skip=${skip}&limit=10`
             )
             .then((res) => {
-                // console.log(res.data.message);
-                setListOfLostItems([
-                    ...listOfLostItems,
-                    ...res.data.listOfLostItems,
-                ]);
+                // console.log(res.data.listOfLostItems);
+                const data = res.data.listOfLostItems;
+                setListOfLostItems((prevList) => [...prevList, ...data]);
                 setIsLoading(false);
             })
             .catch((err) => {

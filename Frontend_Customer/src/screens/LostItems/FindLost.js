@@ -29,17 +29,17 @@ const FindLost = ({ navigation }) => {
     const [isSearch, setIsSearch] = useState(false);
     //Start up
     useEffect(() => {
-        setListOfLostItems([])
-        if (isFocused){
+        setListOfLostItems([]);
+        if (isFocused) {
             setSkip(0);
         }
     }, [isFocused]);
-    
+
     useEffect(() => {
         if (!isSearch) {
             api_getAllLostItems();
         }
-    }, [skip, isSearch , isFocused]);
+    }, [skip, isSearch, isFocused]);
 
     const api_getAllLostItems = () => {
         setIsLoading(skip ? false : true);
@@ -51,10 +51,8 @@ const FindLost = ({ navigation }) => {
             )
             .then((res) => {
                 // console.log(res.data.message);
-                setListOfLostItems([
-                    ...listOfLostItems,
-                    ...res.data.listOfLostItems,
-                ]);
+                const data = res.data.listOfLostItems;
+                setListOfLostItems((prevList) => [...prevList, ...data]);
                 setIsLoading(false);
             })
             .catch((err) => {
