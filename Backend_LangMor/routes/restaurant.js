@@ -13,6 +13,10 @@ router.get(
     "/all_restaurant",
     catchErrors(restaurantController.getAllRestaurant)
 );
+router.get(
+    "/limit_restaurant",
+    catchErrors(restaurantController.getLimitRestaurant)
+);
 router.post("/updated", catchErrors(restaurantController.restaurantUpdate));
 
 router.post(
@@ -56,5 +60,8 @@ router.get(
     "/get_fav_restaurants",
     catchErrors(restaurantController.getFavRestaurants)
 );
-router.get("/random_restaurants", catchErrors(restaurantController.randomRestaurants))
+router.get(
+    "/random_restaurants",
+    catchErrors(restaurantController.randomRestaurants)
+);
 module.exports = router;

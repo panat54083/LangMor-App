@@ -39,7 +39,7 @@ const FindLost = ({ navigation }) => {
         if (!isSearch) {
             api_getAllLostItems();
         }
-    }, [skip, isSearch]);
+    }, [skip, isSearch , isFocused]);
 
     const api_getAllLostItems = () => {
         setIsLoading(skip ? false : true);

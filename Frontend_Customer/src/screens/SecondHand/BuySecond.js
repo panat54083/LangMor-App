@@ -62,7 +62,7 @@ const BuySecond = ({ navigation }) => {
                 })
                 .catch((err) => console.log(err));
         }
-    }, [skip, isSearch]);
+    }, [skip, isSearch , isFocused]);
 
     const api_getAllSecondHands = async () => {
         return axios

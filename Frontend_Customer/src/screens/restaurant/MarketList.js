@@ -35,6 +35,9 @@ const MarketList = ({ navigation }) => {
     const { basketDetail, setBasketDetail } = useContext(BasketContext);
     const [modalVisible, setModalVisible] = useState(false);
     const [favRestaurants, setFavRestaurants] = useState();
+    const [isLoadingScroll, setIsLoadingScroll] = useState(false);
+    const [skip, setSkip] = useState(0);
+    const [isSearch, setIsSearch] = useState(false);
     useEffect(() => {
         // setHeader
         navigation.setOptions({
@@ -58,13 +61,33 @@ const MarketList = ({ navigation }) => {
             ),
         });
         // fetchRestaurants();
+        setRestaurants([]);
+        setSkip(0);
     }, []);
     const onPressFav = () => {
         navigation.navigate("FavRestaurants");
     };
+
+    useEffect(() => {
+        if (!isSearch) {
+            // console.log("skip", skip);
+            setIsLoading(skip ? false : true);
+            setIsLoadingScroll(true);
+
+            fetchRestaurants()
+                .then((data) => {
+                    console.log("ดึงข้อมูลจ้า");
+                    setRestaurants((prevList) => [...prevList, ...data]);
+                    setIsLoading(false);
+                    setIsLoadingScroll(false);
+                })
+                .catch((err) => console.log(err));
+        }
+    }, [skip, isSearch]);
     useEffect(() => {
         if (searchQuery) {
             setIsLoading(true);
+            setIsSearch(true);
             const delayDebounceFn = setTimeout(async () => {
                 try {
                     const response = await axios.get(
@@ -81,8 +104,9 @@ const MarketList = ({ navigation }) => {
 
             return () => clearTimeout(delayDebounceFn);
         } else {
-            fetchRestaurants();
-            // setIsLoading(false);
+            // fetchRestaurants();
+            setRestaurants([]);
+            setIsSearch(false);
         }
     }, [searchQuery]);
     const onSearchBoxChange = (text) => {
@@ -123,14 +147,14 @@ const MarketList = ({ navigation }) => {
                 throw err;
             });
     };
-    const fetchRestaurants = () => {
-        setIsLoading(true);
-        axios
-            .get(`http://${IP_ADDRESS}/restaurant/all_restaurant`)
+    const fetchRestaurants = async () => {
+        return axios
+            .get(
+                `http://${IP_ADDRESS}/restaurant//limit_restaurant?skip=${skip}&limit=10`
+            )
             .then((res) => {
                 // console.log(res.data.restaurantData);
-                setRestaurants(res.data.restaurantData);
-                setIsLoading(false);
+                return res.data.restaurantData;
             })
             .catch((err) => {
                 console.log(err);
@@ -148,12 +172,24 @@ const MarketList = ({ navigation }) => {
     const handleDebugger = () => {
         console.log(restaurants);
     };
+    const handleScroll = (event) => {
+        const { contentOffset, layoutMeasurement, contentSize } =
+            event.nativeEvent;
+        const paddingToBottom = 1;
+        const isEndReached =
+            layoutMeasurement.height + contentOffset.y >=
+            contentSize.height - paddingToBottom;
+
+        if (isEndReached) {
+            if (skip < restaurants.length) {
+                setSkip(skip + 10);
+            }
+            console.log("end");
+        }
+    };
     return (
         <View style={{ flex: 1 }}>
             {/* <Button title="Debugger" onPress={handleDebugger}/> */}
-            {/* <View style={{ marginTop: 18, marginLeft: "7%" }}>
-                <AddressBox />
-            </View> */}
             <View
                 style={{
                     // width: "100%",
@@ -212,8 +248,22 @@ const MarketList = ({ navigation }) => {
             ) : (
                 <View style={{ flex: 1 }}>
                     {restaurants[0] ? (
-                        <View>
-                            <FlatList
+                        <ScrollView
+                            onScroll={handleScroll}
+                            scrollEventThrottle={16}
+                        >
+                            {restaurants.map((restaurant, index) => (
+                                <View
+                                    style={{ marginHorizontal: "3%" }}
+                                    key={index}
+                                >
+                                    <CardMarket
+                                        restaurant={restaurant}
+                                        onPressCard={onPressCardMarket}
+                                    />
+                                </View>
+                            ))}
+                            {/* <FlatList
                                 data={restaurants}
                                 renderItem={({ item }) => (
                                     <View style={{ marginHorizontal: "3%" }}>
@@ -223,8 +273,8 @@ const MarketList = ({ navigation }) => {
                                         />
                                     </View>
                                 )}
-                            />
-                        </View>
+                            /> */}
+                        </ScrollView>
                     ) : (
                         <View
                             style={{
