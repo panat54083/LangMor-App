@@ -167,6 +167,7 @@ const EditRestaurant = ({ navigation }) => {
                     value={restaurant_address}
                     onChangeText={setRestaurant_address}
                     editable={editable}
+                    multiline={true}
                 />
                 <Text style={styles.font}>
                     เบอร์โทรศัพท์{"  "}

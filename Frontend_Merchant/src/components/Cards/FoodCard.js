@@ -73,8 +73,9 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     image: {
-        height: "90%",
-        width: "90%",
+        height: "100%",
+        width: "100%",
+        borderRadius: 15,
     },
     data: {
         marginLeft: 10,

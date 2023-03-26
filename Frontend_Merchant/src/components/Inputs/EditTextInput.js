@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
         marginBottom: 4,
     },
     input: {
-        paddingLeft: 10,
-        width: 250,
+        // paddingLeft: 10,
+        width: "100%",
         fontFamily: "Kanit-Medium",
         fontSize: 16,
     },

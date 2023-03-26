@@ -126,7 +126,7 @@ const Login = () => {
     const fetchLogin = (userData, type) => {
         axios
             .post(
-                type === "gooogle"
+                type === "google"
                     ? `http://${IP_ADDRESS}/merchant/login`
                     : `http://${IP_ADDRESS}/merchant/logintester`,
                 userData

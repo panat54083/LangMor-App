@@ -27,13 +27,14 @@ const CardMarket = (props) => {
             </View>
             <View style={styles.detail}>
                 <Text
-                    style={styles.restName}
+                    style={[styles.restName, { width: "90%" }]}
                     adjustsFontSizeToFit={true}
                     numberOfLines={1}
+                    // ellipsizeMode="tail"
                 >
                     {restaurant.name}
                 </Text>
-                <View style={[styles.types,{width: "100%"}]}>
+                <View style={[styles.types, { width: "100%" }]}>
                     {restaurant.types ? (
                         <Text
                             style={styles.body}

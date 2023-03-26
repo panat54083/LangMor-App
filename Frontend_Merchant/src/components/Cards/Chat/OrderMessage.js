@@ -59,7 +59,7 @@ const OrderMessage = ({ order, onPress, backgroundColor = "#FF7A00" }) => {
                               })}
                               {food.moreDetail && (
                                   <Text style={[styles.body_font]}>
-                                      {food.moreDetail}
+                                      เพิ่มเติม: {food.moreDetail}
                                   </Text>
                               )}
                           </View>
