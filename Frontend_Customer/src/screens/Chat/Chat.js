@@ -33,6 +33,11 @@ import { IP_ADDRESS } from "@env";
 
 const Chat = ({ navigation, route }) => {
     //config
+    // const navigation = useNavigation();
+    const isCartScreenWhenGoBack =
+        navigation?.getState()?.routes?.[navigation?.getState()?.index - 1]
+            ?.name === "Cart";
+
     const { basketDetail } = useContext(BasketContext);
     const { state } = useContext(UserContext);
     const { socket } = useContext(SocketContext);
@@ -56,16 +61,19 @@ const Chat = ({ navigation, route }) => {
                 fontSize: 22,
             },
             headerLeft: () => (
-                <BackScreen
-                    onPress={() => navigation.goBack()}
-                    color="#FF7A00"
-                />
+                <BackScreen onPress={() => handleGoBack()} color="#FF7A00" />
             ),
         });
         // Functions
         fetchInitialMessages();
     }, []);
-
+    const handleGoBack = () => {
+        if (isCartScreenWhenGoBack) {
+            navigation.popToTop(); // Pop to the top instead of going back
+        } else {
+            navigation.goBack(); // Go back to the previous screen
+        }
+    };
     useEffect(() => {
         chatroom_connect(orderData._id);
     }, [socket]);
