@@ -37,7 +37,6 @@ const Chat = ({ navigation, route }) => {
     const isCartScreenWhenGoBack =
         navigation?.getState()?.routes?.[navigation?.getState()?.index - 1]
             ?.name === "Cart";
-
     const { basketDetail } = useContext(BasketContext);
     const { state } = useContext(UserContext);
     const { socket } = useContext(SocketContext);
@@ -69,7 +68,8 @@ const Chat = ({ navigation, route }) => {
     }, []);
     const handleGoBack = () => {
         if (isCartScreenWhenGoBack) {
-            navigation.popToTop(); // Pop to the top instead of going back
+            // navigation.popTotop()  // Pop to the top instead of going back
+            navigation.navigate("FoodList", { restaurant: restaurantData });
         } else {
             navigation.goBack(); // Go back to the previous screen
         }
