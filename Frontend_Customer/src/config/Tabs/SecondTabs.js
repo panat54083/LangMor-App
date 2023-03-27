@@ -35,7 +35,7 @@ const SecondTabs = ({navigation}) => {
             <Tab.Screen
                 name="BuySecond"
                 component={BuySecond}
-                options={{ tabBarLabel: "ซื้อของมืองสอง" }}
+                options={{ tabBarLabel: "ซื้อของมือสอง" }}
             />
             <Tab.Screen
                 name="SellSecond"

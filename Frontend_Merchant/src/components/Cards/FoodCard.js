@@ -31,18 +31,21 @@ const FoodCard = ({ foodData, onPress }) => {
                 </View>
             )}
 
-            <View style={styles.data}>
-                <Text style={styles.text}>{foodData.name}</Text>
-                <View style={{ width: undefined, maxWidth: 180}}>
-
-                <Text
-                    style={[styles.description, {color: "#9D9693"} ]}
-                    // adjustsFontSizeToFit={true}
-                    numberOfLines={2}
-                    ellipsizeMode="tail"
-                >
-                    {foodData.description}
-                </Text>
+            <View style={[styles.data, { flex: 1 }]}>
+                <View style={{ width: "100%", }}>
+                    <Text style={[styles.text]} ellipsizeMode="tail">
+                        {foodData.name}
+                    </Text>
+                </View>
+                <View style={{ width: undefined, maxWidth: 180 }}>
+                    <Text
+                        style={[styles.description, { color: "#9D9693" }]}
+                        // adjustsFontSizeToFit={true}
+                        numberOfLines={2}
+                        ellipsizeMode="tail"
+                    >
+                        {foodData.description}
+                    </Text>
                 </View>
                 <Text style={styles.price}>{foodData.price}</Text>
             </View>
@@ -57,6 +60,7 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         marginBottom: 10,
         flexDirection: "row",
+        flex: 1,
         height: 100,
         alignItems: "center",
         borderRadius: 10,

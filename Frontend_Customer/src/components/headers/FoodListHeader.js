@@ -35,18 +35,30 @@ const FoodListHeader = (props) => {
                     backgroundColor: "#FF7A00",
                 }}
             >
-                <View style={{ marginTop: 6, marginLeft: "2.2%" }}>
-                    <Back handlerOnPressBack={handlerOnPressBack} />
-                </View>
                 <View
                     style={{
-                        position: "absolute",
-                        // marginLeft: "auto",
-                        // marginTop: 6,
-                        // marginRight: "2.2%",
-                        right: 0,
                         marginTop: 6,
-                        marginRight: "2.2%"
+                        marginLeft: "2.2%",
+                        // flex: 1,
+                        // backgroundColor: "blue",
+                    }}
+                >
+                    <Back handlerOnPressBack={handlerOnPressBack} />
+                </View>
+                <Pressable
+                    style={{ flex: 1 , }}
+                    onPress={() => setIsVisible(!visible)}
+                ></Pressable>
+                <View
+                    style={{
+                        // position: "absolute",
+                        // flex: 1,
+                        // backgroundColor: "red",
+                        marginRight: "2%",
+                        marginLeft: "auto",
+                        marginTop: 6,
+                        right: 0,
+                        // marginTop: 6,
                     }}
                 >
                     <Fav
@@ -55,10 +67,6 @@ const FoodListHeader = (props) => {
                         disable={disableFav}
                     />
                 </View>
-                <Pressable
-                    style={{ flex: 1 }}
-                    onPress={()=>setIsVisible(!visible)}
-                ></Pressable>
             </ImageBackground>
             <ImageView
                 images={[

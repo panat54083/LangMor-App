@@ -62,7 +62,7 @@ const CardRestaurantName = (props) => {
                         color: "#9D9693",
                     }}
                 >
-                    {restaurant.phone ? restaurant.phone : "ไม่มี"}
+                    {restaurant.phone ? restaurant.phone : "ไม่ได้ระบุ"}
                 </Text>
             </View>
         </View>

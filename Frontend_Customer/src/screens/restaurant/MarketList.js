@@ -132,7 +132,7 @@ const MarketList = ({ navigation }) => {
     };
 
     const api_getRandomRestaurants = async () => {
-        const number = 1;
+        const number = 2;
         return axios
             .get(
                 `http://${IP_ADDRESS}/restaurant/random_restaurants?number=${number}`
