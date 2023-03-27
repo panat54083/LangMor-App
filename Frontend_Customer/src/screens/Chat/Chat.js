@@ -98,6 +98,12 @@ const Chat = ({ navigation, route }) => {
 
     useEffect(() => {
         if (socket) {
+            socket.on("closedChatroom", ({ closed }) => {
+                if (closed) {
+                    chatroom_disconnect(orderData._id)
+                    handleGoBack()
+                }
+            });
             socket.on("newMessage", (data) => {
                 const { id, user, message, timestamp, picture } = data;
                 // console.log("recieve message: ", message);

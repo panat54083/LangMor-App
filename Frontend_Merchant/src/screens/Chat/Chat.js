@@ -184,7 +184,7 @@ const Chat = ({ navigation, route }) => {
         }
     };
 
-    const closeChatroom = async () => {
+    const closeChatroom_old = async () => {
         axios
             .post(`http://${IP_ADDRESS}/chatroom/closed`, {
                 chatroomId: null,
@@ -196,6 +196,14 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
+    const socket_closeChatroom = useCallback((closed) => {
+        if (socket) {
+            socket.emit("chatroomClose", {
+                chatroomId: orderData._id,
+                closed: closed,
+            });
+        }
+    });
 
     // const sendMessage = (message, picture) => {
     //     if (socket) {
@@ -348,6 +356,7 @@ const Chat = ({ navigation, route }) => {
             case "done":
                 newStatus = "close";
                 sendMessage(messageStatus.close, null);
+                socket_closeChatroom(true);
                 chatroom_disconnect(orderData._id);
                 navigation.navigate("OrderTabs");
                 break;
