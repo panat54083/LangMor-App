@@ -196,6 +196,7 @@ const Chat = ({ navigation, route }) => {
                 console.log(err);
             });
     };
+
     const socket_closeChatroom = useCallback((closed) => {
         if (socket) {
             socket.emit("chatroomClose", {
@@ -379,6 +380,7 @@ const Chat = ({ navigation, route }) => {
                 text: "ใช่",
                 onPress: () => {
                     apiUpdateOrder("cancel");
+                    socket_closeChatroom(true);
                     sendMessage(messageStatus.cancel, null);
                     navigation.navigate("OrderTabs");
                 },

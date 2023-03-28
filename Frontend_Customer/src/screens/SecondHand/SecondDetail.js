@@ -22,20 +22,21 @@ import { IP_ADDRESS } from "@env";
 
 const SecondDetail = ({ route, navigation }) => {
     //Config
+    const isFocused = useIsFocused();
     const { secondData, historyChatroomData } = route.params;
-
     const { state } = useContext(UserContext);
+    const [showImage, setShowImage] = useState(false);
     //data
+    const [itemData, setItemData] = useState(secondData);
     const [chatroomData, setChatroomData] = useState(null);
     const [ownerData, setOwnerData] = useState({});
     const noImgURL =
         "https://static.vecteezy.com/system/resources/previews/004/141/669/original/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg";
 
-    const [showImage, setShowImage] = useState(false);
     //start-up
     useEffect(() => {
         navigation.setOptions({
-            title: secondData ? secondData.name : "(ไม่พบชื่อรายการสินค้า)",
+            title: itemData ? itemData.name : "(ไม่พบชื่อรายการสินค้า)",
             headerTitleStyle: {
                 fontFamily: "Kanit-Bold",
                 fontSize: 22,
@@ -48,12 +49,14 @@ const SecondDetail = ({ route, navigation }) => {
             ),
         });
         // API
-        api_getOwnerData();
-    }, []);
+        if (isFocused) {
+            api_getOwnerData();
+        }
+    }, [isFocused]);
     useEffect(() => {
         if (chatroomData) {
             navigation.navigate("Chat2", {
-                itemData: secondData,
+                itemData: itemData,
                 chatroomData: chatroomData,
             });
         }
@@ -63,8 +66,8 @@ const SecondDetail = ({ route, navigation }) => {
         axios
             .post(`http://${IP_ADDRESS}/chatroom/create`, {
                 customerId: state.userData._id,
-                merchantId: secondData.owner_id,
-                itemId: secondData._id,
+                merchantId: itemData.owner_id,
+                itemId: itemData._id,
                 type: "SecondHand",
             })
             .then((res) => {
@@ -85,17 +88,18 @@ const SecondDetail = ({ route, navigation }) => {
     const api_getOwnerData = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/secondHand/getOwner?owner_id=${secondData.owner_id}`
+                `http://${IP_ADDRESS}/secondHand/getOwner?owner_id=${itemData.owner_id}&item_id=${itemData._id}`
             )
             .then((res) => {
                 setOwnerData(res.data.ownerData);
+                setItemData(res.data.secondData);
             })
             .catch((err) => {
                 console.log(err);
             });
     };
     const handleDebugger = () => {
-        console.log(ownerData);
+        console.log(historyChatroomData);
     };
 
     const handleContact = () => {
@@ -104,7 +108,7 @@ const SecondDetail = ({ route, navigation }) => {
 
     const handleHistoryContact = () => {
         navigation.navigate("Chat2", {
-            itemData: secondData,
+            itemData: itemData,
             chatroomData: historyChatroomData,
         });
     };
@@ -119,8 +123,8 @@ const SecondDetail = ({ route, navigation }) => {
                     >
                         <Image
                             source={{
-                                uri: secondData.picture
-                                    ? `${secondData.picture.url}`
+                                uri: itemData.picture
+                                    ? `${itemData.picture.url}`
                                     : noImgURL,
                             }}
                             style={styles.imgStyle}
@@ -128,8 +132,8 @@ const SecondDetail = ({ route, navigation }) => {
                         <ImageView
                             images={[
                                 {
-                                    uri: secondData.picture
-                                        ? `${secondData.picture.url}`
+                                    uri: itemData.picture
+                                        ? `${itemData.picture.url}`
                                         : noImgURL,
                                 },
                             ]}
@@ -143,21 +147,22 @@ const SecondDetail = ({ route, navigation }) => {
             <View style={styles.bottomContainer}>
                 <View style={styles.detailContainer}>
                     <ItemDetail
-                        item={secondData}
+                        item={itemData}
                         owner={ownerData}
                         type={"second"}
                     />
                 </View>
             </View>
             <View style={styles.submitBtn}>
-                {secondData.closed === false && (
+                {itemData.closed === false && (
                     <SubmitBtn
                         label={"เริ่มแชทกับผู้ขาย"}
                         onPress={handleContact}
                     />
                 )}
-                {secondData.closed === true &&
-                    secondData.owner_id !== state.userData._id && (
+                {itemData.closed === true &&
+                    itemData.owner_id !== state.userData._id &&
+                    historyChatroomData !== undefined && (
                         <SubmitBtn
                             label={"ตรวจสอบแชท"}
                             onPress={handleHistoryContact}

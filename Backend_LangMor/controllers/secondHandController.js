@@ -76,11 +76,14 @@ exports.getLimitSecondHands = async (req, res) => {
 };
 
 exports.getOwnerData = async (req, res) => {
-    const { owner_id } = req.query;
+    const { owner_id, item_id } = req.query;
     const owner = await Customer.findById(owner_id);
+    const secondData = await SecondHand.findById(item_id)
+
     res.json({
         message: "Get Owner data.",
         ownerData: owner,
+        secondData: secondData,
     });
 };
 

@@ -96,11 +96,13 @@ exports.getLimitLostItems = async (req, res) => {
     }
 };
 exports.getOwnerData = async (req, res) => {
-    const { owner_id } = req.query;
+    const { owner_id ,item_id} = req.query;
     const owner = await Customer.findById(owner_id);
+    const lostData = await LostItem.findById(item_id)
     res.json({
         message: "Get Owner data.",
         ownerData: owner,
+        lostData: lostData
     });
 };
 

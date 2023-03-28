@@ -1,5 +1,5 @@
 //Packages
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
 //Components
@@ -9,12 +9,14 @@ import SubmitBtn from "../../components/buttons/SubmitBtn";
 import ContactBtn from "../../components/buttons/ContactBtn";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
+import SocketContext from "../../hooks/context/SocketContext";
 import { IP_ADDRESS } from "@env";
 
 const BUTTONS_PER_ROW = 2;
 
 const ChatContact = ({ navigation, route }) => {
     const { itemData, chatroomsData } = route.params;
+    const { socket } = useContext(SocketContext);
     // console.log(chatroomsData);
     useEffect(() => {
         navigation.setOptions({
@@ -61,11 +63,24 @@ const ChatContact = ({ navigation, route }) => {
     };
     const handleCloseSecondHand = () => {
         api_closeItems(itemData);
+        socket_closeChatroom(true);
         navigation.goBack();
     };
     const handleDebugger = () => {
         console.log(itemData, chatroomsData);
     };
+
+    const socket_closeChatroom = useCallback((closed) => {
+        if (socket) {
+            chatroomsData.map((room, index) => {
+                console.log(room.chatroom._id)
+                socket.emit("chatroomClose", {
+                    chatroomId: room.chatroom._id,
+                    closed: closed,
+                });
+            });
+        }
+    });
 
     const renderRow = (chatrooms) => (
         <View style={styles.row} key={chatrooms[0].chatroom._id}>

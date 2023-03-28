@@ -59,26 +59,28 @@ const Chat2 = ({ navigation, route }) => {
             ),
             headerRight: () => (
                 <>
-                    {(chatroomData.type === "SecondHand" && chatroomData.closed === false) && (
-                        <DetailRgint
-                            onPress={() => {
-                                navigation.navigate("SecondDetail", {
-                                    secondData: itemData,
-                                });
-                            }}
-                            color="#FF7A00"
-                        />
-                    )}
-                    {(chatroomData.type === "LostItem" && chatroomData.closed === false) && (
-                        <DetailRgint
-                            onPress={() => {
-                                navigation.navigate("LostDetail", {
-                                    lostData: itemData,
-                                });
-                            }}
-                            color="#FF7A00"
-                        />
-                    )}
+                    {chatroomData.type === "SecondHand" &&
+                        chatroomData.closed === false && (
+                            <DetailRgint
+                                onPress={() => {
+                                    navigation.navigate("SecondDetail", {
+                                        secondData: itemData,
+                                    });
+                                }}
+                                color="#FF7A00"
+                            />
+                        )}
+                    {chatroomData.type === "LostItem" &&
+                        chatroomData.closed === false && (
+                            <DetailRgint
+                                onPress={() => {
+                                    navigation.navigate("LostDetail", {
+                                        lostData: itemData,
+                                    });
+                                }}
+                                color="#FF7A00"
+                            />
+                        )}
                 </>
             ),
         });
@@ -109,6 +111,14 @@ const Chat2 = ({ navigation, route }) => {
 
     useEffect(() => {
         if (socket) {
+            socket.on("closedChatroom", ({ closed }) => {
+                console.log(closed)
+                if (closed) {
+                    socket_chatroomDisconnect(chatroomData._id);
+                    navigation.goBack();
+                    // handleGoBack();
+                }
+            });
             socket.on("newMessage", (data) => {
                 const { id, user, message, timestamp, picture } = data;
                 console.log("recieve message: ", message);
@@ -168,6 +178,13 @@ const Chat2 = ({ navigation, route }) => {
     const socket_chatroomConnect = (chatroom_id) => {
         if (socket) {
             socket.emit("joinRoom", {
+                chatroom: chatroom_id,
+            });
+        }
+    };
+    const socket_chatroomDisconnect = (chatroom_id) => {
+        if (socket) {
+            socket.emit("leaveRoom", {
                 chatroom: chatroom_id,
             });
         }
