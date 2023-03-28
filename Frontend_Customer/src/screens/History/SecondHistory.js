@@ -34,12 +34,9 @@ const SecondHistory = ({ navigation }) => {
 
     useEffect(() => {
         if (isFocused) {
-            if (status) {
-                api_getAllChatrooms("customerId");
-            } else {
-                api_getAllChatrooms("merchantId");
-                api_getMyPosts();
-            }
+            api_getAllChatrooms("customerId");
+            api_getAllChatrooms("merchantId");
+            api_getMyPosts();
         }
     }, [isFocused, status]);
 

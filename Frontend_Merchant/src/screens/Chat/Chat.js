@@ -362,9 +362,9 @@ const Chat = ({ navigation, route }) => {
                 navigation.navigate("OrderTabs");
                 break;
             default:
-                newStatus = "new";
-                setButtonStatusLabel("ยืนยันออเดอร์");
-                setButtonStatusColor("#63BE00");
+                newStatus = "close";
+                // setButtonStatusLabel("ยืนยันออเดอร์");
+                // setButtonStatusColor("#63BE00");
                 break;
         }
         apiUpdateOrder(newStatus);
