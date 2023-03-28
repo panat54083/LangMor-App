@@ -9,7 +9,6 @@ import {
     View,
     ImageBackground,
     ScrollView,
-    SafeAreaView,
     SectionList,
 } from "react-native";
 //Components
@@ -18,7 +17,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import StateBtn from "../../components/buttons/StateBtn";
 import CardTwoSide from "../../components/cards/CardTwoSide";
 // Configs
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 import UserContext from "../../hooks/context/UserContext";
 
 const LostHistory = ({ navigation }) => {
@@ -38,7 +37,7 @@ const LostHistory = ({ navigation }) => {
             api_getAllChatrooms("merchantId");
             api_getMyPosts();
         }
-    }, [isFocused, status]);
+    }, [isFocused]);
 
     useEffect(() => {
         if (!status && listOfChatrooms && listLostItems) {
@@ -60,7 +59,7 @@ const LostHistory = ({ navigation }) => {
     const api_getMyPosts = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/lostItem/getMyPosts?owner_id=${
+                `${API_URL}/lostItem/getMyPosts?owner_id=${
                     state.userData._id
                 }&closed=${true}`
             )
@@ -76,7 +75,7 @@ const LostHistory = ({ navigation }) => {
     const api_getAllChatrooms = (role) => {
         axios
             .get(
-                `http://${IP_ADDRESS}/chatroom/chatrooms?${role}=${
+                `${API_URL}/chatroom/chatrooms?${role}=${
                     state.userData._id
                 }&type=${"LostItem"}&closed=${"true"}`
             )

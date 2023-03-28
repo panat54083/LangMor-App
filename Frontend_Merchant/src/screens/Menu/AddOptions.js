@@ -11,6 +11,7 @@ import {
     SafeAreaView,
     Alert,
     Button,
+    TouchableOpacity,
 } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import CustomTextInput from "../../components/Inputs/CustomTextInput";
@@ -20,7 +21,7 @@ import AddOptionsChoices from "../../components/Cards/AddOptionsChoices";
 import Bin from "../../components/buttons/Bin";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 
 const AddOptions = ({ navigation, route }) => {
     useEffect(() => {
@@ -106,7 +107,7 @@ const AddOptions = ({ navigation, route }) => {
 
     const fetchSaveOptions = () => {
         axios
-            .post(`http://${IP_ADDRESS}/restaurant/save_options`, {
+            .post(`${API_URL}/restaurant/save_options`, {
                 optionsData: options,
                 option_id: options_id,
                 restaurant_id: state.restaurantData._id,
@@ -127,7 +128,7 @@ const AddOptions = ({ navigation, route }) => {
 
     const api_deleteOptions = () => {
         axios
-            .delete(`http://${IP_ADDRESS}/restaurant/delete_option`, {
+            .delete(`${API_URL}/restaurant/delete_option`, {
                 data: {
                     option_id: optionData._id,
                     restaurant_id: state.restaurantData._id,

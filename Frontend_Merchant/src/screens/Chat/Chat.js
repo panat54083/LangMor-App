@@ -12,15 +12,13 @@ import ImageView from "react-native-image-viewing";
 //Components
 import {
     StyleSheet,
-    Text,
     View,
-    Button,
-    FlatList,
     Keyboard,
     ScrollView,
     Image,
     Pressable,
     Alert,
+    Button,
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import BackScreen from "../../components/buttons/BackScreen";
@@ -30,7 +28,7 @@ import AcceptButton from "../../components/buttons/AcceptButton";
 import OrderMessage from "../../components/Cards/Chat/OrderMessage";
 import CancelBtn from "../../components/buttons/CancelBtn";
 //Configs
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 import UserContext from "../../hooks/context/UserContext";
 import SocketContext from "../../hooks/context/SocketContext";
 
@@ -98,7 +96,6 @@ const Chat = ({ navigation, route }) => {
                         !["close", "cancel"].includes(orderData.status) ? (
                             <CancelBtn onPress={handleCancel} />
                         ) : null
-                        // <CancelBtn onPress={handleCancel} />
                     }
                 </>
             ),
@@ -131,20 +128,6 @@ const Chat = ({ navigation, route }) => {
     }, []);
 
     useEffect(() => {
-        // if (socket) {
-        //     socket.on("newMessage", (data) => {
-        //         const { id, user, message, timestamp, picture } = data;
-        //         const renew_message = {
-        //             id,
-        //             user,
-        //             message,
-        //             timestamp,
-        //             picture,
-        //         };
-        //         setListMessages([...listMessages, renew_message]);
-        //     });
-        // }
-
         scrollViewRef.current?.scrollToEnd({ animated: true });
     }, [listMessages]);
 
@@ -152,7 +135,6 @@ const Chat = ({ navigation, route }) => {
         if (socket) {
             socket.on("newMessage", (data) => {
                 const { id, user, message, timestamp, picture } = data;
-                // console.log("recieve message: ", message);
                 const renew_message = {
                     id,
                     user,
@@ -184,19 +166,6 @@ const Chat = ({ navigation, route }) => {
         }
     };
 
-    const closeChatroom_old = async () => {
-        axios
-            .post(`http://${IP_ADDRESS}/chatroom/closed`, {
-                chatroomId: null,
-            })
-            .then((res) => {
-                console.log(res.data.message);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
-
     const socket_closeChatroom = useCallback((closed) => {
         if (socket) {
             socket.emit("chatroomClose", {
@@ -205,17 +174,6 @@ const Chat = ({ navigation, route }) => {
             });
         }
     });
-
-    // const sendMessage = (message, picture) => {
-    //     if (socket) {
-    //         socket.emit("chatroomMessage", {
-    //             chatroomId: orderData._id,
-    //             message: message,
-    //             picture: picture,
-    //         });
-    //     }
-    //     setMessage("");
-    // };
 
     const sendMessage = useCallback(
         (message, picture) => {
@@ -230,23 +188,11 @@ const Chat = ({ navigation, route }) => {
         },
         [socket, orderData]
     );
-    // const fetchInitialMessages = () => {
-    //     axios
-    //         .get(
-    //             `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${orderData._id}`
-    //         )
-    //         .then((res) => {
-    //             // console.log(res.data.messages)
-    //             setListMessages(res.data.messages);
-    //         })
-    //         .catch((err) => {
-    //             console.log(err);
-    //         });
-    // };
+
     const fetchInitialMessages = useCallback(() => {
         axios
             .get(
-                `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${orderData._id}`
+                `${API_URL}/chatroom/messages?chatroomId=${orderData._id}`
             )
             .then((res) => {
                 setListMessages(res.data.messages);
@@ -258,12 +204,11 @@ const Chat = ({ navigation, route }) => {
 
     const apiUpdateOrder = (status) => {
         axios
-            .post(`http://${IP_ADDRESS}/order/update`, {
+            .post(`${API_URL}/order/update`, {
                 order_id: orderData._id,
                 status: status,
             })
             .then((res) => {
-                // console.log(res.data.message);
                 console.log("Update Order to: ", res.data.orderData.status);
                 orderData.status = res.data.orderData.status;
             })
@@ -363,8 +308,6 @@ const Chat = ({ navigation, route }) => {
                 break;
             default:
                 newStatus = "close";
-                // setButtonStatusLabel("ยืนยันออเดอร์");
-                // setButtonStatusColor("#63BE00");
                 break;
         }
         apiUpdateOrder(newStatus);
@@ -388,7 +331,6 @@ const Chat = ({ navigation, route }) => {
         ]);
     };
     const handleMoreDetail = () => {
-        // console.log(orderData.status);
         const order = { order: orderData, customer: customerData };
         navigation.navigate("ShowOrder", order);
     };
@@ -490,7 +432,6 @@ const Chat = ({ navigation, route }) => {
                             position: "absolute",
                             backgroundColor: "white",
                             borderRadius: 40,
-                            // alignSelf: "flex-end",
                             marginLeft: 90,
                             marginTop: -10,
                         }}

@@ -3,14 +3,22 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import * as LIP from "../../lib/lm-image-picker";
 //Components
-import { ScrollView, StyleSheet, Text, View, Button,Alert } from "react-native";
+import {
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+    Button,
+    Alert,
+    Pressable,
+} from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import CustomTextInput from "../../components/input/CustomTextInput";
 import ImageInput from "../../components/input/ImageInput";
 import SubmitBtn from "../../components/buttons/SubmitBtn";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 
 const AddSecond = ({ navigation }) => {
     useEffect(() => {
@@ -40,7 +48,7 @@ const AddSecond = ({ navigation }) => {
 
     const api_createSecond = (picture) => {
         axios
-            .post(`http://${IP_ADDRESS}/secondHand/create`, {
+            .post(`${API_URL}/secondHand/create`, {
                 name: name,
                 detail: detail,
                 price: price,

@@ -16,7 +16,7 @@ npm install
 ## .env Files
 ### Front-end (Customer and Merchant)
 ```bash
-IP_ADDRESS= {"IP ADDRESS"}: {"PORT"}
+API_URL= http://{"IP ADDRESS"}: {"PORT"}
 ANDROID_CLIENT_ID=xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com
 IOS_CLIENT_ID=xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com
 EXPO_CLIENT_ID=xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com
@@ -26,6 +26,7 @@ CLOUD_DINARY_API = "https://api.cloudinary.com/v1_1/xxxxxxxxx/image/upload"
 ### Back-end
 ```bash
 ENV=DEVELOPMENT
+PORT={"YOUR PORT"}
 DATABASE=mongodb://localhost:{"PORT"}/{"DATABASE NAME"}
 
 SALT= "OWNER_KEY"

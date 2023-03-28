@@ -18,6 +18,7 @@ import {
     Button,
     Pressable,
     Image,
+    TouchableOpacity,
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import BackScreen from "../../components/buttons/BackScreen";
@@ -27,7 +28,7 @@ import DetailRgint from "../../components/buttons/DetailRgint";
 //configs
 import UserContext from "../../hooks/context/UserContext";
 import SocketContext from "../../hooks/context/SocketContext";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 
 const Chat2 = ({ navigation, route }) => {
     //Initial Data
@@ -112,7 +113,7 @@ const Chat2 = ({ navigation, route }) => {
     useEffect(() => {
         if (socket) {
             socket.on("closedChatroom", ({ closed }) => {
-                console.log(closed)
+                console.log(closed);
                 if (closed) {
                     socket_chatroomDisconnect(chatroomData._id);
                     navigation.goBack();
@@ -140,7 +141,7 @@ const Chat2 = ({ navigation, route }) => {
     // const api_initialMessages = () => {
     //     axios
     //         .get(
-    //             `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${chatroomData._id}`
+    //             `${API_URL}/chatroom/messages?chatroomId=${chatroomData._id}`
     //         )
     //         .then((res) => {
     //             // console.log(res.data.messages)
@@ -158,9 +159,7 @@ const Chat2 = ({ navigation, route }) => {
     // };
     const api_initialMessages = useCallback(() => {
         axios
-            .get(
-                `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${chatroomData._id}`
-            )
+            .get(`${API_URL}/chatroom/messages?chatroomId=${chatroomData._id}`)
             .then((res) => {
                 setListOfMessages(res.data.messages);
             })

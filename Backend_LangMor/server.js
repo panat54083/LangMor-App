@@ -33,7 +33,7 @@ const Merchant = mongoose.model("Merchant");
 const Message = mongoose.model("Message");
 
 //Setup Server
-const PORT = 8000;
+const PORT = process.env.PORT;
 const app = require("./app");
 app.use(require("cors")()); // Don't know why I use this
 

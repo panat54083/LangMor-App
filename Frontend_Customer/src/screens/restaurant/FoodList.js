@@ -7,10 +7,11 @@ import {
     Text,
     TouchableOpacity,
     View,
+    Pressable,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 import FoodListHeader from "../../components/headers/FoodListHeader";
 import CardRestaurantName from "../../components/cards/CardRestaurantName";
 import Searchbar from "../../components/searchs/Searchbar";
@@ -38,7 +39,7 @@ const FoodList = ({ route, navigation }) => {
                 try {
                     // console.log(restaurant._id, searchQuery);
                     const response = await axios.get(
-                        `http://${IP_ADDRESS}/restaurant/search_foods?restaurant_id=${restaurant._id}&keyword=${searchQuery}`
+                        `${API_URL}/restaurant/search_foods?restaurant_id=${restaurant._id}&keyword=${searchQuery}`
                     );
                     const data = response.data.foodsData;
                     setfoodsData(formatToSectionList(data));
@@ -58,7 +59,7 @@ const FoodList = ({ route, navigation }) => {
         setIsLoading(true);
         axios
             .get(
-                `http://${IP_ADDRESS}/restaurant/foods?restaurant_id=${restaurant._id}`
+                `${API_URL}/restaurant/foods?restaurant_id=${restaurant._id}`
             )
             .then((res) => {
                 // console.log(formatToSectionList(res.data.foodsData)[0].data[1].options);
@@ -72,7 +73,7 @@ const FoodList = ({ route, navigation }) => {
     const api_updateFavorite = () => {
         setIsOnFav(true);
         axios
-            .post(`http://${IP_ADDRESS}/customer/update_fav`, {
+            .post(`${API_URL}/customer/update_fav`, {
                 restaurant_id: restaurant._id,
                 customer_id: state.userData._id,
             })

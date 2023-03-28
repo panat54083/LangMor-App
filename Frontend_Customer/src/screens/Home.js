@@ -8,8 +8,6 @@ import {
     StyleSheet,
     Text,
     View,
-    SafeAreaView,
-    Image,
     Button,
     Pressable,
     ScrollView,
@@ -24,7 +22,7 @@ import UserContext from "../hooks/context/UserContext";
 import SocketContext from "../hooks/context/SocketContext";
 import BasketContext from "../hooks/context/BasketContext";
 import HomeHeader from "../components/headers/HomeHeader";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 
 const Home = ({ navigation }) => {
     //config
@@ -48,7 +46,7 @@ const Home = ({ navigation }) => {
     const fetchChatrooms = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/chatroom/chatrooms?customerId=${state.userData._id}`
+                `${API_URL}/chatroom/chatrooms?customerId=${state.userData._id}`
             )
             .then((res) => {
                 // console.log(res.data.message);

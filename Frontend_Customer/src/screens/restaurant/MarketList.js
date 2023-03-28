@@ -1,7 +1,7 @@
 //Packages
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 import { AntDesign } from "@expo/vector-icons";
 //Components
 import {
@@ -9,7 +9,6 @@ import {
     StyleSheet,
     Text,
     View,
-    FlatList,
     TouchableOpacity,
     ActivityIndicator,
     ScrollView,
@@ -91,7 +90,7 @@ const MarketList = ({ navigation }) => {
             const delayDebounceFn = setTimeout(async () => {
                 try {
                     const response = await axios.get(
-                        `http://${IP_ADDRESS}/restaurant/search_restaurant?keyword=${searchQuery}`
+                        `${API_URL}/restaurant/search_restaurant?keyword=${searchQuery}`
                     );
                     const data = response.data.results;
                     setRestaurants(data);
@@ -135,7 +134,7 @@ const MarketList = ({ navigation }) => {
         const number = 2;
         return axios
             .get(
-                `http://${IP_ADDRESS}/restaurant/random_restaurants?number=${number}`
+                `${API_URL}/restaurant/random_restaurants?number=${number}`
             )
             .then((res) => {
                 console.log(res.data.message);
@@ -150,7 +149,7 @@ const MarketList = ({ navigation }) => {
     const fetchRestaurants = async () => {
         return axios
             .get(
-                `http://${IP_ADDRESS}/restaurant//limit_restaurant?skip=${skip}&limit=10`
+                `${API_URL}/restaurant//limit_restaurant?skip=${skip}&limit=10`
             )
             .then((res) => {
                 // console.log(res.data.restaurantData);

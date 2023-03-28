@@ -7,7 +7,6 @@ import {
     StyleSheet,
     Text,
     View,
-    SafeAreaView,
     Button,
     ScrollView,
 } from "react-native";
@@ -16,7 +15,7 @@ import ChoiceBtn from "../../components/buttons/ChoiceBtn";
 import { FontAwesome5 } from "@expo/vector-icons";
 //Config
 import UserContext from "../../hooks/context/UserContext";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 
 const OptionsManage = ({ navigation }) => {
     const { state } = useContext(UserContext);
@@ -46,7 +45,7 @@ const OptionsManage = ({ navigation }) => {
     const fetchOptions = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/restaurant/options?restaurant_id=${state.restaurantData._id}`
+                `${API_URL}/restaurant/options?restaurant_id=${state.restaurantData._id}`
             )
             .then((res) => {
                 setOptions(res.data.options);

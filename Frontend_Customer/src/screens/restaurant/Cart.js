@@ -2,7 +2,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 //Components
-import { ScrollView, StyleSheet, Text, View, Alert } from "react-native";
+import {
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+    Alert,
+    Button,
+} from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import AddressBoxDetail from "../../components/cards/AddressBoxDetail";
 import OrderListSummary from "../../components/cards/OrderListSummary";
@@ -10,7 +17,7 @@ import SubmitBtn from "../../components/buttons/SubmitBtn";
 //Configs
 import BasketContext from "../../hooks/context/BasketContext";
 import UserContext from "../../hooks/context/UserContext";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 
 const Cart = ({ route, navigation }) => {
     const { basketDetail, setBasketDetail } = useContext(BasketContext);
@@ -64,7 +71,7 @@ const Cart = ({ route, navigation }) => {
 
     const apiCreateChatroom = async () => {
         axios
-            .post(`http://${IP_ADDRESS}/chatroom/create`, {
+            .post(`${API_URL}/chatroom/create`, {
                 customerId: state.userData._id,
                 restaurantId: basketDetail.restaurant._id,
             })
@@ -77,7 +84,7 @@ const Cart = ({ route, navigation }) => {
     };
     const apiSaveOrder = async () => {
         axios
-            .post(`http://${IP_ADDRESS}/order/save`, {
+            .post(`${API_URL}/order/save`, {
                 customerId: state.userData._id,
                 restaurantId: basketDetail.restaurant._id,
                 cart: basketDetail.foods,
@@ -107,8 +114,8 @@ const Cart = ({ route, navigation }) => {
         apiSaveOrder();
     };
     const handleAddFoods = () => {
-        navigation.goBack()
-    }
+        navigation.goBack();
+    };
     const handleOnPressEdit = (order) => {
         navigation.navigate("FoodDetail", {
             food: order.food,
@@ -127,14 +134,16 @@ const Cart = ({ route, navigation }) => {
                             width: "92.53%",
                         }}
                     >
-                        <AddressBoxDetail setAddress={setAddress} value={address}/>
+                        <AddressBoxDetail
+                            setAddress={setAddress}
+                            value={address}
+                        />
                     </View>
                     <View style={{ marginTop: 8, width: "92.53%" }}>
                         <OrderListSummary
                             allprice={findPriceOfOrder()}
                             handleOnPressEdit={handleOnPressEdit}
                             onPressAddFoods={handleAddFoods}
-                        
                         />
                     </View>
                 </View>

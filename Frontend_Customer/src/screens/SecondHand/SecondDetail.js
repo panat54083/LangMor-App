@@ -8,7 +8,6 @@ import {
     StyleSheet,
     Text,
     View,
-    ScrollView,
     Button,
     Image,
     Pressable,
@@ -18,7 +17,7 @@ import SubmitBtn from "../../components/buttons/SubmitBtn";
 import ItemDetail from "../../components/cards/ItemDetail";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 
 const SecondDetail = ({ route, navigation }) => {
     //Config
@@ -64,7 +63,7 @@ const SecondDetail = ({ route, navigation }) => {
 
     const api_createChatroom = async () => {
         axios
-            .post(`http://${IP_ADDRESS}/chatroom/create`, {
+            .post(`${API_URL}/chatroom/create`, {
                 customerId: state.userData._id,
                 merchantId: itemData.owner_id,
                 itemId: itemData._id,
@@ -88,7 +87,7 @@ const SecondDetail = ({ route, navigation }) => {
     const api_getOwnerData = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/secondHand/getOwner?owner_id=${itemData.owner_id}&item_id=${itemData._id}`
+                `${API_URL}/secondHand/getOwner?owner_id=${itemData.owner_id}&item_id=${itemData._id}`
             )
             .then((res) => {
                 setOwnerData(res.data.ownerData);

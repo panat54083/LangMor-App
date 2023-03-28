@@ -11,20 +11,16 @@ import {
     View,
     ImageBackground,
     ScrollView,
-    SafeAreaView,
-    SectionList,
     TextInput,
     Alert,
 } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import SubmitBtn from "../../components/buttons/SubmitBtn";
-import CustomTextInput from "../../components/input/CustomTextInput";
 import EditTextInput from "../../components/input/EditTextInput";
-import Edit from "../../components/buttons/Edit";
 import ImageInput from "../../components/input/ImageInput";
 
 //Configs
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 import UserContext from "../../hooks/context/UserContext";
 
 const EditPost = ({ navigation, route }) => {
@@ -69,7 +65,7 @@ const EditPost = ({ navigation, route }) => {
 
     const api_LostItemUpdate = (picture) => {
         axios
-            .post(`http://${IP_ADDRESS}/lostItem/update`, {
+            .post(`${API_URL}/lostItem/update`, {
                 item_id: itemData._id,
                 updated_data: {
                     name: name,

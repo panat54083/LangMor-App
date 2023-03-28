@@ -4,9 +4,10 @@ import {
     View,
     FlatList,
     ActivityIndicator,
+    Button,
 } from "react-native";
 import axios from "axios";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 import React, { useContext, useEffect, useState } from "react";
 import BackScreen from "../../components/buttons/BackScreen";
 import UserContext from "../../hooks/context/UserContext";
@@ -40,7 +41,7 @@ const FavRestaurants = ({ navigation }) => {
     const fetchRestaurants = () => {
         setIsLoading(true);
         axios
-            .get(`http://${IP_ADDRESS}/restaurant/get_fav_restaurants`, {
+            .get(`${API_URL}/restaurant/get_fav_restaurants`, {
                 params: {
                     idList: state.userData.favorite_restaurants,
                 },

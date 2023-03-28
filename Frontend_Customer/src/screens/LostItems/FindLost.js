@@ -10,12 +10,13 @@ import {
     ScrollView,
     Button,
     ActivityIndicator,
+    TouchableOpacity,
 } from "react-native";
 import Item from "../../components/cards/Item";
 import Searchbar from "../../components/searchs/Searchbar";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 
 const FindLost = ({ navigation }) => {
     //Configs
@@ -45,7 +46,7 @@ const FindLost = ({ navigation }) => {
         setIsLoading(skip ? false : true);
         axios
             .get(
-                `http://${IP_ADDRESS}/lostItem/getLimit?type=${"find"}&owner_id=${
+                `${API_URL}/lostItem/getLimit?type=${"find"}&owner_id=${
                     state.userData._id
                 }&skip=${skip}&limit=10`
             )
@@ -73,7 +74,7 @@ const FindLost = ({ navigation }) => {
             const delayDebounceFn = setTimeout(async () => {
                 try {
                     const response = await axios.get(
-                        `http://${IP_ADDRESS}/lostItem/search?keyword=${searchQuery}&owner_id=${state.userData._id}&type=find&skip=${skip}&limit=10`
+                        `${API_URL}/lostItem/search?keyword=${searchQuery}&owner_id=${state.userData._id}&type=find&skip=${skip}&limit=10`
                     );
                     const data = response.data.lostItemsData;
                     setListOfLostItems(data);

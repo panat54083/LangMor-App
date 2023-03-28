@@ -10,12 +10,13 @@ import {
     ScrollView,
     Button,
     ActivityIndicator,
+    Pressable
 } from "react-native";
 import Item from "../../components/cards/Item";
 import Searchbar from "../../components/searchs/Searchbar";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 
 const BuySecond = ({ navigation }) => {
     //Configs
@@ -23,7 +24,6 @@ const BuySecond = ({ navigation }) => {
     const isFocused = useIsFocused();
     //Variables
     const [listSecondHands, setListSecondHands] = useState([]);
-    console.log("initail list: ", listSecondHands.length);
     const [searchQuery, setSearchQuery] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isLoadingScroll, setIsLoadingScroll] = useState(false);
@@ -34,8 +34,6 @@ const BuySecond = ({ navigation }) => {
         setListSecondHands([])
         if (isFocused) {
             setSkip(0);
-            // console.log("initial skip: ", skip)
-            console.log("length :", listSecondHands.length);
         }
         console.log("isFocused");
     }, [isFocused]);
@@ -50,7 +48,6 @@ const BuySecond = ({ navigation }) => {
 
     useEffect(() => {
         if (!isSearch) {
-            console.log("skip", skip);
             setIsLoading(skip ? false : true);
             setIsLoadingScroll(true);
 
@@ -67,7 +64,7 @@ const BuySecond = ({ navigation }) => {
     const api_getAllSecondHands = async () => {
         return axios
             .get(
-                `http://${IP_ADDRESS}/secondHand/getLimit?owner_id=${state.userData._id}&skip=${skip}&limit=10`
+                `${API_URL}/secondHand/getLimit?owner_id=${state.userData._id}&skip=${skip}&limit=10`
             )
             .then((res) => {
                 return res.data.listSecondHands;
@@ -91,7 +88,7 @@ const BuySecond = ({ navigation }) => {
             const delayDebounceFn = setTimeout(async () => {
                 try {
                     const response = await axios.get(
-                        `http://${IP_ADDRESS}/secondHand/search?keyword=${searchQuery}&owner_id=${state.userData._id}`
+                        `${API_URL}/secondHand/search?keyword=${searchQuery}&owner_id=${state.userData._id}`
                     );
                     const data = response.data.secondHandsData;
                     setListSecondHands(data);

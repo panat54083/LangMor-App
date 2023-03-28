@@ -10,12 +10,13 @@ import {
     View,
     ScrollView,
     ActivityIndicator,
+    Pressable,
 } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import CardMarket from "../../components/Cards/CardMarket";
 import Searchbar from "../../components/Inputs/Searchbar";
 //Config
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 import UserContext from "../../hooks/context/UserContext";
 
 const SelectRestaurant = ({ navigation }) => {
@@ -47,7 +48,7 @@ const SelectRestaurant = ({ navigation }) => {
 
     const api_restaurantGetALL = () => {
         axios
-            .get(`http://${IP_ADDRESS}/restaurant/all_restaurant`)
+            .get(`${API_URL}/restaurant/all_restaurant`)
             .then((res) => {
                 // console.log(res.data.restaurantData);
                 setRestaurants(res.data.restaurantData);
@@ -75,7 +76,7 @@ const SelectRestaurant = ({ navigation }) => {
 
     const api_registerRestaurantAsWorker = (restaurant) => {
         axios
-            .post(`http://${IP_ADDRESS}/restaurant/registerAsWorker`, {
+            .post(`${API_URL}/restaurant/registerAsWorker`, {
                 restaurant_id: restaurant._id,
                 worker_id: state.userData._id,
             })
@@ -101,7 +102,7 @@ const SelectRestaurant = ({ navigation }) => {
             const delayDebounceFn = setTimeout(async () => {
                 try {
                     const response = await axios.get(
-                        `http://${IP_ADDRESS}/restaurant/search_merchant_restaurant?keyword=${searchQuery}`
+                        `${API_URL}/restaurant/search_merchant_restaurant?keyword=${searchQuery}`
                     );
                     const data = response.data.restaurantsData;
                     // console.log(data);

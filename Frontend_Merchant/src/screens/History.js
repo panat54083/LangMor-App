@@ -8,7 +8,6 @@ import {
     Button,
     Text,
     View,
-    ImageBackground,
     ScrollView,
     SafeAreaView,
     SectionList,
@@ -16,7 +15,7 @@ import {
 import OrderCard from "../components/Cards/OrderCard";
 import BackScreen from "../components/buttons/BackScreen";
 // Configs
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 import UserContext from "../hooks/context/UserContext";
 
 const History = ({ navigation }) => {
@@ -83,7 +82,7 @@ const History = ({ navigation }) => {
     const apiShowOrder = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/order/get?restaurant_id=${
+                `${API_URL}/order/get?restaurant_id=${
                     state.restaurantData._id
                 }&&status=${"close,cancel"}`
             )

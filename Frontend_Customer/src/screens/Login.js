@@ -5,6 +5,7 @@ import {
     SafeAreaView,
     ImageBackground,
     StyleSheet,
+    Button,
 } from "react-native";
 import { useContext, useState, useEffect } from "react";
 import GoogleLogin from "../components/buttons/GoogleLogin";
@@ -13,7 +14,7 @@ import {
     ANDROID_CLIENT_ID,
     IOS_CLIENT_ID,
     EXPO_CLIENT_ID,
-    IP_ADDRESS,
+    API_URL,
 } from "@env";
 import * as WebBrowser from "expo-web-browser";
 import UserContext from "../hooks/context/UserContext";
@@ -112,7 +113,7 @@ const Login = () => {
     //send Google user's data to Backend server
     const fetchLogin = (userData) => {
         axios
-            .post(`http://${IP_ADDRESS}/customer/login`, userData)
+            .post(`${API_URL}/customer/login`, userData)
             .then(async (res) => {
                 // console.log("Fetch Login: ", res.data.message);
                 // console.log("Token: ", res.data.token);
@@ -134,7 +135,7 @@ const Login = () => {
     //get customer information by token
     const fetchUserInfo = async (token) => {
         return axios
-            .get(`http://${IP_ADDRESS}/customer/info`, {
+            .get(`${API_URL}/customer/info`, {
                 headers: {
                     Authorization: token,
                 },
@@ -154,7 +155,7 @@ const Login = () => {
     };
     //Setup Socket
     const setupSocket = async (token) => {
-        const newSocket = io(`http://${IP_ADDRESS}`, {
+        const newSocket = io(`${API_URL}`, {
             query: {
                 token: token,
             },

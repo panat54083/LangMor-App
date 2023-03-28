@@ -16,7 +16,6 @@ import {
     Text,
     View,
     Button,
-    FlatList,
     Pressable,
     Image,
 } from "react-native";
@@ -29,7 +28,7 @@ import OrderMessage from "../../components/cards/Chat/OrderMessage";
 import BasketContext from "../../hooks/context/BasketContext";
 import UserContext from "../../hooks/context/UserContext";
 import SocketContext from "../../hooks/context/SocketContext";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 
 const Chat = ({ navigation, route }) => {
     //config
@@ -100,8 +99,8 @@ const Chat = ({ navigation, route }) => {
         if (socket) {
             socket.on("closedChatroom", ({ closed }) => {
                 if (closed) {
-                    chatroom_disconnect(orderData._id)
-                    handleGoBack()
+                    chatroom_disconnect(orderData._id);
+                    handleGoBack();
                 }
             });
             socket.on("newMessage", (data) => {
@@ -140,7 +139,7 @@ const Chat = ({ navigation, route }) => {
 
     const closeChatroom = async () => {
         axios
-            .post(`http://${IP_ADDRESS}/chatroom/closed`, {
+            .post(`${API_URL}/chatroom/closed`, {
                 chatroomId: null,
             })
             .then((res) => {
@@ -177,7 +176,7 @@ const Chat = ({ navigation, route }) => {
     // const fetchInitialMessages = () => {
     //     axios
     //         .get(
-    //             `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${orderData._id}`
+    //             `${API_URL}/chatroom/messages?chatroomId=${orderData._id}`
     //         )
     //         .then((res) => {
     //             // console.log(res.data.messages)
@@ -189,9 +188,7 @@ const Chat = ({ navigation, route }) => {
     // };
     const fetchInitialMessages = useCallback(() => {
         axios
-            .get(
-                `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${orderData._id}`
-            )
+            .get(`${API_URL}/chatroom/messages?chatroomId=${orderData._id}`)
             .then((res) => {
                 setListMessages(res.data.messages);
             })

@@ -6,9 +6,8 @@ import { useIsFocused } from "@react-navigation/native";
 import { Button, StyleSheet, Text, View } from "react-native";
 import OrderCard from "../../components/Cards/OrderCard";
 //Config
-import SocketContext from "../../hooks/context/SocketContext";
 import UserContext from "../../hooks/context/UserContext";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 
 const DoneOrder = ({ navigation }) => {
     //config
@@ -25,7 +24,7 @@ const DoneOrder = ({ navigation }) => {
     const apiShowOrder = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/order/get?restaurant_id=${
+                `${API_URL}/order/get?restaurant_id=${
                     state.restaurantData._id
                 }&&status=${"done"}`
             )
