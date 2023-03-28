@@ -23,7 +23,7 @@ exports.getMyLostItemsPosts = async (req, res) => {
     const lostItems = await LostItem.find({
         owner_id: owner_id,
         closed: closed_bool,
-    });
+    }).sort({updatedAt: -1});
 
     res.json({
         message: "Get Lost Items done...",

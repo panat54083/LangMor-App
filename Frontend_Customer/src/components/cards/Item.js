@@ -4,14 +4,45 @@ import React from "react";
 
 const Item = (props) => {
     const { itemData, onPress, type } = props;
+    const formatTimestamp = (time) => {
+        if (time !== null) {
+            const date = new Date(time);
+            const times = date.toLocaleTimeString("en-US", {
+                hour12: true,
+                hourCycle: "h12",
+            });
+            const [hour, minute] = times.split(":").slice(0, 2);
+            const formattedTime = `${hour}.${minute}`;
+            return formattedTime;
+        } else {
+            return "";
+        }
+    };
+    const formatDate = (item) => {
+        const date = new Date(item);
+
+        const day = date.getUTCDate();
+        const month = date.getUTCMonth() + 1;
+        const year = date.getUTCFullYear();
+        const output = `${day < 10 ? "0" + day : day}/${
+            month < 10 ? "0" + month : month
+        }/${year}`;
+        return output;
+    };
     // console.log(itemData);
     return (
         <>
             {type === "second" ? (
-                <TouchableOpacity onPress={onPress}>
+                <TouchableOpacity onPress={() => onPress()}>
                     <View style={styles.container}>
                         {itemData.picture ? (
-                            <View style={{ marginLeft: "6%" }}>
+                            <View
+                                style={{
+                                    marginLeft: "6%",
+                                    backgroundColor: null,
+                                    justifyContent: "center",
+                                }}
+                            >
                                 <Image
                                     style={styles.logo}
                                     source={{
@@ -33,16 +64,30 @@ const Item = (props) => {
                                 {itemData.name}
                             </Text>
                             <View style={styles.textPriceContainer}>
-                                <FontAwesome5 name="money-bill-alt" size={16} color="#148F12" />
-                                {/* <FontAwesome5
-                                    name="money-bill-wave"
+                                <FontAwesome5
+                                    name="money-bill-alt"
                                     size={16}
                                     color="#148F12"
-                                /> */}
+                                />
                                 <Text style={styles.textPriceStyle}>
                                     {`  ${itemData.price}`} บาท
                                 </Text>
                             </View>
+                            {itemData.closed === true && (
+                                <Text
+                                    style={[
+                                        styles.textPriceStyle,
+                                        { color: "#FF0101" },
+                                    ]}
+                                >
+                                    {`ปิดเมื่อ ${formatDate(
+                                        itemData.updatedAt
+                                    )} ${formatTimestamp(
+                                        itemData.updatedAt
+                                    )}`}{" "}
+                                    น.
+                                </Text>
+                            )}
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -50,7 +95,7 @@ const Item = (props) => {
                 <TouchableOpacity onPress={onPress}>
                     <View style={styles.container}>
                         {itemData.picture ? (
-                            <View style={{ marginLeft: "6%" }}>
+                            <View style={{ marginLeft: "6%" , justifyContent: "center"}}>
                                 <Image
                                     style={styles.logo}
                                     source={{
@@ -89,6 +134,21 @@ const Item = (props) => {
                                     {`${itemData.detail}`}
                                 </Text>
                             </View>
+                            {itemData.closed === true && (
+                                <Text
+                                    style={[
+                                        styles.textPriceStyle,
+                                        { color: "#FF0101" },
+                                    ]}
+                                >
+                                    {`ปิดเมื่อ ${formatDate(
+                                        itemData.updatedAt
+                                    )} ${formatTimestamp(
+                                        itemData.updatedAt
+                                    )}`}{" "}
+                                    น.
+                                </Text>
+                            )}
                         </View>
                     </View>
                 </TouchableOpacity>
