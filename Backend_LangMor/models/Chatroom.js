@@ -14,9 +14,9 @@ const chatroomSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             required: true,
         },
-        type:{
+        type: {
             type: String,
-            enum: ["LostItem", "SecondHand"]
+            enum: ["LostItem", "SecondHand"],
         },
         closed: {
             type: Boolean,
@@ -28,4 +28,4 @@ const chatroomSchema = new mongoose.Schema(
     }
 );
 
-module.exports = mongoose.model("Chatroom", chatroomSchema)
+module.exports = mongoose.model("Chatroom", chatroomSchema);

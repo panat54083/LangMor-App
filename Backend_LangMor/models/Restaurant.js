@@ -33,10 +33,10 @@ const restaurantSchema = new mongoose.Schema(
             type: [],
             defualt: [],
         },
-        description:{
+        description: {
             type: String,
-            defulat: ""
-        }
+            defulat: "",
+        },
     },
     {
         timestamps: true,
