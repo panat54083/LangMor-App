@@ -1,9 +1,10 @@
 //Packages
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, useCallback } from "react";
 import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
 //Components
 import {
+    RefreshControl,
     StyleSheet,
     Text,
     View,
@@ -26,6 +27,14 @@ const SellSecond = ({ navigation }) => {
     const [listSecondHands, setListSecondHands] = useState([]);
     const [listOfChatrooms, setListOfChatrooms] = useState([]);
     const [listOfSecondChats, setListOfSecondChats] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 2000);
+    }, []);
 
     useEffect(() => {
         if (isFocused) {
@@ -34,6 +43,12 @@ const SellSecond = ({ navigation }) => {
         }
     }, [isFocused]);
 
+    useEffect(() => {
+        if (refreshing) {
+            api_getMyPosts();
+            api_getAllChatrooms();
+        }
+    }, [refreshing]);
     useEffect(() => {
         if (listOfChatrooms && listSecondHands) {
             concat_listOfSecondChat();
@@ -106,7 +121,17 @@ const SellSecond = ({ navigation }) => {
     };
 
     return (
-        <ScrollView style={styles.scrollView_container}>
+        <ScrollView
+            style={styles.scrollView_container}
+            refreshControl={
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    progressBackgroundColor={"white"}
+                    colors={["#FF7A00"]}
+                />
+            }
+        >
             {/* <Button title="Debugger" onPress={handleDebugger} /> */}
             <View style={styles.add_container}>
                 <AddButton onPress={handleAddSecond} />

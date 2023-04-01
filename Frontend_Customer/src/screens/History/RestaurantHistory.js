@@ -1,8 +1,15 @@
-import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
+import React, {
+    useContext,
+    useEffect,
+    useLayoutEffect,
+    useState,
+    useCallback,
+} from "react";
 import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
 // Components
 import {
+    RefreshControl,
     StyleSheet,
     Button,
     Text,
@@ -10,6 +17,7 @@ import {
     ImageBackground,
     SafeAreaView,
     SectionList,
+    ScrollView,
 } from "react-native";
 //Components
 import OrderCard from "../../components/cards/Order/OrderCard";
@@ -24,12 +32,26 @@ const RestaurantHistory = ({ navigation }) => {
     //Variables
     const { state } = useContext(UserContext);
     const [orders, setOrders] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 2000);
+    }, []);
 
     useEffect(() => {
         if (isFocused) {
             apiShowOrder();
         }
     }, [isFocused]);
+
+    useEffect(() => {
+        if (refreshing) {
+            apiShowOrder();
+        }
+    }, [refreshing]);
 
     const formatDate = (item) => {
         const date = new Date(item);
@@ -88,6 +110,14 @@ const RestaurantHistory = ({ navigation }) => {
             {/* <Button title="Debugger" onPress={handleDebugger} /> */}
             {orders.length !== 0 ? (
                 <SectionList
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                            progressBackgroundColor={"white"}
+                            colors={["#FF7A00"]}
+                        />
+                    }
                     sections={orders}
                     keyExtractor={(item, index) => item + index}
                     renderItem={({ item, index }) => (
@@ -124,23 +154,35 @@ const RestaurantHistory = ({ navigation }) => {
                     )}
                 />
             ) : (
-                <View
-                    style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flex: 1,
-                        alignSelf: "center",
-                        position: "absolute",
-                    }}
+                <ScrollView
+                    style={{ flex: 1 }}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                            progressBackgroundColor={"white"}
+                            colors={["#FF7A00"]}
+                        />
+                    }
                 >
-                    <MaterialCommunityIcons
-                        name="chat-question"
-                        size={100}
-                        color="#C9C5C4"
-                    />
-                    <Text style={styles.font}>ไม่พบประวัติ</Text>
-                    <Text style={styles.font}>ทำรายการร้านค้า</Text>
-                </View>
+                    <View
+                        style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            flex: 1,
+                            alignSelf: "center",
+                            // position: "absolute",
+                        }}
+                    >
+                        <MaterialCommunityIcons
+                            name="chat-question"
+                            size={100}
+                            color="#C9C5C4"
+                        />
+                        <Text style={styles.font}>ไม่พบประวัติ</Text>
+                        <Text style={styles.font}>ทำรายการร้านค้า</Text>
+                    </View>
+                </ScrollView>
             )}
         </View>
     );
@@ -161,9 +203,9 @@ const styles = StyleSheet.create({
     orderCard: {
         marginHorizontal: 10,
     },
-    font:{
+    font: {
         fontFamily: "Kanit-Bold",
         fontSize: 25,
-        color: "#C9C5C4"
-    }
+        color: "#C9C5C4",
+    },
 });

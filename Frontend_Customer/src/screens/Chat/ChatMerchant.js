@@ -1,9 +1,10 @@
 //Packages
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
 //Components
 import {
+    RefreshControl,
     StyleSheet,
     Text,
     View,
@@ -21,14 +22,28 @@ const ChatMerchant = ({ navigation }) => {
     //configs
     const isFocused = useIsFocused();
     const { state } = useContext(UserContext);
+    const [refreshing, setRefreshing] = useState(false);
     //data
     const [orders, setOrders] = useState([]);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 2000);
+    }, []);
 
     useEffect(() => {
         if (isFocused) {
             apiShowOrder();
         }
     }, [isFocused]);
+
+    useEffect(() => {
+        if (refreshing) {
+            apiShowOrder();
+        }
+    }, [refreshing]);
     // useEffect(() => {
     //     console.log(orders);
     // }, [orders]);
@@ -55,37 +70,46 @@ const ChatMerchant = ({ navigation }) => {
         });
     };
     return (
-        <View>
-            {orders[0] ? (
-                orders.map((order, index) => (
-                    <ScrollView key={index}>
+        <View style={{ flex: 1 }}>
+            <ScrollView
+                style={{ flex: 1 }}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                        progressBackgroundColor={"white"}
+                        colors={["#FF7A00"]}
+                    />
+                }
+            >
+                {orders[0] ? (
+                    orders.map((order, index) => (
                         <View key={index} style={styles.orderContainer}>
                             <Order
                                 order={order}
                                 onPress={() => handleChatroom(order)}
                             />
                         </View>
-                    </ScrollView>
-                ))
-            ) : (
-                <View
-                    style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flex: 1,
-                        alignSelf: "center",
-                        position: "absolute",
-                    }}
-                >
-                    <MaterialCommunityIcons
-                        name="chat-question"
-                        size={100}
-                        color="#C9C5C4"
-                    />
-                    <Text style={styles.font}>คุณยังไม่ได้ทำรายการ</Text>
-                    <Text style={styles.font}>ติดต่อซื้อของร้านค้า</Text>
-                </View>
-            )}
+                    ))
+                ) : (
+                    <View
+                        style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            flex: 1,
+                            alignSelf: "center",
+                        }}
+                    >
+                        <MaterialCommunityIcons
+                            name="chat-question"
+                            size={100}
+                            color="#C9C5C4"
+                        />
+                        <Text style={styles.font}>คุณยังไม่ได้ทำรายการ</Text>
+                        <Text style={styles.font}>ติดต่อซื้อของร้านค้า</Text>
+                    </View>
+                )}
+            </ScrollView>
         </View>
     );
 };

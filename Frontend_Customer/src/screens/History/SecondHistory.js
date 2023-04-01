@@ -1,8 +1,15 @@
-import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
+import React, {
+    useContext,
+    useEffect,
+    useLayoutEffect,
+    useState,
+    useCallback,
+} from "react";
 import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
 // Components
 import {
+    RefreshControl,
     StyleSheet,
     Button,
     Text,
@@ -24,12 +31,20 @@ const SecondHistory = ({ navigation }) => {
     //Configs
     const isFocused = useIsFocused();
     const [status, setStatus] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
     //Variables
     const { state } = useContext(UserContext);
     const [orders, setOrders] = useState([]);
     const [listSecondHands, setListSecondHands] = useState([]);
     const [listOfChatrooms, setListOfChatrooms] = useState([]);
     const [listOfSecondChats, setListOfSecondChats] = useState([]);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 2000);
+    }, []);
 
     useEffect(() => {
         if (isFocused) {
@@ -38,6 +53,14 @@ const SecondHistory = ({ navigation }) => {
             api_getMyPosts();
         }
     }, [isFocused]);
+
+    useEffect(() => {
+        if (refreshing) {
+            api_getAllChatrooms("customerId");
+            api_getAllChatrooms("merchantId");
+            api_getMyPosts();
+        }
+    }, [refreshing]);
 
     useEffect(() => {
         if (!status && listOfChatrooms && listSecondHands) {
@@ -97,7 +120,10 @@ const SecondHistory = ({ navigation }) => {
         //     itemData: data.itemData,
         //     chatroomData: data.chatroom,
         // });
-        navigation.navigate("SecondDetail", { secondData: data.itemData, historyChatroomData: data.chatroom });
+        navigation.navigate("SecondDetail", {
+            secondData: data.itemData,
+            historyChatroomData: data.chatroom,
+        });
     };
     const handleChangeStatus = () => {
         setStatus(!status);
@@ -116,7 +142,17 @@ const SecondHistory = ({ navigation }) => {
 
     return (
         <View style={{ flex: 1 }}>
-            <ScrollView style={{ flex: 1 }}>
+            <ScrollView
+                style={{ flex: 1 }}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                        progressBackgroundColor={"white"}
+                        colors={["#FF7A00"]}
+                    />
+                }
+            >
                 {/* <Button title="Debugger" onPress={handleDebugger} /> */}
                 {orders.length !== 0 &&
                     status &&
@@ -142,25 +178,26 @@ const SecondHistory = ({ navigation }) => {
                             />
                         </View>
                     ))}
-                {((orders.length === 0 && status) || (listOfSecondChats.length === 0 && !status)) && (
-                        <View
-                            style={{
-                                justifyContent: "center",
-                                alignItems: "center",
-                                flex: 1,
-                                alignSelf: "center",
-                                // position: "absolute",
-                            }}
-                        >
-                            <MaterialCommunityIcons
-                                name="chat-question"
-                                size={100}
-                                color="#C9C5C4"
-                            />
-                            <Text style={styles.font}>ไม่พบประวัติ</Text>
-                            <Text style={styles.font}>ติดต่อของมือสอง</Text>
-                        </View>
-                    )}
+                {((orders.length === 0 && status) ||
+                    (listOfSecondChats.length === 0 && !status)) && (
+                    <View
+                        style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            flex: 1,
+                            alignSelf: "center",
+                            // position: "absolute",
+                        }}
+                    >
+                        <MaterialCommunityIcons
+                            name="chat-question"
+                            size={100}
+                            color="#C9C5C4"
+                        />
+                        <Text style={styles.font}>ไม่พบประวัติ</Text>
+                        <Text style={styles.font}>ติดต่อของมือสอง</Text>
+                    </View>
+                )}
             </ScrollView>
             <View style={styles.changeButton}>
                 <StateBtn

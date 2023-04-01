@@ -1,8 +1,15 @@
-import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
+import React, {
+    useContext,
+    useEffect,
+    useLayoutEffect,
+    useState,
+    useCallback,
+} from "react";
 import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
 // Components
 import {
+    RefreshControl,
     StyleSheet,
     Button,
     Text,
@@ -24,12 +31,21 @@ const LostHistory = ({ navigation }) => {
     //Configs
     const isFocused = useIsFocused();
     const [status, setStatus] = useState(true);
+
     //Variables
     const { state } = useContext(UserContext);
     const [orders, setOrders] = useState([]);
     const [listLostItems, setListLostItems] = useState([]);
     const [listOfChatrooms, setListOfChatrooms] = useState([]);
     const [listOfLostChats, setListOfLostChats] = useState([]);
+
+    const [refreshing, setRefreshing] = useState(false);
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 2000);
+    }, []);
 
     useEffect(() => {
         if (isFocused) {
@@ -38,6 +54,14 @@ const LostHistory = ({ navigation }) => {
             api_getMyPosts();
         }
     }, [isFocused]);
+
+    useEffect(() => {
+        if (refreshing) {
+            api_getAllChatrooms("customerId");
+            api_getAllChatrooms("merchantId");
+            api_getMyPosts();
+        }
+    }, [refreshing]);
 
     useEffect(() => {
         if (!status && listOfChatrooms && listLostItems) {
@@ -122,7 +146,17 @@ const LostHistory = ({ navigation }) => {
     return (
         <View style={{ flex: 1 }}>
             {/* <Button title="Debugger" onPress={handleDebugger} />  */}
-            <ScrollView style={{ flex: 1 }}>
+            <ScrollView
+                style={{ flex: 1 }}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                        progressBackgroundColor={"white"}
+                        colors={["#FF7A00"]}
+                    />
+                }
+            >
                 {orders.length !== 0 &&
                     status &&
                     orders.map((item, index) => (
