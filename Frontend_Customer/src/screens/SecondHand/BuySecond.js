@@ -10,12 +10,13 @@ import {
     ScrollView,
     Button,
     ActivityIndicator,
+    Pressable
 } from "react-native";
 import Item from "../../components/cards/Item";
 import Searchbar from "../../components/searchs/Searchbar";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 
 const BuySecond = ({ navigation }) => {
     //Configs
@@ -25,33 +26,48 @@ const BuySecond = ({ navigation }) => {
     const [listSecondHands, setListSecondHands] = useState([]);
     const [searchQuery, setSearchQuery] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [isLoadingScrool, setIsLoadingScroll] = useState(false);
+    const [isLoadingScroll, setIsLoadingScroll] = useState(false);
     const [skip, setSkip] = useState(0);
     const [isSearch, setIsSearch] = useState(false);
     //Start up
     useEffect(() => {
-        setSkip(0);
+        setListSecondHands([])
+        if (isFocused) {
+            setSkip(0);
+        }
+        console.log("isFocused");
     }, [isFocused]);
+
+    // useEffect(() => {
+    //     const unsubscribe = navigation.addListener("focus", () => {
+    //         console.log("listener");
+    //     });
+
+    //     return unsubscribe;
+    // }, [navigation]);
+
     useEffect(() => {
         if (!isSearch) {
-            api_getAllSecondHands();
-        }
-    }, [skip, isSearch]);
+            setIsLoading(skip ? false : true);
+            setIsLoadingScroll(true);
 
-    const api_getAllSecondHands = () => {
-        setIsLoading(skip ? false : true);
-        setIsLoadingScroll(true);
-        axios
+            api_getAllSecondHands()
+                .then((data) => {
+                    setListSecondHands((prevList) => [...prevList, ...data]);
+                    setIsLoading(false);
+                    setIsLoadingScroll(false);
+                })
+                .catch((err) => console.log(err));
+        }
+    }, [skip, isSearch , isFocused]);
+
+    const api_getAllSecondHands = async () => {
+        return axios
             .get(
-                `http://${IP_ADDRESS}/secondHand/getLimit?owner_id=${state.userData._id}&skip=${skip}&limit=10`
+                `${API_URL}/secondHand/getLimit?owner_id=${state.userData._id}&skip=${skip}&limit=10`
             )
             .then((res) => {
-                setListSecondHands([
-                    ...listSecondHands,
-                    ...res.data.listSecondHands,
-                ]);
-                setIsLoading(false);
-                setIsLoadingScroll(false);
+                return res.data.listSecondHands;
             })
             .catch((err) => {
                 console.log(err);
@@ -72,7 +88,7 @@ const BuySecond = ({ navigation }) => {
             const delayDebounceFn = setTimeout(async () => {
                 try {
                     const response = await axios.get(
-                        `http://${IP_ADDRESS}/secondHand/search?keyword=${searchQuery}&owner_id=${state.userData._id}`
+                        `${API_URL}/secondHand/search?keyword=${searchQuery}&owner_id=${state.userData._id}`
                     );
                     const data = response.data.secondHandsData;
                     setListSecondHands(data);
@@ -102,7 +118,9 @@ const BuySecond = ({ navigation }) => {
             contentSize.height - paddingToBottom;
 
         if (isEndReached) {
-            setSkip(skip + 10);
+            if (skip < listSecondHands.length) {
+                setSkip(skip + 10);
+            }
             // console.log("end");
         }
     };

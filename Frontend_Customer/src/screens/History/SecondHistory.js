@@ -9,7 +9,6 @@ import {
     View,
     ImageBackground,
     ScrollView,
-    SafeAreaView,
     SectionList,
 } from "react-native";
 //Components
@@ -18,7 +17,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import StateBtn from "../../components/buttons/StateBtn";
 import CardTwoSide from "../../components/cards/CardTwoSide";
 // Configs
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 import UserContext from "../../hooks/context/UserContext";
 
 const SecondHistory = ({ navigation }) => {
@@ -34,14 +33,11 @@ const SecondHistory = ({ navigation }) => {
 
     useEffect(() => {
         if (isFocused) {
-            if (status) {
-                api_getAllChatrooms("customerId");
-            } else {
-                api_getAllChatrooms("merchantId");
-                api_getMyPosts();
-            }
+            api_getAllChatrooms("customerId");
+            api_getAllChatrooms("merchantId");
+            api_getMyPosts();
         }
-    }, [isFocused, status]);
+    }, [isFocused]);
 
     useEffect(() => {
         if (!status && listOfChatrooms && listSecondHands) {
@@ -63,7 +59,7 @@ const SecondHistory = ({ navigation }) => {
     const api_getMyPosts = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/secondHand/getMyPosts?owner_id=${
+                `${API_URL}/secondHand/getMyPosts?owner_id=${
                     state.userData._id
                 }&closed=${true}`
             )
@@ -78,7 +74,7 @@ const SecondHistory = ({ navigation }) => {
     const api_getAllChatrooms = (role) => {
         axios
             .get(
-                `http://${IP_ADDRESS}/chatroom/chatrooms?${role}=${
+                `${API_URL}/chatroom/chatrooms?${role}=${
                     state.userData._id
                 }&&type=${"SecondHand"}&&closed=${true}`
             )

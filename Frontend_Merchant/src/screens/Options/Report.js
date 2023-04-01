@@ -9,9 +9,6 @@ import {
     Text,
     View,
     ImageBackground,
-    ScrollView,
-    SafeAreaView,
-    SectionList,
     TextInput,
     Alert,
 } from "react-native";
@@ -19,7 +16,7 @@ import BackScreen from "../../components/buttons/BackScreen";
 import AcceptButton from "../../components/buttons/AcceptButton";
 import CustomTextInput from "../../components/Inputs/CustomTextInput";
 // Configs
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 import UserContext from "../../hooks/context/UserContext";
 
 const Report = ({ navigation }) => {
@@ -46,7 +43,7 @@ const Report = ({ navigation }) => {
 
     const api_sendEmail = async () => {
         return await axios
-            .post(`http://${IP_ADDRESS}/setting/sendReport`, {
+            .post(`${API_URL}/setting/sendReport`, {
                 subject: subject,
                 message: message,
                 sender: state.userData.email,

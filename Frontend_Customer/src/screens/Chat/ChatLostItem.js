@@ -3,12 +3,19 @@ import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
 //Components
-import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
+import {
+    StyleSheet,
+    Text,
+    View,
+    ScrollView,
+    Button,
+    TouchableOpacity,
+} from "react-native";
 import Item from "../../components/cards/Item";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 
 const ChatLostItem = ({ navigation }) => {
     //configs
@@ -26,7 +33,7 @@ const ChatLostItem = ({ navigation }) => {
     const api_getAllChatrooms = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/chatroom/chatrooms?customerId=${
+                `${API_URL}/chatroom/chatrooms?customerId=${
                     state.userData._id
                 }&type=${"LostItem"}&closed=${"false"}`
             )
@@ -82,8 +89,8 @@ const ChatLostItem = ({ navigation }) => {
                         justifyContent: "center",
                         alignItems: "center",
                         flex: 1,
-                        alignSelf:"center",
-                        position:"absolute",
+                        alignSelf: "center",
+                        position: "absolute",
                     }}
                 >
                     <MaterialCommunityIcons

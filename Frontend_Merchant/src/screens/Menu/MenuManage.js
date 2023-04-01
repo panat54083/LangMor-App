@@ -9,7 +9,6 @@ import {
     View,
     SafeAreaView,
     Button,
-    ScrollView,
     SectionList,
 } from "react-native";
 import AddButton from "../../components/buttons/AddButton";
@@ -17,7 +16,7 @@ import FoodCard from "../../components/Cards/FoodCard";
 import { FontAwesome5 } from "@expo/vector-icons";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 
 const MenuManage = ({ navigation }) => {
     const { state } = useContext(UserContext);
@@ -48,7 +47,6 @@ const MenuManage = ({ navigation }) => {
         return result;
     };
     const handleAddMenu = () => {
-        // console.log("Add Menu");
         navigation.navigate("AddMenu", {
             foodData: {
                 name: "",
@@ -68,7 +66,7 @@ const MenuManage = ({ navigation }) => {
     const fetchFoods = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/restaurant/foods?restaurant_id=${state.restaurantData._id}`
+                `${API_URL}/restaurant/foods?restaurant_id=${state.restaurantData._id}`
             )
             .then((res) => {
                 setFoodsData(formatToSectionList(res.data.foodsData));

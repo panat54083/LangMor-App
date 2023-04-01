@@ -8,7 +8,6 @@ import {
     StyleSheet,
     Text,
     View,
-    ScrollView,
     Button,
     Image,
     Pressable,
@@ -18,15 +17,16 @@ import SubmitBtn from "../../components/buttons/SubmitBtn";
 import ItemDetail from "../../components/cards/ItemDetail";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 
 const LostDetail = ({ route, navigation }) => {
     //Configs
+    const isFocused = useIsFocused();
     const { lostData, historyChatroomData } = route.params;
-    // console.log(lostData);
     const { state } = useContext(UserContext);
     const [showImage, setShowImage] = useState(false);
     //data
+    const [itemData, setItemData] = useState(lostData);
     const [chatroomData, setChatroomData] = useState(null);
     const [ownerData, setOwnerData] = useState({});
     const noImgURL =
@@ -34,7 +34,7 @@ const LostDetail = ({ route, navigation }) => {
     //start-up
     useEffect(() => {
         navigation.setOptions({
-            title: lostData ? lostData.name : "(ไม่พบชื่อรายการสินค้า)",
+            title: itemData ? itemData.name : "(ไม่พบชื่อรายการสินค้า)",
             headerTitleStyle: {
                 fontFamily: "Kanit-Bold",
                 fontSize: 22,
@@ -47,12 +47,14 @@ const LostDetail = ({ route, navigation }) => {
             ),
         });
         //API
-        api_getOwnerData();
-    }, []);
+        if (isFocused) {
+            api_getOwnerData();
+        }
+    }, [isFocused]);
     useEffect(() => {
         if (chatroomData) {
             navigation.navigate("Chat2", {
-                itemData: lostData,
+                itemData: itemData,
                 chatroomData: chatroomData,
             });
         }
@@ -60,10 +62,10 @@ const LostDetail = ({ route, navigation }) => {
 
     const api_createChatroom = async () => {
         axios
-            .post(`http://${IP_ADDRESS}/chatroom/create`, {
+            .post(`${API_URL}/chatroom/create`, {
                 customerId: state.userData._id,
-                merchantId: lostData.owner_id,
-                itemId: lostData._id,
+                merchantId: itemData.owner_id,
+                itemId: itemData._id,
                 type: "LostItem",
             })
             .then((res) => {
@@ -85,17 +87,18 @@ const LostDetail = ({ route, navigation }) => {
     const api_getOwnerData = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/lostItem/getOwner?owner_id=${lostData.owner_id}`
+                `${API_URL}/lostItem/getOwner?owner_id=${itemData.owner_id}&item_id=${itemData._id}`
             )
             .then((res) => {
                 setOwnerData(res.data.ownerData);
+                setItemData(res.data.lostData);
             })
             .catch((err) => {
                 console.log(err);
             });
     };
     const handleDebugger = () => {
-        console.log(lostData);
+        console.log(itemData);
     };
     const handleContact = () => {
         api_createChatroom();
@@ -103,7 +106,7 @@ const LostDetail = ({ route, navigation }) => {
     };
     const handleHistoryContact = () => {
         navigation.navigate("Chat2", {
-            itemData: lostData,
+            itemData: itemData,
             chatroomData: historyChatroomData,
         });
     };
@@ -113,11 +116,14 @@ const LostDetail = ({ route, navigation }) => {
             {/* <Button title="Debugger" onPress={handleDebugger} /> */}
             <View style={styles.topContatner}>
                 <View style={styles.imgFrame1}>
-                    <Pressable style={styles.imgFrame2} onPress={()=>setShowImage(true)}>
+                    <Pressable
+                        style={styles.imgFrame2}
+                        onPress={() => setShowImage(true)}
+                    >
                         <Image
                             source={{
-                                uri: lostData.picture
-                                    ? `${lostData.picture.url}`
+                                uri: itemData.picture
+                                    ? `${itemData.picture.url}`
                                     : noImgURL,
                             }}
                             style={styles.imgStyle}
@@ -125,8 +131,8 @@ const LostDetail = ({ route, navigation }) => {
                         <ImageView
                             images={[
                                 {
-                                    uri: lostData.picture
-                                        ? `${lostData.picture.url}`
+                                    uri: itemData.picture
+                                        ? `${itemData.picture.url}`
                                         : noImgURL,
                                 },
                             ]}
@@ -140,21 +146,22 @@ const LostDetail = ({ route, navigation }) => {
             <View style={styles.bottomContainer}>
                 <View style={styles.detailContainer}>
                     <ItemDetail
-                        item={lostData}
+                        item={itemData}
                         type={"lostItem"}
                         owner={ownerData}
                     />
                 </View>
             </View>
             <View style={styles.submitBtn}>
-                {lostData.closed === false && (
+                {itemData.closed === false && (
                     <SubmitBtn
                         label={"เริ่มแชทกับผู้โพส"}
                         onPress={handleContact}
                     />
                 )}
-                {lostData.closed === true &&
-                    lostData.owner_id !== state.userData._id && (
+                {itemData.closed === true &&
+                    itemData.owner_id !== state.userData._id &&
+                    historyChatroomData !== undefined && (
                         <SubmitBtn
                             label={"ตรวจสอบแชท"}
                             onPress={handleHistoryContact}

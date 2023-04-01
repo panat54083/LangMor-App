@@ -8,8 +8,6 @@ import {
     Button,
     Text,
     View,
-    ImageBackground,
-    ScrollView,
     SafeAreaView,
     SectionList,
 } from "react-native";
@@ -19,7 +17,7 @@ import EditTextInput from "../../components/Inputs/EditTextInput";
 import Edit from "../../components/buttons/Edit";
 
 // Configs
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 import UserContext from "../../hooks/context/UserContext";
 
 const EditProfile = ({ navigation }) => {
@@ -56,7 +54,7 @@ const EditProfile = ({ navigation }) => {
 
     const api_userUpdate = () => {
         axios
-            .post(`http://${IP_ADDRESS}/merchant/update`, {
+            .post(`${API_URL}/merchant/update`, {
                 _id: state.userData._id,
                 family_name: family_name,
                 given_name: given_name,

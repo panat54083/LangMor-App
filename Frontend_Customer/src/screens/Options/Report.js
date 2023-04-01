@@ -8,9 +8,6 @@ import {
     Button,
     Text,
     View,
-    ImageBackground,
-    ScrollView,
-    SafeAreaView,
     SectionList,
     TextInput,
     Alert,
@@ -19,7 +16,7 @@ import BackScreen from "../../components/buttons/BackScreen";
 import SubmitBtn from "../../components/buttons/SubmitBtn";
 import CustomTextInput from "../../components/input/CustomTextInput";
 //Configs
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 import UserContext from "../../hooks/context/UserContext";
 
 const Report = ({ navigation }) => {
@@ -46,7 +43,7 @@ const Report = ({ navigation }) => {
 
     const api_sendEmail = async () => {
         return await axios
-            .post(`http://${IP_ADDRESS}/setting/sendReport`, {
+            .post(`${API_URL}/setting/sendReport`, {
                 subject: subject,
                 message: message,
                 sender: state.userData.email,

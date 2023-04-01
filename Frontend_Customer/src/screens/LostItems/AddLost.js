@@ -9,10 +9,9 @@ import CustomTextInput from "../../components/input/CustomTextInput";
 import ImageInput from "../../components/input/ImageInput";
 import SubmitBtn from "../../components/buttons/SubmitBtn";
 import RadioButton from "../../components/buttons/RadioButton";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 
 const AddLost = ({ navigation }) => {
     useEffect(() => {
@@ -54,7 +53,7 @@ const AddLost = ({ navigation }) => {
 
     const createLost = (picture) => {
         axios
-            .post(`http://${IP_ADDRESS}/lostItem/create`, {
+            .post(`${API_URL}/lostItem/create`, {
                 name: name,
                 detail: detail,
                 type: selectedType,

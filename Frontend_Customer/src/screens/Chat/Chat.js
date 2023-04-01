@@ -16,7 +16,6 @@ import {
     Text,
     View,
     Button,
-    FlatList,
     Pressable,
     Image,
 } from "react-native";
@@ -29,10 +28,14 @@ import OrderMessage from "../../components/cards/Chat/OrderMessage";
 import BasketContext from "../../hooks/context/BasketContext";
 import UserContext from "../../hooks/context/UserContext";
 import SocketContext from "../../hooks/context/SocketContext";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 
 const Chat = ({ navigation, route }) => {
     //config
+    // const navigation = useNavigation();
+    const isCartScreenWhenGoBack =
+        navigation?.getState()?.routes?.[navigation?.getState()?.index - 1]
+            ?.name === "Cart";
     const { basketDetail } = useContext(BasketContext);
     const { state } = useContext(UserContext);
     const { socket } = useContext(SocketContext);
@@ -56,16 +59,20 @@ const Chat = ({ navigation, route }) => {
                 fontSize: 22,
             },
             headerLeft: () => (
-                <BackScreen
-                    onPress={() => navigation.goBack()}
-                    color="#FF7A00"
-                />
+                <BackScreen onPress={() => handleGoBack()} color="#FF7A00" />
             ),
         });
         // Functions
         fetchInitialMessages();
     }, []);
-
+    const handleGoBack = () => {
+        if (isCartScreenWhenGoBack) {
+            // navigation.popTotop()  // Pop to the top instead of going back
+            navigation.navigate("FoodList", { restaurant: restaurantData });
+        } else {
+            navigation.goBack(); // Go back to the previous screen
+        }
+    };
     useEffect(() => {
         chatroom_connect(orderData._id);
     }, [socket]);
@@ -90,6 +97,12 @@ const Chat = ({ navigation, route }) => {
 
     useEffect(() => {
         if (socket) {
+            socket.on("closedChatroom", ({ closed }) => {
+                if (closed) {
+                    chatroom_disconnect(orderData._id);
+                    handleGoBack();
+                }
+            });
             socket.on("newMessage", (data) => {
                 const { id, user, message, timestamp, picture } = data;
                 // console.log("recieve message: ", message);
@@ -126,7 +139,7 @@ const Chat = ({ navigation, route }) => {
 
     const closeChatroom = async () => {
         axios
-            .post(`http://${IP_ADDRESS}/chatroom/closed`, {
+            .post(`${API_URL}/chatroom/closed`, {
                 chatroomId: null,
             })
             .then((res) => {
@@ -163,7 +176,7 @@ const Chat = ({ navigation, route }) => {
     // const fetchInitialMessages = () => {
     //     axios
     //         .get(
-    //             `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${orderData._id}`
+    //             `${API_URL}/chatroom/messages?chatroomId=${orderData._id}`
     //         )
     //         .then((res) => {
     //             // console.log(res.data.messages)
@@ -175,9 +188,7 @@ const Chat = ({ navigation, route }) => {
     // };
     const fetchInitialMessages = useCallback(() => {
         axios
-            .get(
-                `http://${IP_ADDRESS}/chatroom/messages?chatroomId=${orderData._id}`
-            )
+            .get(`${API_URL}/chatroom/messages?chatroomId=${orderData._id}`)
             .then((res) => {
                 setListMessages(res.data.messages);
             })

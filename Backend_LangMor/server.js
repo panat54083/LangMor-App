@@ -33,7 +33,7 @@ const Merchant = mongoose.model("Merchant");
 const Message = mongoose.model("Message");
 
 //Setup Server
-const PORT = 8000;
+const PORT = process.env.PORT;
 const app = require("./app");
 app.use(require("cors")()); // Don't know why I use this
 
@@ -79,6 +79,11 @@ io.on("connection", (socket) => {
         socket.leave(chatroom);
         console.log(`${socket.userId} left ${chatroom} ID`);
     });
+    socket.on("chatroomClose", ({ chatroomId, closed }) => {
+        io.to(chatroomId).emit("closedChatroom", {
+            closed: closed,
+        });
+    });
 
     socket.on("chatroomMessage", async ({ chatroomId, message, picture }) => {
         if (message.trim().length > 0 || picture) {
@@ -90,15 +95,15 @@ io.on("connection", (socket) => {
                     user: socket.userId,
                     message: message,
                     picture: picture,
-                    timestamp:  new Date(Date.now()).toString(),
+                    timestamp: new Date(Date.now()).toString(),
                 });
-                io.to(chatroomId).emit("newMessage",{
+                io.to(chatroomId).emit("newMessage", {
                     id: new_message._id.toString(),
                     user: new_message.user.toString(),
                     message: new_message.message,
                     timestamp: new_message.timestamp,
                     picture: new_message.picture,
-                })
+                });
                 await new_message.save();
             }
         }

@@ -8,7 +8,6 @@ import {
     Text,
     View,
     ImageBackground,
-    ScrollView,
     SafeAreaView,
     SectionList,
 } from "react-native";
@@ -16,7 +15,7 @@ import {
 import OrderCard from "../../components/cards/Order/OrderCard";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 // Configs
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 import UserContext from "../../hooks/context/UserContext";
 
 const RestaurantHistory = ({ navigation }) => {
@@ -67,7 +66,7 @@ const RestaurantHistory = ({ navigation }) => {
     const apiShowOrder = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/order/get?customer_id=${
+                `${API_URL}/order/get?customer_id=${
                     state.userData._id
                 }&&status=${"close,cancel"}`
             )

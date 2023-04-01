@@ -3,13 +3,13 @@ import React, { useEffect, useState, useContext } from "react";
 import * as LIP from "../../lib/lm-image-picker";
 import axios from "axios";
 //Components
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView,Button } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import ImageInput from "../../components/Inputs/ImageInput";
 import AcceptButton from "../../components/buttons/AcceptButton";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 
 const SetImageRestaurant = ({ navigation, route }) => {
     const { restaurantData } = route.params;
@@ -51,7 +51,7 @@ const SetImageRestaurant = ({ navigation, route }) => {
     };
     const fetchUpdatedRestaurant = (data) => {
         axios
-            .post(`http://${IP_ADDRESS}/restaurant/updated`, {
+            .post(`${API_URL}/restaurant/updated`, {
                 restaurant_id: restaurantData._id,
                 updated_data: data,
             })

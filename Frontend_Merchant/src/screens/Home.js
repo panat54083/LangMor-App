@@ -8,7 +8,6 @@ import {
     View,
     SafeAreaView,
     Image,
-    Button,
     Pressable,
 } from "react-native";
 import Large from "../components/buttons/Large";

@@ -19,7 +19,6 @@ exports.saveOrder = async (req, res) => {
     const order_number = await Order.find({
         createdAt: { $gte: startOfToday },
         restaurantId: orderData.restaurantId,
-
     }).count();
 
     if (!existOrder) {
@@ -28,7 +27,7 @@ exports.saveOrder = async (req, res) => {
             restaurantId: orderData.restaurantId,
             cart: orderData.cart,
             address: orderData.address,
-            order_number: order_number+1
+            order_number: order_number + 1,
         });
         await order.save();
         res.json({
@@ -46,13 +45,13 @@ exports.saveOrder = async (req, res) => {
 exports.getOrder = async (req, res) => {
     const { customer_id, restaurant_id, status } = req.query;
 
-    const list_status = status?.split(",")
+    const list_status = status?.split(",");
     if (restaurant_id) {
         const orders = await Order.find({
             restaurantId: restaurant_id,
-            status: { $in: list_status},
+            status: { $in: list_status },
         });
-        console.log(orders)
+        console.log(orders);
         const metaOrders = await Promise.all(
             orders.map(async (order, index) => {
                 const customer = await Customer.findById(order.customerId);
@@ -60,6 +59,11 @@ exports.getOrder = async (req, res) => {
                 return tamp_data;
             })
         );
+        metaOrders.sort((a, b) => {
+            const dateA = new Date(a.order.updatedAt);
+            const dateB = new Date(b.order.updatedAt);
+            return dateB - dateA;
+        });
         res.json({
             message: "Get all Restaurant's orders",
             orders: metaOrders,
@@ -67,7 +71,7 @@ exports.getOrder = async (req, res) => {
     } else if (customer_id) {
         const orders = await Order.find({
             customerId: customer_id,
-            status: { $in:  list_status},
+            status: { $in: list_status },
         });
         const metaOrders = await Promise.all(
             orders.map(async (order, index) => {
@@ -75,9 +79,15 @@ exports.getOrder = async (req, res) => {
                     order.restaurantId
                 );
                 const tamp_data = { order: order, restaurant: restaurant };
-                return tamp_data
+                return tamp_data;
             })
         );
+        metaOrders.sort((a, b) => {
+            const dateA = new Date(a.order.updatedAt);
+            const dateB = new Date(b.order.updatedAt);
+            return dateB - dateA;
+        });
+        // console.log(metaOrders)
         res.json({
             message: "Get all Customer's orders",
             orders: metaOrders,

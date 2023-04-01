@@ -11,7 +11,6 @@ import {
     View,
     ImageBackground,
     ScrollView,
-    SafeAreaView,
     SectionList,
     Alert,
 } from "react-native";
@@ -21,7 +20,7 @@ import EditTextInput from "../../components/Inputs/EditTextInput";
 import Edit from "../../components/buttons/Edit";
 import ImageInput from "../../components/Inputs/ImageInput";
 // Configs
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 import UserContext from "../../hooks/context/UserContext";
 
 const EditRestaurant = ({ navigation }) => {
@@ -69,7 +68,7 @@ const EditRestaurant = ({ navigation }) => {
 
     const api_restaurantUpdate = (image) => {
         axios
-            .post(`http://${IP_ADDRESS}/restaurant/updated`, {
+            .post(`${API_URL}/restaurant/updated`, {
                 restaurant_id: state.restaurantData._id,
                 updated_data: {
                     name: restaurant_name,
@@ -167,6 +166,7 @@ const EditRestaurant = ({ navigation }) => {
                     value={restaurant_address}
                     onChangeText={setRestaurant_address}
                     editable={editable}
+                    multiline={true}
                 />
                 <Text style={styles.font}>
                     เบอร์โทรศัพท์{"  "}

@@ -1,6 +1,5 @@
 //Packages
 import React, { useEffect } from "react";
-import axios from "axios";
 //Components
 import { StyleSheet, Text, View, Button, ScrollView } from "react-native";
 import AddressBoxDetail from "../../components/Cards/Order/AddressBoxDetail";
@@ -8,7 +7,6 @@ import BackScreen from "../../components/buttons/BackScreen";
 import OrderSummary from "../../components/Cards/Order/OrderSummary";
 import AcceptButton from "../../components/buttons/AcceptButton";
 //Configs
-import { IP_ADDRESS } from "@env";
 
 const ShowOrder = ({ navigation, route }) => {
     const order = route.params;

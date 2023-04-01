@@ -10,12 +10,13 @@ import {
     ImageBackground,
     ScrollView,
     SafeAreaView,
+    TouchableOpacity,
 } from "react-native";
 import UserContext from "../hooks/context/UserContext";
 import Large from "../components/buttons/Large";
 import Small from "../components/buttons/Small";
 // Configs
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 
 const HomeManage = ({ navigation }) => {
     const { state, onAction } = useContext(UserContext);
@@ -28,7 +29,7 @@ const HomeManage = ({ navigation }) => {
     const fetchRestaurantInfo = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/restaurant/info?restaurant_id=${state.userData.restaurant}`
+                `${API_URL}/restaurant/info?restaurant_id=${state.userData.restaurant}`
             )
             .then((res) => {
                 onAction.updateRestaurantData({
@@ -42,7 +43,7 @@ const HomeManage = ({ navigation }) => {
     //Turn the restaurant off or open
     const fetchRestaurantOpenClose = async () => {
         return axios
-            .post(`http://${IP_ADDRESS}/restaurant/closed`, {
+            .post(`${API_URL}/restaurant/closed`, {
                 restaurant_id: state.restaurantData._id,
             })
             .then((res) => {
@@ -158,7 +159,7 @@ const HomeManage = ({ navigation }) => {
                 </SafeAreaView>
             ) : (
                 <View>
-                    <Text> Loading Screen</Text>
+                    <Text>There is no restaurantData</Text>
                 </View>
             )}
         </>

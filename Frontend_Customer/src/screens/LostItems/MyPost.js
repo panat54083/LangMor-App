@@ -3,13 +3,20 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
 //Components
-import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
+import {
+    StyleSheet,
+    Text,
+    View,
+    ScrollView,
+    Button,
+    Pressable,
+} from "react-native";
 import AddButton from "../../components/buttons/AddButton";
 import CardTwoSide from "../../components/cards/CardTwoSide";
 import { FontAwesome5 } from "@expo/vector-icons";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 
 const MyPost = ({ navigation }) => {
     //Configs
@@ -46,7 +53,7 @@ const MyPost = ({ navigation }) => {
     const api_getMyPosts = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/lostItem/getMyPosts?owner_id=${
+                `${API_URL}/lostItem/getMyPosts?owner_id=${
                     state.userData._id
                 }&closed=${false}`
             )
@@ -62,7 +69,7 @@ const MyPost = ({ navigation }) => {
     const api_getAllChatrooms = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/chatroom/chatrooms?merchantId=${
+                `${API_URL}/chatroom/chatrooms?merchantId=${
                     state.userData._id
                 }&type=${"LostItem"}&closed=${false}`
             )

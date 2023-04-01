@@ -3,12 +3,19 @@ import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
 //Components
-import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
+import {
+    StyleSheet,
+    Text,
+    View,
+    ScrollView,
+    Button,
+    TouchableOpacity,
+} from "react-native";
 import Order from "../../components/cards/Order/Order";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 //Configs
 import UserContext from "../../hooks/context/UserContext";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 
 const ChatMerchant = ({ navigation }) => {
     //configs
@@ -28,7 +35,7 @@ const ChatMerchant = ({ navigation }) => {
     const apiShowOrder = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/order/get?customer_id=${
+                `${API_URL}/order/get?customer_id=${
                     state.userData._id
                 }&&status=${"new,doing,deliver,done"}`
             )
@@ -66,8 +73,8 @@ const ChatMerchant = ({ navigation }) => {
                         justifyContent: "center",
                         alignItems: "center",
                         flex: 1,
-                        alignSelf:"center",
-                        position:"absolute",
+                        alignSelf: "center",
+                        position: "absolute",
                     }}
                 >
                     <MaterialCommunityIcons

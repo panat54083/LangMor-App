@@ -47,16 +47,16 @@ exports.closeChatroom = async (req, res) => {
 };
 
 exports.getChatrooms = async (req, res) => {
-    const { customerId, merchantId, type, closed} = req.query;
-    const closed_bool = closed === "false" ? false: true 
-    console.log(closed_bool)
+    const { customerId, merchantId, type, closed } = req.query;
+    const closed_bool = closed === "false" ? false : true;
+    // console.log(closed_bool)
     if (customerId) {
         const chatrooms = await Chatroom.find({
             customerId: customerId,
             type: type,
             closed: closed_bool,
         });
-        console.log(chatrooms)
+        // console.log(chatrooms)
         const extraChatrooms = await Promise.all(
             chatrooms.map(async (room, index) => {
                 const merchant = await Customer.findById(room.merchantId);
@@ -79,7 +79,12 @@ exports.getChatrooms = async (req, res) => {
                 }
             })
         );
-        console.log(extraChatrooms.length)
+        extraChatrooms.sort((a, b) => {
+            const dateA = new Date(a.itemData.updatedAt);
+            const dateB = new Date(b.itemData.updatedAt);
+            return dateB - dateA;
+        });
+        // console.log(extraChatrooms)
         res.json({
             message: `Get All Chatroom [Customer] ${type}`,
             chatrooms: extraChatrooms,
@@ -93,26 +98,31 @@ exports.getChatrooms = async (req, res) => {
         const extraChatrooms = await Promise.all(
             chatrooms.map(async (room, index) => {
                 const customer = await Customer.findById(room.customerId);
-                if (room.type === "SecondHand"){
-                    const secondHand = await SecondHand.findById(room.itemId)
+                if (room.type === "SecondHand") {
+                    const secondHand = await SecondHand.findById(room.itemId);
                     const tamp_data = {
                         chatroom: room,
                         customer: customer,
                         itemData: secondHand,
-                    } 
-                    return tamp_data
-                } else if ( room.type === "LostItem") {
-                    const lostItem = await LostItem.findById(room.itemId)
+                    };
+                    return tamp_data;
+                } else if (room.type === "LostItem") {
+                    const lostItem = await LostItem.findById(room.itemId);
                     const tamp_data = {
                         chatroom: room,
                         customer: customer,
                         itemData: lostItem,
-                    } 
-                    return tamp_data
+                    };
+                    return tamp_data;
                 }
             })
         );
-        console.log(extraChatrooms.length)
+        // console.log(extraChatrooms.length)
+        extraChatrooms.sort((a, b) => {
+            const dateA = new Date(a.itemData.updatedAt);
+            const dateB = new Date(b.itemData.updatedAt);
+            return dateB - dateA;
+        });
         res.json({
             message: "Get All Chatroom [Merchant]",
             chatrooms: extraChatrooms,

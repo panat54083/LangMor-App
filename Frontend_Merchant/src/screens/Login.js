@@ -24,7 +24,7 @@ import {
     ANDROID_CLIENT_ID,
     IOS_CLIENT_ID,
     EXPO_CLIENT_ID,
-    IP_ADDRESS,
+    API_URL,
 } from "@env";
 import UserContext from "../hooks/context/UserContext";
 import SocketContext from "../hooks/context/SocketContext";
@@ -126,9 +126,9 @@ const Login = () => {
     const fetchLogin = (userData, type) => {
         axios
             .post(
-                type === "gooogle"
-                    ? `http://${IP_ADDRESS}/merchant/login`
-                    : `http://${IP_ADDRESS}/merchant/logintester`,
+                type === "google"
+                    ? `${API_URL}/merchant/login`
+                    : `${API_URL}/merchant/logintester`,
                 userData
             )
             .then(async (res) => {
@@ -146,13 +146,13 @@ const Login = () => {
                 await setupSocket(res.data.token);
             })
             .catch((err) => {
-                console.log("Fetch Login: ", err.response.data);
+                console.log("Fetch Login: ", err);
             });
     };
     //get user information by token
     const fetchUserInfo = async (token) => {
         return axios
-            .get(`http://${IP_ADDRESS}/merchant/info`, {
+            .get(`${API_URL}/merchant/info`, {
                 headers: {
                     Authorization: token,
                 },
@@ -172,7 +172,7 @@ const Login = () => {
     };
     //Setup Socket
     const setupSocket = async (token) => {
-        const newSocket = io(`http://${IP_ADDRESS}`, {
+        const newSocket = io(`${API_URL}`, {
             query: {
                 token: token,
             },

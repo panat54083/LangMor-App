@@ -13,7 +13,7 @@ const CardTwoSide = ({ label, numberOfContact, onPressLeft, onPressRight }) => {
                 ]}
                 onPress={onPressLeft}
             >
-                <Text style={[styles.font, { fontSize: 20 }]}>{label}</Text>
+                <Text style={[styles.font, { fontSize: 20 ,}]}>{label}</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={[

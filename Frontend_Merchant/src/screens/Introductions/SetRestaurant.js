@@ -4,14 +4,10 @@ import axios from "axios";
 // Components
 import {
     StyleSheet,
-    Text,
     View,
-    SafeAreaView,
-    KeyboardAvoidingView,
-    ScrollView,
-    Pressable,
     Alert,
     Image,
+    Button,
 } from "react-native";
 import ImageInput from "../../components/Inputs/ImageInput";
 import CustomTextInput from "../../components/Inputs/CustomTextInput";
@@ -19,7 +15,7 @@ import AcceptButton from "../../components/buttons/AcceptButton";
 import BackScreen from "../../components/buttons/BackScreen";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 // Config
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 import UserContext from "../../hooks/context/UserContext";
 
 const SetRestaurant = ({ navigation }) => {
@@ -69,7 +65,7 @@ const SetRestaurant = ({ navigation }) => {
 
     const fetchRegister = () => {
         axios
-            .post(`http://${IP_ADDRESS}/restaurant/register`, {
+            .post(`${API_URL}/restaurant/register`, {
                 name: restaurantName,
                 owner: state.userData._id,
                 phone: phone,

@@ -81,12 +81,35 @@ exports.restaurantInfo = async (req, res) => {
 };
 
 exports.getAllRestaurant = async (req, res) => {
-    const restaurantDatas = await Restaurant.find({ closed: false });
-    console.log(restaurantDatas);
-    res.json({
-        message: "Get All Restaurant",
-        restaurantData: restaurantDatas,
-    });
+    try {
+        const restaurantDatas = await Restaurant.find({ closed: false });
+        console.log(restaurantDatas);
+        res.json({
+            message: "Get All Restaurant",
+            restaurantData: restaurantDatas,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Error fetching restaurants data" });
+    }
+};
+
+exports.getLimitRestaurant = async (req, res) => {
+    try {
+        const skip = parseInt(req.query.skip) || 0;
+        const limit = parseInt(req.query.limit) || 10;
+        const restaurantDatas = await Restaurant.find({ closed: false })
+            .skip(skip)
+            .limit(limit);
+
+        res.json({
+            message: "Get All Restaurant",
+            restaurantData: restaurantDatas,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Error fetching restaurants data" });
+    }
 };
 
 exports.restaurantClosed = async (req, res) => {

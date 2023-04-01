@@ -14,6 +14,7 @@ import {
     Button,
     ScrollView,
     Alert,
+    SafeAreaView,
 } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import ImageInput from "../../components/Inputs/ImageInput";
@@ -25,7 +26,7 @@ import MiniBtn from "../../components/buttons/MiniBtn";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 //Config
 import UserContext from "../../hooks/context/UserContext";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 
 const AddMenu = ({ navigation, route }) => {
     useEffect(() => {
@@ -55,7 +56,6 @@ const AddMenu = ({ navigation, route }) => {
         const unsubscribe = navigation.addListener("focus", () => {
             console.log("listener")
             fetchOptions();
-            // fetchTypes();
         });
 
         return unsubscribe;
@@ -93,7 +93,7 @@ const AddMenu = ({ navigation, route }) => {
     const fetchOptions = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/restaurant/options?restaurant_id=${state.restaurantData._id}`
+                `${API_URL}/restaurant/options?restaurant_id=${state.restaurantData._id}`
             )
             .then((res) => {
                 setOptions(res.data.options);
@@ -106,7 +106,7 @@ const AddMenu = ({ navigation, route }) => {
     const fetchTypes = () => {
         axios
             .get(
-                `http://${IP_ADDRESS}/restaurant/types?restaurant_id=${state.restaurantData._id}`
+                `${API_URL}/restaurant/types?restaurant_id=${state.restaurantData._id}`
             )
             .then((res) => {
                 setTypes(res.data.types);
@@ -118,7 +118,7 @@ const AddMenu = ({ navigation, route }) => {
 
     const fetchTypesSave = () => {
         axios
-            .post(`http://${IP_ADDRESS}/restaurant/save_types`, {
+            .post(`${API_URL}/restaurant/save_types`, {
                 types: types,
                 restaurant_id: state.restaurantData._id,
             })
@@ -138,7 +138,7 @@ const AddMenu = ({ navigation, route }) => {
 
     const fetchFoodSave = (url_image) => {
         axios
-            .post(`http://${IP_ADDRESS}/restaurant/save_food`, {
+            .post(`${API_URL}/restaurant/save_food`, {
                 foodData: {
                     restaurant_id: state.restaurantData._id,
                     picture: url_image,
@@ -166,7 +166,7 @@ const AddMenu = ({ navigation, route }) => {
 
     const api_deleteMenu = () => {
         axios
-            .delete(`http://${IP_ADDRESS}/restaurant/delete_food`, {
+            .delete(`${API_URL}/restaurant/delete_food`, {
                 data: {
                     food_id: foodData._id,
                 },
@@ -186,7 +186,7 @@ const AddMenu = ({ navigation, route }) => {
     };
     const api_deleteType = (type) => {
         axios
-            .delete(`http://${IP_ADDRESS}/restaurant/delete_type`, {
+            .delete(`${API_URL}/restaurant/delete_type`, {
                 data: {
                     type: type,
                     restaurant_id: state.restaurantData._id,

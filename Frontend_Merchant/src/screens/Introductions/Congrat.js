@@ -2,18 +2,18 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 // Components
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, Button } from "react-native";
 import AcceptButton from "../../components/buttons/AcceptButton";
 // Configs
 import UserContext from "../../hooks/context/UserContext";
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 
 const Congrat = () => {
     const { state, onAction } = useContext(UserContext);
     //get user information by token
     const fetchUserInfo = (token) => {
         axios
-            .get(`http://${IP_ADDRESS}/merchant/info`, {
+            .get(`${API_URL}/merchant/info`, {
                 headers: {
                     Authorization: token,
                 },

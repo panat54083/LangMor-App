@@ -11,8 +11,6 @@ import {
     View,
     ImageBackground,
     ScrollView,
-    SafeAreaView,
-    SectionList,
     TextInput,
     Alert,
 } from "react-native";
@@ -24,7 +22,7 @@ import Edit from "../../components/buttons/Edit";
 import ImageInput from "../../components/input/ImageInput";
 
 //Configs
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 import UserContext from "../../hooks/context/UserContext";
 
 const EditSecond = ({ navigation, route }) => {
@@ -67,7 +65,7 @@ const EditSecond = ({ navigation, route }) => {
 
     const api_secondHandUpdate = (picture) => {
         axios
-            .post(`http://${IP_ADDRESS}/secondHand/update`, {
+            .post(`${API_URL}/secondHand/update`, {
                 item_id: itemData._id,
                 updated_data: {
                     name: name,
@@ -104,7 +102,7 @@ const EditSecond = ({ navigation, route }) => {
                     })
                     .catch((err) => console.log(err));
             } else {
-                api_secondHandUpdate(restaurant_picture);
+                api_secondHandUpdate(image);
                 setIsLoaded(false);
                 navigation.goBack();
             }

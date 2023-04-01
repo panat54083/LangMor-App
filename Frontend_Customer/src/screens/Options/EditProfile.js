@@ -11,9 +11,6 @@ import {
     ImageBackground,
     ScrollView,
     SafeAreaView,
-    SectionList,
-    TextInput,
-    Alert,
 } from "react-native";
 import BackScreen from "../../components/buttons/BackScreen";
 import SubmitBtn from "../../components/buttons/SubmitBtn";
@@ -22,7 +19,7 @@ import EditTextInput from "../../components/input/EditTextInput";
 import Edit from "../../components/buttons/Edit";
 
 //Configs
-import { IP_ADDRESS } from "@env";
+import { API_URL } from "@env";
 import UserContext from "../../hooks/context/UserContext";
 
 const EditProfile = ({ navigation }) => {
@@ -59,7 +56,7 @@ const EditProfile = ({ navigation }) => {
 
     const api_userUpdate = () => {
         axios
-            .post(`http://${IP_ADDRESS}/customer/update`, {
+            .post(`${API_URL}/customer/update`, {
                 _id: state.userData._id,
                 family_name: family_name,
                 given_name: given_name,
