@@ -1,9 +1,10 @@
 //Packages
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
 //Components
 import {
+    RefreshControl,
     StyleSheet,
     Text,
     View,
@@ -21,14 +22,28 @@ const ChatLostItem = ({ navigation }) => {
     //configs
     const isFocused = useIsFocused();
     const { state } = useContext(UserContext);
+    const [refreshing, setRefreshing] = useState(false);
     //data
     const [listOfChatrooms, setListOfChatrooms] = useState([]);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 2000);
+    }, []);
 
     useEffect(() => {
         if (isFocused) {
             api_getAllChatrooms();
         }
     }, [isFocused]);
+
+    useEffect(() => {
+        if (refreshing) {
+            api_getAllChatrooms();
+        }
+    }, [refreshing]);
 
     const api_getAllChatrooms = () => {
         axios
@@ -58,13 +73,22 @@ const ChatLostItem = ({ navigation }) => {
         console.log(listOfChatrooms);
     };
     return (
-        <View>
-            {/* <Text>ChatLostItem</Text>
-    <Button title="Debugger" onPress={handleDebugger} /> */}
-            {listOfChatrooms.length !== 0 ? (
-                listOfChatrooms.map((item, index) => (
-                    <ScrollView key={index}>
+        <View style={{ flex: 1 }}>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                        progressBackgroundColor={"white"}
+                        colors={["#FF7A00"]}
+                    />
+                }
+            >
+                {/* <Button title="Debugger" onPress={handleDebugger} />  */}
+                {listOfChatrooms.length !== 0 ? (
+                    listOfChatrooms.map((item, index) => (
                         <View
+                            key={index}
                             style={{
                                 marginTop: "0.75%",
                                 marginBottom: "0.25%",
@@ -81,27 +105,26 @@ const ChatLostItem = ({ navigation }) => {
                                 type={"lost"}
                             />
                         </View>
-                    </ScrollView>
-                ))
-            ) : (
-                <View
-                    style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flex: 1,
-                        alignSelf: "center",
-                        position: "absolute",
-                    }}
-                >
-                    <MaterialCommunityIcons
-                        name="chat-question"
-                        size={100}
-                        color="#C9C5C4"
-                    />
-                    <Text style={styles.font}>คุณยังไม่ได้ทำรายการ</Text>
-                    <Text style={styles.font}>ติดต่อของหาย</Text>
-                </View>
-            )}
+                    ))
+                ) : (
+                    <View
+                        style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            flex: 1,
+                            alignSelf: "center",
+                        }}
+                    >
+                        <MaterialCommunityIcons
+                            name="chat-question"
+                            size={100}
+                            color="#C9C5C4"
+                        />
+                        <Text style={styles.font}>คุณยังไม่ได้ทำรายการ</Text>
+                        <Text style={styles.font}>ติดต่อของหาย</Text>
+                    </View>
+                )}
+            </ScrollView>
         </View>
     );
 };

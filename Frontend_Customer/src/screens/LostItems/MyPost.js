@@ -1,9 +1,10 @@
 //Packages
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import axios from "axios";
 import { useIsFocused } from "@react-navigation/native";
 //Components
 import {
+    RefreshControl,
     StyleSheet,
     Text,
     View,
@@ -22,6 +23,7 @@ const MyPost = ({ navigation }) => {
     //Configs
     const { state } = useContext(UserContext);
     const isFocused = useIsFocused();
+    const [refreshing, setRefreshing] = useState(false);
     //Variables
     const [listLostItems, setListLostItems] = useState([]);
     const [listOfChatrooms, setListOfChatrooms] = useState([]);
@@ -34,6 +36,19 @@ const MyPost = ({ navigation }) => {
         }
     }, [isFocused]);
 
+    useEffect(() => {
+        if (refreshing) {
+            api_getMyPosts();
+            api_getAllChatrooms();
+        }
+    }, [refreshing]);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 2000);
+    }, []);
     useEffect(() => {
         if (listOfChatrooms && listLostItems) {
             concat_listOfSecondChat();
@@ -101,7 +116,17 @@ const MyPost = ({ navigation }) => {
         console.log(listOfLostChats);
     };
     return (
-        <ScrollView style={styles.scrollView_container}>
+        <ScrollView
+            style={styles.scrollView_container}
+            refreshControl={
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    progressBackgroundColor={"white"}
+                    colors={["#FF7A00"]}
+                />
+            }
+        >
             {/* <Button title="Debugger" onPress={handleDebugger} /> */}
             <View style={styles.add_container}>
                 <AddButton onPress={handleAddLost} />
