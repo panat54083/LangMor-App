@@ -4,7 +4,7 @@ import React from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 
 const OrderSummary = ({ order }) => {
-    const sum = order.cart.reduce((total, item) => total + item.price, 0);
+    const sum = order.cart.reduce((total, item) => total + item.price*item.amount, 0);
     return (
         <View style={styles.container}>
             <View style={{ backgroundColor: "white", marginBottom: 10 }}>
@@ -91,7 +91,7 @@ const OrderSummary = ({ order }) => {
                                               },
                                           ]}
                                       >
-                                          {food.price}
+                                          {food.price * food.amount}
                                       </Text>
                                   </View>
                               </View>

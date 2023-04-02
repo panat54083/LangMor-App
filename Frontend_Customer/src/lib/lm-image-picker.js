@@ -49,6 +49,7 @@ export const handleUpload= async (image, ownerId) => {
             });
      */
     let base64Img = `data:${image.type}/jpg;base64,${image.base64}`;
+    String(CLOUD_DINARY_API)
     let apiUrl = CLOUD_DINARY_API;
     let data = {
         file: base64Img,
