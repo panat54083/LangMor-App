@@ -56,7 +56,7 @@ const CardFood = (props) => {
                     null
                 )}
                     <View style={styles.priceContainer}>
-                        <Text style={styles.price}>฿ {food.price}</Text>
+                        <Text style={styles.price}>฿ {Number(food.price).toLocaleString()}</Text>
                     </View>
             </View>
             {findAmountInBasket() !== 0 ? (

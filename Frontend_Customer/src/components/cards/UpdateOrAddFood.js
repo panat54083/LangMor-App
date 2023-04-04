@@ -155,7 +155,7 @@ const UpdateOrAddFood = (props) => {
                                 </View>
                                 <View style={styles.priceView}>
                                     <Text style={styles.priceText}>
-                                        {order.price * order.amount} B.
+                                        {Number(order.price * order.amount).toLocaleString()} B.
                                     </Text>
                                 </View>
                             </View>

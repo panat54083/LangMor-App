@@ -149,7 +149,7 @@ const EditSecond = ({ navigation, route }) => {
                     <Text style={{ color: "red" }}>*</Text> {"  "}
                     {editable ? (
                         <Text style={styles.fontOptions}>
-                            ปัจจุบัน: {itemData.price} บาท
+                            ปัจจุบัน: {Number(itemData.price).toLocaleString()} บาท
                         </Text>
                     ) : (
                         ""

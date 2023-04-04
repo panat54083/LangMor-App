@@ -57,7 +57,7 @@ const OrderCard = ({
             <View style={styles.price}>
                 <Text style={styles.font_price}>
                     {orderStatus !== "cancel" ? (
-                        price
+                        Number(price).toLocaleString()
                     ) : (
                         <Text
                             style={{

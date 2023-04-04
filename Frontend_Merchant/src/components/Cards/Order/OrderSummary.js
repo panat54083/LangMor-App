@@ -91,7 +91,7 @@ const OrderSummary = ({ order }) => {
                                               },
                                           ]}
                                       >
-                                          {food.price * food.amount}
+                                          {Number(food.price * food.amount).toLocaleString()}
                                       </Text>
                                   </View>
                               </View>
@@ -109,7 +109,7 @@ const OrderSummary = ({ order }) => {
                     </Text>
                 </View>
                 <View style={{ flex: 1, alignItems: "flex-end" }}>
-                    <Text style={styles.total_font}>{sum} บาท</Text>
+                    <Text style={styles.total_font}>{Number(sum).toLocaleString()} บาท</Text>
                 </View>
             </View>
         </View>

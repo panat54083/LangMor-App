@@ -73,7 +73,7 @@ const RadioButton = (props) => {
                             { marginLeft: "auto", marginRight: "12.33%" },
                         ]}
                     >
-                        {price} 
+                        {Number(price).toLocaleString()} 
                     </Text>
                 ) : (
                     ""

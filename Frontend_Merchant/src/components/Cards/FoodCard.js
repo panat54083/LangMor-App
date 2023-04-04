@@ -47,7 +47,7 @@ const FoodCard = ({ foodData, onPress }) => {
                         {foodData.description}
                     </Text>
                 </View>
-                <Text style={styles.price}>{foodData.price}</Text>
+                <Text style={styles.price}>{Number(foodData.price).toLocaleString()}</Text>
             </View>
         </TouchableOpacity>
     );
