@@ -68,7 +68,7 @@ const Checkbox = (props) => {
                         { marginLeft: "auto", marginRight: "12.33%", fontSize: fontSize, fontFamily:fontFamily },
                     ]}
                 >
-                    {price}
+                    {Number(price).toLocaleString()}
                 </Text>
             ) : (
                 ""

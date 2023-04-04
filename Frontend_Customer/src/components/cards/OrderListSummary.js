@@ -90,8 +90,8 @@ const OrderListSummary = (props) => {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.priceView}>
-                            <Text style={styles.priceText}>
-                                {order.price * order.amount} B.
+                            <Text style={styles.priceText} adjustsFontSizeToFit={true} numberOfLines={1}>
+                                {Number(order.price * order.amount).toLocaleString()} B.
                             </Text>
                         </View>
                     </View>
@@ -103,7 +103,7 @@ const OrderListSummary = (props) => {
                 </View>
                 <View style={{ marginLeft: "auto", marginRight: "3.5%" }}>
                     <Text style={styles.summaryAllPriceText}>
-                        {allprice} B.
+                        {Number(allprice).toLocaleString()} บาท
                     </Text>
                 </View>
             </View>

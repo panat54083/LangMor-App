@@ -70,7 +70,7 @@ const Item = (props) => {
                                     color="#148F12"
                                 />
                                 <Text style={styles.textPriceStyle}>
-                                    {`  ${itemData.price}`} บาท
+                                    {`  ${Number(itemData.price).toLocaleString()}`} บาท
                                 </Text>
                             </View>
                             {itemData.closed === true && (

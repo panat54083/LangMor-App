@@ -12,7 +12,7 @@ const BtnToBasketDetail = (props) => {
                 <Text style={styles.textStyle}>ดูของในตะกร้า</Text>
             </View>
             <View style={{ flex: 1, alignItems: "center" }}>
-                <Text style={styles.textStyle}>{price} B.</Text>
+                <Text style={styles.textStyle}>{Number(price).toLocaleString()} B.</Text>
             </View>
         </TouchableOpacity>
     );

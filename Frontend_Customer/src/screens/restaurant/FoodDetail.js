@@ -386,7 +386,7 @@ const FoodDetail = ({ route, navigation }) => {
                         label={
                             editOrder
                                 ? "อัปเดต"
-                                : `เพิ่มลงตะกร้า | ฿ ${price * number}`
+                                : `เพิ่มลงตะกร้า | ฿ ${Number(price * number).toLocaleString()}`
                         }
                         disable={!isAllInputsFilled}
                         onPress={handleOnPressSubmit}

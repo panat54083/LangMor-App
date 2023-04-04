@@ -13,7 +13,7 @@ const ItemDetail = (props) => {
                         <View style={styles.textPriceContainer}>
                                 <FontAwesome5 name="money-bill-alt" size={16} color="#148F12" />
                             <Text style={styles.textPriceStyle}>
-                                {`  ${item.price}`} บาท
+                                {`  ${Number(item.price).toLocaleString()}`} บาท
                             </Text>
                         </View>
                     </View>
