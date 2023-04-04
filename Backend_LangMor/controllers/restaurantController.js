@@ -319,31 +319,28 @@ exports.restaurantSearch = async (req, res) => {
     const { keyword } = req.query;
     Restaurant.aggregate([
         {
-          $lookup: {
-            from: "foods",
-            localField: "_id",
-            foreignField: "restaurant_id",
-            as: "foods",
-          },
+            $lookup: {
+                from: "foods",
+                localField: "_id",
+                foreignField: "restaurant_id",
+                as: "foods",
+            },
         },
         {
-          $match: {
-            $and: [
-              { closed: false },
-              {
+            $match: {
+                closed: false,
                 $or: [
-                  { "foods.name": { $regex: `${keyword}`, $options: "i" } },
-                  { name: { $regex: `${keyword}`, $options: "i" } },
+                    { "foods.name": { $regex: `${keyword}`, $options: "i" } },
+                    { name: { $regex: `${keyword}`, $options: "i" } },
                 ],
-              },
-            ],
-          },
+            },
         },
-      ]).exec((err, resResults) => {
+    ]).exec((err, resResults) => {
         if (err) {
             // handle error
         } else {
             // remove the `food` array from the `resResults` documents
+            // console.log(resResults);
             const results = resResults.map((res) => {
                 const { foods, ...rest } = res; // destructuring to remove `food`
                 return rest;
