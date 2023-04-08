@@ -59,7 +59,7 @@ const Chat = ({ navigation, route }) => {
 
     useEffect(() => {
         navigation.setOptions({
-            title: `${customerData.name}`,
+            title: `${customerData.given_name}`,
             headerTitleStyle: {
                 fontFamily: "Kanit-Bold",
                 fontSize: 22,
@@ -90,15 +90,14 @@ const Chat = ({ navigation, route }) => {
                     color="#FF7A00"
                 />
             ),
-            headerRight: () => (
-                <>
-                    {
-                        !["close", "cancel"].includes(orderData.status) ? (
-                            <CancelBtn onPress={handleCancel} />
-                        ) : null
-                    }
-                </>
-            ),
+
+            headerRight: () => {
+                console.log(orderData.status);
+                if (orderData.status === "new") {
+                    return <CancelBtn onPress={handleCancel} />;
+                }
+                return null;
+            },
         });
         // Functions
         fetchInitialMessages();
@@ -191,9 +190,7 @@ const Chat = ({ navigation, route }) => {
 
     const fetchInitialMessages = useCallback(() => {
         axios
-            .get(
-                `${API_URL}/chatroom/messages?chatroomId=${orderData._id}`
-            )
+            .get(`${API_URL}/chatroom/messages?chatroomId=${orderData._id}`)
             .then((res) => {
                 setListMessages(res.data.messages);
             })
@@ -211,6 +208,15 @@ const Chat = ({ navigation, route }) => {
             .then((res) => {
                 console.log("Update Order to: ", res.data.orderData.status);
                 orderData.status = res.data.orderData.status;
+                navigation.setOptions({
+                    headerRight: () => {
+                        console.log(orderData.status);
+                        if (orderData.status === "new") {
+                            return <CancelBtn onPress={handleCancel} />;
+                        }
+                        return null;
+                    },
+                });
             })
             .catch((err) => {
                 if (
@@ -314,21 +320,28 @@ const Chat = ({ navigation, route }) => {
     };
 
     const handleCancel = () => {
-        Alert.alert("แจ้งเตือน", `ต้องการยกเลิกออเดอร์นี้ใช่หรือไม่`, [
-            {
-                text: "ยกเลิก",
-                style: "cancel",
-            },
-            {
-                text: "ใช่",
-                onPress: () => {
-                    apiUpdateOrder("cancel");
-                    socket_closeChatroom(true);
-                    sendMessage(messageStatus.cancel, null);
-                    navigation.navigate("OrderTabs");
+        if (orderData.status === "new") {
+            Alert.alert("แจ้งเตือน", `ต้องการยกเลิกออเดอร์นี้ใช่หรือไม่`, [
+                {
+                    text: "ยกเลิก",
+                    style: "cancel",
                 },
-            },
-        ]);
+                {
+                    text: "ใช่",
+                    onPress: () => {
+                        apiUpdateOrder("cancel");
+                        socket_closeChatroom(true);
+                        sendMessage(messageStatus.cancel, null);
+                        navigation.navigate("OrderTabs");
+                    },
+                },
+            ]);
+        } else {
+            Alert.alert(
+                "แจ้งเตือน",
+                "ไม่สามารถยกเลิกได้เนื่องจากคุณได้ยืนยันออเดอร์แล้ว"
+            );
+        }
     };
     const handleMoreDetail = () => {
         const order = { order: orderData, customer: customerData };

@@ -47,7 +47,7 @@ const Chat2 = ({ navigation, route }) => {
     //Start-up
     useEffect(() => {
         navigation.setOptions({
-            title: customerData ? `${customerData.name}` : `${itemData.name}`,
+            title: customerData ? `${customerData.given_name}` : `${itemData.name}`,
             headerTitleStyle: {
                 fontFamily: "Kanit-Bold",
                 fontSize: 22,
