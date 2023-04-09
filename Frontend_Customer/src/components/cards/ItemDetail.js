@@ -79,7 +79,6 @@ const ItemDetail = (props) => {
                             {item.type === "found"
                                 ? "พบที่ "
                                 : "รายละเอียด "}
-                            {item.detail}
                         </Text>
                         <Text style={styles.textDetailStyle}>
                             {item.detail}

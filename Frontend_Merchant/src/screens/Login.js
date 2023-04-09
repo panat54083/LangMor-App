@@ -176,6 +176,8 @@ const Login = () => {
             query: {
                 token: token,
             },
+            transports: ["websocket"],
+            upgrade: false,
         });
         //deal with connect event
         newSocket.on("connect", () => {
